@@ -16,10 +16,10 @@ image:
 # sfprojectname: spring --> snappyflow/projectname: spring
 global:
   sfappname: petclinic
-  sfprojectname: spring
+  sfprojectname: demo-jolokia
   sfappname_key: snappyflow/appname
   sfprojectname_key: snappyflow/projectname
-  key: ""
+  key: "PAAhbCSHoyNr0ZMMsTX2E0uEz2U0mGcb05Xju3bVKXQ7+AAhLVJuvl/L/GEjDMptX67bXQrIMtlvSYpv7YrX7xig9rv+D8F8AzUfAH+ta0oFAULfuWEbCFq79QOIV1cjBu5s7Sx1+lvF3AYLFUwYw9puM8mLPyNg/NUdzK50+65ZXY74+cqymajIfHYfN9uP0uhNR17E/mZb/eHwts8FteakuSlRi8BLDSJYxf+GX/g="
 
 nameOverride: ""
 fullnameOverride: ""
@@ -37,9 +37,21 @@ podAnnotations: {}
 
 spring:
   profile: mysql
-
+jvmjolokia:
+  sfagent:
+    enabled: true
+    image: snappyflowml/sfagent
+    imageTag: latest
+    imagePullPolicy: Always
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
 jmx_exporter:
-  enabled: true
+  enabled: false
   image:
     repository: bitnami/jmx-exporter
     tag: latest

@@ -7,7 +7,7 @@ imageTag: "5.7.14"
 ## Specify password for root user
 ##
 ## Default: random 10 character string
-# mysqlRootPassword: testing
+#mysqlRootPassword: testing
 
 ## Create a database user
 ##
@@ -16,7 +16,7 @@ imageTag: "5.7.14"
 
 ## Allow unauthenticated access, uncomment to enable
 ##
-# mysqlAllowEmptyPassword: true
+#mysqlAllowEmptyPassword: true
 
 ## Create a database
 ##

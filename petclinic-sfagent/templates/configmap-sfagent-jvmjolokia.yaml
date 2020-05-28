@@ -1,0 +1,25 @@
+{{- if .Values.jvmjolokia.sfagent.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "spring.fullname" . }}-sfagent-jvmjolokia
+  labels:
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    snappyflow/component: jvmjolokia
+data:
+  config.yaml: |+
+    ---
+    key: "{{ .Values.global.key }}"
+    metrics:
+      plugins:
+      - name: jvmjolokia
+        enabled: true
+        interval: 300
+        config:
+          username: admin
+          password: admin
+          protocol: http
+          port: 8778
+          context: jolokia
+{{- end }}

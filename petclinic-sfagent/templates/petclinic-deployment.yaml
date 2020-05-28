@@ -91,7 +91,7 @@ spec:
             - sh
             - -c
             - -x
-            - cp /data/jolokia.jar ${PWD} && java -javaagent:jolokia.jar=port=8778,host=${HOST_IP} ${JMX_OPTS} -jar /app/petclinic.jar
+            - cp /data/jolokia.jar ${PWD} && java -javaagent:jolokia.jar=port=8778,host=127.0.0.1 ${JMX_OPTS} -jar /app/petclinic.jar
           env:
             - name: HOST_IP
               valueFrom:
@@ -138,6 +138,29 @@ spec:
           {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
+{{- if .Values.jvmjolokia.sfagent.enabled }}
+        - name: sfagent
+          image:  "{{ .Values.jvmjolokia.sfagent.image }}:{{ .Values.jvmjolokia.sfagent.imageTag }}"
+          imagePullPolicy: {{ .Values.jvmjolokia.sfagent.imagePullPolicy | quote }}
+          command:
+          - /app/sfagent
+          - -enable-console-log
+          env:
+          - name: APP_NAME
+            value: "{{ .Values.global.sfappname }}"
+          - name: PROJECT_NAME
+            value: "{{ .Values.global.sfprojectname }}"
+          resources:
+{{ toYaml .Values.jvmjolokia.sfagent.resources | indent 12 }}
+          volumeMounts:
+          
+          {{- if .Values.jvmjolokia.sfagent.enabled }}
+          - name: sfagent-config
+            mountPath: /opt/sfagent/config.yaml
+            subPath: config.yaml
+          {{- end }}
+{{- end }}
+
 {{- if .Values.jmx_exporter.enabled }}
         - name: jmx-exporter
           image: "{{ .Values.jmx_exporter.image.repository }}:{{ .Values.jmx_exporter.image.tag }}"
@@ -193,3 +216,8 @@ spec:
           configMap:
             name: {{ include "spring.fullname" . }}-jmx-exporter
 {{- end }}
+{{- if .Values.jvmjolokia.sfagent.enabled }}
+        - name: sfagent-config
+          configMap:
+            name: {{ include "spring.fullname" . }}-sfagent-jvmjolokia
+        {{- end }}
