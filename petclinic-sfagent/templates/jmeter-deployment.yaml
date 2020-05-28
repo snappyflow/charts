@@ -1,0 +1,187 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "spring.fullname" . }}-jmeter
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    app: {{ include "spring.name" . }}
+    chart: {{ include "spring.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    snappyflow/component: jmeter
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "spring.name" . }}
+      release: {{ .Release.Name }}
+      {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+      {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+      snappyflow/component: jmeter
+  template:
+    metadata:
+      labels:
+        app: {{ include "spring.name" . }}
+        release: {{ .Release.Name }}
+        {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+        {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+        snappyflow/component: jmeter
+      annotations:
+        {{ toYaml .Values.podAnnotations | indent 8 }}
+    spec:
+      serviceAccountName: {{ template "spring.serviceAccountName" . }}
+      securityContext:
+        {{ toYaml .Values.securityContext | indent 8 }}
+      initContainers:
+        - name: get-jar-files
+          image: alpine
+          command:
+            - sh
+            - -c
+            - -x
+            - apk add --no-cache curl tar && curl -L ${JOLOKIA_JAR_URL} -o /data/jolokia.jar && curl -L ${MYSQL_CONNECTOR} -o /data/mysql-connector.tar.gz && tar xvf /data/mysql-connector.tar.gz mysql-connector-java-8.0.18/mysql-connector-java-8.0.18.jar -C /data
+          env:
+            - name: JOLOKIA_JAR_URL
+              value: https://repo1.maven.org/maven2/org/jolokia/jolokia-jvm/1.6.2/jolokia-jvm-1.6.2-agent.jar
+            - name: MYSQL_CONNECTOR
+              value: https://dev.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.18.tar.gz
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      containers:
+        - name: jmeter
+          image: "{{ .Values.jmeter.image.repository }}:{{ .Values.jmeter.image.tag }}"
+          imagePullPolicy: {{ .Values.jmeter.image.pullPolicy }}
+          command:
+            - sh 
+            - -c 
+            - -x 
+            - cp /data/mysql-connector-java-8.0.18/mysql-connector-java-8.0.18.jar /opt/apache-jmeter-5.1.1/lib/.; cp /data/jolokia.jar /opt/apache-jmeter-5.1.1/lib/. && touch /var/log/test_plan.jtl; cd $JMETER_HOME/bin && /usr/bin/java -server $JAVA_ARGS $JVM_ARGS $JAVA_AGENT -jar $JMETER_HOME/bin/ApacheJMeter.jar -n -t /scripts/test_plan.jmx -l /var/log/test_plan.jtl -LINFO -j /var/log/jmeter.log -JPETCLINC_HOST=${PETCLINC_HOST} -JPETCLINIC_PORT=${PETCLINIC_PORT} -JMYSQL_SERVER=${DATABASE_HOST}:3306 -JMYSQL_USER=${DATABASE_USERNAME} -JMYSQL_PASSWORD=${DATABASE_PASSWORD};
+          env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: PETCLINC_HOST
+              value: {{ template "spring.fullname" . }}-nginx
+            - name: PETCLINIC_PORT
+              value: "{{ .Values.service.httpPort }}"
+            - name: DATABASE_HOST
+              value: "{{ template "mysql.fullname" . }}"
+            - name: DATABASE_NAME
+              value: "{{ .Values.mysql.mysqlDatabase }}"
+            - name: DATABASE_USERNAME
+              value: "{{ .Values.mysql.mysqlUser }}"
+            - name: DATABASE_PASSWORD
+              value: "{{ .Values.mysql.mysqlPassword }}"
+            - name: JMETER_HOME
+              value: "/opt/apache-jmeter-5.1.1"
+            - name: JVM_ARGS
+              value: "-Dcom.sun.management.jmxremote -Djava.rmi.server.hostname=0.0.0.0 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.port=5555 -Dcom.sun.management.jmxremote.rmi.port=5555 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+            - name: JAVA_ARGS
+              value: "-XX:+HeapDumpOnOutOfMemoryError -Xms1g -Xmx1g -XX:MaxMetaspaceSize=256m -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:G1ReservePercent=20 -Djava.security.egd=file:/dev/urandom -Duser.language=en -Duser.region=EN"
+            - name: JAVA_AGENT
+              value: "-javaagent:/opt/apache-jmeter-5.1.1/lib/jolokia.jar=port=8778,host=0.0.0.0"
+            {{- range $key, $value := .Values.jmeter.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: scripts
+              mountPath: /scripts
+            - name: jmeterlog
+              mountPath: /var/log
+          resources:
+{{ toYaml .Values.jmeter.resources | indent 12 }}
+{{- if .Values.jmeter.sfagent.enabled }}
+        - name: sfagent
+          image:  "{{ .Values.jmeter.sfagent.image }}:{{ .Values.jmeter.sfagent.imageTag }}"
+          imagePullPolicy: {{ .Values.jmeter.sfagent.imagePullPolicy | quote }}
+          command:
+          - /app/sfagent
+          - -enable-console-log
+          env:
+          - name: APP_NAME
+            value: {{ .Values.global.sfappname }}
+          - name: PROJECT_NAME
+            value: {{ .Values.global.sfprojectname }}
+          resources:
+{{ toYaml .Values.jmeter.sfagent.resources | indent 12 }}
+          volumeMounts:
+          - name: jmeterlog
+            mountPath: /var/log
+          {{- if .Values.jmeter.sfagent.enabled }}
+          - name: sfagent-config
+            mountPath: /opt/sfagent/config.yaml
+            subPath: config.yaml
+          {{- end }}
+{{- end }}
+{{- if .Values.logrotate.enabled }}
+        - name: logrotate
+          image:  "{{ .Values.logrotate.image.repository }}:{{ .Values.logrotate.image.tag }}"
+          imagePullPolicy: {{ .Values.logrotate.image.pullPolicy | quote }}
+          env:
+          {{- range $key, $value := .Values.logrotate.env }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+          {{- end }}
+          - name: LOGS_DIRECTORIES
+            value: "/var/log"
+          resources:
+{{ toYaml .Values.logrotate.resources | indent 12 }}
+          volumeMounts:
+          - name: jmeterlog
+            mountPath: /var/log
+{{- end }}
+{{- if .Values.jmx_exporter.enabled }}
+        - name: jmx-exporter
+          image: "{{ .Values.jmx_exporter.image.repository }}:{{ .Values.jmx_exporter.image.tag }}"
+          imagePullPolicy: {{ .Values.jmx_exporter.image.pullPolicy | quote }}
+          command:
+            - sh
+            - -c
+            - -x
+            - java -jar /opt/bitnami/jmx-exporter/jmx_prometheus_httpserver.jar {{ .Values.jmx_exporter.port }} /config/jmx-config.yml
+          ports:
+          - name: jmx-exporter
+            containerPort: {{ .Values.jmx_exporter.port }}
+          volumeMounts:
+            - name: jmx-exporter
+              mountPath: /config/jmx-config.yml
+              subPath: jmx-config.yml
+          livenessProbe:
+            httpGet:
+              path: /metric
+              port: jmx-exporter
+            initialDelaySeconds: 90
+            timeoutSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /metric
+              port: jmx-exporter
+            initialDelaySeconds: 60
+            timeoutSeconds: 20
+{{- end }}
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: scripts
+          configMap:
+            name: {{ include "spring.fullname" . }}-scripts
+        - name: jmeterlog
+          emptyDir: {}
+        {{- if .Values.jmx_exporter.enabled }}
+        - name: jmx-exporter
+          configMap:
+            name: {{ include "spring.fullname" . }}-jmx-exporter
+        {{- end }}
+        {{- if .Values.jmeter.sfagent.enabled }}
+        - name: sfagent-config
+          configMap:
+            name: {{ include "spring.fullname" . }}-sfagent-jmeter
+        {{- end }}
+

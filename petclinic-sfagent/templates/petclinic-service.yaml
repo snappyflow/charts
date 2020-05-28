@@ -1,0 +1,88 @@
+{{- if and .Values.service.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "spring.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  annotations:
+    snappyflow/prometheus: {{ default "false" .Values.jmx_exporter.enabled | quote }}
+  {{- range $key, $value := .Values.service.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  labels:
+    app: {{ template "spring.name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    snappyflow/component: petclinic
+spec:
+  type: {{ .Values.service.type }}
+  {{- if (or (eq .Values.service.type "LoadBalancer") (eq .Values.service.type "NodePort")) }}
+  {{- if hasKey .Values.service "externalTrafficPolicy" -}}
+  externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy | quote }}
+  {{- end }}
+  {{- end }}
+  {{- if eq .Values.service.type "LoadBalancer" }}
+  loadBalancerIP: {{ default "" .Values.service.loadBalancerIP | quote }}
+  {{- end }}
+  ports:
+  - name: http
+    port: {{ .Values.service.httpPort }}
+    targetPort: http
+{{- if hasKey .Values.service "nodePort" }}
+    nodePort: {{ .Values.service.nodePort }}
+{{- end }}
+  - name: jolokia
+    port: 8778
+    targetPort: jolokia
+{{- if .Values.jmx_exporter.enabled }}
+  - name: jmx-exporter
+    port: {{ .Values.jmx_exporter.port }}
+    targetPort: jmx-exporter
+{{- end }}
+  selector:
+    app: {{ template "spring.name" . }}
+    release: {{ .Release.Name | quote }}
+    snappyflow/component: petclinic
+{{- end }}
+---
+{{- if and .Values.service.headless }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "spring.fullname" . }}-headless
+  namespace: {{ .Release.Namespace | quote }}
+  annotations:
+  {{- range $key, $value := .Values.service.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  labels:
+    app: {{ template "spring.name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    snappyflow/component: petclinic
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - name: http
+    port: {{ .Values.service.httpPort }}
+    targetPort: http
+  - name: jolokia
+    port: 8778
+    targetPort: jolokia
+{{- if .Values.jmx_exporter.enabled }}
+  - name: jmx-exporter
+    port: {{ .Values.jmx_exporter.port }}
+    targetPort: jmx-exporter
+{{- end }}
+  selector:
+    app: {{ template "spring.name" . }}
+    release: {{ .Release.Name | quote }}
+    snappyflow/component: petclinic
+{{- end -}}

@@ -1,0 +1,30 @@
+{{- if .Values.jmx_exporter.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "spring.fullname" . }}-jmeter
+  namespace: {{ .Release.Namespace | quote }}
+  annotations:
+    snappyflow/prometheus: {{ default "false" .Values.jmx_exporter.enabled | quote }}
+  {{- range $key, $value := .Values.service.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  labels:
+    app: {{ template "spring.name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    snappyflow/component: jmeter
+spec:
+  type: ClusterIP
+  ports:
+  - name: jmx-exporter
+    port: {{ .Values.jmx_exporter.port }}
+    targetPort: jmx-exporter
+  selector:
+    app: {{ template "spring.name" . }}
+    release: {{ .Release.Name | quote }}
+    snappyflow/component: jmeter
+{{- end }}

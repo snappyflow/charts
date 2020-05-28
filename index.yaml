@@ -2,13 +2,31 @@ apiVersion: v1
 entries:
   elasticsearch:
   - apiVersion: v1
-    created: 2020-04-30T18:31:06.193954305+05:30
+    created: "2020-05-28T19:01:36.6089137+05:30"
+    description: This Elasticsearch cluster supports 3 master nodes, 2 data nodes,
+      and 2 client nodes. Data nodes use Persistent volumes. Includes monitoring of
+      Pod metrics, Storage metrics, Elasticsearch cluster metrics, JVM metrics, and
+      logs
+    digest: 54dec91b51d5589f260e15b4d240a9ecdcd757feb45584f2210b3d6263b85fb8
+    home: https://www.elastic.co/products/elasticsearch
+    icon: https://static-www.elastic.co/assets/blteb1c97719574938d/logo-elastic-elasticsearch-lt.svg
+    maintainers:
+    - email: matthew.titmus@gmail.com
+      name: Matt Titmus
+    name: elasticsearch
+    sources:
+    - https://www.elastic.co/products/elasticsearch
+    - https://github.com/pires/kubernetes-elasticsearch-cluster
+    urls:
+    - elasticsearch-0.3.4.tgz
+    version: 0.3.4
+  - apiVersion: v1
+    created: "2020-05-28T19:01:36.6027106+05:30"
     description: This Elasticsearch cluster supports 3 master nodes, 2 data nodes,
       and 2 client nodes. Data nodes use Persistent volumes. Includes monitoring of
       Pod metrics, Storage metrics, Elasticsearch cluster metrics, JVM metrics, and
       logs
     digest: 1f0162baa60723febba9ca79f38d9f88fbbdbb89006d7e506d7e41290f141767
-    engine: gotpl
     home: https://www.elastic.co/products/elasticsearch
     icon: https://static-www.elastic.co/assets/blteb1c97719574938d/logo-elastic-elasticsearch-lt.svg
     maintainers:
@@ -24,7 +42,7 @@ entries:
   expresscart:
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-04-30T18:31:06.197834474+05:30
+    created: "2020-05-28T19:01:36.6188697+05:30"
     description: A Helm chart to deploy expressCart nodejs application
     digest: 1445a2be5cc36d1e04428d49b1ebb763dd5cdb480010792188b5c6ccf996e296
     icon: https://raw.githubusercontent.com/mrvautin/expressCart/master/public/images/logo.png
@@ -35,11 +53,11 @@ entries:
     - expresscart-0.2.0.tgz
     version: 0.2.0
   fluentd-elasticsearch:
-  - appVersion: 2.3.2
-    created: 2020-04-30T18:31:06.213724736+05:30
+  - apiVersion: v1
+    appVersion: 2.3.2
+    created: "2020-05-28T19:01:36.6359822+05:30"
     description: A Fluentd Helm chart for Kubernetes with Elasticsearch output
     digest: 3a091e75d9e755856676639285ec95e9ebbbaae4d3e25ffb5e2e19ca5343f1f7
-    engine: gotpl
     home: https://www.fluentd.org/
     icon: https://raw.githubusercontent.com/fluent/fluentd-docs/master/public/logo/Fluentd_square.png
     keywords:
@@ -60,7 +78,7 @@ entries:
   kafka:
   - apiVersion: v1
     appVersion: 5.3.1
-    created: 2020-04-30T18:31:06.217314565+05:30
+    created: "2020-05-28T19:01:36.6411128+05:30"
     description: This topology includes 2 Kafka nodes and 2 Zookeepr nodes. Includes
       monitoring of Pod metrics, Storage metrics, JVM metrics, Producer/Consumer Traffic,
       Topic Metrics, and logs
@@ -82,7 +100,7 @@ entries:
     version: 2.4.0
   - apiVersion: v1
     appVersion: 5.3.1
-    created: 2020-04-30T18:31:06.215869623+05:30
+    created: "2020-05-28T19:01:36.6379795+05:30"
     description: This topology includes 2 Kafka nodes and 2 Zookeepr nodes. Includes
       monitoring of Pod metrics, Storage metrics, JVM metrics, Producer/Consumer Traffic,
       Topic Metrics, and logs
@@ -105,7 +123,7 @@ entries:
   petclinic:
   - apiVersion: v1
     appVersion: 2.1.0.BUILD-SNAPSHOT
-    created: 2020-04-30T18:31:06.219862551+05:30
+    created: "2020-05-28T19:01:36.6440663+05:30"
     description: Helm chart for deploying basic Spring applications
     digest: abd62eeea5268e3dd8f640cbe4811d689756451907228119111ca5c7627e92b8
     home: https://spring.io
@@ -119,10 +137,27 @@ entries:
     urls:
     - petclinic-0.3.3.tgz
     version: 0.3.3
+  petclinic-sfagent:
+  - apiVersion: v1
+    appVersion: 2.1.0.BUILD-SNAPSHOT
+    created: "2020-05-28T19:01:36.6479408+05:30"
+    description: Helm chart for spring applicaton, monitoring using sfagent
+    digest: 841165b4e01a765335634066743a5acd72bdccaa66eb9b817374c6858b6145a2
+    home: https://spring.io
+    icon: https://spring.io/img/homepage/icon-spring-boot.svg
+    keywords:
+    - spring
+    - petclinic
+    name: petclinic-sfagent
+    sources:
+    - https://github.com/spring-projects/spring-petclinic
+    urls:
+    - petclinic-sfagent-0.1.0.tgz
+    version: 0.1.0
   petclinic-v3:
   - apiVersion: v1
     appVersion: 2.1.0.BUILD-SNAPSHOT
-    created: 2020-04-30T18:31:06.221767857+05:30
+    created: "2020-05-28T19:01:36.6500621+05:30"
     description: Helm chart for deploying basic Spring applications
     digest: e108c173cdfdc3175fc8ef52254ab309d9755371d6879d67dc147a62f94d17db
     home: https://spring.io
@@ -140,7 +175,7 @@ entries:
   sample-petclinic:
   - apiVersion: v1
     appVersion: "1"
-    created: 2020-04-30T18:31:06.223781482+05:30
+    created: "2020-05-28T19:01:36.6519449+05:30"
     description: Helm chart for deploying basic Spring applications
     digest: 0f2d2dd34b3d12b947b41aafb0a622b97aa0659ab79db5b6ac68f3702da3638f
     name: sample-petclinic
@@ -150,11 +185,10 @@ entries:
   sfagent:
   - apiVersion: v1
     appVersion: "1.1"
-    created: 2020-04-30T18:31:06.244020469+05:30
+    created: "2020-05-28T19:01:36.654943+05:30"
     description: Cluster and Application Monitoring and Logging system for Maplelabs'
       snappyFlow APM.
     digest: 95730b0461b5e94a5cb206a9f45d1519de1ccf243ab3720652237f3015657d35
-    engine: gotpl
     home: http://www.snappyflow.io
     keywords:
     - monitoring
@@ -169,7 +203,7 @@ entries:
     version: 2.0.2
   - apiVersion: v1
     appVersion: "1.1"
-    created: 2020-04-30T18:31:06.242793466+05:30
+    created: "2020-05-28T19:01:36.6539427+05:30"
     description: Cluster and Application Monitoring system for Maplelabs' snappyFlow
       APM.
     digest: d46ab38c70d2dc9ce29dc51a4a9286b736ca5e0f3f5c66315cb9efb2f67b9e42
@@ -187,11 +221,10 @@ entries:
     version: 2.0.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-04-30T18:31:06.24206579+05:30
+    created: "2020-05-28T19:01:36.6529438+05:30"
     description: Cluster and Application Monitoring system for Maplelabs' snappyFlow
       APM.
     digest: 83918703383bd62e739f075f5e47c0a4b7570ac0481ee5815cb1045cadb1a5cb
-    engine: gotpl
     home: http://www.snappyflow.io
     keywords:
     - monitoring
@@ -204,4 +237,4 @@ entries:
     urls:
     - sfagent-2.0.0.tgz
     version: 2.0.0
-generated: 2020-04-30T18:31:06.192485241+05:30
+generated: "2020-05-28T19:01:36.5967317+05:30"

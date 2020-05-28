@@ -1,0 +1,33 @@
+{{- if .Values.nginx.sfagent.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "spring.fullname" . }}-sfagent-nginx
+  labels:
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    snappyflow/component: nginx
+data:
+  config.yaml: |+
+    ---
+    key: "{{ .Values.global.key }}"
+    metrics:
+      plugins:
+      - name: nginx
+        enabled: true
+        interval: 300
+        config:
+          location: nginx_status
+          port: 80
+          secure: false
+    logging:
+      plugins:
+      - name: nginx-access
+        enabled: true
+        config:
+          log_path: "/var/log/nginx/access1.log"
+      - name: nginx-error
+        enabled: true
+        config:
+          log_path: "/var/log/nginx/error1.log"
+{{- end }}

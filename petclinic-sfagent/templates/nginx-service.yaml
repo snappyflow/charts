@@ -1,0 +1,35 @@
+{{- if and .Values.service.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "spring.fullname" . }}-nginx
+  namespace: {{ .Release.Namespace | quote }}
+  annotations:
+    snappyflow/prometheus: {{ default "false" .Values.nginx.metrics.enabled | quote }}
+  {{- range $key, $value := .Values.service.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  labels:
+    app: {{ template "spring.name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    snappyflow/component: nginx
+spec:
+  type: {{ .Values.nginx.service.type }}
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+{{- if .Values.nginx.metrics.enabled }}
+  - name: metrics
+    port: 9113
+    targetPort: nginx-exporter
+{{- end }}
+  selector:
+    app: {{ template "spring.name" . }}
+    release: {{ .Release.Name | quote }}
+    snappyflow/component: nginx
+{{- end }}

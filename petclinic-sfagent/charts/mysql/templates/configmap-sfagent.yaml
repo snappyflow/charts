@@ -1,0 +1,42 @@
+{{- if .Values.sfagent.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "mysql.fullname" . }}-sfagent-config
+  labels:
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    snappyflow/component: mysql
+data:
+  config.yaml: |+
+    ---
+    key: "{{ .Values.global.key }}"
+    metrics:
+      plugins:
+      - name: mysql
+        enabled: true
+        interval: 30
+        config:
+          host: "127.0.0.1"
+          password: "{{ .Values.mysqlRootPassword }}"
+          # user: "{{ .Values.mysqlUser }}"
+          user: "root"
+          documentsTypes:
+          - databaseDetails
+          - serverDetails
+          - tableDetails
+    logging:
+      plugins:
+      - name: mysql-general
+        enabled: true
+        config:
+          log_path: "/var/log/mysql/mysql.log, /var/log/mysql.log, /var/log/mysqld.log"
+      - name: mysql-error
+        enabled: true
+        config:
+          log_level:
+          - error
+          - warn
+          - note
+          log_path: "/var/log/mysql/error.log, /var/log/mysql/mysql-error.log, /var/log/mysqld.err"
+{{- end }}

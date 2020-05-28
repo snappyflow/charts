@@ -1,0 +1,223 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "spring.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    app: {{ include "spring.name" . }}
+    chart: {{ include "spring.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    snappyflow/component: petclinic
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "spring.name" . }}
+      release: {{ .Release.Name }}
+      {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+      {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+      snappyflow/component: petclinic
+  template:
+    metadata:
+      labels:
+        app: {{ include "spring.name" . }}
+        release: {{ .Release.Name }}
+        {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+        {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+        snappyflow/component: petclinic
+      annotations:
+        {{ toYaml .Values.podAnnotations | indent 8 }}
+    spec:
+      serviceAccountName: {{ template "spring.serviceAccountName" . }}
+      securityContext:
+        {{ toYaml .Values.securityContext | indent 8 }}
+      initContainers:
+        - name: wait-for-db
+          image: mysql:5.7
+          command:
+            - sh
+            - -c
+            - -x
+            - "until mysqladmin ping -h${DATABASE_HOST} -u${DATABASE_USERNAME} -p${DATABASE_PASSWORD}; do sleep 2; done"
+          env:
+            - name: DATABASE_HOST
+              value: "{{ template "mysql.fullname" . }}"
+            - name: DATABASE_NAME
+              value: "{{ .Values.mysql.mysqlDatabase }}"
+            - name: DATABASE_USERNAME
+              value: "{{ .Values.mysql.mysqlUser }}"
+            - name: DATABASE_PASSWORD
+              value: "{{ .Values.mysql.mysqlPassword }}"
+        - name: configure-db
+          image: mysql:5.7
+          command:
+            - sh
+            - -c
+            - -x
+            - "mysql -h${DATABASE_HOST} -uroot -p${DATABASE_PASSWORD} ${DATABASE_NAME} < /scripts/schema.sql && mysql -h${DATABASE_HOST} -uroot -p${DATABASE_PASSWORD} ${DATABASE_NAME} < /scripts/data.sql"
+          env:
+            - name: DATABASE_HOST
+              value: "{{ template "mysql.fullname" . }}"
+            - name: DATABASE_NAME
+              value: "{{ .Values.mysql.mysqlDatabase }}"
+            - name: DATABASE_USERNAME
+              value: "{{ .Values.mysql.mysqlUser }}"
+            - name: DATABASE_PASSWORD
+              value: "{{ .Values.mysql.mysqlPassword }}"
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+        - name: get-jolokia
+          image: alpine
+          command:
+            - sh
+            - -c
+            - -x
+            - apk add --no-cache curl && curl ${JOLOKIA_JAR_URL} -o /data/jolokia.jar
+          env:
+            - name: JOLOKIA_JAR_URL
+              value: https://repo1.maven.org/maven2/org/jolokia/jolokia-jvm/1.6.2/jolokia-jvm-1.6.2-agent.jar
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - sh
+            - -c
+            - -x
+            - cp /data/jolokia.jar ${PWD} && java -javaagent:jolokia.jar=port=8778,host=127.0.0.1 ${JMX_OPTS} -jar /app/petclinic.jar
+          env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ .Values.spring.profile }}
+            - name: DATABASE_HOST
+              value: "{{ template "mysql.fullname" . }}"
+            - name: DATABASE_NAME
+              value: "{{ .Values.mysql.mysqlDatabase }}"
+            - name: DATABASE_USERNAME
+              value: "{{ .Values.mysql.mysqlUser }}"
+            - name: DATABASE_PASSWORD
+              value: "{{ .Values.mysql.mysqlPassword }}"
+            - name: SPRING_CONFIG_LOCATION
+              value: "file:/config/application-mysql.properties"
+            - name: JMX_OPTS
+              value: "-Dcom.sun.management.jmxremote -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote.local.only=false	-Dcom.sun.management.jmxremote.port=5555 -Dcom.sun.management.jmxremote.rmi.port=5555 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+            {{- range $key, $value := .Values.extraEnv }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config-file
+              mountPath: /config/application-mysql.properties
+              subPath: application-mysql.properties
+          ports:
+            - name: http
+              containerPort: {{ .Values.containerPort }}
+              protocol: TCP
+            - name: jolokia
+              containerPort: 8778
+              protocol: TCP
+          {{- if .Values.livenessProbe }}
+          livenessProbe:
+{{ toYaml .Values.livenessProbe | indent 12 }}
+          {{- end }}
+          {{- if .Values.readinessProbe }}
+          readinessProbe:
+{{ toYaml .Values.readinessProbe | indent 12 }}
+          {{- end }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+{{- if .Values.jvmjolokia.sfagent.enabled }}
+        - name: sfagent
+          image:  "{{ .Values.jvmjolokia.sfagent.image }}:{{ .Values.jvmjolokia.sfagent.imageTag }}"
+          imagePullPolicy: {{ .Values.jvmjolokia.sfagent.imagePullPolicy | quote }}
+          command:
+          - /app/sfagent
+          - -enable-console-log
+          env:
+          - name: APP_NAME
+            value: "{{ .Values.global.sfappname }}"
+          - name: PROJECT_NAME
+            value: "{{ .Values.global.sfprojectname }}"
+          resources:
+{{ toYaml .Values.jvmjolokia.sfagent.resources | indent 12 }}
+          volumeMounts:
+          
+          {{- if .Values.jvmjolokia.sfagent.enabled }}
+          - name: sfagent-config
+            mountPath: /opt/sfagent/config.yaml
+            subPath: config.yaml
+          {{- end }}
+{{- end }}
+
+{{- if .Values.jmx_exporter.enabled }}
+        - name: jmx-exporter
+          image: "{{ .Values.jmx_exporter.image.repository }}:{{ .Values.jmx_exporter.image.tag }}"
+          imagePullPolicy: {{ .Values.jmx_exporter.image.pullPolicy | quote }}
+          command:
+            - sh
+            - -c
+            - -x
+            - java -jar /opt/bitnami/jmx-exporter/jmx_prometheus_httpserver.jar {{ .Values.jmx_exporter.port }} /config/jmx-config.yml
+          ports:
+          - name: jmx-exporter
+            containerPort: {{ .Values.jmx_exporter.port }}
+          volumeMounts:
+            - name: jmx-exporter
+              mountPath: /config/jmx-config.yml
+              subPath: jmx-config.yml
+          livenessProbe:
+            httpGet:
+              path: /metric
+              port: jmx-exporter
+            initialDelaySeconds: 90
+            timeoutSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /metric
+              port: jmx-exporter
+            initialDelaySeconds: 60
+            timeoutSeconds: 20
+{{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: config-file
+          configMap:
+            name: {{ include "spring.fullname" . }}-petclinic-config
+        - name: scripts
+          configMap:
+            name: {{ include "spring.fullname" . }}-scripts
+{{- if .Values.jmx_exporter.enabled }}
+        - name: jmx-exporter
+          configMap:
+            name: {{ include "spring.fullname" . }}-jmx-exporter
+{{- end }}
+{{- if .Values.jvmjolokia.sfagent.enabled }}
+        - name: sfagent-config
+          configMap:
+            name: {{ include "spring.fullname" . }}-sfagent-jvmjolokia
+        {{- end }}

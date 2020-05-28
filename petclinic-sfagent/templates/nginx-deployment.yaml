@@ -1,0 +1,158 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "spring.fullname" . }}-nginx
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    app: {{ include "spring.name" . }}
+    chart: {{ include "spring.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    snappyflow/component: nginx
+spec:
+  replicas: {{ .Values.nginx.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "spring.name" . }}
+      release: {{ .Release.Name }}
+      {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+      {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+      snappyflow/component: nginx
+  template:
+    metadata:
+      labels:
+        app: {{ include "spring.name" . }}
+        release: {{ .Release.Name }}
+        {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+        {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+        snappyflow/component: nginx
+      annotations:
+        {{ toYaml .Values.podAnnotations | indent 8 }}
+    spec:
+      serviceAccountName: {{ template "spring.serviceAccountName" . }}
+      securityContext:
+        {{ toYaml .Values.securityContext | indent 8 }}
+      initContainers:
+        - name: wait-for-endpoints
+          image: alpine
+          command:
+            - sh
+            - -c
+            - -x
+            - apk add --no-cache curl && while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' ${HOST})" != "200" ]]; do sleep 5; done
+          env:
+            - name: HOST
+              value: {{ template "spring.fullname" . }}-headless:{{ .Values.containerPort }}
+      containers:
+        - name: nginx
+          image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag }}"
+          imagePullPolicy: {{ .Values.nginx.image.pullPolicy }}
+          env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            {{- range $key, $value := .Values.nginx.extraEnv }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          volumeMounts:
+            - name: nginx-config-file
+              mountPath: /etc/nginx/
+            - name: varlog
+              mountPath: /var/log/nginx
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          {{- if .Values.nginx.livenessProbe }}
+          livenessProbe:
+{{ toYaml .Values.nginx.livenessProbe | indent 12 }}
+          {{- end }}
+          {{- if .Values.nginx.readinessProbe }}
+          readinessProbe:
+{{ toYaml .Values.nginx.readinessProbe | indent 12 }}
+          {{- end }}
+          resources:
+{{ toYaml .Values.nginx.resources | indent 12 }}
+{{- if .Values.nginx.sfagent.enabled }}
+        - name: sfagent
+          image:  "{{ .Values.nginx.sfagent.image }}:{{ .Values.nginx.sfagent.imageTag }}"
+          imagePullPolicy: {{ .Values.nginx.sfagent.imagePullPolicy | quote }}
+          command:
+          - /app/sfagent
+          - -enable-console-log
+          env:
+          - name: APP_NAME
+            value: "{{ .Values.global.sfappname }}"
+          - name: PROJECT_NAME
+            value: "{{ .Values.global.sfprojectname }}"
+          resources:
+{{ toYaml .Values.nginx.sfagent.resources | indent 12 }}
+          volumeMounts:
+          - name: varlog
+            mountPath: /var/log/nginx
+          {{- if .Values.nginx.sfagent.enabled }}
+          - name: sfagent-config
+            mountPath: /opt/sfagent/config.yaml
+            subPath: config.yaml
+          {{- end }}
+{{- end }}
+
+{{- if .Values.logrotate.enabled }}
+        - name: logrotate
+          image:  "{{ .Values.logrotate.image.repository }}:{{ .Values.logrotate.image.tag }}"
+          imagePullPolicy: {{ .Values.logrotate.image.pullPolicy | quote }}
+          env:
+          {{- range $key, $value := .Values.logrotate.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+          {{- end }}
+            - name: LOGS_DIRECTORIES
+              value: "/var/log/nginx"
+          resources:
+{{ toYaml .Values.logrotate.resources | indent 12 }}
+          volumeMounts:
+            - name: varlog
+              mountPath: /var/log/nginx
+{{- end }}
+{{- if .Values.nginx.metrics.enabled }}
+        - name: metrics
+          image: "{{ .Values.nginx.metrics.image.repository }}:{{ .Values.nginx.metrics.image.tag }}"
+          imagePullPolicy: {{ .Values.nginx.metrics.image.pullPolicy | quote }}
+          env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: SCRAPE_URI
+              value: http://127.0.0.1:80/nginx_status
+          ports:
+            - name: nginx-exporter
+              containerPort: {{ .Values.nginx.metrics.port }}
+          livenessProbe:
+            httpGet:
+              path: /metric
+              port: nginx-exporter
+            initialDelaySeconds: 90
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /metric
+              port: nginx-exporter
+            initialDelaySeconds: 60
+            timeoutSeconds: 3
+{{- end }}
+      volumes:
+        - name: varlog
+          emptyDir: {} 
+        - name: nginx-config-file
+          configMap:
+            name: {{ include "spring.fullname" . }}-nginx-config
+        {{- if .Values.nginx.sfagent.enabled }}
+        - name: sfagent-config
+          configMap:
+            name: {{ include "spring.fullname" . }}-sfagent-nginx
+        {{- end }}

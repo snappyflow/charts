@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "spring.fullname" . }}-mysql-config
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    app: {{ include "spring.name" . }}
+    chart: {{ include "spring.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    snappyflow/component: mysql 
+data:
+  mysql.cnf: |
+    [mysqld]
+    query_cache_type = 1
+    query_cache_size = 16M
+    query_cache_limit = 1M
