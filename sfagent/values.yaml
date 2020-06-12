@@ -8,10 +8,10 @@ config:
   # unique cluster name to add in documents as _tag_cloudName
   cluster_name: kubernetes
   # project name label key, value of the label will be added in documents as _tag_projectName
-  # projectname_label: snappyflow/projectname
+  # projectname_label: snappyflow/projectName
   #
   # application name label key, value of the label will be added in documents as _tag_appName
-  # appname_label: snappyflow/appname
+  # appname_label: snappyflow/appName
   #
   # SnappyFlow APM Elasticsearch Target key copied from APM cloudprofile
   # This is used for application inventory documents, application heartbeats.
