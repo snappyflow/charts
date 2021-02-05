@@ -25,6 +25,8 @@ data:
         enabled: true
         config:
           log_path: "/var/log/nginx/access.log"
+          geo_info: true
+          ua_parser: true
       - name: nginx-error
         enabled: true
         config:
