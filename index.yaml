@@ -423,6 +423,22 @@ entries:
   elasticsearchv1:
   - apiVersion: v1
     appVersion: 6.8.15
+    created: "2021-05-21T06:04:18.112460677Z"
+    description: Official Elastic helm chart for Elasticsearch
+    digest: 523f54c6ebb866be2d35509768d0089b5821cd20611ee297105867022a476174
+    home: https://github.com/elastic/helm-charts
+    icon: https://helm.elastic.co/icons/elasticsearch.png
+    maintainers:
+    - email: helm-charts@elastic.co
+      name: Elastic
+    name: elasticsearchv1
+    sources:
+    - https://github.com/elastic/elasticsearch
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/elasticsearchv1-6.8.27/elasticsearchv1-6.8.27.tgz
+    version: 6.8.27
+  - apiVersion: v1
+    appVersion: 6.8.15
     created: "2021-05-17T11:51:06.934874821Z"
     description: Official Elastic helm chart for Elasticsearch
     digest: 5f32b90d6a76ed87cbf73012645c3e05c016c03c05955faaa34e46a4971ac151
@@ -772,6 +788,15 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/kafka-2.4.5/kafka-2.4.5.tgz
     version: 2.4.5
   kafka-cluster:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2021-05-21T06:04:18.369761605Z"
+    description: A Helm chart for kafka and zookeeper
+    digest: 7fb286c15ab6c5637853121c4082a16d32ce87e651519e5ae800aa0ab4beb24f
+    name: kafka-cluster
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/kafka-cluster-0.6.11/kafka-cluster-0.6.11.tgz
+    version: 0.6.11
   - apiVersion: v1
     appVersion: "1.0"
     created: "2021-05-20T13:36:49.004080587Z"
@@ -3364,6 +3389,25 @@ entries:
     urls:
     - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.44/sfapm-python3-4.0.44.tgz
     version: 4.0.44
+  - apiVersion: v2
+    appVersion: "4"
+    created: "2021-05-21T06:04:18.617962261Z"
+    dependencies:
+    - name: redis
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.2.8
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.1.2
+    description: A Helm chart to deploy snappyflow on Kubernetes
+    digest: 8f50ac3c0d8bae3ccf4cf969534dd320d4ba8a198ce47a053a7984b1808b422f
+    home: https://www.snappyflow.io
+    name: sfapm-python3
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.12/sfapm-python3-4.0.12.tgz
+    version: 4.0.12
   - apiVersion: v2
     appVersion: "4"
     created: "2021-05-19T06:54:44.550909069Z"
