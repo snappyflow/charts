@@ -423,6 +423,22 @@ entries:
   elasticsearchv1:
   - apiVersion: v1
     appVersion: 6.8.15
+    created: "2021-05-27T06:10:06.043202058Z"
+    description: Official Elastic helm chart for Elasticsearch
+    digest: c0948c2505e810c8f6d587a01c21de5e75c0e5f4ad1ed6d7ccc9b3bcd3bf7c70
+    home: https://github.com/elastic/helm-charts
+    icon: https://helm.elastic.co/icons/elasticsearch.png
+    maintainers:
+    - email: helm-charts@elastic.co
+      name: Elastic
+    name: elasticsearchv1
+    sources:
+    - https://github.com/elastic/elasticsearch
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/elasticsearchv1-6.8.29/elasticsearchv1-6.8.29.tgz
+    version: 6.8.29
+  - apiVersion: v1
+    appVersion: 6.8.15
     created: "2021-05-22T15:34:52.379128363Z"
     description: Official Elastic helm chart for Elasticsearch
     digest: cd183ba9f7fa0f44451829e768862b771b1a671d3d058f2bf0e6846283a27e12
@@ -739,6 +755,28 @@ entries:
   kafka:
   - apiVersion: v1
     appVersion: 5.3.1
+    created: "2021-05-27T06:10:06.226968019Z"
+    description: This topology includes 2 Kafka nodes and 2 Zookeepr nodes. Includes
+      monitoring of Pod metrics, Storage metrics, JVM metrics, Producer/Consumer Traffic,
+      Topic Metrics, and logs
+    digest: 2c0f9d18e68efb61ecbfe15609644c4d1c9f2e18bb66e0ff7583c7cd7e9a9460
+    home: https://kafka.apache.org/
+    icon: https://kafka.apache.org/images/logo.png
+    keywords:
+    - kafka
+    - zookeeper
+    - kafka statefulset
+    name: kafka
+    sources:
+    - https://github.com/kubernetes/charts/tree/master/incubator/zookeeper
+    - https://github.com/Yolean/kubernetes-kafka
+    - https://github.com/confluentinc/cp-docker-images
+    - https://github.com/apache/kafka
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/kafka-2.4.10/kafka-2.4.10.tgz
+    version: 2.4.10
+  - apiVersion: v1
+    appVersion: 5.3.1
     created: "2021-05-06T12:08:49.537353829Z"
     description: This topology includes 2 Kafka nodes and 2 Zookeepr nodes. Includes
       monitoring of Pod metrics, Storage metrics, JVM metrics, Producer/Consumer Traffic,
@@ -804,6 +842,15 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/kafka-2.4.5/kafka-2.4.5.tgz
     version: 2.4.5
   kafka-cluster:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2021-05-27T06:10:06.3928796Z"
+    description: A Helm chart for kafka and zookeeper
+    digest: c63b8eab5deea8cb44df30b359a795de526541b3451ab17f2a102eba5b809d9f
+    name: kafka-cluster
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/kafka-cluster-0.6.14/kafka-cluster-0.6.14.tgz
+    version: 0.6.14
   - apiVersion: v1
     appVersion: "1.0"
     created: "2021-05-22T15:34:52.511700388Z"
@@ -1051,6 +1098,26 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/keycloak-1.0.0/keycloak-1.0.0.tgz
     version: 1.0.0
   nginx-ingress:
+  - apiVersion: v1
+    appVersion: 0.40.2
+    created: "2021-05-27T06:10:06.5707935Z"
+    description: Ingress controller for Kubernetes using NGINX as a reverse proxy
+      and load balancer
+    digest: eec710befacd4918a9f2a5b6b3efa86f70e94a40e098313aec2a3672e48b8b21
+    home: https://github.com/kubernetes/ingress-nginx
+    icon: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Nginx_logo.svg/500px-Nginx_logo.svg.png
+    keywords:
+    - ingress
+    - nginx
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: Maplelabs
+    name: nginx-ingress
+    sources:
+    - https://github.com/kubernetes/ingress-nginx
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/nginx-ingress-3.6.8/nginx-ingress-3.6.8.tgz
+    version: 3.6.8
   - apiVersion: v1
     appVersion: 0.40.2
     created: "2021-05-13T11:48:42.624995883Z"
@@ -3689,6 +3756,25 @@ entries:
     urls:
     - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.44/sfapm-python3-4.0.44.tgz
     version: 4.0.44
+  - apiVersion: v2
+    appVersion: "4"
+    created: "2021-05-27T06:10:06.79768517Z"
+    dependencies:
+    - name: redis
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.2.8
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.1.2
+    description: A Helm chart to deploy snappyflow on Kubernetes
+    digest: 79e4d11c90d83ed735b0fabb568122b7ba9b0fcc9594ced3cfc32edf59c48e18
+    home: https://www.snappyflow.io
+    name: sfapm-python3
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.14/sfapm-python3-4.0.14.tgz
+    version: 4.0.14
   - apiVersion: v2
     appVersion: "4"
     created: "2021-05-22T15:34:52.629067915Z"
