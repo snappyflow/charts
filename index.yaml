@@ -1532,6 +1532,44 @@ entries:
   sf-archival:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2021-06-02T09:02:54.033335368Z"
+    dependencies:
+    - name: compaction-controller
+      repository: file://./sub_charts/compaction-controller
+      version: 0.1.0
+    - name: cron
+      repository: file://./sub_charts/cron
+      version: 0.1.0
+    - name: dataset-controller
+      repository: file://./sub_charts/dataset-controller
+      version: 0.1.0
+    - name: ingest-controller
+      repository: file://./sub_charts/ingest-controller
+      version: 0.1.0
+    - name: log-archival
+      repository: file://./sub_charts/log-archival
+      version: 0.1.0
+    - name: query-controller
+      repository: file://./sub_charts/query-controller
+      version: 0.1.0
+    - name: spark-manager
+      repository: file://./sub_charts/spark-manager
+      version: 0.1.0
+    - name: hive-and-hadoop
+      repository: file://./sub_charts/hive-and-hadoop
+      version: 0.1.0
+    - condition: spark-history-server.enabled
+      name: spark-history-server
+      repository: file://./sub_charts/spark-history-server
+      version: 1.4.3
+    description: A Helm chart for Kubernetes
+    digest: f5dbe43d03991025d9f890d3c7136e571ed82aa350d1c789677efc99a9848ed0
+    name: sf-archival
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-archival-2.0.0/sf-archival-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2021-05-22T17:58:17.30141148Z"
     dependencies:
     - name: compaction-controller
@@ -1566,6 +1604,45 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sf-archival-1.0.52/sf-archival-1.0.52.tgz
     version: 1.0.52
   sf-datapath:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2021-06-02T09:02:54.233413789Z"
+    dependencies:
+    - name: nginx-ingress
+      repository: file://./sub_charts/nginx-ingress
+      version: 3.6.0
+    - name: cp-schema-registry
+      repository: file://./sub_charts/cp-schema-registry
+      version: 0.1.0
+    - name: cp-kafka-rest
+      repository: file://./sub_charts/cp-kafka-rest
+      version: 0.1.0
+    - condition: global.archival.enabled
+      name: s3-kafka-connect
+      repository: file://./sub_charts/s3-kafka-connect
+      version: 0.1.0
+    - name: es-kafka-connect
+      repository: file://./sub_charts/es-kafka-connect
+      version: 0.1.0
+    - condition: autoscaling.enabled
+      name: autoscaling
+      repository: file://./sub_charts/autoscaling
+      version: 0.1.0
+    - name: authenticator
+      repository: file://./sub_charts/authenticator
+      version: 0.1.0
+    - name: sfk-interface
+      repository: file://./sub_charts/sfk-interface
+      version: 0.1.0
+    - name: signatures
+      repository: file://./sub_charts/signatures
+      version: 0.1.0
+    description: A Helm chart for Confluent Open Source
+    digest: d240b3ce1a52a32fc58ffade2f174fb6234d988bb965ee6f680702f9720ae529
+    name: sf-datapath
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-datapath-2.0.0/sf-datapath-2.0.0.tgz
+    version: 2.0.0
   - apiVersion: v1
     appVersion: "1.0"
     created: "2021-05-22T17:58:17.418356733Z"
