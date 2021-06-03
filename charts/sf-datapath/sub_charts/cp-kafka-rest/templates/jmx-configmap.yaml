@@ -29,8 +29,15 @@ data:
     - pattern : "kafka.rest<type=jersey-metrics><>(topic.produce-json\\+v2)"
       cache: true
     - pattern : "kafka.rest<type=jetty-metrics>"
+      cache: true
+    - pattern: java.lang<type=(.+), name=(.+)><(.+)>(\w+)
+      name: java_lang_$1_$4_$3_$2
+      cache: true
     - pattern: java.lang<name=(.+), type=(.+)><(.+)>(\w+)
       name: java_lang_$2_$4_$3_$1
+      cache: true
+    - pattern: java.lang<type=(.+), name=(.+)><>(\w+)
+      name: java_lang_$1_$3_$2
       cache: true
     - pattern: java.lang<name=(.+), type=(.+)><>(\w+)
       name: java_lang_$2_$3_$1

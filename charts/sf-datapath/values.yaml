@@ -88,7 +88,7 @@ cp-schema-registry:
 
 cp-kafka-rest:
 
-  heapOptions: "-Xms32M -Xmx600M -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -Xlog:gc*,safepoint:/memory-util-logs/gclog.log::filecount=5,filesize=10M -XX:G1HeapRegionSize=1M -XX:MaxMetaspaceSize=80M -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30 -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=30 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/memory-util-logs/heap.hprof"
+  heapOptions: "-Xms32M -Xmx600M -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -Xlog:gc*,safepoint:/memory-util-logs/gclog.log::filecount=5,filesize=10M -XX:G1HeapRegionSize=1M -XX:MaxMetaspaceSize=80M -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30 -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=30 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/memory-util-logs/heap.hprof -XX:-EnableCPUMonitor -Xtune:virtualized"
 
   containerResources:
     restserver:
@@ -108,7 +108,7 @@ cp-kafka-rest:
 
 s3-kafka-connect:
 
-  heapOptions: "-Xms256M -Xmx1096M -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1HeapRegionSize=1M -XX:G1ReservePercent=10 -XX:G1MixedGCLiveThresholdPercent=30 -XX:ParallelGCThreads=4 -XX:MaxMetaspaceSize=200M -Xlog:gc*,safepoint:/memory-util-logs/gclog.log::filecount=5,filesize=10M -XX:+UseStringDeduplication -XX:GCTimeRatio=18 -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/memory-util-logs/heap.hprof"
+  heapOptions: "-Xms256M -Xmx1096M -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1HeapRegionSize=1M -XX:G1ReservePercent=10 -XX:G1MixedGCLiveThresholdPercent=30 -XX:ParallelGCThreads=4 -XX:MaxMetaspaceSize=200M -Xlog:gc*,safepoint:/memory-util-logs/gclog.log::filecount=5,filesize=10M -XX:+UseStringDeduplication -XX:GCTimeRatio=18 -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/memory-util-logs/heap.hprof -XX:-EnableCPUMonitor -Xtune:virtualized"
 
   containerResources:
     jmx:
@@ -128,7 +128,7 @@ s3-kafka-connect:
 
 es-kafka-connect:
 
-  heapOptions: "-Xms256M -Xmx1512M -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1HeapRegionSize=1M -XX:G1ReservePercent=10 -XX:G1MixedGCLiveThresholdPercent=30 -XX:ParallelGCThreads=4 -XX:MaxMetaspaceSize=120M -Xlog:gc*,safepoint:/memory-util-logs/gclog.log::filecount=5,filesize=10M -XX:+UseStringDeduplication  -XX:GCTimeRatio=19 -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/memory-util-logs/heap.hprof"
+  heapOptions: "-Xms256M -Xmx1512M -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1HeapRegionSize=1M -XX:G1ReservePercent=10 -XX:G1MixedGCLiveThresholdPercent=30 -XX:ParallelGCThreads=4 -XX:MaxMetaspaceSize=120M -Xlog:gc*,safepoint:/memory-util-logs/gclog.log::filecount=5,filesize=10M -XX:+UseStringDeduplication  -XX:GCTimeRatio=19 -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/memory-util-logs/heap.hprof -XX:-EnableCPUMonitor -Xtune:virtualized"
 
   containerResources:
     jmx:

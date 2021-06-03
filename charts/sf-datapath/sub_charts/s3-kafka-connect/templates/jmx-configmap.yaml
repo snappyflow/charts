@@ -35,8 +35,14 @@ data:
       cache: true
     - pattern: kafka.connect<type=(.+)-metrics, connector=(.+), task=(.+)><>(.+-total|.+-count|.+-ms|.+-ratio|.+-avg|.+-failures|.+-requests|.+-timestamp|.+-logged|.+-errors|.+-retries|.+-skipped|.+-rate|.+-max)
       cache: true
+    - pattern: java.lang<type=(.+), name=(.+)><(.+)>(\w+)
+      name: java_lang_$1_$4_$3_$2
+      cache: true
     - pattern: java.lang<name=(.+), type=(.+)><(.+)>(\w+)
       name: java_lang_$2_$4_$3_$1
+      cache: true
+    - pattern: java.lang<type=(.+), name=(.+)><>(\w+)
+      name: java_lang_$1_$3_$2
       cache: true
     - pattern: java.lang<name=(.+), type=(.+)><>(\w+)
       name: java_lang_$2_$3_$1

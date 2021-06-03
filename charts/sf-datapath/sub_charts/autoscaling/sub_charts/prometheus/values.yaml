@@ -1194,7 +1194,7 @@ serverFiles:
       - name: kafka_elements
         rules:
           - record: memory_usage_MiB
-            expr: java_lang_threading_threadcount + ((java_lang_memory_heapmemoryusage_used + java_lang_memory_nonheapmemoryusage_used + java_lang_memorypool_used_usage_metaspace) / (1024.0 * 1024))
+            expr: (java_lang_memorypool_used_usage_tenured_loa + java_lang_memorypool_used_usage_nursery_survivor + java_lang_memorypool_used_usage_jit_data_cache + java_lang_memorypool_used_usage_tenured_soa + java_lang_memorypool_used_usage_jit_code_cache + java_lang_memorypool_used_usage_nursery_allocate + java_lang_memorypool_used_usage_class_storage + java_lang_memorypool_used_usage_miscellaneous_non_heap_storage) / (1024.0 * 1024.0)
 
   ## DEPRECATED DEFAULT VALUE, unless explicitly naming your files, please use recording_rules.yml
   rules: {}
