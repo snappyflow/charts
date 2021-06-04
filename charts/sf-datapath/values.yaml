@@ -39,8 +39,8 @@ nginx-ingress:
   containerResources:
     controller:
       limits:
-        cpu: 100m
-        memory: 200Mi
+        cpu: 200m
+        memory: 512Mi
       requests:
         cpu: 10m
         memory: 50Mi
