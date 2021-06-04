@@ -141,7 +141,7 @@ sfapm_celery:
         cpu: 10m
         memory: 100Mi
     replicaCount: 1
-    command: "celery -A snappyflow worker -l $LOG_LEVEL -Q notify -c10 $CELERY_OPTS"
+    command: "celery -A snappyflow worker -l $LOG_LEVEL -Q notify -c20 $CELERY_OPTS"
   periodic:
     resources:
       limits:

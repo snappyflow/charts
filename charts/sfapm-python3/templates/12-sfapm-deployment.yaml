@@ -103,7 +103,7 @@ spec:
           imagePullPolicy: {{ .Values.sfapm.image.pullPolicy }}
           command: ["bash"]
           # args: ["-c", "python manage.py makemigrations && python manage.py migrate"]
-          args: ["-c", "python manage.py migrate administration --fake-initial && python manage.py migrate"]
+          args: ["-c", "python manage.py migrate administration --fake-initial; python manage.py migrate"]
           env:
           {{- if .Values.postgresql.enabled }}
             - name: DB_PASSWORD
