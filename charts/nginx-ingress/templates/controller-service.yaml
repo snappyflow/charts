@@ -8,9 +8,7 @@ metadata:
     {{ toYaml .Values.controller.service.annotations | nindent 4 }}
     service.beta.kubernetes.io/aws-load-balancer-subnets: {{ .Values.global.subnets | replace " " "," }}
     {{- end }}
-               
 {{- end }}
-
   labels:
     {{- include "nginx-ingress.labels" . | nindent 4 }}
     app.kubernetes.io/component: controller
