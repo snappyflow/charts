@@ -265,7 +265,7 @@ sftrace:
       memory: 50Mi
     limits:
       cpu: 200m
-      memory: 200Mi
+      memory: 512Mi
   service:
     type: NodePort
     port: 8200

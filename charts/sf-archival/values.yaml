@@ -49,7 +49,7 @@ ingest-controller:
     ingestcontroller:
       limits:
         cpu: 50m
-        memory: 75Mi
+        memory: 512Mi
       requests:
         cpu: 10m
         memory: 10Mi
