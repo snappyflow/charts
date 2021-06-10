@@ -346,13 +346,12 @@ controller:
       http: http
       https: https
 
-    # type: LoadBalancer
-
     type: LoadBalancer
     nodePorts:
       http: 30009
       https: 30010
-      tcp: {}
+      tcp:
+        9083: 30011
       udp: {}
 
     ## Enables an additional internal load balancer (besides the external one).
@@ -663,7 +662,8 @@ imagePullSecrets: []
 # TCP service key:value pairs
 # Ref: https://github.com/kubernetes/contrib/tree/master/ingress/controllers/nginx/examples/tcp
 ##
-tcp: {}
+tcp:
+  9083: ""
 #  8080: "default/example-tcp-svc:9000"
 
 # UDP service key:value pairs
