@@ -161,27 +161,27 @@ autoscaling:
     minReplicas: 2
     maxReplicas: 3
     cpu:
-      targetAverageValue: 690m # 85% of CPU allocated to connector
+      targetAverageValue: 680m # 85% of CPU limit allocated to connector
     memory:
-      targetAverageValue: 1275 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~65% of kafka-connect connector container memory limit
+      targetAverageValue: 1125 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~75% of kafka-connect connector container memory limit
 
   apmConnectAutoscaling:
     enabled: true
     minReplicas: 2
     maxReplicas: 3
     cpu:
-      targetAverageValue: 435m # 85% of CPU allocated to connector
+      targetAverageValue: 435m # 85% of CPU limit allocated to connector
     memory:
-      targetAverageValue: 1300 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~65% of kafka-connect connector container memory limit
+      targetAverageValue: 1536 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~75% of kafka-connect connector container memory limit
 
   restKafkaAutoscaling:
     enabled: true
     minReplicas: 2
     maxReplicas: 2
     cpu:
-      targetAverageValue: 180m # 90% of CPU allocated to rest-server
+      targetAverageValue: 450m # 90% of CPU limit allocated to rest-server
     memory:
-      targetAverageValue: 672 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~75% of kafka-connect connector container memory limit
+      targetAverageValue: 762 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~85% of kafka-connect connector container memory limit
 
   resources:
     limits:
