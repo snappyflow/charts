@@ -26,5 +26,5 @@ dependencies:
 - name: spark-history-server
   repository: file://./sub_charts/spark-history-server
   version: 1.4.3
-digest: sha256:ac04a761f4363a2d81e27ea668ff77de8e099adb5a4b60c58afb76ec925764d9
-generated: "2021-06-01T12:14:44.848706482+05:30"
+digest: sha256:dddc0c07248ca70d261b081da136674b79047ad4aa973fe1a87cb1fce3f87e46
+generated: "2021-06-11T08:26:20.107538636+05:30"

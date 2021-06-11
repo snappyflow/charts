@@ -68,10 +68,6 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- printf "%s-%s" .Release.Name "query-controller" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "ingest-controller.hive-server.fullname" -}}
-{{- printf "%s-%s" .Release.Name "hive-server" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
 {{- define "ingest-controller.signatures.fullname" -}}
 {{- printf "%s-%s" .Values.global.snappyflowDatapath.releaseName "signatures" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
@@ -90,4 +86,36 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 
 {{- define "ingest-controller.archivalKafkaConnect.fullname" -}}
 {{- printf "%s-%s" .Values.global.snappyflowDatapath.releaseName "s3-kafka-connect" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "ingest-controller.hive-server.username" -}}
+{{- if .Values.global.hive.external.enabled }}
+{{- .Values.global.hive.external.userName -}}
+{{- else }}
+{{- printf "root" -}}
+{{- end }}
+{{- end -}}
+
+{{- define "ingest-controller.hive-server.host" -}}
+{{- if .Values.global.hive.external.enabled }}
+{{- .Values.global.hive.external.host -}}
+{{- else }}
+{{- printf "%s-%s" .Release.Name "hive-server" | trunc 63 | trimSuffix "-" -}}
+{{- end }}
+{{- end -}}
+
+{{- define "ingest-controller.hive-server.port" -}}
+{{- if .Values.global.hive.external.enabled }}
+{{- .Values.global.hive.external.port -}}
+{{- else }}
+{{- printf "10000" -}}
+{{- end }}
+{{- end -}}
+
+{{- define "ingest-controller.hive-server.auth" -}}
+{{- if .Values.global.hive.external.enabled }}
+{{- .Values.global.hive.external.auth -}}
+{{- else }}
+{{- printf "NONE" -}}
+{{- end }}
 {{- end -}}

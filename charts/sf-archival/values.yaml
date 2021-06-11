@@ -1,4 +1,14 @@
 global:
+  hive:
+    internal:
+      enabled: true
+    external:
+      enabled: false
+      # Below fields must be changed when external hive.external.enabled is true
+      userName: ubuntu
+      host: 127.0.0.1
+      port: 10000
+      auth: NONE
 
   postgresql:
     host: host

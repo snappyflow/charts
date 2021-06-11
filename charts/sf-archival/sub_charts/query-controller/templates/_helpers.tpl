@@ -96,6 +96,34 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- printf "%s" $port -}}
 {{- end -}}
 
-{{- define "query-controller.hive-server.fullname" -}}
+{{- define "query-controller.hive-server.username" -}}
+{{- if .Values.global.hive.external.enabled }}
+{{- .Values.global.hive.external.userName -}}
+{{- else }}
+{{- printf "root" -}}
+{{- end }}
+{{- end -}}
+
+{{- define "query-controller.hive-server.host" -}}
+{{- if .Values.global.hive.external.enabled }}
+{{- .Values.global.hive.external.host -}}
+{{- else }}
 {{- printf "%s-%s" .Release.Name "hive-server" | trunc 63 | trimSuffix "-" -}}
+{{- end }}
+{{- end -}}
+
+{{- define "query-controller.hive-server.port" -}}
+{{- if .Values.global.hive.external.enabled }}
+{{- .Values.global.hive.external.port -}}
+{{- else }}
+{{- printf "10000" -}}
+{{- end }}
+{{- end -}}
+
+{{- define "query-controller.hive-server.auth" -}}
+{{- if .Values.global.hive.external.enabled }}
+{{- .Values.global.hive.external.auth -}}
+{{- else }}
+{{- printf "NONE" -}}
+{{- end }}
 {{- end -}}

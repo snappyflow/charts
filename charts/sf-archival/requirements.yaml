@@ -22,6 +22,7 @@ dependencies:
     version: 0.1.0
   - name: hive-and-hadoop
     repository: file://./sub_charts/hive-and-hadoop
+    condition: global.hive.internal.enabled
     version: 0.1.0
   - name: spark-history-server
     repository: file://./sub_charts/spark-history-server
