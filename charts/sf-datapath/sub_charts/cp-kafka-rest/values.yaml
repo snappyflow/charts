@@ -4,7 +4,7 @@
 replicaCount: 1
 
 image: snappyflowml/sf-kafka-rest
-imageTag: 3
+imageTag: 4
 imagePullPolicy: IfNotPresent
 
 servicePort: 8082
