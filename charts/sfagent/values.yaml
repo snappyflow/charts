@@ -74,7 +74,7 @@ node_agent:
       cpu: 300m
       memory: 512Mi
   kubelet_configmap:
-    interval: 300
+    interval: 30
   prometheus_configmap:
     log_dir: /tmp
     interval: 30

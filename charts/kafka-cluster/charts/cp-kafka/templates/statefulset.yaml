@@ -26,7 +26,7 @@ spec:
   template:
     metadata:
       labels:
-        snappyflow/projectname: on-premise
+        snappyflow/projectname: snappyflow-app
         snappyflow/appname: sf-data-path
         snappyflow/component: sf-data-path
         app: {{ template "cp-kafka.name" . }}
