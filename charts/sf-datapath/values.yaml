@@ -88,7 +88,7 @@ cp-schema-registry:
 
 cp-kafka-rest:
 
-  heapOptions: "-Xms32M -Xmx600M -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -Xlog:gc*,safepoint:/memory-util-logs/gclog.log::filecount=5,filesize=10M -XX:G1HeapRegionSize=1M -XX:MaxMetaspaceSize=80M -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30 -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=30 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/memory-util-logs/heap.hprof -XX:-EnableCPUMonitor -Xtune:virtualized"
+  heapOptions: "-Xms210M -Xmx600M -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+UseContainerSupport -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,5,20 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt -Xdump:system+heap+java"
 
   containerResources:
     restserver:
@@ -97,7 +97,7 @@ cp-kafka-rest:
         memory: 896Mi
       requests:
         cpu: 50m
-        memory: 512Mi
+        memory: 600Mi
     jmx:
       limits:
         cpu: 100m
@@ -108,7 +108,7 @@ cp-kafka-rest:
 
 s3-kafka-connect:
 
-  heapOptions: "-Xms256M -Xmx1096M -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1HeapRegionSize=1M -XX:G1ReservePercent=10 -XX:G1MixedGCLiveThresholdPercent=30 -XX:ParallelGCThreads=4 -XX:MaxMetaspaceSize=200M -Xlog:gc*,safepoint:/memory-util-logs/gclog.log::filecount=5,filesize=10M -XX:+UseStringDeduplication -XX:GCTimeRatio=18 -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/memory-util-logs/heap.hprof -XX:-EnableCPUMonitor -Xtune:virtualized"
+  heapOptions: "-Xms350M -Xmx1G -XX:MaxDirectMemorySize=100M -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+UseContainerSupport -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,5,20 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt -Xdump:system+heap+java"
 
   containerResources:
     jmx:
@@ -121,14 +121,14 @@ s3-kafka-connect:
     connector:
       limits:
         cpu: 800m
-        memory: 1500Mi
+        memory: 2Gi
       requests:
         cpu: 500m
         memory: 1Gi
 
 es-kafka-connect:
 
-  heapOptions: "-Xms256M -Xmx1512M -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1HeapRegionSize=1M -XX:G1ReservePercent=10 -XX:G1MixedGCLiveThresholdPercent=30 -XX:ParallelGCThreads=4 -XX:MaxMetaspaceSize=120M -Xlog:gc*,safepoint:/memory-util-logs/gclog.log::filecount=5,filesize=10M -XX:+UseStringDeduplication  -XX:GCTimeRatio=19 -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/memory-util-logs/heap.hprof -XX:-EnableCPUMonitor -Xtune:virtualized"
+  heapOptions: "-Xms525M -Xmx1536M -XX:MaxDirectMemorySize=100M -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+UseContainerSupport -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,5,20 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt -Xdump:system+heap+java"
 
   containerResources:
     jmx:
@@ -141,10 +141,10 @@ es-kafka-connect:
     connector:
       limits:
         cpu: 512m
-        memory: 2Gi
+        memory: "2.5Gi"
       requests:
         cpu: 256m
-        memory: 1Gi
+        memory: "1.5Gi"
 
 autoscaling:
   ## Auto scaling configuration
@@ -159,25 +159,25 @@ autoscaling:
   archivalConnectAutoscaling:
     enabled: true
     minReplicas: 2
-    maxReplicas: 3
+    maxReplicas: 5
     cpu:
       targetAverageValue: 680m # 85% of CPU limit allocated to connector
     memory:
-      targetAverageValue: 1125 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~75% of kafka-connect connector container memory limit
+      targetAverageValue: 1536 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~75% of kafka-connect connector container memory limit
 
   apmConnectAutoscaling:
     enabled: true
     minReplicas: 2
-    maxReplicas: 3
+    maxReplicas: 5
     cpu:
       targetAverageValue: 435m # 85% of CPU limit allocated to connector
     memory:
-      targetAverageValue: 1536 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~75% of kafka-connect connector container memory limit
+      targetAverageValue: 1920 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~75% of kafka-connect connector container memory limit
 
   restKafkaAutoscaling:
     enabled: true
     minReplicas: 2
-    maxReplicas: 2
+    maxReplicas: 5
     cpu:
       targetAverageValue: 450m # 90% of CPU limit allocated to rest-server
     memory:
