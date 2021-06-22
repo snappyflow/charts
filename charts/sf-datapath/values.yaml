@@ -108,13 +108,13 @@ cp-kafka-rest:
 
 s3-kafka-connect:
 
-  heapOptions: "-Xms350M -Xmx1G -XX:MaxDirectMemorySize=100M -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+UseContainerSupport -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,5,20 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt -Xdump:system+heap+java"
+  heapOptions: "-Xms350M -Xmx1G -XX:MaxDirectMemorySize=300M -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+UseContainerSupport -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,5,20 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt -Xdump:system+heap+java"
 
   containerResources:
     jmx:
       limits:
         cpu: 200m
-        memory: 256Mi
+        memory: 512Mi
       requests:
         cpu: 50m
         memory: 100Mi
@@ -128,13 +128,13 @@ s3-kafka-connect:
 
 es-kafka-connect:
 
-  heapOptions: "-Xms525M -Xmx1536M -XX:MaxDirectMemorySize=100M -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+UseContainerSupport -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,5,20 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt -Xdump:system+heap+java"
+  heapOptions: "-Xms525M -Xmx1536M -XX:MaxDirectMemorySize=300M -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+UseContainerSupport -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,5,20 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt -Xdump:system+heap+java"
 
   containerResources:
     jmx:
       limits:
         cpu: 200m
-        memory: 256Mi
+        memory: 1Gi
       requests:
         cpu: 50m
         memory: 100Mi

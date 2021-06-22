@@ -17,6 +17,7 @@ data:
     ssl: false
     whitelistObjectNames:
     - "java.lang:*"
+    - "java.nio:*"
     - "kafka.connect:*"
     rules:
     - pattern: "kafka.connect<type=connect-worker-metrics>"
@@ -47,6 +48,9 @@ data:
     - pattern: java.lang<name=(.+), type=(.+)><>(\w+)
       name: java_lang_$2_$3_$1
       cache: true
-    - pattern : java.lang<type=(.*)>
+    - pattern: java.lang<type=(.*)>
+      cache: true
+    - pattern: java.nio<type=(.+), name=(.+)><>(\w+)
+      name: java_nio_$1_$3_$2
       cache: true
 {{- end }}
