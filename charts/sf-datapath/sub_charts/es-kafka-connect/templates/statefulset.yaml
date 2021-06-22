@@ -18,6 +18,7 @@ spec:
       app: {{ template "es-kafka-connect.name" . }}
       release: {{ .Release.Name }}
   serviceName: {{ template "es-kafka-connect.fullname" . }}
+  podManagementPolicy: Parallel
   template:
     metadata:
       labels:
