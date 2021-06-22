@@ -107,6 +107,7 @@ podAnnotations: {}
 labels: 
   snappyflow/appname: ES-cluster
   snappyflow/projectname: snappyflow-app
+  snappyflow/component: elasticsearch
 
 esJavaOpts: "-Xmx2g -Xms2g"
 

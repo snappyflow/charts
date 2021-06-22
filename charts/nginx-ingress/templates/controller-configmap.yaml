@@ -9,6 +9,7 @@ metadata:
 {{- end }}
   name: {{ include "nginx-ingress.controller.fullname" . }}
 data:
+  proxy-body-size: "13m"
 {{- if .Values.controller.addHeaders }}
   add-headers: {{ .Release.Namespace }}/{{ include "nginx-ingress.fullname" . }}-custom-add-headers
 {{- end }}

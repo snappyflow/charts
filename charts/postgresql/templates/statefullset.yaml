@@ -5,6 +5,8 @@ metadata:
   labels:
     {{- include "postgresql.labels" . | nindent 4 }}
     snappyflow/component: postgresql
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -20,6 +22,8 @@ spec:
       labels:
         {{- include "postgresql.selectorLabels" . | nindent 8 }}
         snappyflow/component: postgresql
+        {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+        {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -29,6 +33,25 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
+        {{- if .Values.global.key }}
+        - name: postgresql-agent
+          image: snappyflowml/sfagent:latest
+          imagePullPolicy: Always
+          command:
+          - /app/sfagent
+          - -config-file
+          - /opt/sfagent/config.yaml
+          - -enable-console-log
+          env:
+          - name: APP_NAME
+            value: {{ .Values.global.sfappname }}
+          - name: PROJECT_NAME
+            value: {{ .Values.global.sfprojectname }}
+          volumeMounts:
+          - name: sfagent
+            mountPath: /opt/sfagent/config.yaml
+            subPath: config.yaml
+        {{- end }}
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
@@ -109,4 +132,7 @@ spec:
         configMap:
           name: {{ include "postgresql.fullname" . }}-init
       {{- end }}
+      - name: sfagent
+        configMap:
+          name: {{ include "postgresql.fullname" . }}-sfagent
       
