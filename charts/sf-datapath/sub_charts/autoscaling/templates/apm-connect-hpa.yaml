@@ -8,7 +8,7 @@ metadata:
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
-    kind: Deployment
+    kind: StatefulSet
     name: {{ include "autoscaling.apmConnectAutoscaling.fullname" . }}
   minReplicas: {{ .Values.apmConnectAutoscaling.minReplicas }}
   maxReplicas: {{ .Values.apmConnectAutoscaling.maxReplicas }}
