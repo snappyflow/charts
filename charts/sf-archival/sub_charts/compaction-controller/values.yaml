@@ -14,7 +14,7 @@ applicationClassName: "sf.org.hadoop.Compact"
 
 serverPort: ":5005"
 
-MasterUrl: "k8s://https://127.0.0.1:6443"
+MasterUrl: "k8s://kubernetes.default.svc:443"
 
 service:
   servicePort: 5005
@@ -70,8 +70,8 @@ kafka:
 containerResources:
   compaction:
     limits:
-      cpu: 100m
-      memory: 200Mi
-    requests:
       cpu: 50m
-      memory: 100Mi
+      memory: 75Mi
+    requests:
+      cpu: 10m
+      memory: 10Mi

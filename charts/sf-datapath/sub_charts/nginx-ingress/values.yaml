@@ -668,19 +668,19 @@ containerResources:
       cpu: 200m
       memory: 512Mi
     requests:
-      cpu: 200m
-      memory: 512Mi
+      cpu: 10m
+      memory: 50Mi
   defaultBackend:
     limits:
       cpu: 25m
       memory: 50Mi
     requests:
-      cpu: 25m
-      memory: 50Mi
+      cpu: 10m
+      memory: 25Mi
   exporter:
     limits:
-      cpu: 75m
-      memory: 256Mi
+      cpu: 10m
+      memory: 100Mi
     requests:
-      cpu: 75m
-      memory: 256Mi
+      cpu: 10m
+      memory: 50Mi

@@ -31,7 +31,7 @@ configurationOverrides:
   "connect.protocol": "apm_sessioned"
 
 ## Kafka Connect JVM Heap Option
-heapOptions: "-Xms32M -Xmx600M -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:G1HeapRegionSize=1M -XX:MaxMetaspaceSize=256M -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30 -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=30"
+heapOptions: "-Xms350M -Xmx1G -XX:MaxDirectMemorySize=300M -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+UseContainerSupport -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,5,20 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt -Xdump:system+heap+java"
 
 ## Additional env variables
 customEnv: {}
@@ -71,17 +71,17 @@ cp-schema-registry:
   url: ""
 
 containerResources:
-    jmx:
-      limits:
-        cpu: 50m
-        memory: 50Mi
-      requests:
-        cpu: 50m
-        memory: 50Mi
-    connector:
-      limits:
-        cpu: 768m
-        memory: 1Gi
-      requests:
-        cpu: 256m
-        memory: 512Mi
+  jmx:
+    limits:
+      cpu: 200m
+      memory: 512Mi
+    requests:
+      cpu: 50m
+      memory: 100Mi
+  connector:
+    limits:
+      cpu: 800m
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi

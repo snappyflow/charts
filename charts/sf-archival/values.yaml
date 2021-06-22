@@ -51,134 +51,19 @@ global:
 # Pod priority class value
 priority: 100
 
-ingest-controller:
-
-  containerResources:
-    ingestcontroller:
-      limits:
-        cpu: 50m
-        memory: 512Mi
-      requests:
-        cpu: 10m
-        memory: 10Mi
-
-compaction-controller:
-
-  MasterUrl: "k8s://kubernetes.default.svc:443"
-
-  containerResources:
-    compaction:
-      limits:
-        cpu: 50m
-        memory: 75Mi
-      requests:
-        cpu: 10m
-        memory: 10Mi
-
 dataset-controller:
-
   billing-service:
     url: 127.0.0.1:8000/api/v1/records/
     scheme: https
 
-  containerResources:
-    datasetcontroller:
-      limits:
-        cpu: 100m
-        memory: 512Mi
-      requests:
-        cpu: 10m
-        memory: 10Mi
-    uncompactedcleanup:
-      limits:
-        cpu: 10m
-        memory: 50Mi
-      requests:
-        cpu: 10m
-        memory: 10Mi
-
 spark-manager:
-
-  monitor:
-    containerResources:
-      limits:
-        cpu: 100m
-        memory: 256Mi
-      requests:
-        cpu: 10m
-        memory: 10Mi
-
   jobserver:
     sparkProperties:
-      # S3 bucket with aws prefix/folder for spark event logs
-      # Example: for bucket location of s3://sparkhs/spark-hs 
-      # configure as configured below 
-      # If spark history server is enabled 
-      # "logDirectory" param of its config should be same as this
+      # S3 bucket with aws prefix/folder for spark event logs e.g., for bucket location of s3://sparkhs/spark-hs configure as configured below
       logDirectory: encsfsparkhs/spark-hs
-    containerResources:
-      limits:
-        cpu: 200m
-        memory: 512Mi
-      requests:
-        cpu: 10m
-        memory: 50Mi
-
-log-archival:
-
-  containerResources:
-    logarchival:
-      limits:
-        cpu: 50m
-        memory: 50Mi
-      requests:
-        cpu: 10m
-        memory: 10Mi
-
-query-controller:
-
-  prestoUser: ubuntu
-
-  prestoCatalog: hive
-
-  prestoSchema: default
-
-  containerResources:
-    querycontroller:
-      limits:
-        cpu: 50m
-        memory: 50Mi
-      requests:
-        cpu: 10m
-        memory: 10Mi
-    queryexecutioncontroller:
-      limits:
-        cpu: 50m
-        memory: 50Mi
-      requests:
-        cpu: 10m
-        memory: 10Mi
-    querycleanup:
-      limits:
-        cpu: 50m
-        memory: 50Mi
-      requests:
-        cpu: 10m
-        memory: 10Mi
-
-cron:
-
-  containerResources:
-    cron:
-      limits:
-        cpu: 10m
-        memory: 10Mi
-      requests:
-        cpu: 10m
-        memory: 10Mi
 
 spark-history-server:
-
+  # If spark history server is enabled "logDirectory" param of its config should be same as this
   enabled: false
 
   s3:

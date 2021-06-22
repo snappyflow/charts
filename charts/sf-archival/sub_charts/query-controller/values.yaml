@@ -74,22 +74,22 @@ kafka:
 containerResources:
   querycontroller:
     limits:
-      cpu: 200m
-      memory: 256Mi
+      cpu: 50m
+      memory: 50Mi
     requests:
-      cpu: 100m
-      memory: 150Mi
+      cpu: 10m
+      memory: 10Mi
   queryexecutioncontroller:
     limits:
-      cpu: 200m
-      memory: 256Mi
+      cpu: 50m
+      memory: 50Mi
     requests:
-      cpu: 100m
-      memory: 150Mi
+      cpu: 10m
+      memory: 10Mi
   querycleanup:
     limits:
-      cpu: 200m
-      memory: 256Mi
+      cpu: 50m
+      memory: 50Mi
     requests:
-      cpu: 100m
-      memory: 150Mi
+      cpu: 10m
+      memory: 10Mi

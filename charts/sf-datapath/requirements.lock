@@ -26,5 +26,5 @@ dependencies:
 - name: signatures
   repository: file://./sub_charts/signatures
   version: 0.1.0
-digest: sha256:c3aa2f9841b35b475f06421884308e8216c053acee2d96059ef3ab77a480766d
-generated: "2021-05-22T23:14:17.543052691+05:30"
+digest: sha256:db3162a15c6cd3726a22eacf46bd32d93f656e6f7ef97213e8e7094ffaea34e9
+generated: "2021-06-22T19:34:51.833316655+05:30"

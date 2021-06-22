@@ -1,33 +1,34 @@
 # Default values for sf.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
 customMetrics:
   enabled: true
 
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 150Mi
+
 archivalConnectAutoscaling:
   enabled: true
-  minReplicas: 1
-  maxReplicas: 5
   cpu:
-    targetAverageValue: 691m # 90% of CPU allocated to connector
+    targetAverageValue: 680m # 85% of CPU limit allocated to connector
   memory:
-    targetAverageValue: 800 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~80% of container memory limit
+    targetAverageValue: 1536 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~75% of kafka-connect connector container memory limit
 
 apmConnectAutoscaling:
   enabled: true
-  minReplicas: 1
-  maxReplicas: 5
   cpu:
-    targetAverageValue: 900m # 90% of CPU allocated to connector
+    targetAverageValue: 435m # 85% of CPU limit allocated to connector
   memory:
-    targetAverageValue: 1200 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~80% of container memory limit
+    targetAverageValue: 1920 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~75% of kafka-connect connector container memory limit
 
 restKafkaAutoscaling:
   enabled: true
-  minReplicas: 1
-  maxReplicas: 5
   cpu:
-    targetAverageValue: 450m # 90% of CPU allocated to rest-server
+    targetAverageValue: 450m # 90% of CPU limit allocated to rest-server
   memory:
-    targetAverageValue: 800 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~80% of container memory limit
+    targetAverageValue: 762 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~85% of kafka-connect connector container memory limit

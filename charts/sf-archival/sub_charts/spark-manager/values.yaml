@@ -9,10 +9,10 @@ monitor:
   containerResources:
     limits:
       cpu: 100m
-      memory: 200Mi
+      memory: 256Mi
     requests:
-      cpu: 50m
-      memory: 100Mi
+      cpu: 10m
+      memory: 10Mi
 
 jobserver:
   image:
@@ -26,11 +26,11 @@ jobserver:
     logDirectory: sparkhs/spark-hs
   containerResources:
     limits:
-      cpu: 100m
-      memory: 200Mi
+      cpu: 200m
+      memory: 512Mi
     requests:
-      cpu: 50m
-      memory: 100Mi
+      cpu: 10m
+      memory: 50Mi
 
 nameOverride: ""
 fullnameOverride: ""
