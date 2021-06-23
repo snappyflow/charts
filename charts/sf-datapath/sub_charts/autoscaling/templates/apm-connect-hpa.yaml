@@ -15,8 +15,12 @@ spec:
   metrics:
   - type: Pods
     pods:
-      metricName: es_connect_memory_usage_MiB
-      targetAverageValue: "{{ .Values.apmConnectAutoscaling.memory.targetAverageValue }}"
+      metricName: es_connect_heap_utilization_pcnt
+      targetAverageValue: "{{ .Values.apmConnectAutoscaling.memory.targetPCNT }}"
+  - type: Pods
+    pods:
+      metricName: es_connect_nio_utilization_pcnt
+      targetAverageValue: "{{ .Values.apmConnectAutoscaling.memory.targetPCNT }}"
   - type: Resource
     resource:
       name: cpu

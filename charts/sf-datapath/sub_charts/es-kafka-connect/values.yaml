@@ -34,7 +34,8 @@ configurationOverrides:
   "connect.protocol": "apm_sessioned"
 
 ## Kafka Connect JVM Heap Option
-heapOptions: "-Xms525M -Xmx1536M -XX:MaxDirectMemorySize=300M -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+UseContainerSupport -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,5,20 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt -Xdump:system+heap+java"
+# Changing a memory value below would necessitate change in memory request/limits & HPA (line 70 of sf-datapath/autoscaling/sub_charts/prometheus-adapter/values.yaml)
+heapOptions: "-Xms512M -Xmx1G -XX:MaxDirectMemorySize=512M -Xcodecachetotal50M -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+UseContainerSupport -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,5,20 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt -Xdump:system+heap+java"
 
 ## Additional env variables
 customEnv: {}
@@ -100,7 +101,7 @@ containerResources:
   connector:
     limits:
       cpu: 512m
-      memory: "2.5Gi"
+      memory: 2Gi
     requests:
       cpu: 256m
-      memory: "1.5Gi"
+      memory: 2Gi

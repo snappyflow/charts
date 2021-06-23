@@ -17,18 +17,18 @@ archivalConnectAutoscaling:
   cpu:
     targetAverageValue: 680m # 85% of CPU limit allocated to connector
   memory:
-    targetAverageValue: 1536 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~75% of kafka-connect connector container memory limit
+    targetPCNT: 75 # 75% heap / NIO occupancy will trigger the HPA
 
 apmConnectAutoscaling:
   enabled: true
   cpu:
     targetAverageValue: 435m # 85% of CPU limit allocated to connector
   memory:
-    targetAverageValue: 1920 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~75% of kafka-connect connector container memory limit
+    targetPCNT: 75 # 75% heap / NIO occupancy will trigger the HPA
 
 restKafkaAutoscaling:
   enabled: true
   cpu:
     targetAverageValue: 450m # 90% of CPU limit allocated to rest-server
   memory:
-    targetAverageValue: 762 # MiB -> When memory utilization reaches x Mib, auto-scaling kicks in. Value should be ~85% of kafka-connect connector container memory limit
+    targetPCNT: 85 # 85% heap / NIO occupancy will trigger the HPA

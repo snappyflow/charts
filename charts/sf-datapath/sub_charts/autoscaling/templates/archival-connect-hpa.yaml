@@ -15,8 +15,12 @@ spec:
   metrics:
   - type: Pods
     pods:
-      metricName: arch_connect_memory_usage_MiB
-      targetAverageValue: "{{ .Values.archivalConnectAutoscaling.memory.targetAverageValue }}"
+      metricName: s3_connect_heap_utilization_pcnt
+      targetAverageValue: "{{ .Values.archivalConnectAutoscaling.memory.targetPCNT }}"
+  - type: Pods
+    pods:
+      metricName: s3_connect_nio_utilization_pcnt
+      targetAverageValue: "{{ .Values.archivalConnectAutoscaling.memory.targetPCNT }}"
   - type: Resource
     resource:
       name: cpu

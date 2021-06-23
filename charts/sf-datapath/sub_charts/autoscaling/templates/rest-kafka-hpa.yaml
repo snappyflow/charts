@@ -15,8 +15,8 @@ spec:
   metrics:
   - type: Pods
     pods:
-      metricName: kafka_rest_memory_usage_MiB
-      targetAverageValue: "{{ .Values.restKafkaAutoscaling.memory.targetAverageValue }}"
+      metricName: kafka_rest_heap_utilization_pcnt
+      targetAverageValue: "{{ .Values.restKafkaAutoscaling.memory.targetPCNT }}"
   - type: Resource
     resource:
       name: cpu
