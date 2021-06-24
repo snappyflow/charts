@@ -177,7 +177,7 @@ spec:
         - name: application-logger
           image:  "{{ .Values.sidecarLogger.image.repository }}:{{ .Values.sidecarLogger.image.tag }}"
           imagePullPolicy: {{ .Values.sidecarLogger.image.pullPolicy | quote }}
-          args: [/bin/sh, -c, 'tail -n+1 -F -q /var/log/snappyflow/vizbuilder/alert.log  /var/log/snappyflow/vizbuilder/log_operations.log  /var/log/snappyflow/vizbuilder/query_builder.log  /var/log/snappyflow/vizbuilder/vizbuilder.log /var/log/snappyflow/vizbuilder/signature.log']
+          args: [/bin/sh, -c, 'tail -n+1 -F -q /var/log/snappyflow/vizbuilder/alert.log  /var/log/snappyflow/vizbuilder/log_operations.log  /var/log/snappyflow/vizbuilder/query_builder.log  /var/log/snappyflow/vizbuilder/vizbuilder.log /var/log/snappyflow/vizbuilder/signatures.log']
           resources:
             {{- toYaml .Values.sidecarLogger.resources | nindent 12 }}
           volumeMounts:
