@@ -56,7 +56,7 @@ sfapmui:
   resources:
     limits:
       cpu: 200m
-      memory: 250Mi
+      memory: 200Mi
     requests:
       cpu: 10m
       memory: 100Mi
