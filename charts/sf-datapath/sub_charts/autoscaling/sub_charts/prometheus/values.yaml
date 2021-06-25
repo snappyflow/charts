@@ -625,13 +625,13 @@ server:
   global:
     ## How frequently to scrape targets by default
     ##
-    scrape_interval: 60s
+    scrape_interval: 30s
     ## How long until a scrape request times out
     ##
-    scrape_timeout: 40s
+    scrape_timeout: 20s
     ## How frequently to evaluate rules
     ##
-    evaluation_interval: 60s
+    evaluation_interval: 30s
     query_log_file: /prometheus/query.log
   ## https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write
   ##
