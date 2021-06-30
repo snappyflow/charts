@@ -4280,7 +4280,7 @@ entries:
     version: 4.0.74
   - apiVersion: v2
     appVersion: "4"
-    created: "2021-05-29T14:03:29.151342034Z"
+    created: "2021-05-29T14:47:36.775382193Z"
     dependencies:
     - name: redis
       repository: https://snappyflow.github.io/helm-charts/
@@ -4318,7 +4318,7 @@ entries:
     version: 4.0.71-master
   - apiVersion: v2
     appVersion: "4"
-    created: "2021-05-29T14:47:36.775382193Z"
+    created: "2021-05-29T14:03:29.151342034Z"
     dependencies:
     - name: redis
       repository: https://snappyflow.github.io/helm-charts/
@@ -4658,6 +4658,25 @@ entries:
     urls:
     - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.44/sfapm-python3-4.0.44.tgz
     version: 4.0.44
+  - apiVersion: v2
+    appVersion: "4"
+    created: "2021-06-30T11:28:19.580882229Z"
+    dependencies:
+    - name: redis
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.2.8
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.1.4
+    description: A Helm chart to deploy snappyflow on Kubernetes
+    digest: 2a3fb3d3d0dd252476b36bb7388e6e7fd13d1c07da8cdb06fd1aef6c9c4a0517
+    home: https://www.snappyflow.io
+    name: sfapm-python3
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.24/sfapm-python3-4.0.24.tgz
+    version: 4.0.24
   - apiVersion: v2
     appVersion: "4"
     created: "2021-06-25T05:01:03.953133764Z"
