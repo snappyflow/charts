@@ -26,15 +26,16 @@ configurationOverrides:
   "task.shutdown.graceful.timeout.ms": "60000"
   "offset.flush.timeout.ms": "15000"
   "offset.flush.interval.ms": "30000"
-  "consumer.max.partition.fetch.bytes": "20971520"
+  "consumer.max.partition.fetch.bytes": "1048576"
+  "consumer.fetch.max.bytes": "1048576"
   "consumer.partition.assignment.strategy": "org.apache.kafka.clients.consumer.RoundRobinAssignor"
-  "consumer.max.poll.records": "5000"
+  "consumer.max.poll.records": "15000"
   "scheduled.rebalance.max.delay.ms": "60000"
   "connect.protocol": "apm_sessioned"
 
 ## Kafka Connect JVM Heap Option
 # Changing a memory value below would necessitate change in memory request/limits & HPA (line 70 of sf-datapath/autoscaling/sub_charts/prometheus-adapter/values.yaml)
-heapOptions: "-Xms1G -Xmx1G -Xmns665M -Xmnx665M -XX:MaxDirectMemorySize=512M -Xcodecachetotal50M -Xmso128K -Xgc:concurrentScavenge -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+UseContainerSupport -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,5,50 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt -Xdump:system+heap+java"
+heapOptions: "-Xms1800M -Xmx1800M -Xmns1400M -Xmnx1400M -XX:MaxDirectMemorySize=200M -Xcodecachetotal50M -Xmso128K -Xgc:concurrentScavenge -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,20,100 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt -Xdump:system+heap+java"
 
 ## Additional env variables
 customEnv: {}
@@ -99,8 +100,8 @@ containerResources:
       memory: 100Mi
   connector:
     limits:
-      cpu: 512m
-      memory: 2Gi
+      cpu: 600m
+      memory: 2560Mi
     requests:
       cpu: 256m
-      memory: 2Gi
+      memory: 2560Mi
