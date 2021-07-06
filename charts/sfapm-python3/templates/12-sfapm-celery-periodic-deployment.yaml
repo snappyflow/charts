@@ -150,7 +150,7 @@ spec:
             - mountPath: /sfagent
               name: sftrace-agent
             {{- end }}
-            - name: cleanuplog
+            - name: snappyflowlog
               mountPath: /var/log/snappyflow/
         {{- if .Values.sidecarLogger.enabled }}
         - name: es-cleanup-logger
@@ -160,9 +160,18 @@ spec:
           resources:
             {{- toYaml .Values.sidecarLogger.resources | nindent 12 }}
           volumeMounts:
-          - name: cleanuplog
+          - name: snappyflowlog
             mountPath: /var/log/snappyflow/
-        {{- end }}
+        - name: apm-performance-logger
+          image:  "{{ .Values.sidecarLogger.image.repository }}:{{ .Values.sidecarLogger.image.tag }}"
+          imagePullPolicy: {{ .Values.sidecarLogger.image.pullPolicy | quote }}
+          args: [/bin/sh, -c, 'tail -n+1 -F /var/log/snappyflow/apm-performance.log']
+          resources:
+            {{- toYaml .Values.sidecarLogger.resources | nindent 12 }}
+          volumeMounts:
+          - name: snappyflowlog
+            mountPath: /var/log/snappyflow/
+        {{- end }} 
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -182,5 +191,5 @@ spec:
         - name: sftrace-agent
           emptyDir: {}
         {{- end }}
-        - name: cleanuplog
+        - name: snappyflowlog
           emptyDir: {}
