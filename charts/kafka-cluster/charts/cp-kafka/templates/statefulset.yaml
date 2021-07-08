@@ -28,7 +28,7 @@ spec:
       labels:
         snappyflow/projectname: snappyflow-app
         snappyflow/appname: sf-data-path
-        snappyflow/component: sf-data-path
+        snappyflow/component: kafka
         app: {{ template "cp-kafka.name" . }}
         release: {{ .Release.Name }}
       {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
