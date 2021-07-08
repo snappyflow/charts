@@ -29,7 +29,7 @@ configurationOverrides:
   "consumer.max.partition.fetch.bytes": "1048576"
   "consumer.fetch.max.bytes": "1048576"
   "consumer.partition.assignment.strategy": "org.apache.kafka.clients.consumer.RoundRobinAssignor"
-  "consumer.max.poll.records": "15000"
+  "consumer.max.poll.records": "5000"
   "scheduled.rebalance.max.delay.ms": "60000"
   "connect.protocol": "apm_sessioned"
 
