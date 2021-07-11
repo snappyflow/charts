@@ -23,7 +23,7 @@ configurationOverrides:
   "offset.storage.replication.factor": "2"
   "status.storage.replication.factor": "2"
   "connector.client.config.override.policy": "All"
-  "task.shutdown.graceful.timeout.ms": "60000"
+  "task.shutdown.graceful.timeout.ms": "120000"
   "offset.flush.timeout.ms": "15000"
   "offset.flush.interval.ms": "30000"
   "consumer.max.partition.fetch.bytes": "1048576"
