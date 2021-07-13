@@ -17,9 +17,9 @@ service:
   port: 9200
 
 config:
-  es1: "10.0.1.21"
-  es2: "10.0.1.63"
-  es3: "10.0.1.220"
+  es1: ""
+  es2: ""
+  es3: ""
 
 ingress:
   enabled: false
