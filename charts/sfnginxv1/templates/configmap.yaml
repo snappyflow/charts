@@ -14,7 +14,7 @@ data:
         server {{ .Values.config.es2 }}:9200;
         server {{ .Values.config.es3 }}:9200;
     }
-    client_max_body_size 2M;
+    client_max_body_size 10M;
     server {
         listen       80 default_server;
         listen       [::]:80 default_server;
