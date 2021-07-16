@@ -19,6 +19,8 @@ data:
     - "java.lang:*"
     - "java.nio:*"
     - "kafka.connect:*"
+    - "kafka.consumer:*"
+    - "kafka.producer:*"
     rules:
     - pattern: "kafka.connect<type=connect-worker-metrics>"
       cache: true
@@ -35,6 +37,22 @@ data:
     - pattern: kafka.connect<type=connector-metrics, connector=(.+)><>([a-z-]+)
       cache: true
     - pattern: kafka.connect<type=(.+)-metrics, connector=(.+), task=(.+)><>(.+-total|.+-count|.+-ms|.+-ratio|.+-avg|.+-failures|.+-requests|.+-timestamp|.+-logged|.+-errors|.+-retries|.+-skipped|.+-rate|.+-max)
+      cache: true
+    - pattern: kafka.consumer<type=consumer-node-metrics, client-id=(.+), node-id=(.+)>
+      cache: true
+    - pattern: kafka.consumer<type=consumer-coordinator-metrics, client-id=(.+)>
+      cache: true
+    - pattern: kafka.consumer<type=consumer-metrics, client-id=(.+)>
+      cache: true
+    - pattern: kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+), partition=(.+)>
+      cache: true
+    - pattern: kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+)>
+      cache: true
+    - pattern: kafka.producer<type=producer-metrics, client-id=(.+)>
+      cache: true
+    - pattern: kafka.producer<type=producer-topic-metrics, client-id=(.+), topic=(.+)>
+      cache: true
+    - pattern: kafka.producer<type=producer-node-metrics, client-id=(.+), node-id=(.+)>
       cache: true
     - pattern: java.lang<type=(.+), name=(.+)><(.+)>(\w+)
       name: java_lang_$1_$4_$3_$2
