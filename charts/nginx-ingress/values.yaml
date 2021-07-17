@@ -359,8 +359,7 @@ controller:
     nodePorts:
       http: 30009
       https: 30010
-      tcp:
-        9083: 30011
+      tcp: {}
       udp: {}
 
     ## Enables an additional internal load balancer (besides the external one).
@@ -370,7 +369,7 @@ controller:
       annotations: 
         service.beta.kubernetes.io/aws-load-balancer-internal: "true"
         service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
-        service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "80,443,8443,9083"
+        service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "80,443,8443"
 
       ## Set external traffic policy to: "Local" to preserve source IP on
       ## providers supporting it
@@ -671,8 +670,7 @@ imagePullSecrets: []
 # TCP service key:value pairs
 # Ref: https://github.com/kubernetes/contrib/tree/master/ingress/controllers/nginx/examples/tcp
 ##
-tcp:
-  9083: "kafka/archival-hive-metastore-external:9083"
+tcp: {}
 #  8080: "default/example-tcp-svc:9000"
 
 # UDP service key:value pairs
