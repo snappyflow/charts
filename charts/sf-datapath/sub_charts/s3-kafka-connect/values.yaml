@@ -4,7 +4,7 @@
 replicaCount: 1
 
 image: snappyflowml/arch-kafka-connect
-imageTag: 5
+imageTag: 7
 imagePullPolicy: IfNotPresent
 
 servicePort: 8083
