@@ -1,0 +1,28 @@
+{{- if .Values.sftrace.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "sfapm.fullname" . }}-sftrace
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "sfapm.fullname" . }}-sftrace
+  minReplicas: {{ .Values.sftrace.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.sftrace.autoscaling.maxReplicas }}
+  metrics:
+  {{- if .Values.sftrace.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.sftrace.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.sftrace.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.sftrace.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+{{- end }}

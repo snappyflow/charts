@@ -264,7 +264,7 @@ sftrace:
       cpu: 10m
       memory: 50Mi
     limits:
-      cpu: 200m
+      cpu: 500m
       memory: 512Mi
   service:
     type: NodePort
@@ -274,6 +274,15 @@ sftrace:
     host: localhost
     port: 32145
     token: " "
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 3
+    # Below values are based on requests.
+    # Hence value > 100 needs to be calculated based on set limits
+    # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
+    targetCPUUtilizationPercentage: 4000
+    targetMemoryUtilizationPercentage: 820
 
 serviceAccount:
   # Specifies whether a service account should be created
