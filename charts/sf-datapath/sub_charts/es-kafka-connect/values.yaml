@@ -101,7 +101,7 @@ containerResources:
   connector:
     limits:
       cpu: 600m
-      memory: 2560Mi
+      memory: 3Gi
     requests:
       cpu: 256m
       memory: 2560Mi
