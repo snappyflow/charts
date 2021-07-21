@@ -14,10 +14,15 @@ data:
         http:
           enabled: true
           host: 0.0.0.0:14268
+    queue:
+      mem:
+        events: 8192
     output.kafkarest:
       enabled: true
       hosts: ["{{ .Values.sftrace.output.host }}:{{ .Values.sftrace.output.port }}"]
       topic: beats
       token: "{{ .Values.sftrace.output.token }}"
+      bulk_max_size: 1024
+      worker: 8
     setup.template.enabled: false
 
