@@ -29,10 +29,13 @@ configurationOverrides:
   "consumer.partition.assignment.strategy": "org.apache.kafka.clients.consumer.RoundRobinAssignor"
   "scheduled.rebalance.max.delay.ms": "60000"
   "connect.protocol": "apm_sessioned"
+  "consumer.fetch.max.bytes": "1048576"
+  "consumer.max.partition.fetch.bytes": "1048576"
+  "consumer.max.poll.records": "5000"
 
 ## Kafka Connect JVM Heap Option
 # Changing a memory value below would necessitate change in memory request/limits & HPA (line 92 of sf-datapath/autoscaling/sub_charts/prometheus-adapter/values.yaml)
-heapOptions: "-Xms1G -Xmx1G -Xmns805M -Xmnx805M -XX:MaxDirectMemorySize=512M -Xcodecachetotal50M -Xmso128K -Xgc:concurrentScavenge -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,20,100 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt -Xdump:system+heap+java"
+heapOptions: "-Xms1000M -Xmx1000M -Xmns800M -Xmnx800M -XX:MaxDirectMemorySize=100M -Xcodecachetotal50M -Xmso128K -Xgc:concurrentScavenge -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,20,100 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt -Xdump:system+heap+java"
 
 ## Additional env variables
 customEnv: {}
@@ -82,7 +85,7 @@ containerResources:
   connector:
     limits:
       cpu: 800m
-      memory: 2Gi
+      memory: 1536Mi
     requests:
-      cpu: 500m
-      memory: 2Gi
+      cpu: 256m
+      memory: 1536Mi

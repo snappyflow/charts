@@ -90,7 +90,7 @@ containerResources:
   schemaGenerator:
     limits:
       cpu: 100m
-      memory: 512Mi
+      memory: 1Gi
     requests:
       cpu: 10m
-      memory: 25Mi
+      memory: 256Mi

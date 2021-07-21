@@ -15,16 +15,16 @@ resources:
 archivalConnectAutoscaling:
   enabled: true
   cpu:
-    targetAverageValue: 680m # 85% of CPU limit allocated to connector
+    targetAverageValue: 720m # 90% of CPU limit allocated to connector
   memory:
-    targetPCNT: 75 # 75% heap / NIO occupancy will trigger the HPA
+    targetPCNT: 85 # 85% heap / NIO occupancy will trigger the HPA
 
 apmConnectAutoscaling:
   enabled: true
   cpu:
-    targetAverageValue: 435m # 85% of CPU limit allocated to connector
+    targetAverageValue: 540m # 90% of CPU limit allocated to connector
   memory:
-    targetPCNT: 75 # 75% heap / NIO occupancy will trigger the HPA
+    targetPCNT: 85 # 85% heap / NIO occupancy will trigger the HPA
 
 restKafkaAutoscaling:
   enabled: true

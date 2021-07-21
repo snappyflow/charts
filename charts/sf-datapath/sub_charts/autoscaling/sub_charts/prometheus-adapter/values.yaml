@@ -67,7 +67,7 @@ rules:
     name:
       matches: ""
       as: "es_connect_nio_utilization_pcnt"
-    metricsQuery: '(avg_over_time(<<.Series>>{kubernetes_pod_name=~".*es-kafka-connect.*"}[3m]) * 100.0) / (512 * 1048576)'
+    metricsQuery: '(avg_over_time(<<.Series>>{kubernetes_pod_name=~".*es-kafka-connect.*"}[3m]) * 100.0) / (200 * 1048576)'
   - seriesQuery: '{__name__="heap_utilization_pcnt"}'
     resources:
       overrides:
@@ -89,7 +89,7 @@ rules:
     name:
       matches: ""
       as: "s3_connect_nio_utilization_pcnt"
-    metricsQuery: '(avg_over_time(<<.Series>>{kubernetes_pod_name=~".*s3-kafka-connect.*"}[3m]) * 100.0) / (512 * 1048576)'
+    metricsQuery: '(avg_over_time(<<.Series>>{kubernetes_pod_name=~".*s3-kafka-connect.*"}[3m]) * 100.0) / (100 * 1048576)'
   - seriesQuery: '{__name__="heap_utilization_pcnt"}'
     resources:
       overrides:
