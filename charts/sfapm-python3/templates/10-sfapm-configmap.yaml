@@ -40,11 +40,14 @@ data:
     {{- else }}
     KEYCLOAK_MODE: ""
     {{- end }}
+
     ES_USER: "{{ .Values.sfapm.ingress.es_user }}"
     ES_PROTOCOL: "{{ .Values.sfapm.ingress.es_http }}"
     ES_HOST: "{{ .Values.sfapm.ingress.es_host }}"
     ES_PASS: "{{ .Values.sfapm.ingress.es_pass }}"
     ES_PORT: "{{ .Values.sfapm.ingress.es_port }}"
+
+    SWITCH_OFF_PRESTO_COORD: "{{ .Values.sfapm.switchOffPrestoCoord }}"
 
     ARCHIVER_API_URL: "{{ .Values.sfapm.ingress.kafka_api }}"
     ARCHIVER_URL: "{{ .Values.sfapm.ingress.arhiver_url }}"

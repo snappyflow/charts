@@ -17,7 +17,7 @@ monitor:
 jobserver:
   image:
     repository: snappyflowml/job-server
-    tag: 8
+    tag: 9
     pullPolicy: IfNotPresent
   serverPort: 5002
   service:

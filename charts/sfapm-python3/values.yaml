@@ -85,6 +85,7 @@ sfapm:
     kafka_user: ""
     kafka_pwd: ""
   serverid: ""
+  switchOffPrestoCoord: "true"
   autoscaling:
     enabled: true
     minReplicas: 2
