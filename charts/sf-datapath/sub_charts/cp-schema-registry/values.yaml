@@ -19,7 +19,7 @@ customEnv: {}
 servicePort: 8081
 
 ## Schema registry JVM Heap Option
-heapOptions: "-Xms32M -Xmx512M -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:G1HeapRegionSize=1M -XX:MaxMetaspaceSize=256M -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30 -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=30"
+heapOptions: "-Xms32M -Xmx256M -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:G1HeapRegionSize=1M -XX:MaxMetaspaceSize=100M -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30 -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=30"
 
 livenessProbe:
   failureThreshold: 3
@@ -75,22 +75,22 @@ schemaGenerator:
 containerResources:
   jmx:
     limits:
-      cpu: 100m
-      memory: 100Mi
+      cpu: 10m
+      memory: 256Mi
     requests:
-      cpu: 100m
-      memory: 100Mi
+      cpu: 10m
+      memory: 50Mi
   schemaregistry:
     limits:
       cpu: 100m
       memory: 512Mi
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 10m
+      memory: 200Mi
   schemaGenerator:
     limits:
       cpu: 100m
-      memory: 200Mi
+      memory: 1Gi
     requests:
-      cpu: 50m
-      memory: 100Mi
+      cpu: 10m
+      memory: 256Mi

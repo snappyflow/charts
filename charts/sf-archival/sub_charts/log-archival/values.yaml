@@ -34,5 +34,5 @@ containerResources:
       cpu: 50m
       memory: 50Mi
     requests:
-      cpu: 50m
-      memory: 50Mi
+      cpu: 10m
+      memory: 10Mi

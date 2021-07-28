@@ -25,6 +25,7 @@ spec:
     metadata:
     {{- if .Values.server.podAnnotations }}
       annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmaps/server.yaml") . | sha256sum }}
 {{ toYaml .Values.server.podAnnotations | indent 8 }}
     {{- end }}
       labels:

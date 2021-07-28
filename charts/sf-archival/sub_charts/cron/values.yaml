@@ -52,8 +52,8 @@ affinity: {}
 containerResources:
   cron:
     limits:
-      cpu: 25m
-      memory: 50Mi
+      cpu: 10m
+      memory: 10Mi
     requests:
       cpu: 10m
-      memory: 25Mi
+      memory: 10Mi

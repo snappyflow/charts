@@ -11,7 +11,7 @@ servicePort: 8082
 httpsServicePort: 8081
 
 ## Kafka rest JVM Heap Option
-heapOptions: "-Xms32M -Xmx600M -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:G1HeapRegionSize=1M -XX:MaxMetaspaceSize=256M -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30 -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=30"
+heapOptions: "-Xms210M -Xmx600M -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+UseContainerSupport -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,5,20 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt -Xdump:system+heap+java"
 
 https:
   # If enabled update listeneres to enable server to listen on https
@@ -97,14 +97,14 @@ containerResources:
   restserver:
     limits:
       cpu: 500m
-      memory: 1Gi
+      memory: 896Mi
     requests:
-      cpu: 250m
-      memory: 512Mi
+      cpu: 50m
+      memory: 600Mi
   jmx:
     limits:
       cpu: 100m
-      memory: 100Mi
+      memory: 256Mi
     requests:
-      cpu: 100m
+      cpu: 10m
       memory: 100Mi

@@ -4,7 +4,7 @@ apiVersion: apps/v1
 {{- else }}
 apiVersion: apps/v1beta2
 {{- end }}
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ template "s3-kafka-connect.fullname" . }}
   labels:
@@ -14,12 +14,12 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
-  strategy:
-    type: Recreate
   selector:
     matchLabels:
       app: {{ template "s3-kafka-connect.name" . }}
       release: {{ .Release.Name }}
+  serviceName: {{ template "s3-kafka-connect.fullname" . }}
+  podManagementPolicy: Parallel
   template:
     metadata:
       labels:

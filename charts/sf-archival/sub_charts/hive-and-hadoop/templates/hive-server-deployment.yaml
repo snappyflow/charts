@@ -61,7 +61,7 @@ spec:
                 name: {{ template "hive-and-hadoop.fullname" . }}-env
           env:
             - name: HADOOP_HEAPSIZE
-              value: "384"
+              value: "750"
             {{- if (eq .Values.global.secrets.gcs.enable true) }}
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/secrets/google/key.json
