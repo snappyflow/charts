@@ -265,7 +265,7 @@ sftrace:
       cpu: 10m
       memory: 50Mi
     limits:
-      cpu: 500m
+      cpu: 1
       memory: 512Mi
   service:
     type: NodePort
