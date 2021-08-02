@@ -84,6 +84,7 @@ configurationOverrides:
   "group.initial.rebalance.delay.ms": 3000
   "message.max.bytes": "15728640"
   "delete.topic.enable": true
+  "log.roll.hours": 1
 
   ## Options required for external access via NodePort
   ## ref:
