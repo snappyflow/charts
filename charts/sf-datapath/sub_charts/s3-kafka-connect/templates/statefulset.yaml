@@ -69,6 +69,12 @@ spec:
             - /bin/bash
             - ./kafka-init.sh
             - {{ .Values.global.kafkaBrokers }}
+        - name: quota-configuration
+          image: "snappyflowml/kafka-config-client:alpha"
+          imagePullPolicy: IfNotPresent
+          args:
+            - {{ .Values.global.kafkaBrokers }}
+            - "{{ .Values.inByteRate }}"
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: exporter
@@ -160,6 +166,11 @@ spec:
             - name: KAFKA_JMX_PORT
               value: "{{ .Values.jmx.port }}"
             {{- end }}
+            - name: CONNECT_CONSUMER_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
           volumeMounts:
           - name: connect-log4j-properties
             mountPath: /etc/customlog4j
