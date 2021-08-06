@@ -74,8 +74,6 @@ prometheus:
 cp-schema-registry:
   url: ""
 
-inByteRate: "1157400"
-
 containerResources:
   jmx:
     limits:
