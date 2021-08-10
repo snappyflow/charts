@@ -184,15 +184,17 @@ data:
               "__PARAM__source",
               "__PARAM__destination"
             ],
-            "task_role": "{{ .Values.infrastructure.EcsFargate.taskRole }}",
-            "task_exec_role": "{{ .Values.infrastructure.EcsFargate.taskExecutionRole }}",
+            "ecs_cluster": "{{ .Values.infrastructure.EcsFargate.cluster }}",
+            "task_defn_family": "{{ .Values.infrastructure.EcsFargate.cluster }}",
+            "task_role": "{{ .Values.infrastructure.EcsFargate.iamRole }}",
+            "task_exec_role": "{{ .Values.infrastructure.EcsFargate.iamRole }}",
             "task_resources": {
               "cpu": {{ .Values.infrastructure.EcsFargate.jobResources.cpu }},
               "memory": {{ .Values.infrastructure.EcsFargate.jobResources.memory }}
             },
             "task_subnet": "{{ .Values.infrastructure.EcsFargate.taskSubnet }}",
             "task_security_group": "{{ .Values.infrastructure.EcsFargate.taskSecurityGroup }}",
-            "task_region": "{{ .Values.infrastructure.EcsFargate.taskRegion }}"
+            "task_image": "{{ .Values.infrastructure.EcsFargate.image }}"
           }
         }
 {{- end }}
