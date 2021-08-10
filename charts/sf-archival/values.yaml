@@ -68,4 +68,3 @@ spark-history-server:
 
   s3:
     logDirectory: encsfsparkhs/spark-hs
-

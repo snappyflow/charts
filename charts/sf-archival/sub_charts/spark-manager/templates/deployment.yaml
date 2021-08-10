@@ -62,6 +62,12 @@ spec:
             - sh
             - -c
             - "until pg_isready -d postgresql://'{{ .Values.global.postgresql.postgresqlUsername }}':'{{ .Values.global.postgresql.postgresqlPassword }}'@'{{ template "spark-manager.postgresql.fullname" . }}':{{ .Values.global.postgresql.servicePort }}/'{{ .Values.global.postgresql.postgresqlDatabase }}'; do sleep 3; done"
+        - name: compaction-infrastructure
+          image: ahmed3465/compaction-infra:v8
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+          - name: config-volume-compaction
+            mountPath: /etc/conf
       containers:
         - name: "monitor"
           image: "{{ .Values.monitor.image.repository }}:{{ .Values.monitor.image.tag }}"
@@ -119,7 +125,6 @@ spec:
           {{- end }}
           resources:
 {{- toYaml .Values.jobserver.containerResources | nindent 12 }}
-
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -142,9 +147,11 @@ spec:
         - name: spark-config-volume
           configMap:
             name: {{ template "spark-manager.fullname" . }}-spark-properties
+        - name: config-volume-compaction
+          configMap:
+            name: {{ template "spark-manager.fullname" . }}-infrastructure
         {{- if (eq .Values.global.secrets.gcs.enable true) }}
         - name: google-cloud-key
           secret:
             secretName: {{ .Values.global.secrets.gcs.secret }}
         {{- end}}
-

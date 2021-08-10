@@ -72,3 +72,129 @@ data:
     spark.kubernetes.executor.secretKeyRef.AWS_SECRET_ACCESS_KEY {{ .Release.Name }}-aws-secret:secret
 {{- end }}
     spark.kubernetes.namespace {{ .Release.Namespace }}
+
+---
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ template "spark-manager.fullname" . }}-infrastructure
+  namespace: {{ .Release.Namespace }}
+data:
+  config.json: |-
+    {
+      "db": {
+        "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
+        "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
+        "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
+        "host": "{{ template "spark-manager.postgresql.fullname" . }}",
+        "port": {{ .Values.global.postgresql.servicePort }}
+      },
+      "infrastructures": [
+{{- if .Values.infrastructure.Kubernetes.enabled -}}
+        {
+          "mode": "KUBERNETES",
+          "preference": {{ .Values.infrastructure.Kubernetes.preference }},
+          "template": {
+            "command": [
+              "./opt/spark-3.1.1-bin-hadoop2.7/bin/spark-submit",
+              "--master",
+              "{{ .Values.infrastructure.Kubernetes.cluster }}",
+              "--deploy-mode",
+              "cluster",
+              "--conf",
+              "spark.kubernetes.driver.limit.cores={{ .Values.infrastructure.Kubernetes.jobResources.cpu.limits.driver }}",
+              "--conf",
+              "spark.kubernetes.executor.limit.cores={{ .Values.infrastructure.Kubernetes.jobResources.cpu.limits.executor }}",
+              "--conf",
+              "spark.executor.instances={{ .Values.infrastructure.Kubernetes.numExecutors }}",
+              "--conf",
+              "spark.kubernetes.executor.request.cores={{ .Values.infrastructure.Kubernetes.jobResources.cpu.requests.executor }}",
+              "--conf",
+              "spark.kubernetes.driver.request.cores={{ .Values.infrastructure.Kubernetes.jobResources.cpu.requests.driver }}",
+              "--conf",
+              "spark.executor.memory={{ .Values.infrastructure.Kubernetes.jobResources.memory.executor }}",
+              "--conf",
+              "spark.driver.memory={{ .Values.infrastructure.Kubernetes.jobResources.memory.driver }}",
+              "--conf",
+              "spark.eventLog.enabled=true",
+              "--conf",
+              "spark.eventLog.dir=s3a://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}",
+              "--conf",
+              "spark.kubernetes.driver.label.{{ .Values.global.snappyflowProjectLabel}}={{ .Values.global.snappyflowProjectName }}",
+              "--conf",
+              "spark.kubernetes.executor.label.{{ .Values.global.snappyflowProjectLabel}}={{ .Values.global.snappyflowProjectName }}",
+              "--conf",
+              "spark.kubernetes.driver.label.{{ .Values.global.snappyflowAppLabel }}={{ .Values.global.snappyflowAppName }}",
+              "--conf",
+              "spark.kubernetes.executor.label.{{ .Values.global.snappyflowAppLabel }}={{ .Values.global.snappyflowAppName }}",
+              "--conf",
+              "spark.kubernetes.driver.label.release={{ .Release.Name }}",
+              "--conf",
+              "spark.kubernetes.executor.label.release={{ .Release.Name }}",
+              "--conf",
+              "spark.kubernetes.container.image={{ .Values.infrastructure.Kubernetes.image }}",
+{{- if (and (eq (.Values.global.secrets.aws.enable | default false) true) (eq (.Values.global.secrets.aws.use_iam_role | default false) true)) }},
+              "--conf",
+              "spark.kubernetes.authenticate.driver.serviceAccountName={{ .Release.Name }}-service-account",
+{{- else }}
+              "--conf",
+              "spark.kubernetes.driver.secretKeyRef.AWS_ACCESS_KEY_ID={{ .Release.Name }}-aws-secret:key",
+              "--conf",
+              "spark.kubernetes.driver.secretKeyRef.AWS_SECRET_ACCESS_KEY={{ .Release.Name }}-aws-secret:key",
+              "--conf",
+              "spark.kubernetes.executor.secretKeyRef.AWS_ACCESS_KEY_ID={{ .Release.Name }}-aws-secret:key",
+              "--conf",
+              "spark.kubernetes.executor.secretKeyRef.AWS_SECRET_ACCESS_KEY={{ .Release.Name }}-aws-secret:key",
+{{- end }}
+              "--conf",
+              "spark.kubernetes.namespace={{ .Release.Namespace }}",
+              "--class",
+              "sf.org.hadoop.Compact",
+              "--class",
+              "local:///tmp/jars/application/kafka-spark-compact_2.11-1.3.jar",
+              "__PARAM__source",
+              "__PARAM__destination"
+            ]
+          }
+        }
+{{- end }}
+{{- if .Values.infrastructure.EcsFargate.enabled -}}
+        {
+          "mode": "ECS_FARGATE",
+          "preference": {{ .Values.infrastructure.EcsFargate.preference }},
+          "template": {
+            "command": [
+              "./opt/spark/bin/spark-submit",
+              "--master",
+              "local[{{ .Values.infrastructure.EcsFargate.numExecutors }}]",
+              "--conf",
+              "spark.executor.instances={{ .Values.infrastructure.EcsFargate.numExecutors }}",
+              "--conf",
+              "spark.eventLog.enabled=true",
+              "--conf",
+              "spark.eventLog.dir=s3a://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}",
+              "--conf",
+              "spark.hadoop.fs.s3a.aws.credentials.provider=com.amazonaws.auth.EC2ContainerCredentialsProviderWrapper",
+              "--jars",
+              "/tmp/jars/hadoop/hadoop-aws-3.2.0.jar,/tmp/jars/hadoop/aws-java-sdk-bundle-1.11.375.jar",
+              "--class",
+              "sf.org.hadoop.Compact",
+              "/tmp/jars/application/kafka-spark-compact_2.11-1.3.jar",
+              "__PARAM__source",
+              "__PARAM__destination"
+            ],
+            "task_role": "{{ .Values.infrastructure.EcsFargate.taskRole }}",
+            "task_exec_role": "{{ .Values.infrastructure.EcsFargate.taskExecutionRole }}",
+            "task_resources": {
+              "cpu": {{ .Values.infrastructure.EcsFargate.jobResources.cpu }},
+              "memory": {{ .Values.infrastructure.EcsFargate.jobResources.memory }}
+            },
+            "task_subnet": "{{ .Values.infrastructure.EcsFargate.taskSubnet }}",
+            "task_security_group": "{{ .Values.infrastructure.EcsFargate.taskSecurityGroup }}",
+            "task_region": "{{ .Values.infrastructure.EcsFargate.taskRegion }}"
+          }
+        }
+{{- end }}
+      ]
+    }

@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 monitor:
   image:
-    repository: snappyflowml/monitor
-    tag: 5
+    repository: ahmed3465/monitor
+    tag: v1
     pullPolicy: IfNotPresent
   containerResources:
     limits:
@@ -16,8 +16,8 @@ monitor:
 
 jobserver:
   image:
-    repository: snappyflowml/job-server
-    tag: 9
+    repository: ahmed3465/jobserver
+    tag: v6
     pullPolicy: IfNotPresent
   serverPort: 5002
   service:
@@ -32,7 +32,42 @@ jobserver:
       cpu: 10m
       memory: 50Mi
 
+infrastructure:
+  Kubernetes:
+    enabled: true
+    image: snappyflowml/spark-compact-aws:beta
+    preference: 1
+    cluster: "k8s://kubernetes.default.svc:443"
+    numExecutors: 5
+    jobResources:
+      cpu:
+        requests:
+          executor: 0.2
+          driver: 0.2
+        limits:
+          executor: 0.4
+          driver: 0.5
+      memory:
+        executor: 1024m
+        driver: 1024m
+  EcsFargate:
+    enabled: false
+    image: ahmed3465/spark-on-fargate:v10
+    preference: 2
+    cluster: sf-archival-compaction
+    numExecutors: 2
+    taskRole: abcdefgh1
+    taskExecutionRole: abcdefgh2
+    taskRegion: us-west-2
+    taskSubnet: subnet-1
+    taskSecurityGroup: sg-1
+    taskDefinitionFamily: compaction
+    jobResources:
+      cpu: 2048
+      memory: 8192
+
 nameOverride: ""
+
 fullnameOverride: ""
 
 nodeSelector: {}
