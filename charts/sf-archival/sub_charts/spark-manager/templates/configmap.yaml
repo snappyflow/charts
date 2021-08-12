@@ -97,7 +97,9 @@ data:
           "preference": {{ .Values.infrastructure.Kubernetes.preference }},
           "template": {
             "command": [
-              "./opt/spark-3.1.1-bin-hadoop2.7/bin/spark-submit",
+              "/opt/spark-3.1.1-bin-hadoop2.7/bin/./spark-submit",
+              "--name",
+              "__PARAM__name",
               "--master",
               "{{ .Values.infrastructure.Kubernetes.cluster }}",
               "--deploy-mode",
@@ -165,7 +167,9 @@ data:
           "preference": {{ .Values.infrastructure.EcsFargate.preference }},
           "template": {
             "command": [
-              "./opt/spark/bin/spark-submit",
+              "/opt/spark/bin/./spark-submit",
+              "--name",
+              "__PARAM__name",
               "--master",
               "local[{{ .Values.infrastructure.EcsFargate.numExecutors }}]",
               "--conf",
