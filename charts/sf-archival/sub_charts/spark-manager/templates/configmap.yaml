@@ -43,41 +43,6 @@ data:
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: {{ template "spark-manager.fullname" . }}-spark-properties
-  namespace: {{ .Release.Namespace }}
-data:
-  spark-properties: |-
-    spark.kubernetes.driver.limit.cores 0.5
-    spark.kubernetes.executor.limit.cores 0.4
-    spark.executor.instances 5
-    spark.kubernetes.executor.request.cores 0.2
-    spark.kubernetes.driver.request.cores 0.2
-    spark.executor.memory 512m
-    spark.driver.memory 512m
-    spark.eventLog.enabled true
-    spark.eventLog.dir s3a://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}
-    spark.kubernetes.driver.label.{{ .Values.global.snappyflowProjectLabel}} {{ .Values.global.snappyflowProjectName }}
-    spark.kubernetes.executor.label.{{ .Values.global.snappyflowProjectLabel}} {{ .Values.global.snappyflowProjectName }}
-    spark.kubernetes.driver.label.{{ .Values.global.snappyflowAppLabel }} {{ .Values.global.snappyflowAppName }}
-    spark.kubernetes.executor.label.{{ .Values.global.snappyflowAppLabel }} {{ .Values.global.snappyflowAppName }}
-    spark.kubernetes.driver.label.release {{ .Release.Name }}
-    spark.kubernetes.executor.label.release {{ .Release.Name }}
-    spark.kubernetes.container.image snappyflowml/spark-compact-aws:beta
-{{- if (and (eq (.Values.global.secrets.aws.enable | default false) true) (eq (.Values.global.secrets.aws.use_iam_role | default false) true)) }}
-    spark.kubernetes.authenticate.driver.serviceAccountName {{ .Release.Name }}-service-account
-{{- else }}
-    spark.kubernetes.driver.secretKeyRef.AWS_ACCESS_KEY_ID {{ .Release.Name }}-aws-secret:key
-    spark.kubernetes.driver.secretKeyRef.AWS_SECRET_ACCESS_KEY {{ .Release.Name }}-aws-secret:secret
-    spark.kubernetes.executor.secretKeyRef.AWS_ACCESS_KEY_ID {{ .Release.Name }}-aws-secret:key
-    spark.kubernetes.executor.secretKeyRef.AWS_SECRET_ACCESS_KEY {{ .Release.Name }}-aws-secret:secret
-{{- end }}
-    spark.kubernetes.namespace {{ .Release.Namespace }}
-
----
-
-kind: ConfigMap
-apiVersion: v1
-metadata:
   name: {{ template "spark-manager.fullname" . }}-infrastructure
   namespace: {{ .Release.Namespace }}
 data:
@@ -96,6 +61,7 @@ data:
           "mode": "KUBERNETES",
           "preference": {{ .Values.infrastructure.Kubernetes.preference }},
           "template": {
+            "pod_namespace": "{{ .Release.Namespace }}",
             "command": [
               "/opt/spark-3.1.1-bin-hadoop2.7/bin/./spark-submit",
               "--name",

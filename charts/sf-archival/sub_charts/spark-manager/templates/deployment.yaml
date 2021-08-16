@@ -117,8 +117,6 @@ spec:
           volumeMounts:
           - name: config-volume-jobserver
             mountPath: /etc/conf
-          - name: spark-config-volume
-            mountPath: /etc/spark-conf
           {{- if (eq .Values.global.secrets.gcs.enable true) }}
           - name: google-cloud-key
             mountPath: /var/secrets/google
@@ -159,9 +157,6 @@ spec:
         - name: config-volume-jobserver
           configMap:
             name: {{ template "spark-manager.fullname" . }}-jobserver
-        - name: spark-config-volume
-          configMap:
-            name: {{ template "spark-manager.fullname" . }}-spark-properties
         - name: config-volume-compaction
           configMap:
             name: {{ template "spark-manager.fullname" . }}-infrastructure
