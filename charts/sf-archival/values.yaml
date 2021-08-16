@@ -61,10 +61,39 @@ spark-manager:
     sparkProperties:
       # S3 bucket with aws prefix/folder for spark event logs e.g., for bucket location of s3://sparkhs/spark-hs configure as configured below
       logDirectory: encsfsparkhs/spark-hs
+  infrastructure:
+    Kubernetes:
+      enabled: true
+      image: snappyflowml/spark-compact-aws:beta
+      preference: 1
+      cluster: "k8s://kubernetes.default.svc:443"
+      numExecutors: 5
+      jobResources:
+        cpu:
+          requests:
+            executor: 0.2
+            driver: 0.2
+          limits:
+            executor: 0.4
+            driver: 0.5
+        memory:
+          executor: 1024m
+          driver: 1024m
+    EcsFargate:
+      enabled: false
+      image: ahmed3465/spark-on-fargate:v10
+      preference: 1
+      cluster: sf-archival-compaction
+      numExecutors: 2
+      iamRole: arn:aws:iam::159750416379:role/Dev-Archival-presto_hive
+      taskSubnet: subnet-09a6fcdc2b614e300
+      taskSecurityGroup: sg-03b8db147f1b7b423
+      jobResources:
+        cpu: 2048
+        memory: 8192
 
 spark-history-server:
-  # If spark history server is enabled "logDirectory" param of its config should be same as this
   enabled: false
-
   s3:
+    # Below config should be exactly same as spark-manager.jobserver.sparkProperties.logDirectory
     logDirectory: encsfsparkhs/spark-hs
