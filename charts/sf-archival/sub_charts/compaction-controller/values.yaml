@@ -9,12 +9,7 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-applicationJarPath: "local:///tmp/application/jars/Kafka-Spark-Compact-assembly-1.2.jar"
-applicationClassName: "sf.org.hadoop.Compact"
-
 serverPort: ":5005"
-
-MasterUrl: "k8s://kubernetes.default.svc:443"
 
 service:
   servicePort: 5005
