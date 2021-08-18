@@ -15,7 +15,6 @@ spec:
         backend:
           serviceName: {{ include "sfapm.fullname" . }}-ui
           servicePort: 80
-
       - path: /snappyflow
         backend:
           serviceName: {{ include "sfapm.fullname" . }}-apm

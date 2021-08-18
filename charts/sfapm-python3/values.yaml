@@ -321,15 +321,15 @@ affinity: {}
 sfapmaffinity:
   podAntiAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
-    - weight: 1
-      podAffinityTerm:
-        labelSelector:
-          matchExpressions:
-            - key: "role"
-              operator: In
-              values:
-              - server
-        topologyKey: "kubernetes.io/hostname"
+      - weight: 1
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: "role"
+                operator: In
+                values:
+                  - server
+          topologyKey: "kubernetes.io/hostname"
 
 redis:
   image:
@@ -386,6 +386,24 @@ usage_system:
   # tls true for HTTPS
   tls: False
 
+# pprof-server config
+pprof:
+  image:
+    repository: snappyflowml/pprof-server
+    pullPolicy: IfNotPresent
+    tag: latest
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 100Mi
+    limits:
+      cpu: 1
+      memory: 512Mi
+  service:
+    type: ClusterIP
+    port: 8080
+
 # set this to true/True if using pg bouncer
 disable_server_side_cursors: false
 
@@ -428,4 +446,3 @@ global:
   nginx_ua_parsing: true
   enable_sftrace: false
   key: ""
-

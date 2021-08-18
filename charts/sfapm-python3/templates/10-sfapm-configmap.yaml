@@ -40,20 +40,16 @@ data:
     {{- else }}
     KEYCLOAK_MODE: ""
     {{- end }}
-
     ES_USER: "{{ .Values.sfapm.ingress.es_user }}"
     ES_PROTOCOL: "{{ .Values.sfapm.ingress.es_http }}"
     ES_HOST: "{{ .Values.sfapm.ingress.es_host }}"
     ES_PASS: "{{ .Values.sfapm.ingress.es_pass }}"
     ES_PORT: "{{ .Values.sfapm.ingress.es_port }}"
-
     SWITCH_OFF_PRESTO_COORD: "{{ .Values.sfapm.switchOffPrestoCoord }}"
-
     ARCHIVER_API_URL: "{{ .Values.sfapm.ingress.kafka_api }}"
     ARCHIVER_URL: "{{ .Values.sfapm.ingress.arhiver_url }}"
     KAFKA_USERNAME: "{{ .Values.sfapm.ingress.kafka_user }}"
     KAFKA_PASSWORD: "{{ .Values.sfapm.ingress.kafka_pwd }}"
-
     GOOGLE_CLIENT_ID: "{{ .Values.google_client_id }}"
     GOOGLE_CLIENT_SECRET: "{{ .Values.google_client_secret }}"
     GOOGLE_CALLBACK_URL_RELATIVE: "{{ .Values.google_callback_url }}"
@@ -62,3 +58,5 @@ data:
     USAGE_SERVICE_PORT: "{{ .Values.usage_system.port }}"
     USAGE_SERVICE_TLS: "{{ .Values.usage_system.tls }}"
     {{- end }}
+    PPROF_SERVER_HOST: "{{ include "sfapm.fullname" . }}-pprof-server"
+    PPROF_SERVER_PORT: "{{ .Values.pprof.service.port }}"
