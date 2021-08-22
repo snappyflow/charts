@@ -3,12 +3,12 @@
 # Declare variables to be passed into your templates.
 image:
   repository: snappyflowml/dataset-controller
-  tag: 6
+  tag: dev-10
   pullPolicy: IfNotPresent
 
 uncompactedCleanUpImage:
   repository: snappyflowml/uncompacted-cleanup
-  tag: 6
+  tag: dev-13
 
 nameOverride: ""
 fullnameOverride: ""
