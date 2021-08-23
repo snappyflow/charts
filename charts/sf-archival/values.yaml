@@ -62,12 +62,12 @@ spark-manager:
   jobserver:
     sparkProperties:
       # S3 bucket with aws prefix/folder for spark event logs e.g., for bucket location of s3://sparkhs/spark-hs configure as configured below
-      logDirectory: encsfsparkhs/spark-hs
+      logDirectory: sparkhs/spark-hs
 
 spark-history-server:
   # If spark history server is enabled "logDirectory" param of its config should be same as this
   enabled: false
 
   s3:
-    logDirectory: encsfsparkhs/spark-hs
+    logDirectory: sparkhs/spark-hs
 
