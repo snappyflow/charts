@@ -24,3 +24,5 @@ data:
     REDIS_PORT: "6379"
     APM_HOST: {{ include "sfapm.fullname" . }}-apm
     APM_PORT: "{{ .Values.sfapm.service.port }}"
+    PPROF_SERVER_HOST: "{{ include "sfapm.fullname" . }}-pprof-server"
+    PPROF_SERVER_PORT: "{{ .Values.pprof.service.port }}"
