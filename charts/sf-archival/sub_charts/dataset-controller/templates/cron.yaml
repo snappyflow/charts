@@ -6,6 +6,7 @@ metadata:
   labels:
 {{ include "dataset-controller.labels" . | indent 4 }}
 spec:
+  concurrencyPolicy: Forbid
   schedule: "1 0 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 2
@@ -33,6 +34,7 @@ metadata:
   labels:
 {{ include "dataset-controller.labels" . | indent 4 }}
 spec:
+  concurrencyPolicy: Forbid
   schedule: "*/30 * * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 2
@@ -60,6 +62,7 @@ metadata:
   labels:
 {{ include "dataset-controller.labels" . | indent 4 }}
 spec:
+  concurrencyPolicy: Forbid
   schedule: "5 1 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 2
@@ -88,6 +91,7 @@ metadata:
   labels:
 {{ include "dataset-controller.labels" . | indent 4 }}
 spec:
+  concurrencyPolicy: Forbid
   schedule: "0 * * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 2
