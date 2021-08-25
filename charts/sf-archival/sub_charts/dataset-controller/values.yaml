@@ -27,7 +27,8 @@ ingest-controller:
     servicePort: 5000
 
 billing-service:
-  url: 34.209.150.189:8000/api/v1/records
+  enabled: false
+  url: 127.0.0.1:8000/api/v1/records/
   scheme: https
 
 nodeSelector: {}

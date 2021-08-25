@@ -58,22 +58,10 @@ spec:
               readOnly: true
           resources:
 {{- toYaml .Values.containerResources.interface | nindent 12 }}
-        - name: "es-sink-monitor"
-          image: snappyflowml/cron:1
-          imagePullPolicy: IfNotPresent
-          volumeMounts:
-          - name: sfk-interface-cron
-            mountPath: /etc/conf
-          resources:
-{{- toYaml .Values.cron.containerResources | nindent 12 }}
       volumes:
         - name: {{ template "sfk-interface.fullname" . }}-config
           configMap:
             name: {{ template "sfk-interface.fullname" . }}-config
-        - name: sfk-interface-cron
-          configMap:
-            name: {{ template "sfk-interface.fullname" . }}-sink-cron
- 
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

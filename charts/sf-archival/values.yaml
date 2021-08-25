@@ -55,6 +55,7 @@ priority: 100
 
 dataset-controller:
   billing-service:
+    enabled: false
     url: 127.0.0.1:8000/api/v1/records/
     scheme: https
 
@@ -67,7 +68,5 @@ spark-manager:
 spark-history-server:
   # If spark history server is enabled "logDirectory" param of its config should be same as this
   enabled: false
-
   s3:
     logDirectory: sparkhs/spark-hs
-
