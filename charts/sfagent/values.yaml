@@ -33,7 +33,11 @@ config:
   # Heartbeat interval
   interval: 300
 
-  # Cluster documents to collect
+  # Enable/Disable both cluster metrics and cluster log collection
+  cluster_monitoring: true
+
+
+  # Individual Cluster documents to collect
   node_static: true
   node_compute: true
   node_volume: true
@@ -46,8 +50,9 @@ config:
   resource: true
   event-stats: true
   service_static: true
-  node-storage: true
+  node_storage: true
   storage-stats: true
+
   node_network: true   # Metrics for node network interfaces
 
   # Applicable if node_network is true, enable/disable metrics for physical and virtual interfaces
