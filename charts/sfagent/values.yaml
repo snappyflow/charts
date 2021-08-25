@@ -43,8 +43,8 @@ config:
   node_volume: true
   pod_static: true
   pod_compute: true
-  pod_network: false    # Metrics for pod network interfaces
-  pod_volume: false     # Metrics for pod volumes
+  pod_network: true    # Metrics for pod network interfaces
+  pod_volume: true     # Metrics for pod volumes
   container_static: true
   container_dynamic: true
   resource: true
