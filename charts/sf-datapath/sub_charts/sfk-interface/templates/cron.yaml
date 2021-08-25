@@ -1,0 +1,24 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-sinks-monitor
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "sfk-interface.labels" . | indent 4 }}
+spec:
+  schedule: "*/5 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: main
+            image: snappyflowml/busybox-curl:0.0.1
+            imagePullPolicy: IfNotPresent
+            args:
+            - /bin/sh
+            - -c
+            - curl -X POST http://{{ include "sfk-interface.fullname" . }}/monitor
+          restartPolicy: Never
