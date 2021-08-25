@@ -8,7 +8,7 @@ metadata:
 spec:
   concurrencyPolicy: Forbid
   schedule: "*/10 * * * *"
-  successfulJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 2
   jobTemplate:
     spec:
@@ -41,7 +41,7 @@ metadata:
 spec:
   concurrencyPolicy: Forbid
   schedule: "*/10 * * * *"
-  successfulJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 2
   jobTemplate:
     spec:
@@ -74,7 +74,7 @@ metadata:
 spec:
   concurrencyPolicy: Forbid
   schedule: "*/2 * * * *"
-  successfulJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 2
   jobTemplate:
     spec:
