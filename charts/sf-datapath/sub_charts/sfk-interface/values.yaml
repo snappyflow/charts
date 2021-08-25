@@ -62,15 +62,3 @@ containerResources:
     requests:
       cpu: 10m
       memory: 50Mi
-
-cron:
-  intervalInSec: 300
-  path: "/monitor"
-
-  containerResources:
-    limits:
-      cpu: 10m
-      memory: 10Mi
-    requests:
-      cpu: 10m
-      memory: 10Mi

@@ -22,17 +22,3 @@ data:
                 "port": {{ .Values.global.postgresql.servicePort }}
             }
         }
-
----
-
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: {{ template "sfk-interface.fullname" . }}-sink-cron
-  namespace: {{ .Release.Namespace }}
-data:
-  config.json: |-
-    {
-      "intervalInSec": {{ index .Values "cron" "intervalInSec" }},
-      "url": "http://{{ include "sfk-interface.fullname" . }}{{ index .Values "cron" "path"}}"
-    }

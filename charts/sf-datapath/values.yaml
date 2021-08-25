@@ -11,6 +11,8 @@ global:
 
   kafkaBrokers: ""
 
+  cloudName: AWS
+
   archival:
     enabled: true
     releaseName: archival
