@@ -73,7 +73,7 @@ metadata:
 {{ include "compaction-controller.labels" . | indent 4 }}
 spec:
   concurrencyPolicy: Forbid
-  schedule: "*/2 * * * *"
+  schedule: "*/10 * * * *"
   successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 2
   jobTemplate:
