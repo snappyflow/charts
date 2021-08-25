@@ -2,9 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 image:
-  repository: snappyflowml/dataset-controller
-  tag: dev-10
-  pullPolicy: IfNotPresent
+  repository: ahmed3465/dataset-controller
+  tag: gcp-v1
+  pullPolicy: Always
 
 uncompactedCleanUpImage:
   repository: snappyflowml/uncompacted-cleanup
