@@ -6,6 +6,7 @@ metadata:
   labels:
 {{ include "sfk-interface.labels" . | indent 4 }}
 spec:
+  concurrencyPolicy: Forbid
   schedule: "*/5 * * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 2
