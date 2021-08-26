@@ -43,7 +43,7 @@ spec:
         imagePullPolicy: {{ .Values.pprof.image.pullPolicy }}
         ports:
           - name: http
-            containerPort: 8080
+            containerPort: 8090
             protocol: TCP
         livenessProbe:
           initialDelaySeconds: 30
@@ -51,7 +51,7 @@ spec:
           periodSeconds: 30
           timeoutSeconds: 5
           httpGet:
-            path: /status
+            path: /health
             port: http
         readinessProbe:
           initialDelaySeconds: 10
@@ -59,7 +59,7 @@ spec:
           periodSeconds: 10
           timeoutSeconds: 5
           httpGet:
-            path: /status
+            path: /health
             port: http
         resources:
           {{- toYaml .Values.pprof.resources | nindent 12 }}
