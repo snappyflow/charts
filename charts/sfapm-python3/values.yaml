@@ -402,7 +402,7 @@ pprof:
       memory: 512Mi
   service:
     type: ClusterIP
-    port: 8080
+    port: 8090
 
 # set this to true/True if using pg bouncer
 disable_server_side_cursors: false

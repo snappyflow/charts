@@ -54,17 +54,6 @@ spec:
               name: {{ .Release.Name }}-cloud-env
           resources:
 {{- toYaml .Values.containerResources.datasetcontroller | nindent 12 }}
-        - name: uncompacted-cleanup
-          image: "{{ .Values.uncompactedCleanUpImage.repository }}:{{ .Values.uncompactedCleanUpImage.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          envFrom:
-          - configMapRef:
-              name: {{ .Release.Name }}-cloud-env
-          volumeMounts:
-          - name: cleanup-config
-            mountPath: /etc/conf
-          resources:
-{{- toYaml .Values.containerResources.uncompactedcleanup | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -81,6 +70,3 @@ spec:
         - name: config-volume
           configMap:
             name: {{ template "dataset-controller.fullname" . }}
-        - name: cleanup-config
-          configMap:
-            name: {{ template "dataset-controller.fullname" . }}-rw-cleanup

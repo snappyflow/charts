@@ -6,18 +6,12 @@ image:
   tag: gcp-v1
   pullPolicy: Always
 
-uncompactedCleanUpImage:
-  repository: snappyflowml/uncompacted-cleanup
-  tag: dev-13
-
 nameOverride: ""
 fullnameOverride: ""
 
 serverPort: ":5001"
 
-cleanupInterval: 1
-rawDataCleanupDays: 7
-rawDataExpirationDays: 7
+rawDataCleanupDays: 2
 
 service:
   servicePort: 5001
@@ -44,11 +38,4 @@ containerResources:
       memory: 512Mi
     requests:
       cpu: 10m
-      memory: 10Mi
-  uncompactedcleanup:
-    limits:
-      cpu: 10m
-      memory: 50Mi
-    requests:
-      cpu: 10m
-      memory: 10Mi
+      memory: 256Mi

@@ -34,6 +34,39 @@ spec:
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
+  name: {{ .Release.Name }}-delete-raw-partn-post-compaction
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "dataset-controller.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "0 * * * *"
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+            {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+            {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
+        spec:
+          containers:
+          - name: main
+            image: snappyflowml/busybox-curl:0.0.1
+            imagePullPolicy: IfNotPresent
+            args:
+            - /bin/sh
+            - -c
+            - curl -X DELETE http://{{ include "dataset-controller.fullname" . }}/datasets/partitions/raw-version-of-compacted
+          restartPolicy: Never
+
+---
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
   name: {{ .Release.Name }}-detect-partitions
   namespace: {{ .Release.Namespace }}
   labels:
@@ -92,7 +125,7 @@ spec:
             args:
             - /bin/sh
             - -c
-            - curl -X POST http://{{ include "dataset-controller.fullname" . }}/datasets/partitions/refreshsize
+            - curl -X POST http://{{ include "dataset-controller.fullname" . }}/datasets/partitions/refresh-size
           restartPolicy: Never
 
 ---
