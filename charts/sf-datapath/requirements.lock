@@ -26,5 +26,8 @@ dependencies:
 - name: signatures
   repository: file://./sub_charts/signatures
   version: 0.1.0
-digest: sha256:db3162a15c6cd3726a22eacf46bd32d93f656e6f7ef97213e8e7094ffaea34e9
-generated: "2021-06-22T19:34:51.833316655+05:30"
+- name: minio
+  repository: file://./sub_charts/minio
+  version: 8.0.10
+digest: sha256:fd49ff5736e281833576571ac5d9fc91c2c97468afb4f0baa196ab11db6673ac
+generated: "2021-08-27T06:53:07.309189394Z"

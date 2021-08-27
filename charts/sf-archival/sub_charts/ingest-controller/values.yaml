@@ -29,6 +29,11 @@ dataset-controller:
   service:
     servicePort: 5001
 
+minio:
+  secrets:
+    accessKey: gcpminio
+    accessId: gcpminio
+
 spark-manager:
   jobserver:
     service:

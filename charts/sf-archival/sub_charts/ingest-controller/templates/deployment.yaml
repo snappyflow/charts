@@ -49,6 +49,13 @@ spec:
           volumeMounts:
           - name: config-volume
             mountPath: /etc/conf
+    {{ if .Values.global.secrets.gcs.enable }}
+          env:
+          - name: AWS_ACCESS_KEY_ID 
+            value: "{{ .Values.minio.secrets.accessId }}"
+          - name: AWS_SECRET_ACCESS_KEY
+            value: "{{ .Values.minio.secrets.accessKey }}"
+    {{ end}}
           envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env

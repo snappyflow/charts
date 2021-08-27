@@ -88,6 +88,14 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- printf "%s-%s" .Values.global.snappyflowDatapath.releaseName "s3-kafka-connect" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{- define "ingest-controller.minio-svc.fullname" -}}
+{{- if .Values.global.secrets.gcs.enable }}
+{{- printf "%s-%s:%s" .Values.global.snappyflowDatapath.releaseName "minio" "9000" | trunc 63 | trimSuffix "-" -}}
+{{- else }}
+{{- printf "%s" "s3.amazonaws.com"}}
+{{- end }}
+{{- end -}}
+
 {{- define "ingest-controller.hive-server.username" -}}
 {{- if .Values.global.hive.external.enabled }}
 {{- .Values.global.hive.external.userName -}}
