@@ -48,8 +48,7 @@ spec:
     metadata:
       name: {{ template "minio.fullname" . }}
       labels:
-        app.kubernetes.io/name: {{ include "minio.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
+        app: {{ include "minio.name" . }}
         release: {{ .Release.Name }}
         {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
         {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
