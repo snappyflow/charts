@@ -52,5 +52,9 @@ data:
       "transforms.insertsignature.type": "com.signature.InsertSignature$Value",
       "transforms.insertsignature.connectorname.field": "s3",
       "sf.archival.schema.keys": "_tag_projectName, _tag_appName, _plugin, _documentType",
+      {{- if .Values.global.secrets.gcs.enable }}
+      "aws.access.key.id": "{{ .Values.minio.secrets.accessId }}",
+      "aws.secret.access.key": "{{ .Values.minio.secrets.accessKey }}",
+      {{- end }}
       "errors.tolerance": "all"
     }
