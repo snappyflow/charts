@@ -62,8 +62,8 @@ data:
     spark.kubernetes.executor.label.{{ .Values.global.snappyflowAppLabel }} {{ .Values.global.snappyflowAppName }}
     spark.kubernetes.driver.label.release {{ .Release.Name }}
     spark.kubernetes.executor.label.release {{ .Release.Name }}
-    spark.kubernetes.container.image snappyflowml/spark-compact-aws:beta
-{{- if (and (eq (.Values.global.secrets.aws.enable | default false) true) (eq (.Values.global.secrets.aws.use_iam_role | default false) true)) }}
+    spark.kubernetes.container.image ahmed3465/spark-compact:gcp-v1
+{{- if or (and (eq .Values.global.secrets.aws.enable true) (eq .Values.global.secrets.aws.use_iam_role true)) (and (eq .Values.global.secrets.gcs.enable true) (eq .Values.global.secrets.gcs.use_google_service_account true)) }}
     spark.kubernetes.authenticate.driver.serviceAccountName {{ .Release.Name }}-service-account
 {{- else }}
     spark.kubernetes.driver.secretKeyRef.AWS_ACCESS_KEY_ID {{ .Release.Name }}-aws-secret:key
