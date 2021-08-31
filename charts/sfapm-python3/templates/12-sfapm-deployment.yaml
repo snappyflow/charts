@@ -40,18 +40,6 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
-        # {{- if .Values.global.enable_sftrace }}
-        # - name: pythonagent
-        #   image: busybox
-        #   command:
-        #     - sh
-        #     - -c
-        #     - -x
-        #     - wget -O /sfagent/sftrace-agent.tar.gz https://github.com/snappyflow/apm-agent/releases/download/latest/sftrace-agent.tar.gz && cd /sfagent && tar -xvzf sftrace-agent.tar.gz && rm sftrace-agent.tar.gz
-        #   volumeMounts:
-        #   - mountPath: /sfagent
-        #     name: python-agent
-        # {{- end }}
         - name: db-ready
           image: "{{ .Values.postgresql.image.repository }}:{{ .Values.postgresql.image.tag }}"
           imagePullPolicy: {{ .Values.postgresql.image.pullPolicy }}
@@ -123,12 +111,6 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.sfapm.image.repository }}:{{ .Values.sfapm.image.tag }}"
-          # {{- if .Values.global.enable_sftrace }}
-          # command:
-          #   - sh
-          #   - -c
-          #   - /sfagent/sftrace/sftrace --sfcmd="gunicorn snappyflow.wsgi:application"
-          # {{- end }}
           imagePullPolicy: {{ .Values.sfapm.image.pullPolicy }}
           env:
           {{- if .Values.global.enable_sftrace }}

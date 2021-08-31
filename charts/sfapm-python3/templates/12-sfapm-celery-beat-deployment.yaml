@@ -41,18 +41,6 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
-        # {{- if .Values.global.enable_sftrace }}
-        # - name: pythonagent
-        #   image: busybox
-        #   command:
-        #   - sh
-        #   - -c
-        #   - -x
-        #   - wget -O /sfagent/sftrace-agent.tar.gz https://github.com/snappyflow/apm-agent/releases/download/latest/sftrace-agent.tar.gz && cd /sfagent && tar -xvzf sftrace-agent.tar.gz && rm sftrace-agent.tar.gz
-        #   volumeMounts:
-        #   - mountPath: /sfagent
-        #     name: sftrace-agent
-        # {{- end }}
         - name: db-ready
           image: "{{ .Values.postgresql.image.repository }}:{{ .Values.postgresql.image.tag }}"
           imagePullPolicy: {{ .Values.postgresql.image.pullPolicy }}
@@ -87,15 +75,8 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.sfapm.image.repository }}:{{ .Values.sfapm.image.tag }}"
           imagePullPolicy: {{ .Values.sfapm.image.pullPolicy }}
-          # {{- if .Values.global.enable_sftrace }}
-          # command:
-          #   - sh
-          #   - -c
-          #   - /sfagent/sftrace/sftrace --sfcmd="{{ .Values.sfapm_celery.beat.command }}"
-          # {{- else }}
           command: ["bash", "-c"]
           args: [{{ .Values.sfapm_celery.beat.command }}]
-          # {{- end }}
           env:
           {{- range $key, $value := .Values.sfapm_celery.env }}
             - name: {{ $key }}
