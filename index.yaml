@@ -4526,6 +4526,25 @@ entries:
   sfapm-python3:
   - apiVersion: v2
     appVersion: "4"
+    created: "2021-09-03T15:37:47.204747757Z"
+    dependencies:
+    - name: redis
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.2.8
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.1.4
+    description: A Helm chart to deploy snappyflow on Kubernetes
+    digest: 7fe5569dac78bfebd458d228b6ef1b61bb8cfb272535b65236753ae937f92cb6
+    home: https://www.snappyflow.io
+    name: sfapm-python3
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.119/sfapm-python3-4.0.119.tgz
+    version: 4.0.119
+  - apiVersion: v2
+    appVersion: "4"
     created: "2021-09-02T14:45:33.207922584Z"
     dependencies:
     - name: redis
@@ -5381,7 +5400,7 @@ entries:
     version: 4.0.74
   - apiVersion: v2
     appVersion: "4"
-    created: "2021-05-29T14:03:29.151342034Z"
+    created: "2021-05-29T14:04:16.495299223Z"
     dependencies:
     - name: redis
       repository: https://snappyflow.github.io/helm-charts/
@@ -5400,7 +5419,7 @@ entries:
     version: 4.0.71-master
   - apiVersion: v2
     appVersion: "4"
-    created: "2021-05-29T14:04:16.495299223Z"
+    created: "2021-05-29T14:03:29.151342034Z"
     dependencies:
     - name: redis
       repository: https://snappyflow.github.io/helm-charts/
@@ -6452,4 +6471,4 @@ entries:
     urls:
     - https://github.com/snappyflow/helm-charts/releases/download/trace-server-1.0.0/trace-server-1.0.0.tgz
     version: 1.0.0
-generated: "2021-09-02T14:45:33.211018421Z"
+generated: "2021-09-03T15:37:47.207810703Z"
