@@ -40,18 +40,6 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
-        {{- if .Values.global.enable_sftrace }}
-        - name: pythonagent
-          image: busybox
-          command:
-            - sh
-            - -c
-            - -x
-            - wget -O /sfagent/sftrace-agent.tar.gz https://github.com/snappyflow/apm-agent/releases/download/latest/sftrace-agent.tar.gz && cd /sfagent && tar -xvzf sftrace-agent.tar.gz && rm sftrace-agent.tar.gz
-          volumeMounts:
-          - mountPath: /sfagent
-            name: python-agent
-        {{- end }}
         - name: db-ready
           image: "{{ .Values.postgresql.image.repository }}:{{ .Values.postgresql.image.tag }}"
           imagePullPolicy: {{ .Values.postgresql.image.pullPolicy }}
@@ -106,12 +94,6 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.vizbuilder.image.repository }}:{{ .Values.vizbuilder.image.tag }}"
           imagePullPolicy: {{ .Values.vizbuilder.image.pullPolicy }}
-          {{- if .Values.global.enable_sftrace }}
-          command:
-            - sh
-            - -c
-            - /sfagent/sftrace/sftrace --sfcmd="gunicorn vizbuilder.wsgi:application"
-          {{- end }}
           env:
           {{- if .Values.global.enable_sftrace }}
             - name: SFTRACE_PROFILE_KEY
@@ -122,6 +104,8 @@ spec:
               value: "{{ .Values.global.sfappname }}"
             - name: ENABLE_SFTRACE
               value: "{{ .Values.global.enable_sftrace }}"
+            - name: ELASTIC_APM_SERVICE_NAME
+              value: "vizbuilder"
           {{- end }}
           {{- if .Values.postgresql.enabled }}
             - name: DB_PASSWORD
