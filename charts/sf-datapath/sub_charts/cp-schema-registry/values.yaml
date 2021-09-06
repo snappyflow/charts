@@ -64,7 +64,7 @@ schemaGenerator:
   enabled: true
   intervalInMin: 20
   image: snappyflowml/schema-generator
-  imageTag: 9
+  imageTag: 10
   imagePullPolicy: IfNotPresent
   targets:
     - name: schema-registry
