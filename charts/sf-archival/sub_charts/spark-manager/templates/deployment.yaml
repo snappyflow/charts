@@ -41,8 +41,8 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
-          image: ahmed3465/cb-spark-event:gcp-v1
-          imagePullPolicy: Always
+          image: snappyflowml/cb-spark-event:1
+          imagePullPolicy: IfNotPresent
           args:
             - {{ index .Values "jobserver" "sparkProperties" "logDirectory" }}
         - name: db-ready

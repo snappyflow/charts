@@ -4,7 +4,7 @@
 monitor:
   image:
     repository: snappyflowml/monitor
-    tag: dev-6
+    tag: 5
     pullPolicy: IfNotPresent
   containerResources:
     limits:
@@ -16,9 +16,9 @@ monitor:
 
 jobserver:
   image:
-    repository: ahmed3465/jobserver
-    tag: gcp-v1
-    pullPolicy: Always
+    repository: snappyflowml/job-server
+    tag: 9
+    pullPolicy: IfNotPresent
   serverPort: 5002
   service:
     servicePort: 5002
