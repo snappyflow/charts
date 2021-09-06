@@ -2,18 +2,18 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 image:
-  repository: snappyflowml/query-controller
-  tag: 8
-  pullPolicy: IfNotPresent
+  repository: ahmed3465/query-controller
+  tag: gcp-v1
+  pullPolicy: Always
 
 executionControler:
   repository: snappyflowml/query-execution-controller
-  tag: 11
+  tag: dev-11
   pullPolicy: IfNotPresent
 
 cleanup:
   repository: snappyflowml/query-cleanup
-  tag: 7
+  tag: dev-8
   pullPolicy: IfNotPresent
 
 nameOverride: ""

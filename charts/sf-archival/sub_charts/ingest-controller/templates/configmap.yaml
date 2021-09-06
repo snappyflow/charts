@@ -32,7 +32,7 @@ data:
     {
       "connector.class": "io.confluent.connect.s3.S3SinkConnector",
       "tasks.max": 10,
-      "store.url": "s3.amazonaws.com",
+      "store.url": "http://{{ template "ingest-controller.minio-svc.fullname". }}",
       "s3.part.size": 5242880,
       "flush.size": 10000,
       "storage.class": "io.confluent.connect.s3.storage.S3Storage",
@@ -52,5 +52,9 @@ data:
       "transforms.insertsignature.type": "com.signature.InsertSignature$Value",
       "transforms.insertsignature.connectorname.field": "s3",
       "sf.archival.schema.keys": "_tag_projectName, _tag_appName, _plugin, _documentType",
+      {{- if .Values.global.secrets.gcs.enable }}
+      "aws.access.key.id": "{{ .Values.minio.secrets.accessId }}",
+      "aws.secret.access.key": "{{ .Values.minio.secrets.accessKey }}",
+      {{- end }}
       "errors.tolerance": "all"
     }

@@ -29,6 +29,8 @@ spec:
         snappyflow/component: kafka
       {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
       annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/jmx-config: {{ include (print $.Template.BasePath "/jmx-configmap.yaml") . | sha256sum }}
       {{- range $key, $value := .Values.podAnnotations }}
         {{ $key }}: {{ $value | quote }}
       {{- end }}

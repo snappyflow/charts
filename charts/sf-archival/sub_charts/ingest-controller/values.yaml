@@ -2,9 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 image:
-  repository: snappyflowml/ingest-controller
-  tag: 12
-  pullPolicy: IfNotPresent
+  repository: ahmed3465/ingest-controller
+  tag: gcp-v1
+  pullPolicy: Always
 
 nameOverride: ""
 fullnameOverride: ""
@@ -28,6 +28,11 @@ affinity: {}
 dataset-controller:
   service:
     servicePort: 5001
+
+minio:
+  secrets:
+    accessKey: gcpminio
+    accessId: gcpminio
 
 spark-manager:
   jobserver:

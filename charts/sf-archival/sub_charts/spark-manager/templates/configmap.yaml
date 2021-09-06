@@ -35,7 +35,7 @@ data:
       },
       "serverPort": ":{{ .Values.jobserver.serverPort }}",
       "propertiesFile": "/etc/spark-conf/spark-properties",
-      "sparkSubmitPath": "/opt/spark-3.1.1-bin-hadoop2.7/bin/spark-submit"
+      "sparkSubmitPath": "/opt/spark-3.1.2-bin-hadoop3.2/bin/spark-submit"
     }
 
 ---
@@ -55,16 +55,23 @@ data:
     spark.executor.memory 512m
     spark.driver.memory 512m
     spark.eventLog.enabled true
+{{- if eq .Values.global.secrets.aws.enable true }}
     spark.eventLog.dir s3a://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}
+{{- else }}
+    spark.eventLog.dir gs://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}
+{{- end }}
+    spark.kubernetes.driver.annotation.prometheus.io/scrape false
     spark.kubernetes.driver.label.{{ .Values.global.snappyflowProjectLabel}} {{ .Values.global.snappyflowProjectName }}
     spark.kubernetes.executor.label.{{ .Values.global.snappyflowProjectLabel}} {{ .Values.global.snappyflowProjectName }}
     spark.kubernetes.driver.label.{{ .Values.global.snappyflowAppLabel }} {{ .Values.global.snappyflowAppName }}
     spark.kubernetes.executor.label.{{ .Values.global.snappyflowAppLabel }} {{ .Values.global.snappyflowAppName }}
     spark.kubernetes.driver.label.release {{ .Release.Name }}
     spark.kubernetes.executor.label.release {{ .Release.Name }}
-    spark.kubernetes.container.image snappyflowml/spark-compact-aws:beta
-{{- if (and (eq (.Values.global.secrets.aws.enable | default false) true) (eq (.Values.global.secrets.aws.use_iam_role | default false) true)) }}
+    spark.kubernetes.container.image snappyflowml/spark-compact-orc:1
+{{- if or (and (eq .Values.global.secrets.aws.enable true) (eq .Values.global.secrets.aws.use_iam_role true)) (and (eq .Values.global.secrets.gcs.enable true) (eq .Values.global.secrets.gcs.use_google_service_account true)) }}
     spark.kubernetes.authenticate.driver.serviceAccountName {{ .Release.Name }}-service-account
+    spark.kubernetes.authenticate.executor.serviceAccountName {{ .Release.Name }}-service-account
+    spark.kubernetes.authenticate.serviceAccountName {{ .Release.Name }}-service-account
 {{- else }}
     spark.kubernetes.driver.secretKeyRef.AWS_ACCESS_KEY_ID {{ .Release.Name }}-aws-secret:key
     spark.kubernetes.driver.secretKeyRef.AWS_SECRET_ACCESS_KEY {{ .Release.Name }}-aws-secret:secret

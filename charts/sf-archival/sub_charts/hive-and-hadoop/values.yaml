@@ -5,19 +5,19 @@ image:
   namenode:
     repository: snappyflowml/hadoop-2.10.1
     pullPolicy: IfNotPresent
-    tag: namenode
+    tag: namenode-v1
   datanode:
     repository: snappyflowml/hadoop-2.10.1
     pullPolicy: IfNotPresent
-    tag: datanode
+    tag: datanode-v1
   hiveServer:
     repository: snappyflowml/hive-2.3.8-and-hadoop-2.10.1
     pullPolicy: IfNotPresent
-    tag: server
+    tag: server-v1
   hiveMetastore:
     repository: snappyflowml/hive-2.3.8-and-hadoop-2.10.1
     pullPolicy: IfNotPresent
-    tag: metastore
+    tag: metastore-v1
 
 nameOverride: ""
 fullnameOverride: ""

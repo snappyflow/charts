@@ -32,3 +32,10 @@ restKafkaAutoscaling:
     targetAverageValue: 450m # 90% of CPU limit allocated to rest-server
   memory:
     targetPCNT: 85 # 85% heap / NIO occupancy will trigger the HPA
+
+minioAutoscaling:
+  enabled: true
+  cpu:
+    targetAverageValue: 180m # 90% of CPU limit allocated to minio
+  memory:
+    targetAverageValue: 230Mi # 90% of utilization will trigger HPA

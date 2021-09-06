@@ -2,9 +2,6 @@ dependencies:
   - name: compaction-controller
     repository: file://./sub_charts/compaction-controller
     version: 0.1.0
-  - name: cron
-    repository: file://./sub_charts/cron
-    version: 0.1.0
   - name: dataset-controller
     repository: file://./sub_charts/dataset-controller
     version: 0.1.0

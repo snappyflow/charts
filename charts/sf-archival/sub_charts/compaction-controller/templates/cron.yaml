@@ -1,0 +1,96 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-create-compaction-candidates
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "compaction-controller.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "*/10 * * * *"
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+            {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+            {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
+        spec:
+          containers:
+          - name: main
+            image: snappyflowml/busybox-curl:0.0.1
+            imagePullPolicy: IfNotPresent
+            args:
+            - /bin/sh
+            - -c
+            - curl -X POST http://{{ include "compaction-controller.fullname" . }}/compaction/create
+          restartPolicy: Never
+
+---
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-queue-compaction-candidates
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "compaction-controller.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "*/10 * * * *"
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+            {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+            {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
+        spec:
+          containers:
+          - name: main
+            image: snappyflowml/busybox-curl:0.0.1
+            imagePullPolicy: IfNotPresent
+            args:
+            - /bin/sh
+            - -c
+            - curl -X POST http://{{ include "compaction-controller.fullname" . }}/compaction/queue
+          restartPolicy: Never
+
+---
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-run-compaction
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "compaction-controller.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "*/10 * * * *"
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+            {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+            {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
+        spec:
+          containers:
+          - name: main
+            image: snappyflowml/busybox-curl:0.0.1
+            imagePullPolicy: IfNotPresent
+            args:
+            - /bin/sh
+            - -c
+            - curl -X POST http://{{ include "compaction-controller.fullname" . }}/compaction/start
+          restartPolicy: Never

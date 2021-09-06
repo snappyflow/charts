@@ -20,20 +20,22 @@ global:
   secrets:
     gcs:
       enable: false
-      secret: XX
-      key: XX.json
+      # Set all of the below entities when Google-Service-Account is being used. Recommended approach unless K8s is running outside GCP (K8s outside GCP flow which will use JSON service-account-keys is not yet implemented)
+      use_google_service_account: true
+      GCP_SERVICE_ACCOUNT_EMAIL: "XXXX-compute@developer.gserviceaccount.com OR XXXX@XXXX.iam.gserviceaccount.com"
+      GCP_DEFAULT_REGION: us-west1
+      GCP_DEFAULT_ZONE: us-west1-c
     aws:
       enable: true
-      AWS_DEFAULT_REGION: us-west-2
-      # Below line would be true when using IAM roles
+      # Set use_iam_role = true and AWS_IAM_ROLE_ARN to appropriate IAM ARN in case of IAM role usage
       use_iam_role: false
-      # Below is the ARN of the IAM role
       AWS_IAM_ROLE_ARN: arn:aws:iam::XXXX:role/XXXX
-      # Below details are needed when we are NOT using IAM roles
+      # Set all of the below entities when IAM role isn't being used. This is not recommended unless K8s is running outside AWS
       AWS_ACCESS_KEY_ID: XXXX
       AWS_SECRET_ACCESS_KEY: XXXX
+      AWS_DEFAULT_REGION: us-west-2
 
-  kafkaBrokers: ""
+  kafkaBrokers: "localhost:9092"
 
   snappyflowDatapath:
     enabled: true
@@ -42,8 +44,8 @@ global:
   snappyflowProjectLabel: snappyflow/projectname
   snappyflowAppLabel: snappyflow/appname
 
-  snappyflowProjectName: "dummy-project"
-  snappyflowAppName: "dummy-app"
+  snappyflowProjectName: "snappyflow-app"
+  snappyflowAppName: "archival"
 
   imagePullSecrets:
   - name: xxxx
@@ -53,6 +55,7 @@ priority: 100
 
 dataset-controller:
   billing-service:
+    enabled: false
     url: 127.0.0.1:8000/api/v1/records/
     scheme: https
 
@@ -60,12 +63,12 @@ spark-manager:
   jobserver:
     sparkProperties:
       # S3 bucket with aws prefix/folder for spark event logs e.g., for bucket location of s3://sparkhs/spark-hs configure as configured below
-      logDirectory: encsfsparkhs/spark-hs
+      logDirectory: sparkhs/spark-hs
 
 spark-history-server:
-  # If spark history server is enabled "logDirectory" param of its config should be same as this
+  # If spark history server is enabled, s3.logDirectory/gcs.logDirectory param of its config should be same as spark-manager.jobserver.sparkProperties.logDirectory
   enabled: false
-
   s3:
-    logDirectory: encsfsparkhs/spark-hs
-
+    logDirectory: sparkhs/spark-hs
+  gcs:
+    logDirectory: sparkhs/spark-hs

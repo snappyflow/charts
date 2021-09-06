@@ -11,7 +11,11 @@ global:
 
   kafkaBrokers: ""
 
-  cloudName: AWS
+  secrets:
+    gcs:
+      enable: false
+    aws:
+      enable: true
 
   archival:
     enabled: true
@@ -25,8 +29,8 @@ global:
   snappyflowProjectLabel: snappyflow/projectname
   snappyflowAppLabel: snappyflow/appname
 
-  snappyflowProjectName: ""
-  snappyflowAppName: ""
+  snappyflowProjectName: "snappyflow-app"
+  snappyflowAppName: "sf-datapath"
 
   imagePullSecrets:
   - name: xxxx
@@ -48,3 +52,8 @@ autoscaling:
   restKafkaAutoscaling:
     minReplicas: 2
     maxReplicas: 5
+
+  minioAutoscaling:
+    minReplicas: 2
+    maxReplicas: 5
+

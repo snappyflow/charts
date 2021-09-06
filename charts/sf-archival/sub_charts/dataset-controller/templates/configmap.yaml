@@ -19,26 +19,3 @@ data:
       },
       "serverPort": "{{ .Values.serverPort }}"
     }
-
----
-
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: {{ template "dataset-controller.fullname" . }}-rw-cleanup
-  namespace: {{ .Release.Namespace }}
-data:
-  config.json: |-
-    {
-      "ingestControllerURL": "http://{{ template "dataset-controller.ingest-controller.fullname" . }}",
-      "datasetControllerURL": "http://{{ template "dataset-controller.fullname" . }}",
-      "db": {    
-        "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
-        "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
-        "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
-        "host": "{{ template "dataset-controller.postgresql.fullname" . }}",
-        "port": {{ .Values.global.postgresql.servicePort }}
-      },
-      "cleanupInterval": {{ .Values.cleanupInterval }},
-      "rawDataExpirationDays": {{ .Values.rawDataExpirationDays }}
-    }

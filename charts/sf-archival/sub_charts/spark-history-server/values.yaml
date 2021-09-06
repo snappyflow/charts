@@ -77,27 +77,18 @@ nfs:
   pvcName: nfs-pvc
 
 gcs:
-  enableGCS: false
-  enableIAM: false
   secret: history-secrets
   key: sparkonk8s.json
   logDirectory: gs://spark-hs/
 
 hdfs:
+  enableHDFS: false
   hdfsSiteConfigMap: hdfs-site
   coreSiteConfigMap: core-site
   logDirectory: hdfs://hdfs/history/
   HADOOP_CONF_DIR: /etc/hadoop
 
 s3:
-  enableS3: true
-  enableIAM: false
-  # Omit for IAM role-based or provider-based authentication.
-  secret: aws-secrets
-  # accessKeyName is an AWS access key ID. Omit for IAM role-based or provider-based authentication.
-  accessKeyName: key
-  # secretKey is AWS secret key. Omit for IAM role-based or provider-based authentication.
-  secretKeyName: secret
   logDirectory: s3a://sparkhs/spark-hs
   # custom s3 endpoint. Keep default for using aws s3 endpoint
   endpoint: default

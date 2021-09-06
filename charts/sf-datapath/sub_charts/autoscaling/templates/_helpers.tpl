@@ -55,3 +55,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- define "autoscaling.restKafkaAutoscaling.fullname" -}}
 {{- printf "%s-%s" .Release.Name "cp-kafka-rest" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{- define "autoscaling.minioAutoscaling.fullname" -}}
+{{- printf "%s-%s" .Release.Name "minio" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}

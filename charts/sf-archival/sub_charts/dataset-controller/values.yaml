@@ -2,22 +2,16 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 image:
-  repository: snappyflowml/dataset-controller
-  tag: 6
-  pullPolicy: IfNotPresent
-
-uncompactedCleanUpImage:
-  repository: snappyflowml/uncompacted-cleanup
-  tag: 6
+  repository: ahmed3465/dataset-controller
+  tag: gcp-v1
+  pullPolicy: Always
 
 nameOverride: ""
 fullnameOverride: ""
 
 serverPort: ":5001"
 
-cleanupInterval: 1
-rawDataCleanupDays: 7
-rawDataExpirationDays: 7
+rawDataCleanupDays: 2
 
 service:
   servicePort: 5001
@@ -27,7 +21,8 @@ ingest-controller:
     servicePort: 5000
 
 billing-service:
-  url: 34.209.150.189:8000/api/v1/records
+  enabled: false
+  url: 127.0.0.1:8000/api/v1/records/
   scheme: https
 
 nodeSelector: {}
@@ -43,11 +38,4 @@ containerResources:
       memory: 512Mi
     requests:
       cpu: 10m
-      memory: 10Mi
-  uncompactedcleanup:
-    limits:
-      cpu: 10m
-      memory: 50Mi
-    requests:
-      cpu: 10m
-      memory: 10Mi
+      memory: 256Mi

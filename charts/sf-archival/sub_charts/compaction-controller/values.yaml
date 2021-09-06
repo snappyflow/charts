@@ -2,14 +2,14 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 image:
-  repository: snappyflowml/compaction-controller
-  tag: 12
-  pullPolicy: IfNotPresent
+  repository: ahmed3465/compaction-controller
+  tag: gcp-v1
+  pullPolicy: Always
 
 nameOverride: ""
 fullnameOverride: ""
 
-applicationJarPath: "local:///tmp/application/jars/Kafka-Spark-Compact-assembly-1.2.jar"
+applicationJarPath: "local:///tmp/jars/application/compact-orc-scala-2.12.10.jar"
 applicationClassName: "sf.org.hadoop.Compact"
 
 serverPort: ":5005"

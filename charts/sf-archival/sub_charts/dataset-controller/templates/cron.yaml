@@ -1,23 +1,164 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ include "dataset-controller.fullname" . }}-enforce-policy
+  name: {{ .Release.Name }}-expire-partitions
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "dataset-controller.labels" . | indent 4 }}
 spec:
+  concurrencyPolicy: Forbid
   schedule: "1 0 * * *"
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 2
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+            {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+            {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
         spec:
           containers:
-          - name: policy-enforce
+          - name: main
             image: snappyflowml/busybox-curl:0.0.1
             imagePullPolicy: IfNotPresent
             args:
             - /bin/sh
             - -c
-            - curl -X POST {{ include "dataset-controller.fullname" . }}/datasets/policy/enforce
-          restartPolicy: OnFailure
+            - curl -X DELETE http://{{ include "dataset-controller.fullname" . }}/datasets/partitions/expired
+          restartPolicy: Never
 
+---
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-delete-raw-partn-post-compaction
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "dataset-controller.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "5 2 * * *"
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+            {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+            {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
+        spec:
+          containers:
+          - name: main
+            image: snappyflowml/busybox-curl:0.0.1
+            imagePullPolicy: IfNotPresent
+            args:
+            - /bin/sh
+            - -c
+            - curl -X DELETE http://{{ include "dataset-controller.fullname" . }}/datasets/partitions/raw-version-of-compacted
+          restartPolicy: Never
+
+---
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-detect-partitions
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "dataset-controller.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "*/30 * * * *"
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+            {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+            {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
+        spec:
+          containers:
+          - name: main
+            image: snappyflowml/busybox-curl:0.0.1
+            imagePullPolicy: IfNotPresent
+            args:
+            - /bin/sh
+            - -c
+            - curl -X POST http://{{ include "dataset-controller.fullname" . }}/datasets/partitions/detect
+          restartPolicy: Never
+
+---
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-compute-partitions-size
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "dataset-controller.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "5 1 * * *"
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+            {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+            {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
+        spec:
+          containers:
+          - name: main
+            image: snappyflowml/busybox-curl:0.0.1
+            imagePullPolicy: IfNotPresent
+            args:
+            - /bin/sh
+            - -c
+            - curl -X POST http://{{ include "dataset-controller.fullname" . }}/datasets/partitions/refresh-size
+          restartPolicy: Never
+
+---
+
+{{ if (eq (index .Values "billing-service" "enabled") true) }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-apm-billing
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "dataset-controller.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "0 * * * *"
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+            {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+            {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
+        spec:
+          containers:
+          - name: main
+            image: snappyflowml/busybox-curl:0.0.1
+            imagePullPolicy: IfNotPresent
+            args:
+            - /bin/sh
+            - -c
+            - curl -X POST http://{{ include "dataset-controller.fullname" . }}/datasets/profile/billing
+          restartPolicy: Never
+{{ end }}

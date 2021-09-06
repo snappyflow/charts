@@ -1,0 +1,30 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-sinks-monitor
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "ingest-controller.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "*/5 * * * *"
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+            {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+            {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
+        spec:
+          containers:
+          - name: main
+            image: snappyflowml/busybox-curl:0.0.1
+            imagePullPolicy: IfNotPresent
+            args:
+            - /bin/sh
+            - -c
+            - curl -X POST http://{{ include "ingest-controller.fullname" . }}/ingest/datasets/monitor/sink
+          restartPolicy: Never

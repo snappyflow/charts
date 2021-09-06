@@ -8,11 +8,16 @@ metadata:
 spec:
   concurrencyPolicy: Forbid
   schedule: "*/5 * * * *"
-  successfulJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 2
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+            {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+            {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
         spec:
           containers:
           - name: main

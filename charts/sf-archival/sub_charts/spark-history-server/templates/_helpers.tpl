@@ -35,7 +35,9 @@ Create chart name and version as used by the chart label.
 Create the name of the service account to use
 */}}
 {{- define "spark-history-server.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create -}}
+{{- if or (and (eq .Values.global.secrets.aws.enable true) (eq .Values.global.secrets.aws.use_iam_role true)) (and (eq .Values.global.secrets.gcs.enable true) (eq .Values.global.secrets.gcs.use_google_service_account true)) }}
+    {{- printf "%s-%s" .Release.Name "service-account" -}}
+{{- else if .Values.serviceAccount.create -}}
     {{ default (include "spark-history-server.fullname" .) .Values.serviceAccount.name }}
 {{- else -}}
     {{ default "default" .Values.serviceAccount.name }}

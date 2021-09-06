@@ -1,0 +1,24 @@
+{{ if and (and .Values.global.archival.enabled .Values.global.secrets.gcs.enable) .Values.archivalConnectAutoscaling.enabled -}}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "autoscaling.fullname" . }}-minio
+  namespace: {{ .Release.Namespace }}
+
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "autoscaling.minioAutoscaling.fullname" . }}
+  minReplicas: {{ .Values.minioAutoscaling.minReplicas }}
+  maxReplicas: {{ .Values.minioAutoscaling.maxReplicas }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageValue: {{ .Values.minioAutoscaling.cpu.targetAverageValue }}
+  - type: Resource
+    resource:
+      name: memory
+      targetAverageValue: {{ .Values.minioAutoscaling.memory.targetAverageValue }}
+{{- end }}

@@ -12,6 +12,8 @@ spec:
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
       labels:
         app.kubernetes.io/name: {{ include "ingest-controller.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
@@ -24,7 +26,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-    {{- if and (eq .Values.global.secrets.aws.enable true) (eq .Values.global.secrets.aws.use_iam_role true) }}
+    {{- if or (and (eq .Values.global.secrets.aws.enable true) (eq .Values.global.secrets.aws.use_iam_role true)) (and (eq .Values.global.secrets.gcs.enable true) (eq .Values.global.secrets.gcs.use_google_service_account true)) }}
       serviceAccountName: {{ .Release.Name }}-service-account
     {{- end}}
       initContainers:
@@ -43,31 +45,22 @@ spec:
             - -c
             - "until pg_isready -d postgresql://'{{ .Values.global.postgresql.postgresqlUsername }}':'{{ .Values.global.postgresql.postgresqlPassword }}'@'{{ template "ingest-controller.postgresql.fullname" . }}':{{ .Values.global.postgresql.servicePort }}/'{{ .Values.global.postgresql.postgresqlDatabase }}'; do sleep 3; done"
       containers:
-        - name: "ingest-controller"
+        - name: ingest-controller
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
           - name: config-volume
             mountPath: /etc/conf
-          {{- if (eq .Values.global.secrets.gcs.enable true) }}
-          - name: google-cloud-key
-            mountPath: /var/secrets/google
-          {{- end }}
+        {{- if .Values.global.secrets.gcs.enable }}
           env:
-          {{- if (eq .Values.global.secrets.gcs.enable true) }}
-          - name: GOOGLE_APPLICATION_CREDENTIALS
-            value: /var/secrets/google/key.json
-          {{- end }}
-          {{- if (eq .Values.global.secrets.aws.enable true) }}
-          {{- if (eq .Values.global.secrets.aws.use_iam_role false) }}
           - name: AWS_ACCESS_KEY_ID
-            value: {{ .Values.global.secrets.aws.AWS_ACCESS_KEY_ID }}
+            value: "{{ .Values.minio.secrets.accessId }}"
           - name: AWS_SECRET_ACCESS_KEY
-            value: {{ .Values.global.secrets.aws.AWS_SECRET_ACCESS_KEY }}
-          - name: AWS_REGION
-            value: {{ .Values.global.secrets.aws.AWS_DEFAULT_REGION }}
-          {{- end }}
-          {{- end }}
+            value: "{{ .Values.minio.secrets.accessKey }}"
+        {{- end }}
+          envFrom:
+          - configMapRef:
+              name: {{ .Release.Name }}-cloud-env
           resources:
 {{- toYaml .Values.containerResources.ingestcontroller | nindent 12 }}
       {{- with .Values.nodeSelector }}
@@ -86,9 +79,3 @@ spec:
         - name: config-volume
           configMap:
             name: {{ template "ingest-controller.fullname" . }}
-        {{- if (eq .Values.global.secrets.gcs.enable true) }}
-        - name: google-cloud-key
-          secret:
-            secretName: {{ .Values.global.secrets.gcs.secret }}
-        {{- end}}
-

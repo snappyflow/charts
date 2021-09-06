@@ -9,8 +9,8 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
   enablePVC: {{ .Values.pvc.enablePVC | quote }}
-  enableGCS: {{ .Values.gcs.enableGCS | quote }}
-  enableS3: {{ .Values.s3.enableS3 | quote }}
+  enableGCS: {{ .Values.global.secrets.gcs.enable | quote }}
+  enableS3: {{ .Values.global.secrets.aws.enable | quote }}
   enableWASBS: {{ .Values.wasbs.enableWASBS | quote }}
   {{- range $key, $val := .Values.environment }}
   {{ $key }}: {{ $val | quote }}
@@ -19,19 +19,23 @@ data:
   {{- range $key, $val := omit .Values.pvc "enablePVC" }}
   {{ $key }}: {{ $val | quote }}
   {{- end }}
-  {{- else if .Values.gcs.enableGCS }}
-  {{- range $key, $val := omit .Values.gcs "enableGCS" }}
+  {{- else if .Values.global.secrets.gcs.enable }}
+  enableIAM: {{ .Values.global.secrets.gcs.use_google_service_account | quote }}
+  {{- range $key, $val := .Values.gcs }}
   {{ $key }}: {{ $val | quote }}
   {{- end }}
-  {{- else if .Values.s3.enableS3 }}
-  {{- range $key, $val := omit .Values.s3 "enableS3" }}
+  {{- else if .Values.global.secrets.aws.enable }}
+  enableIAM: {{ .Values.global.secrets.aws.use_iam_role | quote }}
+  awsAccessKeyID: {{ .Values.global.secrets.aws.AWS_ACCESS_KEY_ID | quote }}
+  awsSecretAccessKey: {{ .Values.global.secrets.aws.AWS_SECRET_ACCESS_KEY | quote }}
+  {{- range $key, $val := .Values.s3 }}
   {{ $key }}: {{ $val | quote }}
   {{- end }}
   {{- else if .Values.wasbs.enableWASBS }}
   {{- range $key, $val := omit .Values.wasbs "enableWASBS" }}
   {{ $key }}: {{ $val | quote }}
   {{- end }}
-  {{- else }}
+  {{- else if .Values.hdfs.enableHDFS }}
   {{- range $key, $val := .Values.hdfs }}
   {{ $key }}: {{ $val | quote }}
   {{- end }}

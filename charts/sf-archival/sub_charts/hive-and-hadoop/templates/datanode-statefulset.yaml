@@ -26,9 +26,10 @@ spec:
   serviceName: {{ include "hadoop.datanode.service" . }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
+        checksum/config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | sha256sum }}
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
       {{- end }}
       labels:
         app.kubernetes.io/name: {{ include "hadoop.name" . }}-datanode
@@ -42,13 +43,16 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if and (eq .Values.global.secrets.aws.enable true) (eq .Values.global.secrets.aws.use_iam_role true) }}
+      {{- if or (and (eq .Values.global.secrets.aws.enable true) (eq .Values.global.secrets.aws.use_iam_role true)) (and (eq .Values.global.secrets.gcs.enable true) (eq .Values.global.secrets.gcs.use_google_service_account true)) }}
       serviceAccountName: {{ .Release.Name }}-service-account
       {{- end}}
       initContainers:
         - name: namenode-ready
           image: busybox:1.28
-          command: ['sh', '-c', "until nslookup {{ include "hadoop.namenode.service" . }}; do echo waiting for namenode; sleep 2; done"]
+          command:
+            - 'sh'
+            - '-c'
+            - "until nslookup {{ include "hadoop.namenode.service" . }}; do echo waiting for namenode; sleep 2; done"
       containers:
         - name: datanode
           image: "{{ .Values.image.datanode.repository }}:{{ .Values.image.datanode.tag }}"
@@ -56,30 +60,14 @@ spec:
           volumeMounts:
           - name: datanode
             mountPath: /hadoop/dfs/data
-          {{- if (eq .Values.global.secrets.gcs.enable true) }}
-          - name: google-cloud-key
-            mountPath: /var/secrets/google
-          {{- end }}
           envFrom:
           - configMapRef:
               name: {{ template "hive-and-hadoop.fullname" . }}-env
+          - configMapRef:
+              name: {{ .Release.Name }}-cloud-env
           env:
           - name: HADOOP_HEAPSIZE
             value: "750"
-          {{- if (eq .Values.global.secrets.gcs.enable true) }}
-          - name: GOOGLE_APPLICATION_CREDENTIALS
-            value: /var/secrets/google/key.json
-          {{- end }}
-          {{- if (eq .Values.global.secrets.aws.enable true) }}
-          {{- if (eq .Values.global.secrets.aws.use_iam_role false) }}
-          - name: AWS_ACCESS_KEY_ID
-            value: {{ .Values.global.secrets.aws.AWS_ACCESS_KEY_ID }}
-          - name: AWS_SECRET_ACCESS_KEY
-            value: {{ .Values.global.secrets.aws.AWS_SECRET_ACCESS_KEY }}
-          - name: AWS_REGION
-            value: {{ .Values.global.secrets.aws.AWS_DEFAULT_REGION }}
-          {{- end }}
-          {{- end }}
           resources:
 {{- toYaml .Values.containerResources.datanode | nindent 12 }}
           ports:
@@ -116,9 +104,3 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if (eq .Values.global.secrets.gcs.enable true) }}
-      volumes:
-        - name: google-cloud-key
-          secret:
-            secretName: {{ .Values.global.secrets.gcs.secret }}
-      {{- end}}

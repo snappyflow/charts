@@ -27,3 +27,7 @@ dependencies:
 - name: signatures
   version: 0.1.0
   repository: file://./sub_charts/signatures
+- name: minio
+  version: 8.0.10
+  repository: file://./sub_charts/minio
+  condition: global.secrets.gcs.enable
