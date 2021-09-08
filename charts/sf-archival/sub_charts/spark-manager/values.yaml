@@ -4,7 +4,7 @@
 monitor:
   image:
     repository: snappyflowml/monitor
-    tag: 5
+    tag: 6
     pullPolicy: IfNotPresent
   containerResources:
     limits:
@@ -17,7 +17,7 @@ monitor:
 jobserver:
   image:
     repository: snappyflowml/job-server
-    tag: 9
+    tag: 10
     pullPolicy: IfNotPresent
   serverPort: 5002
   service:
