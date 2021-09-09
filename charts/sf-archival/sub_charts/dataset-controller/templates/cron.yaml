@@ -16,9 +16,11 @@ spec:
         metadata:
           labels:
             release: {{ .Release.Name }}
-            {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
-            {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
         spec:
+          initContainers:
+          - name: init
+            image: busybox:1.28
+            command: ['sh', '-c', "until nslookup {{ include "dataset-controller.fullname" . }}; do echo waiting for {{ include "dataset-controller.fullname" . }}; sleep 5; done"]
           containers:
           - name: main
             image: snappyflowml/busybox-curl:0.0.1
@@ -49,9 +51,11 @@ spec:
         metadata:
           labels:
             release: {{ .Release.Name }}
-            {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
-            {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
         spec:
+          initContainers:
+          - name: init
+            image: busybox:1.28
+            command: ['sh', '-c', "until nslookup {{ include "dataset-controller.fullname" . }}; do echo waiting for {{ include "dataset-controller.fullname" . }}; sleep 5; done"]
           containers:
           - name: main
             image: snappyflowml/busybox-curl:0.0.1
@@ -82,9 +86,11 @@ spec:
         metadata:
           labels:
             release: {{ .Release.Name }}
-            {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
-            {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
         spec:
+          initContainers:
+          - name: init
+            image: busybox:1.28
+            command: ['sh', '-c', "until nslookup {{ include "dataset-controller.fullname" . }}; do echo waiting for {{ include "dataset-controller.fullname" . }}; sleep 5; done"]
           containers:
           - name: main
             image: snappyflowml/busybox-curl:0.0.1
@@ -115,9 +121,11 @@ spec:
         metadata:
           labels:
             release: {{ .Release.Name }}
-            {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
-            {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
         spec:
+          initContainers:
+          - name: init
+            image: busybox:1.28
+            command: ['sh', '-c', "until nslookup {{ include "dataset-controller.fullname" . }}; do echo waiting for {{ include "dataset-controller.fullname" . }}; sleep 5; done"]
           containers:
           - name: main
             image: snappyflowml/busybox-curl:0.0.1
@@ -149,9 +157,11 @@ spec:
         metadata:
           labels:
             release: {{ .Release.Name }}
-            {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
-            {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
         spec:
+          initContainers:
+          - name: init
+            image: busybox:1.28
+            command: ['sh', '-c', "until nslookup {{ include "dataset-controller.fullname" . }}; do echo waiting for {{ include "dataset-controller.fullname" . }}; sleep 5; done"]
           containers:
           - name: main
             image: snappyflowml/busybox-curl:0.0.1
