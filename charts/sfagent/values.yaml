@@ -52,13 +52,17 @@ config:
   service_static: true
   node_storage: true
   storage-stats: true
-
   node_network: true   # Metrics for node network interfaces
-
   # Applicable if node_network is true, enable/disable metrics for physical and virtual interfaces
   node_network_physical_interface: true   # Metrics for node network physical interfaces
   node_network_virtual_interface: false   # Metrics for node network virtual interfaces
-  
+  # control plane components to monitor
+  apiserver: true
+  coredns: true
+  kube-proxy: true
+  kubelet: true
+  controller-manager: true
+  kube-scheduler: true
   
 
 # Node Agent
