@@ -258,8 +258,8 @@ sftrace:
   replicaCount: 1
   image:
     repository: snappyflowml/sftrace-server
-    tag: 1
-    pullPolicy: IfNotPresent
+    tag: latest
+    pullPolicy: Always
   resources:
     requests:
       cpu: 10m
