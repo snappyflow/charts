@@ -259,7 +259,7 @@ sftrace:
   image:
     repository: snappyflowml/sftrace-server
     tag: 1
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   resources:
     requests:
       cpu: 10m
