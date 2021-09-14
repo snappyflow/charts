@@ -36,6 +36,8 @@ config:
   # Enable/Disable both cluster metrics and cluster log collection
   cluster_monitoring: true
 
+  # AppView flag to control the data being sent to application project
+  app_view: true
 
   # Individual Cluster documents to collect
   node_static: true
