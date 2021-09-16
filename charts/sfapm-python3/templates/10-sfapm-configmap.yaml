@@ -60,3 +60,12 @@ data:
     {{- end }}
     PPROF_SERVER_HOST: "{{ include "sfapm.fullname" . }}-pprof-server"
     PPROF_SERVER_PORT: "{{ .Values.pprof.service.port }}"
+
+    {{- if .Values.cloud.aws.enable }}
+    CLOUD_TYPE: "aws"
+    {{- else if .Values.cloud.gcs.enable }}
+    CLOUD_TYPE: "gcp"
+    GCP_SERVICE_ACCOUNT: "{{ .Values.cloud.gcs.service_account }}"
+    GCP_REGION: "{{ .Values.cloud.gcs.region }}"
+    GCP_ZONE: "{{ .Values.cloud.gcs.zone }}"
+    {{- end }}
