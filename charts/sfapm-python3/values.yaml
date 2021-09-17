@@ -258,8 +258,8 @@ sftrace:
   replicaCount: 1
   image:
     repository: snappyflowml/sftrace-server
-    tag: 1
-    pullPolicy: IfNotPresent
+    tag: latest
+    pullPolicy: Always
   resources:
     requests:
       cpu: 10m
@@ -436,6 +436,17 @@ postgresql:
   multidb: snappyflow;vizbuilder
   multidbUser: snappyflow
   multidbUserPassord: maplelabs
+
+cloud:
+  aws:
+    enable: true
+  gcs:
+    enable: false
+    # Set all of the below entities when Google-Service-Account is being used. Recommended approach unless K8s is running outside GCP (K8s outside GCP flow which will use JSON service-account-keys is not yet implemented)
+    use_google_service_account: true
+    service_account: "XXXX-compute@developer.gserviceaccount.com OR XXXX@XXXX.iam.gserviceaccount.com"
+    region: us-west1
+    zone: us-west1-c
 
 global:
   sfappname: sf-portal-app
