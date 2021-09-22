@@ -1,0 +1,82 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+    name: {{ .Release.Name }}-profile-modification-config
+    namespace: {{ .Release.Namespace }}
+data:
+    config.json: |-
+        {
+          "db": {
+            "name": "{{ .Values.global.postgresql.postgresqlDatabase }}",
+            "user": "{{ .Values.global.postgresql.postgresqlUsername }}",
+            "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
+            "host": "{{ .Values.global.postgresql.host }}",
+            "port": {{ .Values.global.postgresql.servicePort }}
+          },
+          "kafka_brokers": "{{ .Values.global.kafkaBrokers }}",
+          "es_kafka_connect_url": "http://{{ .Release.Name }}-es-kafka-connect:8083",
+          "s3_kafka_connect_url": "http://{{ .Release.Name }}-kafka-connect:8083",
+          "topic_desc": [{
+              "name": "log",
+              "num_partitions": 5,
+              "retention_ms": "86400000"
+          },
+          {
+              "name": "metric",
+              "num_partitions": 5,
+              "retention_ms": "86400000"
+          },
+          {
+              "name": "control",
+              "num_partitions": 5,
+              "retention_ms": "3600000"
+          },
+          {
+              "name": "trace",
+              "num_partitions": 5,
+              "retention_ms": "3600000"
+          },
+          {
+              "name": "profile",
+              "num_partitions": 5,
+              "retention_ms": "3600000"
+          }]
+        }
+
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-profile-modification
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    "helm.sh/hook": post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  template:
+    metadata:
+      name: {{ .Release.Name }}-profile-modification
+      labels:
+        release: {{ .Release.Name | quote }}
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: main
+        image: snappyflowml/datapath-profile-modification:1
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: {{ .Release.Name }}-profile-modification-config
+            mountPath: "/etc/conf"
+            readOnly: true
+      volumes:
+        - name: {{ .Release.Name }}-profile-modification-config
+          configMap:
+            name: {{ .Release.Name }}-profile-modification-config
