@@ -152,6 +152,12 @@ sfapm_celery:
         cpu: 10m
         memory: 100Mi
     replicaCount: 3
+    autoscaling:
+      enabled: true
+      minReplicas: 3
+      maxReplicas: 6
+      targetCPUUtilizationPercentage: 80
+      targetMemoryUtilizationPercentage: 120
     command: "celery -A snappyflow worker -l $LOG_LEVEL -Q periodic -c5 $CELERY_OPTS"
   sftrace:
     resources:
