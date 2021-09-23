@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "opendistro-es.fullname" . }}-exporter
+  labels:
+{{ include "opendistro-es.labels.standard" . | indent 4 }}
+    {{- range $key, $value := .Values.labels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+    component: {{ template "opendistro-es.fullname" . }}
+    role: exporter
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      component: {{ template "opendistro-es.fullname" . }}
+      role: exporter
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        release: "{{ .Release.Name }}"
+        component: {{ template "opendistro-es.fullname" . }}
+        {{- range $key, $value := .Values.labels }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+        role: exporter
+    spec:
+      restartPolicy: {{ .Values.exporter.restartPolicy }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+        - name: "{{ .Chart.Name }}-exporter"
+          image: "{{ .Values.exporter.image.repository }}:{{ .Values.exporter.image.tag }}"
+          imagePullPolicy: "IfNotPresent"
+          command: ["elasticsearch_exporter",
+                    "--es.uri=http://{{ template "opendistro-es.fullname" . }}-headless:9200",
+                    "--es.all",
+                    "--es.shards",
+                    "--es.cluster_settings",
+                    "--es.indices",
+                    "--es.timeout={{ .Values.exporter.es.timeout }}",
+                    "--web.listen-address=:{{ .Values.exporter.service.httpPort }}",
+                    "--web.telemetry-path={{ .Values.exporter.web.path }}"]
+          securityContext:
+            capabilities:
+              drop:
+                - SETPCAP
+                - MKNOD
+                - AUDIT_WRITE
+                - CHOWN
+                - NET_RAW
+                - DAC_OVERRIDE
+                - FOWNER
+                - FSETID
+                - KILL
+                - SETGID
+                - SETUID
+                - NET_BIND_SERVICE
+                - SYS_CHROOT
+                - SETFCAP
+            readOnlyRootFilesystem: true
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          ports:
+            - containerPort: {{ .Values.exporter.service.httpPort }}
+              name: exporter
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: exporter
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: exporter
+            initialDelaySeconds: 10
+            timeoutSeconds: 10

@@ -1,0 +1,25 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ template "opendistro-es.fullname" . }}-exporter
+  labels:
+{{ include "opendistro-es.labels.standard" . | indent 4 }}
+    {{- range $key, $value := .Values.labels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+    component: {{ template "opendistro-es.fullname" . }}
+    role: exporter
+    snappyflow/plugin: elasticsearch
+{{- if .Values.exporter.service.annotations }}
+  annotations:
+{{ toYaml .Values.exporter.service.annotations | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.exporter.service.type }}
+  ports:
+    - name: exporter
+      port: {{ .Values.exporter.service.httpPort }}
+      protocol: TCP
+  selector:
+    component: {{ template "opendistro-es.fullname" . }}
+    role: exporter
