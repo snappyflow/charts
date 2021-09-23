@@ -457,6 +457,18 @@ entries:
     urls:
     - https://github.com/snappyflow/helm-charts/releases/download/elasticsearch-0.3.7/elasticsearch-0.3.7.tgz
     version: 0.3.7
+  elasticsearch-aws:
+  - apiVersion: v1
+    appVersion: 1.13.2
+    created: "2021-09-23T10:48:34.622386748Z"
+    description: Open Distro for Elasticsearch
+    digest: cff560e33c8f3847fc2486d229cc1934a33ab3e19b399470bb27604c0410eeaf
+    name: elasticsearch-aws
+    sources:
+    - hhttps://github.com/opendistro-for-elasticsearch/opendistro-build
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/elasticsearch-aws-1.13.2/elasticsearch-aws-1.13.2.tgz
+    version: 1.13.2
   elasticsearchv1:
   - apiVersion: v1
     appVersion: 6.8.15
