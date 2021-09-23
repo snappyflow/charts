@@ -156,8 +156,8 @@ sfapm_celery:
       enabled: true
       minReplicas: 3
       maxReplicas: 6
-      targetCPUUtilizationPercentage: 80
-      targetMemoryUtilizationPercentage: 120
+      targetCPUUtilizationPercentage: 8000
+      targetMemoryUtilizationPercentage: 410
     command: "celery -A snappyflow worker -l $LOG_LEVEL -Q periodic -c5 $CELERY_OPTS"
   sftrace:
     resources:
