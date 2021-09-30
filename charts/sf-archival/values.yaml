@@ -58,6 +58,24 @@ dataset-controller:
     enabled: false
     url: 127.0.0.1:8000/api/v1/records/
     scheme: https
+  schedules:
+    expired: "1 0 * * *"
+    raw_version_compacted: "5 2 * * *"
+    detect: "*/30 * * * *"
+    refresh_size: "5 1 * * *"
+    billing: "0 * * * *"
+    
+
+compaction-controller:
+  schedules:
+    create: "*/10 * * * *"
+    queue: "*/10 * * * *"
+    start: "*/10 * * * *"
+
+
+ingest-controller:
+  schedules:
+    sink: "*/5 * * * *"
 
 spark-manager:
   jobserver:

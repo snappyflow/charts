@@ -75,3 +75,9 @@ containerResources:
     requests:
       cpu: 10m
       memory: 10Mi
+
+schedules:
+  create: "*/10 * * * *"
+  queue: "*/10 * * * *"
+  start: "*/10 * * * *"
+  

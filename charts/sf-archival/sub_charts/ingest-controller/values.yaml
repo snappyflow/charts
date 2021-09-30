@@ -51,3 +51,6 @@ containerResources:
     requests:
       cpu: 10m
       memory: 10Mi
+
+schedules:
+  sink: "*/5 * * * *"
