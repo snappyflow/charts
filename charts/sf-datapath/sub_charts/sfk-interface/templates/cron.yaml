@@ -5,6 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "sfk-interface.labels" . | indent 4 }}
+backoffLimit: 0
 spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.sink | quote }}

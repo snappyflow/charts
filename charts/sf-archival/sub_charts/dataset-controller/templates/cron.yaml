@@ -5,6 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "dataset-controller.labels" . | indent 4 }}
+backoffLimit: 0
 spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.expired | quote }}
@@ -40,6 +41,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "dataset-controller.labels" . | indent 4 }}
+backoffLimit: 0
 spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.raw_version_compacted | quote  }}
@@ -75,6 +77,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "dataset-controller.labels" . | indent 4 }}
+backoffLimit: 0
 spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.detect  | quote }}
@@ -110,6 +113,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "dataset-controller.labels" . | indent 4 }}
+backoffLimit: 0
 spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.refresh_size | quote }}
@@ -146,6 +150,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "dataset-controller.labels" . | indent 4 }}
+backoffLimit: 0
 spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.billing | quote }}

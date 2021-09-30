@@ -5,6 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "compaction-controller.labels" . | indent 4 }}
+backoffLimit: 0
 spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.create | quote}}
@@ -40,6 +41,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "compaction-controller.labels" . | indent 4 }}
+backoffLimit: 0
 spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.queue | quote}}
@@ -75,6 +77,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "compaction-controller.labels" . | indent 4 }}
+backoffLimit: 0
 spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.start | quote}}
