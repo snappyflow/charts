@@ -9,11 +9,11 @@ spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.expired | quote }}
   successfulJobsHistoryLimit: 0
-  failedJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
+      backoffLimit: 0
       template:
-        backoffLimit: 0
         metadata:
           labels:
             release: {{ .Release.Name }}
@@ -45,11 +45,11 @@ spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.raw_version_compacted | quote  }}
   successfulJobsHistoryLimit: 0
-  failedJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
+      backoffLimit: 0
       template:
-        backoffLimit: 0
         metadata:
           labels:
             release: {{ .Release.Name }}
@@ -81,11 +81,11 @@ spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.detect  | quote }}
   successfulJobsHistoryLimit: 0
-  failedJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
+      backoffLimit: 0
       template:
-        backoffLimit: 0
         metadata:
           labels:
             release: {{ .Release.Name }}
@@ -117,11 +117,11 @@ spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.refresh_size | quote }}
   successfulJobsHistoryLimit: 0
-  failedJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
+      backoffLimit: 0
       template:
-        backoffLimit: 0
         metadata:
           labels:
             release: {{ .Release.Name }}
@@ -154,11 +154,11 @@ spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.billing | quote }}
   successfulJobsHistoryLimit: 0
-  failedJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
+      backoffLimit: 0
       template:
-        backoffLimit: 0
         metadata:
           labels:
             release: {{ .Release.Name }}

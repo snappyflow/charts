@@ -9,7 +9,7 @@ spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.sink | quote }}
   successfulJobsHistoryLimit: 0
-  failedJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       backoffLimit: 0

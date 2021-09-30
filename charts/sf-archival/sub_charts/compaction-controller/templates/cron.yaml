@@ -9,11 +9,11 @@ spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.create | quote}}
   successfulJobsHistoryLimit: 0
-  failedJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
+      backoffLimit: 0
       template:
-        backoffLimit: 0
         metadata:
           labels:
             release: {{ .Release.Name }}
@@ -45,11 +45,11 @@ spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.queue | quote}}
   successfulJobsHistoryLimit: 0
-  failedJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
+      backoffLimit: 0
       template:
-        backoffLimit: 0
         metadata:
           labels:
             release: {{ .Release.Name }}
@@ -81,11 +81,11 @@ spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.start | quote}}
   successfulJobsHistoryLimit: 0
-  failedJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
+      backoffLimit: 0
       template:
-        backoffLimit: 0
         metadata:
           labels:
             release: {{ .Release.Name }}
