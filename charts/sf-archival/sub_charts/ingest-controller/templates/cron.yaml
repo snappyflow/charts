@@ -5,7 +5,6 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "ingest-controller.labels" . | indent 4 }}
-backoffLimit: 0
 spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.sink | quote}}
@@ -14,6 +13,7 @@ spec:
   jobTemplate:
     spec:
       template:
+        backoffLimit: 0
         metadata:
           labels:
             release: {{ .Release.Name }}
