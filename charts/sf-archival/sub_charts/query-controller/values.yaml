@@ -8,7 +8,7 @@ image:
 
 executionControler:
   repository: snappyflowml/query-execution-controller
-  tag: 12
+  tag: 13
   pullPolicy: IfNotPresent
 
 cleanup:
