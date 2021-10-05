@@ -57,3 +57,6 @@ autoscaling:
     minReplicas: 2
     maxReplicas: 5
 
+sfk-interface:
+  schedules:
+    sink: "*/5 * * * *"

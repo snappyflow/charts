@@ -4,7 +4,7 @@ metadata:
   name: {{ template "spark-manager.fullname" . }}-monitor
   namespace: {{ .Release.Namespace }}
 data:
-  monitor-config.json: |-
+  config.json: |-
     {
       "db": {
         "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
@@ -12,8 +12,7 @@ data:
         "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
         "host": "{{ template "spark-manager.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }}
-      },
-      "nameSpace": "{{ .Release.Namespace }}"
+      }
     }
 
 ---
@@ -33,9 +32,7 @@ data:
         "host": "{{ template "spark-manager.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }}
       },
-      "serverPort": ":{{ .Values.jobserver.serverPort }}",
-      "propertiesFile": "/etc/spark-conf/spark-properties",
-      "sparkSubmitPath": "/opt/spark-3.1.2-bin-hadoop3.2/bin/spark-submit"
+      "serverPort": ":{{ .Values.jobserver.serverPort }}"
     }
 
 ---
@@ -43,39 +40,135 @@ data:
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: {{ template "spark-manager.fullname" . }}-spark-properties
+  name: {{ template "spark-manager.fullname" . }}-infrastructure
   namespace: {{ .Release.Namespace }}
 data:
-  spark-properties: |-
-    spark.kubernetes.driver.limit.cores 0.5
-    spark.kubernetes.executor.limit.cores 0.4
-    spark.executor.instances 5
-    spark.kubernetes.executor.request.cores 0.2
-    spark.kubernetes.driver.request.cores 0.2
-    spark.executor.memory 512m
-    spark.driver.memory 512m
-    spark.eventLog.enabled true
+  config.json: |-
+    {
+      "db": {
+        "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
+        "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
+        "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
+        "host": "{{ template "spark-manager.postgresql.fullname" . }}",
+        "port": {{ .Values.global.postgresql.servicePort }}
+      },
+      "infrastructures": [
+        {
+          "mode": "KUBERNETES",
+          "preference": {{ .Values.infrastructure.Kubernetes.preference }},
+          "template": {
+            "pod_namespace": "{{ .Release.Namespace }}",
+            "command": [
+              "/opt/spark-3.1.2-bin-hadoop3.2/bin/./spark-submit",
+              "--name",
+              "__PARAM__name",
+              "--master",
+              "k8s://kubernetes.default.svc:443",
+              "--deploy-mode",
+              "cluster",
+              "--conf",
+              "spark.kubernetes.driver.limit.cores={{ .Values.infrastructure.Kubernetes.jobResources.cpu.limits.driver }}",
+              "--conf",
+              "spark.kubernetes.executor.limit.cores={{ .Values.infrastructure.Kubernetes.jobResources.cpu.limits.executor }}",
+              "--conf",
+              "spark.executor.instances={{ .Values.infrastructure.Kubernetes.numExecutors }}",
+              "--conf",
+              "spark.kubernetes.executor.request.cores={{ .Values.infrastructure.Kubernetes.jobResources.cpu.requests.executor }}",
+              "--conf",
+              "spark.kubernetes.driver.request.cores={{ .Values.infrastructure.Kubernetes.jobResources.cpu.requests.driver }}",
+              "--conf",
+              "spark.executor.memory={{ .Values.infrastructure.Kubernetes.jobResources.memory.executor }}",
+              "--conf",
+              "spark.driver.memory={{ .Values.infrastructure.Kubernetes.jobResources.memory.driver }}",
+              "--conf",
+              "spark.eventLog.enabled=true",
+              "--conf",
 {{- if eq .Values.global.secrets.aws.enable true }}
-    spark.eventLog.dir s3a://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}
+              "spark.eventLog.dir=s3a://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}",
 {{- else }}
-    spark.eventLog.dir gs://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}
+              "spark.eventLog.dir=gs://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}",
 {{- end }}
-    spark.kubernetes.driver.annotation.prometheus.io/scrape false
-    spark.kubernetes.driver.label.{{ .Values.global.snappyflowProjectLabel}} {{ .Values.global.snappyflowProjectName }}
-    spark.kubernetes.executor.label.{{ .Values.global.snappyflowProjectLabel}} {{ .Values.global.snappyflowProjectName }}
-    spark.kubernetes.driver.label.{{ .Values.global.snappyflowAppLabel }} {{ .Values.global.snappyflowAppName }}
-    spark.kubernetes.executor.label.{{ .Values.global.snappyflowAppLabel }} {{ .Values.global.snappyflowAppName }}
-    spark.kubernetes.driver.label.release {{ .Release.Name }}
-    spark.kubernetes.executor.label.release {{ .Release.Name }}
-    spark.kubernetes.container.image snappyflowml/spark-compact-orc:1
+              "--conf",
+              "spark.kubernetes.driver.annotation.prometheus.io/scrape=false",
+              "--conf",
+              "spark.kubernetes.driver.label.{{ .Values.global.snappyflowProjectLabel}}={{ .Values.global.snappyflowProjectName }}",
+              "--conf",
+              "spark.kubernetes.executor.label.{{ .Values.global.snappyflowProjectLabel}}={{ .Values.global.snappyflowProjectName }}",
+              "--conf",
+              "spark.kubernetes.driver.label.{{ .Values.global.snappyflowAppLabel }}={{ .Values.global.snappyflowAppName }}",
+              "--conf",
+              "spark.kubernetes.executor.label.{{ .Values.global.snappyflowAppLabel }}={{ .Values.global.snappyflowAppName }}",
+              "--conf",
+              "spark.kubernetes.driver.label.release={{ .Release.Name }}",
+              "--conf",
+              "spark.kubernetes.executor.label.release={{ .Release.Name }}",
+              "--conf",
+              "spark.kubernetes.container.image={{ .Values.compactionImage }}",
 {{- if or (and (eq .Values.global.secrets.aws.enable true) (eq .Values.global.secrets.aws.use_iam_role true)) (and (eq .Values.global.secrets.gcs.enable true) (eq .Values.global.secrets.gcs.use_google_service_account true)) }}
-    spark.kubernetes.authenticate.driver.serviceAccountName {{ .Release.Name }}-service-account
-    spark.kubernetes.authenticate.executor.serviceAccountName {{ .Release.Name }}-service-account
-    spark.kubernetes.authenticate.serviceAccountName {{ .Release.Name }}-service-account
+              "--conf",
+              "spark.kubernetes.authenticate.driver.serviceAccountName={{ .Release.Name }}-service-account",
+              "--conf",
+              "spark.kubernetes.authenticate.executor.serviceAccountName={{ .Release.Name }}-service-account",
+              "--conf",
+              "spark.kubernetes.authenticate.serviceAccountName={{ .Release.Name }}-service-account",
 {{- else }}
-    spark.kubernetes.driver.secretKeyRef.AWS_ACCESS_KEY_ID {{ .Release.Name }}-aws-secret:key
-    spark.kubernetes.driver.secretKeyRef.AWS_SECRET_ACCESS_KEY {{ .Release.Name }}-aws-secret:secret
-    spark.kubernetes.executor.secretKeyRef.AWS_ACCESS_KEY_ID {{ .Release.Name }}-aws-secret:key
-    spark.kubernetes.executor.secretKeyRef.AWS_SECRET_ACCESS_KEY {{ .Release.Name }}-aws-secret:secret
+              "--conf",
+              "spark.kubernetes.driver.secretKeyRef.AWS_ACCESS_KEY_ID={{ .Release.Name }}-aws-secret:key",
+              "--conf",
+              "spark.kubernetes.driver.secretKeyRef.AWS_SECRET_ACCESS_KEY={{ .Release.Name }}-aws-secret:secret",
+              "--conf",
+              "spark.kubernetes.executor.secretKeyRef.AWS_ACCESS_KEY_ID={{ .Release.Name }}-aws-secret:key",
+              "--conf",
+              "spark.kubernetes.executor.secretKeyRef.AWS_SECRET_ACCESS_KEY={{ .Release.Name }}-aws-secret:secret",
 {{- end }}
-    spark.kubernetes.namespace {{ .Release.Namespace }}
+              "--conf",
+              "spark.kubernetes.namespace={{ .Release.Namespace }}",
+              "--class",
+              "sf.org.hadoop.Compact",
+              "local:///tmp/jars/application/compact-orc-scala-2.12.10.jar",
+              "__PARAM__source",
+              "__PARAM__destination"
+            ]
+          }
+        }
+{{- if .Values.infrastructure.EcsFargate.enabled -}}
+        ,{
+          "mode": "ECS_FARGATE",
+          "preference": {{ .Values.infrastructure.EcsFargate.preference }},
+          "template": {
+            "command": [
+              "/opt/spark/bin/./spark-submit",
+              "--name",
+              "__PARAM__name",
+              "--master",
+              "local[{{ .Values.infrastructure.EcsFargate.numExecutors }}]",
+              "--conf",
+              "spark.executor.instances={{ .Values.infrastructure.EcsFargate.numExecutors }}",
+              "--conf",
+              "spark.eventLog.enabled=true",
+              "--conf",
+              "spark.eventLog.dir=s3a://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}",
+              "--conf",
+              "spark.hadoop.fs.s3a.aws.credentials.provider=com.amazonaws.auth.EC2ContainerCredentialsProviderWrapper",
+              "--class",
+              "sf.org.hadoop.Compact",
+              "local:///tmp/jars/application/compact-orc-scala-2.12.10.jar",
+              "__PARAM__source",
+              "__PARAM__destination"
+            ],
+            "ecs_cluster": "{{ .Values.infrastructure.EcsFargate.cluster }}",
+            "task_defn_family": "{{ .Values.infrastructure.EcsFargate.cluster }}",
+            "task_role": "{{ .Values.infrastructure.EcsFargate.iamRole }}",
+            "task_exec_role": "{{ .Values.infrastructure.EcsFargate.iamRole }}",
+            "task_resources": {
+              "cpu": {{ .Values.infrastructure.EcsFargate.jobResources.cpu }},
+              "memory": {{ .Values.infrastructure.EcsFargate.jobResources.memory }}
+            },
+            "task_subnet": "{{ .Values.infrastructure.EcsFargate.taskSubnet }}",
+            "task_security_group": "{{ .Values.infrastructure.EcsFargate.taskSecurityGroup }}",
+            "task_image": "{{ .Values.compactionImage }}"
+          }
+        }
+{{- end }}
+      ]
+    }

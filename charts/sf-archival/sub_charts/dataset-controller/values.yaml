@@ -39,3 +39,10 @@ containerResources:
     requests:
       cpu: 10m
       memory: 256Mi
+
+schedules:
+  expired: "1 0 * * *"
+  raw_version_compacted: "5 2 * * *"
+  detect: "*/30 * * * *"
+  refresh_size: "5 1 * * *"
+  billing: "0 * * * *"

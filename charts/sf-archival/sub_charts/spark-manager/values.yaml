@@ -32,7 +32,10 @@ jobserver:
       cpu: 10m
       memory: 50Mi
 
+compactionImage: snappyflowml/spark-compact-orc:1
+
 nameOverride: ""
+
 fullnameOverride: ""
 
 nodeSelector: {}

@@ -7,11 +7,12 @@ metadata:
 {{ include "dataset-controller.labels" . | indent 4 }}
 spec:
   concurrencyPolicy: Forbid
-  schedule: "1 0 * * *"
+  schedule: {{ .Values.schedules.expired | quote }}
   successfulJobsHistoryLimit: 0
-  failedJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
+      backoffLimit: 0
       template:
         metadata:
           labels:
@@ -42,11 +43,12 @@ metadata:
 {{ include "dataset-controller.labels" . | indent 4 }}
 spec:
   concurrencyPolicy: Forbid
-  schedule: "5 2 * * *"
+  schedule: {{ .Values.schedules.raw_version_compacted | quote  }}
   successfulJobsHistoryLimit: 0
-  failedJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
+      backoffLimit: 0
       template:
         metadata:
           labels:
@@ -77,11 +79,12 @@ metadata:
 {{ include "dataset-controller.labels" . | indent 4 }}
 spec:
   concurrencyPolicy: Forbid
-  schedule: "*/30 * * * *"
+  schedule: {{ .Values.schedules.detect  | quote }}
   successfulJobsHistoryLimit: 0
-  failedJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
+      backoffLimit: 0
       template:
         metadata:
           labels:
@@ -112,11 +115,12 @@ metadata:
 {{ include "dataset-controller.labels" . | indent 4 }}
 spec:
   concurrencyPolicy: Forbid
-  schedule: "5 1 * * *"
+  schedule: {{ .Values.schedules.refresh_size | quote }}
   successfulJobsHistoryLimit: 0
-  failedJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
+      backoffLimit: 0
       template:
         metadata:
           labels:
@@ -148,11 +152,12 @@ metadata:
 {{ include "dataset-controller.labels" . | indent 4 }}
 spec:
   concurrencyPolicy: Forbid
-  schedule: "0 * * * *"
+  schedule: {{ .Values.schedules.billing | quote }}
   successfulJobsHistoryLimit: 0
-  failedJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
+      backoffLimit: 0
       template:
         metadata:
           labels:

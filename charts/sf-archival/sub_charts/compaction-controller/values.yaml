@@ -9,21 +9,15 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
-applicationJarPath: "local:///tmp/jars/application/compact-orc-scala-2.12.10.jar"
-applicationClassName: "sf.org.hadoop.Compact"
-
 serverPort: ":5005"
-
-MasterUrl: "k8s://kubernetes.default.svc:443"
 
 service:
   servicePort: 5005
 
-# Number of compaction jobs to run simultaneously
-MaxSimultaneousRun: 1
-
-# Number of retries for a failed compaction job
-MaxAttempts: 3
+maxRunningHours: 3 # Max hours a compaction job is allowed to run for
+maxPendingHours: 1 # Max hours a compaction job is allowed to stay in pending state for
+maxSimultaneousRun: 1 # Max number of compaction jobs that can run parallely
+maxAttempts: 2 # Max number of times a compaction job will be executed in case of failures etc.
 
 ingress:
   enabled: false
@@ -75,3 +69,9 @@ containerResources:
     requests:
       cpu: 10m
       memory: 10Mi
+
+schedules:
+  create: "*/10 * * * *"
+  queue: "*/10 * * * *"
+  processStuck: "*/10 * * * *"
+  start: "*/10 * * * *"
