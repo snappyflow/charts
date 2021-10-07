@@ -41,8 +41,10 @@ spec:
           configMap:
             name: {{ template "sf-apm-agents.fullname" . }}
       serviceAccountName: {{ if .Values.rbac.create }}{{ template "sf-apm-agents.name" . }}{{ else }}"{{ .Values.rbac.serviceAccountName }}"{{ end }}
+      {{ if .Values.imageCredentials.token -}}
       imagePullSecrets:
       - name: {{ template "sf-apm-agents.name" . }}-imagepullsecret
+      {{- end }}
 {{- if .Values.cluster_agent.nodeSelector }}
       nodeSelector:
 {{ toYaml .Values.cluster_agent.nodeSelector | indent 8 }}

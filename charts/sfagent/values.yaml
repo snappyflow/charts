@@ -7,7 +7,7 @@ rbac:
 imageCredentials:
   registry: https://index.docker.io/v1/
   username: snappyflowml
-  password: e4dba4c6-0c25-44b5-960a-bed24e37c1bb
+  token: ""
   email: supervisor@snappyflow.io
 
 config:
