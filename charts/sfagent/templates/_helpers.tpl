@@ -2,6 +2,12 @@
 {{/*
 Expand the name of the chart.
 */}}
+{{- define "imagePullSecret" }}
+{{- with .Values.imageCredentials }}
+{{- printf "{\"auths\":{\"%s\":{\"username\":\"%s\",\"password\":\"%s\",\"email\":\"%s\",\"auth\":\"%s\"}}}" .registry .username .password .email (printf "%s:%s" .username .password | b64enc) | b64enc }}
+{{- end }}
+{{- end }}
+
 {{- define "sf-apm-forward.name" -}}
 {{- $name := default .Chart.Name .Values.forwardmetric.name -}}
 {{- printf "%s-%s" $name .Release.Name | trunc 63 | trimSuffix "-" -}}
