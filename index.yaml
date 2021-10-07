@@ -2955,6 +2955,25 @@ entries:
   sfagent:
   - apiVersion: v1
     appVersion: "2.1"
+    created: "2021-10-07T17:36:05.203616743Z"
+    description: Cluster and Application Monitoring and Logging system for Maplelabs'
+      snappyFlow APM.
+    digest: 484e9a6fbba494eba6e9d0f3c81119b7c0639675a038498e17b6b7995b6e7736
+    home: http://www.snappyflow.io
+    keywords:
+    - monitoring
+    - alerting
+    - metric
+    - logging
+    maintainers:
+    - email: upendra.sahu@maplelabs.com
+      name: Upendra
+    name: sfagent
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfagent-3.1.24/sfagent-3.1.24.tgz
+    version: 3.1.24
+  - apiVersion: v1
+    appVersion: "2.1"
     created: "2021-10-07T09:29:58.726160954Z"
     description: Cluster and Application Monitoring and Logging system for Maplelabs'
       snappyFlow APM.
