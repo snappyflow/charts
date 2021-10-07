@@ -4,6 +4,12 @@ rbac:
   ## Ignored if create is true, REQUIRED if create is false
   serviceAccountName: default
 
+imageCredentials:
+  registry: https://index.docker.io/v1/
+  username: snappyflowml
+  password: e4dba4c6-0c25-44b5-960a-bed24e37c1bb
+  email: supervisor@snappyflow.io
+
 config:
   # Unique cluster name to add in documents as _tag_cloudName.
   # This is used to create account in APM, this need not be same as actual Kubernets cluster name.
