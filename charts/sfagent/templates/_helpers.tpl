@@ -4,7 +4,7 @@ Expand the name of the chart.
 */}}
 {{- define "imagePullSecret" }}
 {{- with .Values.imageCredentials }}
-{{- printf "{\"auths\":{\"%s\":{\"username\":\"%s\",\"password\":\"%s\",\"email\":\"%s\",\"auth\":\"%s\"}}}" .registry .username .token .email (printf "%s:%s" .username .password | b64enc) | b64enc }}
+{{- printf "{\"auths\":{\"%s\":{\"username\":\"%s\",\"password\":\"%s\",\"email\":\"%s\",\"auth\":\"%s\"}}}" .registry .username .token .email (printf "%s:%s" .username .token | b64enc) | b64enc }}
 {{- end }}
 {{- end }}
 
