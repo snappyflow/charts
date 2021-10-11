@@ -47,4 +47,8 @@ spec:
         backend:
           serviceName: {{ include "sfapm.fullname" . }}-vizbuilder
           servicePort: 8000
+      - path: /cserver
+        backend:
+          serviceName: {{ include "sfapm.fullname" . }}-commands
+          servicePort: 8000
 {{- end }}
