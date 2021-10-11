@@ -24,6 +24,10 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     spec:
       serviceAccountName: {{ if .Values.rbac.create }}{{ template "sf-apm-agents.name" . }}{{ else }}"{{ .Values.rbac.serviceAccountName }}"{{ end }}
+      {{ if .Values.imageCredentials.token -}}
+      imagePullSecrets:
+      - name: {{ template "sf-apm-agents.name" . }}-imagepullsecret
+      {{- end }}
       hostPID: true
       containers:
       - name: node-agent
