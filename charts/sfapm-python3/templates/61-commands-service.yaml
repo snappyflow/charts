@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sfapm.fullname" . }}-commands
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+    app: commands
+    role: server
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+spec:
+  type: {{ .Values.commands.service.type }}
+  ports:
+    - port: {{ .Values.commands.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "sfapm.selectorLabels" . | nindent 4 }}
+    app: commands
+    role: server

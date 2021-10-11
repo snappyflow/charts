@@ -260,6 +260,56 @@ vizbuilder_celery:
     replicaCount: 1
     command: "celery -A vizbuilder worker -l $LOG_LEVEL -Q provisiontemplate -c1 $CELERY_OPTS"
 
+commands:
+  replicaCount: 2
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 3
+    # Below values are based on requests.
+    # Hence value > 100 needs to be calculated based on set limits
+    # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
+    targetCPUUtilizationPercentage: 8000
+    targetMemoryUtilizationPercentage: 240
+  image:
+    repository: snappyflowml/sfapm-commands
+    tag: master
+    pullPolicy: IfNotPresent
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 768Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  service:
+    type: ClusterIP
+    port: 8000
+
+commands_celery:
+  env:
+    C_FORCE_ROOT: true
+    CELERY_OPTS: "-O fair --max-tasks-per-child 20 -P gevent"
+  beat:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 100Mi
+    command: "celery -A command_server beat --scheduler django -l $LOG_LEVEL"
+  default:
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 768Mi
+      requests:
+        cpu: 100m
+        memory: 100Mi
+    replicaCount: 1
+    command: "celery -A command_server worker -l $LOG_LEVEL -Q default -c10 $CELERY_OPTS"
+
 sftrace:
   replicaCount: 1
   image:
@@ -439,7 +489,7 @@ postgresql:
   # when local postgresql is enabled below values are used to configure database
   rootPassword: postgres
   rootUser: postgres
-  multidb: snappyflow;vizbuilder
+  multidb: snappyflow;vizbuilder;commands
   multidbUser: snappyflow
   multidbUserPassord: maplelabs
 
