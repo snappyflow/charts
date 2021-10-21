@@ -1531,6 +1531,22 @@ entries:
   petclinic:
   - apiVersion: v1
     appVersion: 2.1.0.BUILD-SNAPSHOT
+    created: "2021-10-21T11:05:45.598870934Z"
+    description: Helm chart for deploying basic Spring applications
+    digest: 23bc8788fd8e8b6ecc066206a5d28f02bc59ea03311b896e0724c5026902de42
+    home: https://spring.io
+    icon: https://spring.io/img/homepage/icon-spring-boot.svg
+    keywords:
+    - spring
+    - petclinic
+    name: petclinic
+    sources:
+    - https://github.com/spring-projects/spring-petclinic
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/petclinic-0.3.8/petclinic-0.3.8.tgz
+    version: 0.3.8
+  - apiVersion: v1
+    appVersion: 2.1.0.BUILD-SNAPSHOT
     created: "2020-10-22T12:11:00.441539939Z"
     description: Helm chart for deploying basic Spring applications
     digest: 7c78eac7c600fa020a88d3b3ffaea663954f9ced4076af356a80503471fdf6c2
