@@ -20,4 +20,4 @@ name: elasticsearch-aws
 sources:
 - hhttps://github.com/opendistro-for-elasticsearch/opendistro-build
 # Chart version
-version: 1.13.2
+version: 1.13.3
