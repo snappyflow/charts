@@ -20,6 +20,7 @@ spec:
         agentKind: cluster
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        prometheus.io/scrape: "false"
     spec:
       containers:
       - name: cluster-agent
