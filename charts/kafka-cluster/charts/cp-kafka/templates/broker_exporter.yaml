@@ -23,6 +23,9 @@ spec:
         release: {{ .Release.Name }}
         {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
         {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9308"
     spec:
       initContainers:
         - name: kafka-ready
