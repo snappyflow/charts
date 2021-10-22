@@ -13,7 +13,7 @@ data:
     key: "{{ .Values.global.key }}"
     metrics:
       plugins:
-      - name: nginx
+      - name: kube-sfagent-nginx
         enabled: true
         interval: 300
         config:
@@ -26,6 +26,8 @@ data:
         enabled: true
         config:
           log_path: "/var/log/nginx/access1.log"
+          geo_info: true
+          ua_parser: true
       - name: nginx-error
         enabled: true
         config:
