@@ -30,7 +30,11 @@ data:
       - name: mysql-general
         enabled: true
         config:
-          log_path: "/var/log/mysql/mysql.log, /var/log/mysql.log, /var/log/mysqld.log"
+          log_path: "/var/log/mysql/mysql.log"
+      - name: mysql-slowquery
+        enabled: true
+        config:
+          log_path: "/var/log/mysql/mysql-slow.log"
       - name: mysql-error
         enabled: true
         config:
