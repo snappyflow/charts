@@ -105,6 +105,8 @@ spec:
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         env:
+        - name: KAFKA_OPTS
+	        value: -Dzookeeper.4lw.commands.whitelist=*
         - name : KAFKA_HEAP_OPTS
           value: "{{ .Values.heapOptions }}"
         {{- if .Values.jmx.port }}
