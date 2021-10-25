@@ -105,6 +105,8 @@ spec:
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         env:
+        - name: KAFKA_OPTS
+          value: -Dzookeeper.4lw.commands.whitelist=*
         - name : KAFKA_HEAP_OPTS
           value: "{{ .Values.heapOptions }}"
         {{- if .Values.jmx.port }}
@@ -141,6 +143,17 @@ spec:
           ZOOKEEPER_SERVER_ID=$((${HOSTNAME##*-}+1)) \
           ZOOKEEPER_SERVERS=`echo $ZOOKEEPER_SERVERS | sed -e "$ZK_FIX_HOST_REGEX"` \
           /etc/confluent/docker/run
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - echo "ruok" | timeout 10 nc -w 2 127.0.0.1 2181 | grep imok
+          initialDelaySeconds: 300
+          failureThreshold: 3
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 15
         volumeMounts:
         - name: datadir
           mountPath: /var/lib/zookeeper/data

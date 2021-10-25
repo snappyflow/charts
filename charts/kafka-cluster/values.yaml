@@ -36,7 +36,8 @@ prometheus:
 cp-zookeeper:
   enabled: true
   servers: 3
-  image: confluentinc/cp-zookeeper
+  # Using snappyflowml/zookeeper as netcat is not present in confluentinc/cp-zookeper:6.0.1 (original chart image)
+  image: snappyflowml/cp-zookeeper
   imageTag: 6.0.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
   ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
