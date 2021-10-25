@@ -3,4 +3,3 @@ appVersion: "1.0"
 description: A Helm chart for kafka and zookeeper
 name: kafka-cluster
 version: 0.6.21
-
