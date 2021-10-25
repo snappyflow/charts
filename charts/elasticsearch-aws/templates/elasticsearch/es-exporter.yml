@@ -30,6 +30,9 @@ spec:
         {{ $key }}: {{ $value | quote }}
         {{- end }}
         role: exporter
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: {{ .Values.exporter.service.httpPort | quote }}
     spec:
       restartPolicy: {{ .Values.exporter.restartPolicy }}
       securityContext:

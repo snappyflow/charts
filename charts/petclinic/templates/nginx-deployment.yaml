@@ -29,7 +29,8 @@ spec:
         {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
         snappyflow/component: nginx
       annotations:
-        {{ toYaml .Values.podAnnotations | indent 8 }}
+        prometheus.io/scrape: "true"
+        prometheus.io/port: {{ .Values.nginx.metrics.port | quote }}
     spec:
       serviceAccountName: {{ template "spring.serviceAccountName" . }}
       securityContext:
