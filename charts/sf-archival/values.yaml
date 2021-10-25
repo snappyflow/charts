@@ -64,14 +64,17 @@ dataset-controller:
     detect: "*/30 * * * *"
     refresh_size: "5 1 * * *"
     billing: "0 * * * *"
-    
 
 compaction-controller:
+  maxRunningHours: 3 # Max hours a compaction job is allowed to run for
+  maxPendingHours: 1 # Max hours a compaction job is allowed to stay in pending state for
+  maxSimultaneousRun: 1 # Max number of compaction jobs that can run parallely
+  maxAttempts: 2 # Max number of times a compaction job will be executed in case of failures etc.
   schedules:
     create: "*/10 * * * *"
     queue: "*/10 * * * *"
+    processStuck: "*/10 * * * *"
     start: "*/10 * * * *"
-
 
 ingest-controller:
   schedules:
@@ -82,6 +85,34 @@ spark-manager:
     sparkProperties:
       # S3 bucket with aws prefix/folder for spark event logs e.g., for bucket location of s3://sparkhs/spark-hs configure as configured below
       logDirectory: sparkhs/spark-hs
+  infrastructure:
+    Kubernetes:
+      # Kubernetes is always inserted as an infrastructure with slightly higher preference numbers
+      # If some other infrastructure has higher preference, that infrastructure will be used
+      preference: 10
+      numExecutors: 5
+      jobResources:
+        cpu:
+          requests:
+            executor: 0.2
+            driver: 0.2
+          limits:
+            executor: 0.4
+            driver: 0.5
+        memory:
+          executor: 1024m
+          driver: 1024m
+    EcsFargate:
+      enabled: false
+      preference: 1
+      cluster: sf-archival-compaction
+      numExecutors: 2
+      iamRole: arn:aws:iam::159750416379:role/Dev-Archival-presto_hive
+      taskSubnet: subnet-09a6fcdc2b614e300
+      taskSecurityGroup: sg-03b8db147f1b7b423
+      jobResources:
+        cpu: 2048
+        memory: 8192
 
 spark-history-server:
   # If spark history server is enabled, s3.logDirectory/gcs.logDirectory param of its config should be same as spark-manager.jobserver.sparkProperties.logDirectory
@@ -90,3 +121,4 @@ spark-history-server:
     logDirectory: sparkhs/spark-hs
   gcs:
     logDirectory: sparkhs/spark-hs
+

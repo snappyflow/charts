@@ -15,15 +15,11 @@ data:
         "host": "{{ template "compaction-controller.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }}
       },
-      "driverPodUUIDLabel": "uuid",
-      "jar": {
-          "uri": "{{ .Values.applicationJarPath }}",
-          "class": "{{ .Values.applicationClassName }}"
-      },
       "jobServer": "http://{{ template "compaction-controller.spark-manager.fullname" . }}",
-      "kubernetesURL": "{{ .Values.MasterUrl }}",
       "serverPort": "{{ .Values.serverPort }}",
       "ingestControllerURL": "http://{{ template "compaction-controller.ingest-controller.fullname" . }}",
-      "maxRunning": {{ .Values.MaxSimultaneousRun }},
-      "maxAttempts": {{ .Values.MaxAttempts }}
+      "maxRunning": {{ .Values.maxSimultaneousRun }},
+      "maxAttempts": {{ .Values.maxAttempts }},
+      "pendingStateTolerationHours": {{ .Values.maxPendingHours }},
+      "runningStateTolerationHours": {{ .Values.maxRunningHours }}
     }

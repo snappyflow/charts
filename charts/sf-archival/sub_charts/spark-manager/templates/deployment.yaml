@@ -52,6 +52,27 @@ spec:
             - sh
             - -c
             - "until pg_isready -d postgresql://'{{ .Values.global.postgresql.postgresqlUsername }}':'{{ .Values.global.postgresql.postgresqlPassword }}'@'{{ template "spark-manager.postgresql.fullname" . }}':{{ .Values.global.postgresql.servicePort }}/'{{ .Values.global.postgresql.postgresqlDatabase }}'; do sleep 3; done"
+        - name: compaction-infrastructure
+          env:
+          {{- if (eq .Values.global.secrets.gcs.enable true) }}
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: /var/secrets/google/key.json
+          {{- end }}
+          {{- if (eq .Values.global.secrets.aws.enable true) }}
+          {{- if (eq .Values.global.secrets.aws.use_iam_role false) }}
+          - name: AWS_ACCESS_KEY_ID
+            value: {{ .Values.global.secrets.aws.AWS_ACCESS_KEY_ID }}
+          - name: AWS_SECRET_ACCESS_KEY
+            value: {{ .Values.global.secrets.aws.AWS_SECRET_ACCESS_KEY }}
+          - name: AWS_REGION
+            value: {{ .Values.global.secrets.aws.AWS_DEFAULT_REGION }}
+          {{- end }}
+          {{- end }}
+          image: snappyflowml/compaction-infra:1
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+          - name: config-volume-compaction
+            mountPath: /etc/conf
       containers:
         - name: monitor
           image: "{{ .Values.monitor.image.repository }}:{{ .Values.monitor.image.tag }}"
@@ -70,8 +91,6 @@ spec:
           volumeMounts:
           - name: config-volume-jobserver
             mountPath: /etc/conf
-          - name: spark-config-volume
-            mountPath: /etc/spark-conf
           envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
@@ -96,6 +115,7 @@ spec:
         - name: config-volume-jobserver
           configMap:
             name: {{ template "spark-manager.fullname" . }}-jobserver
-        - name: spark-config-volume
+        - name: config-volume-compaction
           configMap:
-            name: {{ template "spark-manager.fullname" . }}-spark-properties
+            name: {{ template "spark-manager.fullname" . }}-infrastructure
+

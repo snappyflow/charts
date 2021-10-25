@@ -11,3 +11,5 @@ data:
     APM_PORT: "{{ .Values.sfapm.service.port }}"
     VIZBUILDER_HOST: {{ include "sfapm.fullname" . }}-vizbuilder
     VIZBUILDER_PORT: "{{ .Values.vizbuilder.service.port }}"
+    COMMANDSERVER_HOST: {{ include "sfapm.fullname" . }}-commands
+    COMMANDSERVER_PORT: "{{ .Values.commands.service.port }}"

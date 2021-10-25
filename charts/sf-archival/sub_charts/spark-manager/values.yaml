@@ -4,7 +4,7 @@
 monitor:
   image:
     repository: snappyflowml/monitor
-    tag: 6
+    tag: 7
     pullPolicy: IfNotPresent
   containerResources:
     limits:
@@ -17,7 +17,7 @@ monitor:
 jobserver:
   image:
     repository: snappyflowml/job-server
-    tag: 10
+    tag: 11
     pullPolicy: IfNotPresent
   serverPort: 5002
   service:
@@ -32,7 +32,10 @@ jobserver:
       cpu: 10m
       memory: 50Mi
 
+compactionImage: snappyflowml/spark-compact-orc:1
+
 nameOverride: ""
+
 fullnameOverride: ""
 
 nodeSelector: {}
