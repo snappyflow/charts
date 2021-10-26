@@ -26,8 +26,8 @@ spec:
   template:
     metadata:
       labels:
-        snappyflow/projectname: snappyflow-app
-        snappyflow/appname: sf-data-path
+        {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+        {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
         snappyflow/component: kafka
         app: {{ template "cp-kafka.name" . }}
         release: {{ .Release.Name }}
