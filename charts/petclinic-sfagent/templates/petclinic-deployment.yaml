@@ -35,6 +35,16 @@ spec:
       securityContext:
         {{ toYaml .Values.securityContext | indent 8 }}
       initContainers:
+        - name: sftrace-java-agent
+          image: busybox
+          command:
+          - sh
+          - -c
+          - -x
+          - wget -O /sfagent/sftrace-agent.tar.gz https://github.com/snappyflow/apm-agent/releases/download/latest/sftrace-agent.tar.gz && cd /sfagent && tar -xvzf sftrace-agent.tar.gz && rm sftrace-agent.tar.gz
+          volumeMounts:
+          - mountPath: /sfagent
+            name: sftrace-agent
         - name: wait-for-db
           image: mysql:5.7
           command:
@@ -91,12 +101,22 @@ spec:
             - sh
             - -c
             - -x
-            - cp /data/jolokia.jar ${PWD} && java -javaagent:jolokia.jar=port=8778,host=127.0.0.1 ${JMX_OPTS} -jar /app/petclinic.jar
+            - cp /data/jolokia.jar ${PWD} && java ${SFTRACE_AGENT} -javaagent:jolokia.jar=port=8778,host=127.0.0.1 ${JMX_OPTS} -jar /app/petclinic.jar
           env:
             - name: HOST_IP
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+            - name: SFTRACE_PROFILE_KEY
+              value: {{ .Values.global.key }}
+            - name: SFTRACE_SERVICE_NAME
+              value: {{ template "spring.fullname" . }}
+            - name: SFTRACE_AGENT
+              value: -javaagent:/sfagent/sftrace/java/sftrace-java-agent.jar  
+            - name: SFTRACE_APP_NAME
+              value: "{{ .Values.global.sfappname }}"
+            - name: SFTRACE_PROJECT_NAME
+              value: "{{ .Values.global.sfprojectname }}"      
             - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.spring.profile }}
             - name: DATABASE_HOST
@@ -118,6 +138,8 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /data
+            - mountPath: /sfagent
+              name: sftrace-agent
             - name: config-file
               mountPath: /config/application-mysql.properties
               subPath: application-mysql.properties
@@ -203,6 +225,8 @@ spec:
 {{ toYaml . | indent 8 }}
     {{- end }}
       volumes:
+        - name: sftrace-agent
+          emptyDir: {}      
         - name: data
           emptyDir: {}
         - name: config-file
