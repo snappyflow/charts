@@ -1607,6 +1607,22 @@ entries:
   petclinic-sfagent:
   - apiVersion: v1
     appVersion: 2.1.0.BUILD-SNAPSHOT
+    created: "2021-10-27T11:14:29.773452382Z"
+    description: Helm chart for spring applicaton, monitoring using sfagent
+    digest: afa6b6cc8348ad20a26f350a0651608467c257b37fd1c2676da4c11ade60c24f
+    home: https://spring.io
+    icon: https://spring.io/img/homepage/icon-spring-boot.svg
+    keywords:
+    - spring
+    - petclinic
+    name: petclinic-sfagent
+    sources:
+    - https://github.com/spring-projects/spring-petclinic
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/petclinic-sfagent-0.1.8/petclinic-sfagent-0.1.8.tgz
+    version: 0.1.8
+  - apiVersion: v1
+    appVersion: 2.1.0.BUILD-SNAPSHOT
     created: "2021-10-22T11:14:43.62113571Z"
     description: Helm chart for spring applicaton, monitoring using sfagent
     digest: d75763e6d408ba57048a641e0134eaec30b1d71a2af0c20fb2c5c38088899716
