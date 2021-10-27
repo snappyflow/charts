@@ -1,7 +1,7 @@
 dependencies:
 - name: nginx-ingress
   repository: file://./sub_charts/nginx-ingress
-  version: 3.6.0
+  version: 3.6.1
 - name: cp-schema-registry
   repository: file://./sub_charts/cp-schema-registry
   version: 0.1.0
@@ -29,5 +29,5 @@ dependencies:
 - name: minio
   repository: file://./sub_charts/minio
   version: 8.0.10
-digest: sha256:7e2e5343cf02f3cd4c7e303aea8af278e79fe20fa9d4f06acf74cf48148e6fc1
-generated: "2021-08-29T20:10:40.62887252+05:30"
+digest: sha256:08607b0f7c0feabcb52959d32b91e08876a2ae3ed240a13cecfd7596a276e250
+generated: "2021-10-27T21:25:26.069637625+05:30"
