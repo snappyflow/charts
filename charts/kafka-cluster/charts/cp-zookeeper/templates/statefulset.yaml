@@ -26,8 +26,8 @@ spec:
   template:
     metadata:
       labels:
-        snappyflow/projectname: snappyflow-app
-        snappyflow/appname: sf-data-path
+        {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+        {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
         snappyflow/component: zookeeper
         app: {{ template "cp-zookeeper.name" . }}
         release: {{ .Release.Name }}
@@ -145,7 +145,7 @@ spec:
           /etc/confluent/docker/run
         livenessProbe:
           exec:
-            command: 
+            command:
             - /bin/sh
             - -c
             - echo "ruok" | timeout 10 nc -w 2 127.0.0.1 2181 | grep imok

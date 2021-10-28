@@ -36,7 +36,7 @@ prometheus:
 cp-zookeeper:
   enabled: true
   servers: 3
-  #using snappyflowml/zookeeper because of netcat not present on original confluentinc/cp-zookeper:6.0.1 image 
+  # Using snappyflowml/zookeeper as netcat is not present in confluentinc/cp-zookeper:6.0.1 (original chart image)
   image: snappyflowml/cp-zookeeper
   imageTag: 6.0.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.

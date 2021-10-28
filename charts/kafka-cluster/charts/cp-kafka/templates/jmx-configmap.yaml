@@ -10,6 +10,7 @@ metadata:
     heritage: {{ .Release.Service }}
 data:
   jmx-kafka-prometheus.yml: |+
+    startDelaySeconds: 120
     jmxUrl: service:jmx:rmi:///jndi/rmi://localhost:{{ .Values.jmx.port }}/jmxrmi
     lowercaseOutputName: true
     lowercaseOutputLabelNames: true

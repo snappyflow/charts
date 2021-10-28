@@ -273,7 +273,7 @@ commands:
     targetMemoryUtilizationPercentage: 240
   image:
     repository: snappyflowml/sfapm-commands
-    tag: master
+    tag: stable
     pullPolicy: IfNotPresent
   resources:
     limits:
