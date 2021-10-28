@@ -31,7 +31,7 @@ data:
   s3_sink_defaults.json: |-
     {
       "connector.class": "io.confluent.connect.s3.S3SinkConnector",
-      "tasks.max": 10,
+      "tasks.max": {{ .Values.s3SinkDefaults.maxTasksPerPartition }},
       "store.url": "http://{{ template "ingest-controller.minio-svc.fullname". }}",
       "s3.part.size": 5242880,
       "flush.size": 10000,

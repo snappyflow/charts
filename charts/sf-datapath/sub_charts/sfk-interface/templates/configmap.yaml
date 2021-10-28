@@ -21,4 +21,7 @@ data:
                 "host": "{{ template "sfk-interface.postgresql.fullname" . }}",
                 "port": {{ .Values.global.postgresql.servicePort }}
             }
+            "esSinkDefaults":{
+                "maxTasksPerPartition": {{ .Values.esSinkDefaults.maxTasksPerPartition}}
+            }
         }

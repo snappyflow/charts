@@ -79,6 +79,8 @@ compaction-controller:
 ingest-controller:
   schedules:
     sink: "*/5 * * * *"
+  s3SinkDefaults:
+    maxTasksPerPartition: 5
 
 spark-manager:
   jobserver:
