@@ -1607,6 +1607,22 @@ entries:
   petclinic-sfagent:
   - apiVersion: v1
     appVersion: 2.1.0.BUILD-SNAPSHOT
+    created: "2021-11-01T09:02:45.243440403Z"
+    description: Helm chart for spring applicaton, monitoring using sfagent
+    digest: f2fa866bc73079c62d2768326957ce748824cfe2d2b24ae2819c987476fcda54
+    home: https://spring.io
+    icon: https://spring.io/img/homepage/icon-spring-boot.svg
+    keywords:
+    - spring
+    - petclinic
+    name: petclinic-sfagent
+    sources:
+    - https://github.com/spring-projects/spring-petclinic
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/petclinic-sfagent-0.1.9/petclinic-sfagent-0.1.9.tgz
+    version: 0.1.9
+  - apiVersion: v1
+    appVersion: 2.1.0.BUILD-SNAPSHOT
     created: "2021-10-27T11:14:29.773452382Z"
     description: Helm chart for spring applicaton, monitoring using sfagent
     digest: afa6b6cc8348ad20a26f350a0651608467c257b37fd1c2676da4c11ade60c24f
@@ -2438,6 +2454,48 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sf-archival-1.0.52/sf-archival-1.0.52.tgz
     version: 1.0.52
   sf-datapath:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2021-11-01T09:02:45.395512889Z"
+    dependencies:
+    - name: nginx-ingress
+      repository: file://./sub_charts/nginx-ingress
+      version: 3.6.3
+    - name: cp-schema-registry
+      repository: file://./sub_charts/cp-schema-registry
+      version: 0.1.0
+    - name: cp-kafka-rest
+      repository: file://./sub_charts/cp-kafka-rest
+      version: 0.1.0
+    - condition: global.archival.enabled
+      name: s3-kafka-connect
+      repository: file://./sub_charts/s3-kafka-connect
+      version: 0.1.0
+    - name: es-kafka-connect
+      repository: file://./sub_charts/es-kafka-connect
+      version: 0.1.0
+    - name: autoscaling
+      repository: file://./sub_charts/autoscaling
+      version: 0.1.0
+    - name: authenticator
+      repository: file://./sub_charts/authenticator
+      version: 0.1.0
+    - name: sfk-interface
+      repository: file://./sub_charts/sfk-interface
+      version: 0.1.0
+    - name: signatures
+      repository: file://./sub_charts/signatures
+      version: 0.1.0
+    - condition: global.secrets.gcs.enable
+      name: minio
+      repository: file://./sub_charts/minio
+      version: 8.0.10
+    description: A Helm chart for Confluent Open Source
+    digest: 2edde0e6444d3feb8a289cf2ea9de728c441aa2d1f4d0daa5270421e4c819a1e
+    name: sf-datapath
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-datapath-2.0.23/sf-datapath-2.0.23.tgz
+    version: 2.0.23
   - apiVersion: v1
     appVersion: "1.0"
     created: "2021-10-12T10:45:30.159847872Z"
