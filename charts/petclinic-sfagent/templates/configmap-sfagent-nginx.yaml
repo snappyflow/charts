@@ -28,8 +28,31 @@ data:
           log_path: "/var/log/nginx/access1.log"
           geo_info: true
           ua_parser: true
+          url_normalizer: true
       - name: nginx-error
         enabled: true
         config:
           log_path: "/var/log/nginx/error1.log"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "spring.fullname" . }}-sfagent-normalization-nginx
+  labels:
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    snappyflow/component: nginx
+data:
+  config.yaml: |+
+    ---
+    interval: 600
+    dynamic_rule_generation:
+      enabled: false #Rely on normalization algorithm for rule generation.
+      rules_length_limit: 10000 #set the value to -1  for specifying no limit
+      log_volume: 100000 #set the value to -1  for specifying no limit
+    rules:
+    - /owners
+    - /owners/new
+    - /owners/*/edit
+    - /owners/*
 {{- end }}
