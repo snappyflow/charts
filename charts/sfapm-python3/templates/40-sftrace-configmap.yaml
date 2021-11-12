@@ -25,4 +25,7 @@ data:
       bulk_max_size: 1024
       worker: 8
     setup.template.enabled: false
+    logging.metrics.enabled: true
+    logging.to_stderr: true
+    logging.json: true
 
