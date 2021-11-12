@@ -55,5 +55,5 @@ containerResources:
 schedules:
   sink: "*/5 * * * *"
 
-s3SinkDefaults:
-  maxTasksPerPartition: 5
+sinkDefaults:
+  maxTasksPerTopic: 5

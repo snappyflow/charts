@@ -59,7 +59,6 @@ autoscaling:
 
 sfk-interface:
   schedules:
-    sink: "*/5 * * * *"
-  esSinkDefaults:
-    maxTasksPerPartition: 5
-
+    sink: "*/15 * * * *"
+  sinkDefaults:
+    maxTasksPerTopic: 5
