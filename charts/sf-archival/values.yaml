@@ -50,6 +50,8 @@ global:
   imagePullSecrets:
   - name: xxxx
 
+  maxTasksPerTopic: 5
+
 # Pod priority class value
 priority: 100
 
@@ -79,8 +81,6 @@ compaction-controller:
 ingest-controller:
   schedules:
     sink: "*/10 * * * *"
-  sinkDefaults:
-    maxTasksPerTopic: 5
 
 spark-manager:
   jobserver:
