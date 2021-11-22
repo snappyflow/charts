@@ -26,7 +26,7 @@ data:
         {
             "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
             "auto.create.indices.at.start": "false",
-            "max_tasks_per_topic": {{ .Values.sinkDefaults.maxTasksPerTopic }},
+            "max_tasks_per_topic": {{ .Values.global.maxTasksPerTopic }},
             "errors.tolerance": "all",
             "drop.invalid.message": "true",
             "behavior.on.malformed.documents": "warn",

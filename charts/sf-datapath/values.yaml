@@ -25,6 +25,8 @@ global:
     host: 127.0.0.1
     port: 443
     scheme: https
+  
+  maxTasksPerTopic: 5
 
   snappyflowProjectLabel: snappyflow/projectname
   snappyflowAppLabel: snappyflow/appname
@@ -60,5 +62,3 @@ autoscaling:
 sfk-interface:
   schedules:
     sink: "*/15 * * * *"
-  sinkDefaults:
-    maxTasksPerTopic: 5

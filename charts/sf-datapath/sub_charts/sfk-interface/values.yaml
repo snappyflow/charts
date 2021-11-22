@@ -65,6 +65,3 @@ containerResources:
 
 schedules:
   sink: "*/5 * * * *"
-
-sinkDefaults:
-  maxTasksPerTopic: 5

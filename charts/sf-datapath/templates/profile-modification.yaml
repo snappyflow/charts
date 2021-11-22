@@ -20,26 +20,31 @@ data:
           "topic_desc": [{
               "name": "log",
               "num_partitions": 5,
+              "max_task_per_topic": {{ .Values.global.maxTasksPerTopic }},
               "retention_ms": "86400000"
           },
           {
               "name": "metric",
               "num_partitions": 5,
+              "max_task_per_topic": {{ .Values.global.maxTasksPerTopic }},
               "retention_ms": "86400000"
           },
           {
               "name": "control",
               "num_partitions": 5,
+              "max_task_per_topic": {{ .Values.global.maxTasksPerTopic }},
               "retention_ms": "3600000"
           },
           {
               "name": "trace",
               "num_partitions": 5,
+              "max_task_per_topic": {{ .Values.global.maxTasksPerTopic }},
               "retention_ms": "3600000"
           },
           {
               "name": "profile",
               "num_partitions": 5,
+              "max_task_per_topic": {{ .Values.global.maxTasksPerTopic }},
               "retention_ms": "3600000"
           }]
         }
@@ -71,7 +76,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: main
-        image: snappyflowml/datapath-profile-modification:1
+        image: kushagratandon12/profile-modification-util:latest
         imagePullPolicy: Always
         volumeMounts:
           - name: {{ .Release.Name }}-profile-modification-config
