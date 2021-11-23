@@ -68,8 +68,8 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- printf "%s-%s" .Release.Name "query-controller" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "ingest-controller.signatures.fullname" -}}
-{{- printf "%s-%s" .Values.global.snappyflowDatapath.releaseName "signatures" | trunc 63 | trimSuffix "-" -}}
+{{- define "ingest-controller.signatures-and-kafka-apis.ingest-controller.fullname" -}}
+{{- printf "%s-%s" .Values.global.snappyflowDatapath.releaseName "signatures-and-kafka-apis.ingest-controller" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "ingest-controller.spark-history-server.fullname" -}}

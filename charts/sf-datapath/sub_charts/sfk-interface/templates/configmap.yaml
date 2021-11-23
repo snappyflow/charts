@@ -13,7 +13,7 @@ data:
                 "connect": "http://{{ template "sfk-interface.apmConnect.fullname" . }}:8083"
             },
             "agent_ep": "{{ .Values.global.sfAgentInput.scheme }}://{{ .Values.global.sfAgentInput.host }}:{{ .Values.global.sfAgentInput.port }}",
-            "sign_service": "http://{{ template "sfk-interface.signatures.fullname" . }}",
+            "sign_service": "http://{{ template "sfk-interface.signatures-and-kafka-apis.ingest-controller.fullname" . }}",
             "db": {
                 "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
                 "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",

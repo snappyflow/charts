@@ -25,7 +25,7 @@ data:
       "logArchivalURL": "http://{{ template "ingest-controller.log-archival.fullname" . }}",
       "schemaRegistryURL": "http://{{ template "ingest-controller.schemaRegistry.fullname" . }}:8081",
       "kafkaConnectURL": "http://{{ template "ingest-controller.archivalKafkaConnect.fullname" . }}:8083",
-      "patternsURL": "http://{{ template "ingest-controller.signatures.fullname" . }}",
+      "patternsURL": "http://{{ template "ingest-controller.signatures-and-kafka-apis.ingest-controller.fullname" . }}",
       "serverPort": "{{ .Values.serverPort }}"
     }
   s3_sink_defaults.json: |-

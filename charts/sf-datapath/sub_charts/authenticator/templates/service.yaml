@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: {{ include "authenticator.fullname" . }}
   namespace: {{ .Release.Namespace }}
+  labels: {{- include "authenticator.labels" . | nindent 4 }}
 spec:
   ports:
   - port: 80
