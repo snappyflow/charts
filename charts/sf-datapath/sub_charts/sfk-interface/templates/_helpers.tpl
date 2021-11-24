@@ -83,6 +83,6 @@ Create the name of the service account to use
 {{- printf "%s-%s" .Release.Name "es-kafka-connect" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "sfk-interface.signatures-and-kafka-apis.ingest-controller.fullname" -}}
-{{- printf "%s-%s" .Release.Name "signatures-and-kafka-apis.ingest-controller" | trunc 63 | trimSuffix "-" -}}
+{{- define "sfk-interface.signatures-and-kafka-apis.fullname" -}}
+{{- printf "%s-%s" .Release.Name "signatures-and-kafka-apis" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}

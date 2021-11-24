@@ -17,9 +17,9 @@ spec:
       paths:
       - path: /signatures
         backend:
-          serviceName: {{ template "signatures-and-kafka-apis.fullname" . }} 
+          serviceName: {{ template "signatures-and-kafka-apis.fullname" . }}
           servicePort: 80
       - path: /kafka-info
         backend:
-          serviceName: {{ template "signatures-and-kafka-apis.fullname" . }} 
+          serviceName: {{ template "signatures-and-kafka-apis.fullname" . }}
           servicePort: 80
