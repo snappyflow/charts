@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 image:
   repository: snappyflowml/signatures
-  tag: 5
+  tag: 6
   pullPolicy: IfNotPresent
 
 nameOverride: ""
