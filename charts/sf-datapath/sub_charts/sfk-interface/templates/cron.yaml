@@ -10,6 +10,7 @@ spec:
   schedule: {{ .Values.schedules.sink | quote }}
   successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 1
+  startingDeadlineSeconds: 200
   jobTemplate:
     spec:
       backoffLimit: 0
