@@ -21,6 +21,9 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "sfnginx.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+        snappyflow/component: snappyflow-apm
+        {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+        {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
     spec:
       containers:
         - name: metrics

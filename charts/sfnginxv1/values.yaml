@@ -65,4 +65,3 @@ global:
   sfprojectname: snappyflow-apm
   sfappname_key: snappyflow/appname
   sfprojectname_key: snappyflow/projectname
-  key: ""
