@@ -54,8 +54,15 @@ affinity: {}
 
 exporter:
   limits:
-    cpu: 75m
+    cpu: 50m
     memory: 256Mi
   requests:
-    cpu: 75m
+    cpu: 50m
     memory: 256Mi
+
+global:
+  sfappname: snappyflow-apm
+  sfprojectname: snappyflow-apm
+  sfappname_key: snappyflow/appname
+  sfprojectname_key: snappyflow/projectname
+  key: ""
