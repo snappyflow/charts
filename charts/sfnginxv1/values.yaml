@@ -51,3 +51,11 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+exporter:
+  limits:
+    cpu: 75m
+    memory: 256Mi
+  requests:
+    cpu: 75m
+    memory: 256Mi

@@ -20,6 +20,36 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       containers:
+        - name: metrics
+          image: nginx/nginx-prometheus-exporter:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: SCRAPE_URI
+              value: http://127.0.0.1:80/status
+            - name: NGINX_RETRIES
+              value: "5"
+            - name: NGINX_RETRY_INTERVAL
+              value: "10s"
+          ports:
+            - name: nginx-exporter
+              containerPort: 9113
+          livenessProbe:
+            httpGet:
+              path: /metric
+              port: nginx-exporter
+            initialDelaySeconds: 90
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /metric
+              port: nginx-exporter
+            initialDelaySeconds: 60
+            timeoutSeconds: 10
+          resources: {{ toYaml .Values.exporter | nindent 12 }}
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
