@@ -28,8 +28,7 @@ data:
         }
         
         location /status {
-            add_header Content-Type text/plain;
-            return 200; 
+            stub_status;
         }
 
         error_page 404 /404.html;
