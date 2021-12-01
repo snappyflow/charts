@@ -10,7 +10,8 @@ imagePullPolicy: IfNotPresent
 
 ## Schema Registry Settings Overrides
 ## Configuration Options can be found here: https://docs.confluent.io/current/schema-registry/docs/config.html
-configurationOverrides: {}
+configurationOverrides: 
+  kafkastore.init.timeout.ms: 300000
 
 ## Additional env variables
 customEnv: {}
