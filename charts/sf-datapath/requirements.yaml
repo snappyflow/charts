@@ -24,9 +24,9 @@ dependencies:
 - name: sfk-interface
   version: 0.1.0
   repository: file://./sub_charts/sfk-interface
-- name: signatures
+- name: signatures-and-kafka-apis
   version: 0.1.0
-  repository: file://./sub_charts/signatures
+  repository: file://./sub_charts/signatures-and-kafka-apis
 - name: minio
   version: 8.0.10
   repository: file://./sub_charts/minio

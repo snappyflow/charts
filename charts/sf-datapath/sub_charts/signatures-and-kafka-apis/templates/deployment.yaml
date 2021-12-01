@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "signatures.fullname" . }}
+  name: {{ include "signatures-and-kafka-apis.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-{{ include "signatures.labels" . | indent 4 }}
+{{ include "signatures-and-kafka-apis.labels" . | indent 4 }}
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "signatures.name" . }}
+      app.kubernetes.io/name: {{ include "signatures-and-kafka-apis.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
       labels:
-        app.kubernetes.io/name: {{ include "signatures.name" . }}
+        app.kubernetes.io/name: {{ include "signatures-and-kafka-apis.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         release: {{ .Release.Name }}
         {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
@@ -33,17 +33,27 @@ spec:
           command:
             - sh
             - -c
-            - "until pg_isready -d postgresql://'{{ .Values.global.postgresql.postgresqlUsername }}':'{{ .Values.global.postgresql.postgresqlPassword }}'@'{{ template "signatures.postgresql.fullname" . }}':{{ .Values.global.postgresql.servicePort }}/'{{ .Values.global.postgresql.postgresqlDatabase }}'; do sleep 3; done"
+            - "until pg_isready -d postgresql://'{{ .Values.global.postgresql.postgresqlUsername }}':'{{ .Values.global.postgresql.postgresqlPassword }}'@'{{ template "signatures-and-kafka-apis.postgresql.fullname" . }}':{{ .Values.global.postgresql.servicePort }}/'{{ .Values.global.postgresql.postgresqlDatabase }}'; do sleep 3; done"
       containers:
-        - name: signatures
+        - name: signatures-and-kafka-apis
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: archival
             value: "{{ .Values.global.archival.enabled }}"
+          - name: BOOTSTRAP_SERVERS
+            value: "{{ .Values.global.kafkaBrokers }}"
           volumeMounts:
           - name: config-volume
             mountPath: /etc/conf
+          readinessProbe:
+            httpGet:
+              path: "/signatures/check"
+              port: 8888
+            timeoutSeconds: 10
+            initialDelaySeconds: 180
+            periodSeconds: 30
+            failureThreshold: 3
           resources:
 {{- toYaml .Values.containerResources.signatures | nindent 12 }}
       {{- with .Values.nodeSelector }}
@@ -61,4 +71,4 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: {{ template "signatures.fullname" . }}
+            name: {{ template "signatures-and-kafka-apis.fullname" . }}

@@ -13,7 +13,7 @@ data:
                 "connect": "http://{{ template "sfk-interface.apmConnect.fullname" . }}:8083"
             },
             "agent_ep": "{{ .Values.global.sfAgentInput.scheme }}://{{ .Values.global.sfAgentInput.host }}:{{ .Values.global.sfAgentInput.port }}",
-            "sign_service": "http://{{ template "sfk-interface.signatures.fullname" . }}",
+            "sign_service": "http://{{ template "sfk-interface.signatures-and-kafka-apis.fullname" . }}",
             "db": {
                 "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
                 "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
@@ -21,4 +21,31 @@ data:
                 "host": "{{ template "sfk-interface.postgresql.fullname" . }}",
                 "port": {{ .Values.global.postgresql.servicePort }}
             }
+        }
+    es_sink_defaults.json: |-
+        {
+            "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
+            "auto.create.indices.at.start": "false",
+            "max_tasks_per_topic": {{ .Values.global.maxTasksPerTopic }},
+            "errors.tolerance": "all",
+            "drop.invalid.message": "true",
+            "behavior.on.malformed.documents": "warn",
+            "behavior.on.null.values": "delete",
+            "max.buffered.records": "5000",
+            "retry.backoff.ms": "1000",
+            "connection.timeout.ms": "10000",
+            "read.timeout.ms": "15000",
+            "flush.timeout.ms": "60000",
+            "batch.size": "5000",
+            "max.in.flight.requests": "1",
+            "linger.ms": "750",
+            "schema.ignore": "true",
+            "value.converter.schemas.enable": "false",
+            "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+            "transforms": "filter,router,insertsignature",
+            "transforms.throttle.type": "apm.kafka.connect.transforms.Throttle",
+            "transforms.filter.type": "apm.kafka.connect.transforms.APMFilter",
+            "transforms.router.type": "apm.kafka.connect.transforms.APMRouter",
+            "transforms.insertsignature.type": "com.signature.InsertSignature$Value",
+            "transforms.insertsignature.connectorname.field": "elastic-search"
         }

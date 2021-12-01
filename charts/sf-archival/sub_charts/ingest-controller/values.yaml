@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 image:
   repository: snappyflowml/ingest-controller
-  tag: 13
+  tag: 14
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -54,3 +54,4 @@ containerResources:
 
 schedules:
   sink: "*/5 * * * *"
+

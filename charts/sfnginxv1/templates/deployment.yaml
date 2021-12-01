@@ -7,6 +7,9 @@ metadata:
     helm.sh/chart: {{ include "sfnginx.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
+    snappyflow/component: nginx
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -18,8 +21,44 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "sfnginx.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+        snappyflow/component: nginx
+        {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+        {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: {{ .Values.nginx.metrics.port | quote }}
     spec:
       containers:
+        - name: metrics
+          image: nginx/nginx-prometheus-exporter:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: SCRAPE_URI
+              value: http://127.0.0.1:80/status
+            - name: NGINX_RETRIES
+              value: "5"
+            - name: NGINX_RETRY_INTERVAL
+              value: "10s"
+          ports:
+            - name: nginx-exporter
+              containerPort: 9113
+          livenessProbe:
+            httpGet:
+              path: /metric
+              port: nginx-exporter
+            initialDelaySeconds: 90
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /metric
+              port: nginx-exporter
+            initialDelaySeconds: 60
+            timeoutSeconds: 10
+          resources: {{ toYaml .Values.exporter | nindent 12 }}
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}

@@ -4,7 +4,7 @@
 replicaCount: 1
 
 image: snappyflowml/apm-kafka-connect
-imageTag: 14
+imageTag: 15
 imagePullPolicy: IfNotPresent
 
 servicePort: 8083
@@ -104,7 +104,7 @@ containerResources:
   connector:
     limits:
       cpu: 600m
-      memory: 3Gi
+      memory: 4Gi
     requests:
       cpu: 256m
       memory: 2560Mi

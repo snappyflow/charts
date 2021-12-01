@@ -15,30 +15,36 @@ data:
           },
           "kafka_brokers": "{{ .Values.global.kafkaBrokers }}",
           "es_kafka_connect_url": "http://{{ .Release.Name }}-es-kafka-connect:8083",
-          "s3_kafka_connect_url": "http://{{ .Release.Name }}-kafka-connect:8083",
+          "s3_kafka_connect_url": "http://{{ .Release.Name }}-s3-kafka-connect:8083",
+          "kafka_rest_auth_url": "http://{{ .Release.Name }}-authenticator",
           "topic_desc": [{
               "name": "log",
               "num_partitions": 5,
+              "max_task_per_topic": {{ .Values.global.maxTasksPerTopic }},
               "retention_ms": "86400000"
           },
           {
               "name": "metric",
               "num_partitions": 5,
+              "max_task_per_topic": {{ .Values.global.maxTasksPerTopic }},
               "retention_ms": "86400000"
           },
           {
               "name": "control",
               "num_partitions": 5,
+              "max_task_per_topic": {{ .Values.global.maxTasksPerTopic }},
               "retention_ms": "3600000"
           },
           {
               "name": "trace",
               "num_partitions": 5,
+              "max_task_per_topic": {{ .Values.global.maxTasksPerTopic }},
               "retention_ms": "3600000"
           },
           {
               "name": "profile",
               "num_partitions": 5,
+              "max_task_per_topic": {{ .Values.global.maxTasksPerTopic }},
               "retention_ms": "3600000"
           }]
         }

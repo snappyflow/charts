@@ -259,7 +259,9 @@ controller:
 
   ## Annotations to be added to controller pods
   ##
-  podAnnotations: {}
+  podAnnotations:
+    prometheus.io/port: "9113"
+    prometheus.io/scrape: "true"
 
   replicaCount: 1
 
