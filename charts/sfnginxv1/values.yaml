@@ -60,6 +60,10 @@ exporter:
     cpu: 50m
     memory: 256Mi
 
+nginx:
+  metrics:
+    port: 9113
+
 global:
   sfappname: snappyflow-apm
   sfprojectname: snappyflow-apm
