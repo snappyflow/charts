@@ -22,6 +22,62 @@ data:
     - "kafka.consumer:*"
     - "kafka.producer:*"
     rules:
+    - pattern: "kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+), partition=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_topic_partn_$4
+      labels:
+        clientID: "$1"
+        topic: "$2"
+        partition: "$3"
+        clientID_topic_partition: "$1-$2-$3"
+    - pattern: "kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_topic_$3
+      labels:
+        clientID: "$1"
+        topic: "$2"
+        clientID_topic: "$1-$2"
+    - pattern: "kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.consumer<type=consumer-coordinator-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.consumer<type=consumer-node-metrics, client-id=(.+), node-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_node_$3
+      labels:
+        clientID: "$1"
+        nodeID: "$2"
+        clientID_nodeID: "$1-$2"
+    - pattern: "kafka.consumer<type=consumer-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.producer<type=producer-node-metrics, client-id=(.+), node-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_producer_client_node_$3
+      labels:
+        clientID: "$1"
+        nodeID: "$2"
+        clientID_nodeID: "$1-$2"
+    - pattern: "kafka.producer<type=producer-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_producer_client_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.producer<type=producer-topic-metrics, client-id=(.+), topic=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_producer_client_topic_$3
+      labels:
+        clientID: "$1"
+        topic: "$2"
+        clientID_topic: "$1-$2"
     - pattern: "kafka.connect<type=connect-worker-metrics>"
       cache: true
     - pattern: "kafka.connect<type=connect-worker-metrics>([^:]+):"
@@ -37,22 +93,6 @@ data:
     - pattern: kafka.connect<type=connector-metrics, connector=(.+)><>([a-z-]+)
       cache: true
     - pattern: kafka.connect<type=(.+)-metrics, connector=(.+), task=(.+)><>(.+-total|.+-count|.+-ms|.+-ratio|.+-avg|.+-failures|.+-requests|.+-timestamp|.+-logged|.+-errors|.+-retries|.+-skipped|.+-rate|.+-max)
-      cache: true
-    - pattern: kafka.consumer<type=consumer-node-metrics, client-id=(.+), node-id=(.+)>
-      cache: true
-    - pattern: kafka.consumer<type=consumer-coordinator-metrics, client-id=(.+)>
-      cache: true
-    - pattern: kafka.consumer<type=consumer-metrics, client-id=(.+)>
-      cache: true
-    - pattern: kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+), partition=(.+)>
-      cache: true
-    - pattern: kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+)>
-      cache: true
-    - pattern: kafka.producer<type=producer-metrics, client-id=(.+)>
-      cache: true
-    - pattern: kafka.producer<type=producer-topic-metrics, client-id=(.+), topic=(.+)>
-      cache: true
-    - pattern: kafka.producer<type=producer-node-metrics, client-id=(.+), node-id=(.+)>
       cache: true
     - pattern: java.lang<type=(.+), name=(.+)><(.+)>(\w+)
       name: java_lang_$1_$4_$3_$2
@@ -72,4 +112,3 @@ data:
       name: java_nio_$1_$3_$2
       cache: true
 {{- end }}
-
