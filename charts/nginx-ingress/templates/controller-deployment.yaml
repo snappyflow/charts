@@ -69,36 +69,46 @@ spec:
     {{- end }}
     {{- end }}
       containers:
-        - name: metrics
-          image: nginx/nginx-prometheus-exporter:latest
-          imagePullPolicy: IfNotPresent
+        {{- if .Values.sfagent.enabled }}
+        - name: sfagent
+          image: "{{ .Values.sfagent.image.repository }}:{{ .Values.sfagent.image.tag }}"
+          imagePullPolicy: {{ .Values.sfagent.image.pullPolicy }}
+          command:
+            - /app/sfagent
+            - -enable-console-log
           env:
-            - name: HOST_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
-            - name: SCRAPE_URI
-              value: http://127.0.0.1:80/status
-            - name: NGINX_RETRIES
-              value: "5"
-            - name: NGINX_RETRY_INTERVAL
-              value: "10s"
-          ports:
-            - name: nginx-exporter
-              containerPort: 9113
-          livenessProbe:
-            httpGet:
-              path: /metric
-              port: nginx-exporter
-            initialDelaySeconds: 90
-            timeoutSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /metric
-              port: nginx-exporter
-            initialDelaySeconds: 60
-            timeoutSeconds: 10
-          resources: {{ toYaml .Values.containerResources.exporter | nindent 12 }}
+            - name: APP_NAME
+              value: "{{ .Values.global.sfappname }}"
+            - name: PROJECT_NAME
+              value: "{{ .Values.global.sfprojectname }}"
+          volumeMounts:
+          - name: varlog
+            mountPath: /var/log/nginx
+          - name: sfagent-config
+            mountPath: /opt/sfagent/config.yaml
+            subPath: config.yaml
+          - name: normalization-config
+            mountPath: /opt/sfagent/normalization/config.yaml
+            subPath: config.yaml
+          resources: {{ toYaml .Values.containerResources.sfagent | nindent 12 }}
+        {{- end }}
+        {{- if .Values.suspectedClientBlocker.enabled }}
+        - name: suspected-client-blocker
+          image: "{{ .Values.suspectedClientBlocker.image.repository }}:{{ .Values.suspectedClientBlocker.image.tag }}"
+          imagePullPolicy: {{ .Values.suspectedClientBlocker.image.pullPolicy }}
+          env:
+            - name: Region
+              value: "{{ .Values.suspectedClientBlocker.env.region }}"
+            - name: LoadBalancerName
+              value: "{{ .Values.suspectedClientBlocker.env.loadBalancerName }}"
+          volumeMounts:
+          - name: suspected-client-blocker-config
+            mountPath: /app/config.yaml
+            subPath: config.yaml
+          - name: varlog
+            mountPath: /var/log/nginx
+          resources: {{ toYaml .Values.containerResources.suspectedClientBlocker | nindent 12 }}
+        {{- end }}
         - name: controller
           {{- with .Values.controller.image }}
           image: "{{.repository}}:{{ .tag }}{{- if (.digest) -}} @{{.digest}} {{- end -}}"
@@ -272,6 +282,19 @@ spec:
       terminationGracePeriodSeconds: {{ .Values.controller.terminationGracePeriodSeconds }}
     {{- if (or .Values.controller.customTemplate.configMapName .Values.controller.extraVolumeMounts .Values.controller.admissionWebhooks.enabled .Values.controller.extraVolumes) }}
       volumes:
+      {{- if .Values.suspectedClientBlocker.enabled }}
+        - name: suspected-client-blocker-config
+          configMap:
+            name: {{ include "nginx-ingress.fullname" . }}-suspected-client-block
+      {{- end }}
+      {{- if .Values.sfagent.enabled }}
+        - name: sfagent-config
+          configMap:
+            name: {{ include "nginx-ingress.fullname" . }}-sfagent-plugin-configmap
+        - name: normalization-config
+          configMap:
+            name: {{ include "nginx-ingress.fullname" . }}-sfagent-normalization-nginx
+      {{- end }}
       {{- if .Values.controller.customTemplate.configMapName }}
         - name: nginx-template-volume
           configMap:
