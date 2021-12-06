@@ -4,6 +4,7 @@ global:
   snappyflowProjectName: "snappyflow-app"
   snappyflowAppName: "sf-data-path"
   subnets: ""
+  key: ""
   internalllb: true
   lbannotation: {}
 
@@ -26,7 +27,9 @@ controller:
 
   # Will add custom configuration options to Nginx https://kubernetes.github.io/nginx-ingress/user-guide/nginx-configuration/configmap/
   config:
-    log-format-upstream: '$http_x_forwarded_for $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_referer" rt=$request_time uct=$upstream_connect_time uht=$upstream_header_time urt=$upstream_response_time'
+    log-format-upstream: '$http_x_forwarded_for $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_referer" rt=$request_time uct=$upstream_connect_time uht=$upstream_header_time urt=$upstream_response_time rs=$request_length'
+    access-log-path: "/var/log/nginx/access-custom.log"
+    error-log-path: "/var/log/nginx/error-custom.log"
 
   ## Annotations to be added to the controller config configuration configmap
   ##
@@ -267,6 +270,7 @@ controller:
   podAnnotations:
     prometheus.io/scrape: 'true'
     prometheus.io/port: '9113'
+    nginx.ingress.kubernetes.io/enable-access-log: "true"
 
   replicaCount: 1
 
@@ -400,17 +404,25 @@ controller:
   #    - name: copy-portal-skins
   #      mountPath: /srv/var/lib/lemonldap-ng/portal/skins
 
-  extraVolumeMounts: []
   ## Additional volumeMounts to the controller main container.
-  #  - name: copy-portal-skins
-  #   mountPath: /var/lib/lemonldap-ng/portal/skins
+  extraVolumeMounts:
+    - name: varlog
+      mountPath: /var/log/nginx
 
-  extraVolumes: []
   ## Additional volumes to the controller pod.
-  #  - name: copy-portal-skins
-  #    emptyDir: {}
+  extraVolumes:
+    - name: varlog
+      emptyDir: {} 
 
-  extraInitContainers: []
+  extraInitContainers:
+    - name: create-nginx-logfile-with-req-perms
+      image: busybox
+      command: ['sh', '-c', 'touch /var/log/nginx/access-custom.log && touch /var/log/nginx/error-custom.log']
+      securityContext:
+        runAsUser: 101
+      volumeMounts:
+      - name: varlog
+        mountPath: /var/log/nginx
   ## Containers, which are run before the app containers are started.
   # - name: init-myservice
   #   image: busybox
@@ -544,6 +556,32 @@ controller:
 
 ## Rollback limit
 ##
+
+sfagent:
+  enabled: false
+  image:
+   repository: snappyflowml/sfagent
+   tag: latest
+   pullPolicy: Always
+
+suspectedClientBlocker:
+  enabled: false
+  image:
+    repository: snappyflowml/suspected-client-blocker
+    tag: "1.0"
+    pullPolicy: Always
+  env:
+    region: ""
+    loadBalancerName: ""
+  config:
+    interval: 30
+    failedRequestThresholdPerClient: 80 #value expressed in percent
+    minRequestInConsiderationPerClient: 10
+    logFilePath: "/var/log/nginx/access-custom.log"
+    whiteListIPs: []
+    # - 10.21.31.165/32
+    # - 10.21.32.165
+
 revisionHistoryLimit: 10
 
 # Maxmind license key to download GeoLite2 Databases
@@ -694,7 +732,14 @@ containerResources:
     requests:
       cpu: 25m
       memory: 50Mi
-  exporter:
+  sfagent:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  suspectedClientBlocker:
     limits:
       cpu: 75m
       memory: 256Mi

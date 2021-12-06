@@ -30,7 +30,7 @@ data:
       name: kafka_controller_$1_$2_$3
     - pattern: kafka.controller<type=(KafkaController), name=(.+)><>(Value)
       name: kafka_controller_$1_$2_$3
-    - pattern: kafka.controller<type=(ControllerStats), name=(.+)><>(Count|OneMinuteRate)
+    - pattern: kafka.controller<type=(ControllerStats), name=(.+)><>(Count|OneMinuteRate|FiveMinuteRate)
       name: kafka_controller_$1_$2_$3
     - pattern: kafka.server<type=(ReplicaFetcherManager), name=(.+), clientId=(.+)><>(Value)
       name: kafka_server_$1_$2_$4
@@ -40,17 +40,17 @@ data:
       name: kafka_network_$1_$2_$4
       labels:
         network_processor: $3
-    - pattern : kafka.network<type=(RequestMetrics), name=(.+), request=([^,]+).*><>(Count|OneMinuteRate|Mean)
+    - pattern : kafka.network<type=(RequestMetrics), name=(.+), request=([^,]+).*><>(Count|OneMinuteRate|Mean|FiveMinuteRate)
       name: kafka_network_$1_$2_$4
       labels:
         request: $3
-    - pattern: kafka.server<type=(.+), name=(.+), topic=(.+)><>(Count|OneMinuteRate)
+    - pattern: kafka.server<type=(.+), name=(.+), topic=(.+)><>(FiveMinuteRate|Count|OneMinuteRate)
       name: kafka_server_$1_$2_$4
       labels:
         topic: $3
     - pattern: kafka.server<type=(DelayedOperationPurgatory), name=(.+), delayedOperation=(.+)><>(Value)
       name: kafka_server_$1_$2_$3_$4
-    - pattern: kafka.server<type=(.+), name=(.+)><>(Count|Value|OneMinuteRate)
+    - pattern: kafka.server<type=(.+), name=(.+)><>(Count|Value|FiveMinuteRate|OneMinuteRate)
       name: kafka_server_$1_total_$2_$3
     - pattern: kafka.server<type=(.+)><>(queue-size)
       name: kafka_server_$1_$2
@@ -64,4 +64,5 @@ data:
       labels:
         topic: $3
         partition: $4
+
 {{- end }}
