@@ -21,8 +21,9 @@ affinity: {}
 containerResources:
   signatures:
     limits:
+      cpu: 200m
+      memory: 512Mi
+    requests:
       cpu: 50m
       memory: 256Mi
-    requests:
-      cpu: 10m
-      memory: 100Mi
+
