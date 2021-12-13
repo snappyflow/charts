@@ -32,6 +32,12 @@ configurationOverrides:
   "consumer.max.poll.records": "5000"
   "scheduled.rebalance.max.delay.ms": "60000"
   "connect.protocol": "apm_sessioned"
+  "security.protocol": SASL_PLAINTEXT
+  "sasl.mechanism": PLAIN
+  "sasl.jaas.config": org.apache.kafka.common.security.plain.PlainLoginModule required username="snp-kconnect" password="snp-kconnect";
+  "consumer.security.protocol": SASL_PLAINTEXT
+  "consumer.sasl.mechanism": PLAIN
+  "consumer.sasl.jaas.config": org.apache.kafka.common.security.plain.PlainLoginModule required username="snp-kconnect" password="snp-kconnect";
 
 ## Kafka Connect JVM Heap Option
 # Changing a memory value below would necessitate change in memory request/limits & HPA (autoscaling chart)

@@ -96,7 +96,7 @@ configurationOverrides:
   # "advertised.listeners": |-
   # EXTERNAL://${HOST_IP}:$((31090 + ${KAFKA_BROKER_ID}))
   "listener.security.protocol.map": |-
-   PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+   PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT,KCONNECT:SASL_PLAINTEXT
 
 ## Additional env variables
 customEnv: {}
