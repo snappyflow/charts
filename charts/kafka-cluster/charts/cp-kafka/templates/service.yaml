@@ -10,7 +10,9 @@ metadata:
 spec:
   ports:
     - port: 9092
-      name: broker
+      name: broker-plain
+    - port: 9093
+      name: broker-sasl
     {{- if .Values.prometheus.jmx.enabled }}
     - port: {{ .Values.prometheus.jmx.port }}
       name: metrics

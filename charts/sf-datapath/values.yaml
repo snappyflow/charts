@@ -9,7 +9,11 @@ global:
     postgresqlPassword: archive123
     servicePort: 5432
 
-  kafkaBrokers: ""
+  # Below parameter needs to use the PLAIN_TEXT port
+  kafkaBrokers: "localhost:9092,localhost1:9092"
+
+  # Certain components which use SASL_PLAIN will use this port along with above machines
+  kafkaSASLPort: "9093"
 
   secrets:
     gcs:

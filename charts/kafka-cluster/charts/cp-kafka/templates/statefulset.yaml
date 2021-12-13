@@ -101,7 +101,9 @@ spec:
         {{- end }}
         ports:
         - containerPort: 9092
-          name: kafka
+          name: kafka-plain
+        - containerPort: 9093
+          name: kafka-sasl
         {{- if .Values.prometheus.jmx.enabled }}
         - containerPort: {{ .Values.jmx.port }}
           name: jmx
@@ -155,6 +157,12 @@ spec:
         - name: KAFKA_JMX_PORT
           value: "{{ .Values.jmx.port }}"
         {{- end }}
+        - name: KAFKA_SASL_ENABLED_MECHANISMS
+          value: PLAIN
+        - name: KAFKA_LISTENER_NAME_KCONNECT_PLAIN_SASL_JAAS_CONFIG
+          value: org.apache.kafka.common.security.plain.PlainLoginModule required;
+        - name: KAFKA_LISTENER_NAME_KCONNECT_PLAIN_SASL_SERVER_CALLBACK_HANDLER_CLASS
+          value: apm.kafka.CustomAuthenticateCallbackHandler
         # This is required because the Downward API does not yet support identification of
         # pod numbering in statefulsets. Thus, we are required to specify a command which
         # allows us to extract the pod ID for usage as the Kafka Broker ID.
@@ -164,7 +172,7 @@ spec:
         - -exc
         - |
           export KAFKA_BROKER_ID=${HOSTNAME##*-} && \
-          export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_NAME}.{{ template "cp-kafka.fullname" . }}-headless.${POD_NAMESPACE}:9092{{ include "cp-kafka.configuration.advertised.listeners" . }} && \
+          export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_NAME}.{{ template "cp-kafka.fullname" . }}-headless.${POD_NAMESPACE}:9092,KCONNECT://${POD_NAME}.{{ template "cp-kafka.fullname" . }}-headless.${POD_NAMESPACE}:9093 && \
           exec /etc/confluent/docker/run
         volumeMounts:
         {{- if .Values.persistence.enabled }}
