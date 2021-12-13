@@ -54,7 +54,7 @@ data:
       name: kafka_consumer_client_$2
       labels:
         clientID: "$1"
-    - pattern: "kafka.rest<type=consumer-node-metrics, client-id=(.+), node-id=(.+)><>(.+)\\:"
+    - pattern: "kafka.rest<type=consumer-node-metrics, client-id=(.+), node-id=node-(\\d+)><>(.+)\\:"
       cache: true
       name: kafka_consumer_client_node_$3
       labels:
@@ -66,7 +66,7 @@ data:
       name: kafka_consumer_client_$2
       labels:
         clientID: "$1"
-    - pattern: "kafka.rest<type=producer-node-metrics, client-id=(.+), node-id=(.+)><>(.+)\\:"
+    - pattern: "kafka.rest<type=producer-node-metrics, client-id=(.+), node-id=node-(\\d+)><>(.+)\\:"
       cache: true
       name: kafka_producer_client_node_$3
       labels:
