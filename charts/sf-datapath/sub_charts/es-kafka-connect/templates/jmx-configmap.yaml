@@ -19,44 +19,17 @@ data:
     - "java.lang:*"
     - "java.nio:*"
     - "kafka.connect:*"
-    - "kafka.consumer:*"
-    - "kafka.producer:*"
+    - "kafka.producer:type=producer-metrics,*"
+    - "kafka.producer:type=producer-node-metrics,*"
+    - "kafka.producer:type=producer-topic-metrics,*"
+    - "kafka.consumer:type=consumer-metrics,*"
+    - "kafka.consumer:type=consumer-fetch-manager-metrics,*"
+    - "kafka.consumer:type=consumer-node-metrics,*"
+    - "kafka.consumer:type=consumer-coordinator-metrics,*"
     rules:
-    - pattern: "kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+), partition=(.+)><>(.+)\\:"
+    - pattern: "kafka.producer<type=producer-metrics, client-id=(.+)><>(.+)\\:"
       cache: true
-      name: kafka_consumer_client_topic_partn_$4
-      labels:
-        clientID: "$1"
-        topic: "$2"
-        partition: "$3"
-        clientID_topic_partition: "$1-$2-$3"
-    - pattern: "kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+)><>(.+)\\:"
-      cache: true
-      name: kafka_consumer_client_topic_$3
-      labels:
-        clientID: "$1"
-        topic: "$2"
-        clientID_topic: "$1-$2"
-    - pattern: "kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+)><>(.+)\\:"
-      cache: true
-      name: kafka_consumer_client_$2
-      labels:
-        clientID: "$1"
-    - pattern: "kafka.consumer<type=consumer-coordinator-metrics, client-id=(.+)><>(.+)\\:"
-      cache: true
-      name: kafka_consumer_client_$2
-      labels:
-        clientID: "$1"
-    - pattern: "kafka.consumer<type=consumer-node-metrics, client-id=(.+), node-id=node-(\\d+)><>(.+)\\:"
-      cache: true
-      name: kafka_consumer_client_node_$3
-      labels:
-        clientID: "$1"
-        nodeID: "$2"
-        clientID_nodeID: "$1-$2"
-    - pattern: "kafka.consumer<type=consumer-metrics, client-id=(.+)><>(.+)\\:"
-      cache: true
-      name: kafka_consumer_client_$2
+      name: kafka_producer_client_$2
       labels:
         clientID: "$1"
     - pattern: "kafka.producer<type=producer-node-metrics, client-id=(.+), node-id=node-(\\d+)><>(.+)\\:"
@@ -66,11 +39,6 @@ data:
         clientID: "$1"
         nodeID: "$2"
         clientID_nodeID: "$1-$2"
-    - pattern: "kafka.producer<type=producer-metrics, client-id=(.+)><>(.+)\\:"
-      cache: true
-      name: kafka_producer_client_$2
-      labels:
-        clientID: "$1"
     - pattern: "kafka.producer<type=producer-topic-metrics, client-id=(.+), topic=(.+)><>(.+)\\:"
       cache: true
       name: kafka_producer_client_topic_$3
@@ -78,6 +46,43 @@ data:
         clientID: "$1"
         topic: "$2"
         clientID_topic: "$1-$2"
+    - pattern: "kafka.consumer<type=consumer-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_topic_$3
+      labels:
+        clientID: "$1"
+        topic: "$2"
+        clientID_topic: "$1-$2"
+    - pattern: "kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+), partition=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_topic_partn_$4
+      labels:
+        clientID: "$1"
+        topic: "$2"
+        partition: "$3"
+        clientID_topic_partition: "$1-$2-$3"
+    - pattern: "kafka.consumer<type=consumer-node-metrics, client-id=(.+), node-id=node-(\\d+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_node_$3
+      labels:
+        clientID: "$1"
+        nodeID: "$2"
+        clientID_nodeID: "$1-$2"
+    - pattern: "kafka.consumer<type=consumer-coordinator-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_coord_$2
+      labels:
+        clientID: "$1"
     - pattern: "kafka.connect<type=connect-worker-metrics>"
       cache: true
     - pattern: "kafka.connect<type=connect-worker-metrics>([^:]+):"
