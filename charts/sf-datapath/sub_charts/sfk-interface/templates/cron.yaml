@@ -30,5 +30,5 @@ spec:
             args:
             - /bin/sh
             - -c
-            - curl -X POST http://{{ include "sfk-interface.fullname" . }}/monitor
+            - curl -X POST http://{{ include "sfk-interface.fullname" . }}/monitor/sinks
           restartPolicy: Never

@@ -1,4 +1,10 @@
 global:
+
+  clusterQuotaGBperDay: 100
+
+  # Percentate of cluster quota reserved for system managed profiles
+  sysReservedclusterQuotaPCNT: 50
+
   ingress:
     enabled: false
 
@@ -8,6 +14,8 @@ global:
     postgresqlUsername: archive
     postgresqlPassword: archive123
     servicePort: 5432
+
+  externalKafka: false
 
   # Below parameter needs to use the PLAIN_TEXT port
   kafkaBrokers: "localhost:9092,localhost1:9092"

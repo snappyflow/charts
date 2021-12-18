@@ -13,7 +13,9 @@ data:
                 "connect": "http://{{ template "sfk-interface.apmConnect.fullname" . }}:8083"
             },
             "agent_ep": "{{ .Values.global.sfAgentInput.scheme }}://{{ .Values.global.sfAgentInput.host }}:{{ .Values.global.sfAgentInput.port }}",
-            "sign_service": "http://{{ template "sfk-interface.signatures-and-kafka-apis.fullname" . }}",
+            "signature_and_kafka_apis": "http://{{ template "sfk-interface.signatures-and-kafka-apis.fullname" . }}",
+            "cluster_byte_rate_quota": {{ template "sfk-interface-cluster-byte-rate-quota" }},
+            "sys_rsvd_cluster_byte_rate_quota_pcnt": {{ .Values.global.sysReservedclusterQuotaPCNT }},
             "db": {
                 "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
                 "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",

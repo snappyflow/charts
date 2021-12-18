@@ -86,3 +86,7 @@ Create the name of the service account to use
 {{- define "sfk-interface.signatures-and-kafka-apis.fullname" -}}
 {{- printf "%s-%s" .Release.Name "signatures-and-kafka-apis" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{- define "sfk-interface-cluster-byte-rate-quota" -}}
+{{ .Values.global.clusterQuotaGBperDay * 11573.0  }}
+{{- end -}}
