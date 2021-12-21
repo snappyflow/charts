@@ -17,6 +17,8 @@ global:
 
   externalKafka: false
 
+  numKafkaBrokers: 3
+
   # Below parameter needs to use the PLAIN_TEXT port
   # if external-kafka is being used, specify all the broker URLs
   kafkaBrokers: "localhost:9092,localhost1:9092"

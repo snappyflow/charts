@@ -43,6 +43,8 @@ spec:
             value: "{{ .Values.global.archival.enabled }}"
           - name: BOOTSTRAP_SERVERS
             value: "{{ .Values.global.kafkaBrokers }}"
+          - name: NUM_BOOTSTRAP_SERVERS
+            value: "{{ .Values.global.numKafkaBrokers }}"
           volumeMounts:
           - name: config-volume
             mountPath: /etc/conf
