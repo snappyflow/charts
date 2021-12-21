@@ -88,5 +88,5 @@ Create the name of the service account to use
 {{- end -}}
 
 {{- define "sfk-interface-cluster-byte-rate-quota" -}}
-{{ .Values.global.clusterQuotaGBperDay * 11573.0  }}
+{{ mul .Values.global.clusterQuotaGBperDay 11574.07 }}
 {{- end -}}

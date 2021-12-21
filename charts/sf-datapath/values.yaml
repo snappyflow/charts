@@ -18,10 +18,14 @@ global:
   externalKafka: false
 
   # Below parameter needs to use the PLAIN_TEXT port
+  # if external-kafka is being used, specify all the broker URLs
   kafkaBrokers: "localhost:9092,localhost1:9092"
 
-  # Certain components which use SASL_PLAIN will use this port along with above machines
+  # Certain components which use SASL_PLAIN will use this port along with above kafka broker IPs
   kafkaSASLPort: "9093"
+
+  # Certain components which use JMX data will use this port with above kafka broker IPs
+  kafkaJMXPort: "5556"
 
   secrets:
     gcs:
