@@ -41,7 +41,7 @@ data:
 {{- if $root.Values.global.externalKafka }}
     - job_name: kafka-brokers
       static_configs:
-      - targets: 
+      - targets:
 {{- range $brokerURL := (regexSplit "," (regexReplaceAllLiteral ":\\d+" $root.Values.global.kafkaBrokers (printf ":%s" $root.Values.global.kafkaJMXPort)) -1) }}
         - {{ print $brokerURL }}
 {{- end }}

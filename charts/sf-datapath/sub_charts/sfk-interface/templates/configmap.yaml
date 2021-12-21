@@ -14,7 +14,7 @@ data:
             },
             "agent_ep": "{{ .Values.global.sfAgentInput.scheme }}://{{ .Values.global.sfAgentInput.host }}:{{ .Values.global.sfAgentInput.port }}",
             "signature_and_kafka_apis": "http://{{ template "sfk-interface.signatures-and-kafka-apis.fullname" . }}",
-            "cluster_byte_rate_quota": {{ template "sfk-interface-cluster-byte-rate-quota" . }},
+            "cluster_byte_rate_quota": {{ mul .Values.global.clusterQuotaGBperDay 11574.07 }},
             "sys_rsvd_cluster_byte_rate_quota_pcnt": {{ .Values.global.sysReservedclusterQuotaPCNT }},
             "db": {
                 "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
@@ -22,13 +22,14 @@ data:
                 "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
                 "host": "{{ template "sfk-interface.postgresql.fullname" . }}",
                 "port": {{ .Values.global.postgresql.servicePort }}
-            }
+            },
+            "max_tasks_per_topic": {{ .Values.global.maxTasksPerTopic }},
+            "topic_type_details": {{ toJson .Values.global.topicTypeDetails }}
         }
     es_sink_defaults.json: |-
         {
             "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
             "auto.create.indices.at.start": "false",
-            "max_tasks_per_topic": {{ .Values.global.maxTasksPerTopic }},
             "errors.tolerance": "all",
             "drop.invalid.message": "true",
             "behavior.on.malformed.documents": "warn",

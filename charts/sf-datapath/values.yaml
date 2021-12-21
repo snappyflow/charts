@@ -44,7 +44,40 @@ global:
     port: 443
     scheme: https
 
-  maxTasksPerTopic: 5
+  maxTasksPerTopic: 3
+
+  topicTypeDetails: [
+    {
+      "type": log,
+      "num_partitions": 3,
+      "replication_factor": 2,
+      "retention_ms": 86400000
+    },
+    {
+      "type": metric,
+      "num_partitions": 3,
+      "replication_factor": 2,
+      "retention_ms": 86400000
+    },
+    {
+      "type": control,
+      "num_partitions": 3,
+      "replication_factor": 2,
+      "retention_ms": 3600000
+    },
+    {
+      "type": trace,
+      "num_partitions": 3,
+      "replication_factor": 2,
+      "retention_ms": 3600000
+    },
+    {
+      "type": profile,
+      "num_partitions": 3,
+      "replication_factor": 2,
+      "retention_ms": 3600000
+    }
+  ]
 
   snappyflowProjectLabel: snappyflow/projectname
   snappyflowAppLabel: snappyflow/appname
