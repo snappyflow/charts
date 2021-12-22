@@ -16,7 +16,7 @@ data:
           "kafka_brokers": "{{ .Values.global.kafkaBrokers }}",
           "es_kafka_connect_url": "http://{{ .Release.Name }}-es-kafka-connect:8083",
           "s3_kafka_connect_url": "http://{{ .Release.Name }}-s3-kafka-connect:8083",
-          "sign_service": "http://{{ .Release.Name }}-signatures-and-kafka-apis",
+          "signature_and_kafka_apis": "http://{{ .Release.Name }}-signatures-and-kafka-apis",
           "kafka_rest_auth_url": "http://{{ .Release.Name }}-authenticator",
           "cluster_byte_rate_quota": {{ mul .Values.global.clusterQuotaGBperDay 11574.07 }},
           "sys_rsvd_cluster_byte_rate_quota_pcnt": {{ .Values.global.sysReservedclusterQuotaPCNT }},
