@@ -32,3 +32,37 @@ spec:
             - -c
             - curl -X POST http://{{ include "sfk-interface.fullname" . }}/monitor/sinks
           restartPolicy: Never
+
+
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-quota-util-stats
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "sfk-interface.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "*/30 * * * *"
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  startingDeadlineSeconds: 200
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+        spec:
+          containers:
+          - name: main
+            image: kushagratandon12/sfk-quota_stats:dev1
+            imagePullPolicy: IfNotPresent
+            command:
+            - ./quota-usage-stats-util
+            volumeMounts:
+              - name: {{ template "sfk-interface.fullname" . }}-config
+                mountPath: "/etc/conf"
+          restartPolicy: Never
