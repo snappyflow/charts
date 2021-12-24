@@ -328,9 +328,16 @@ sftrace:
     port: 8200
     jaegerport: 14268
   output:
-    host: localhost
-    port: 32145
-    token: " "
+    # Enable either Kafka or Kafkarest as output plugin for trace server
+    kafka:
+      enabled: true
+      # List of Kafka brokers
+      hosts: ["kafka-cp-kafka-headless.kafka:9092"]
+    kafkarest:
+      enabled: false
+      host: "sf-datapath-cp-kafka-rest-external.kafka"
+      port: 8082
+      token: " "
   autoscaling:
     enabled: true
     minReplicas: 2
