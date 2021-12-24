@@ -59,10 +59,13 @@ spec:
           containers:
           - name: main
             image: kushagratandon12/sfk-quota_stats:dev1
-            imagePullPolicy: IfNotPresent
-            command:
-            - ./quota-usage-stats-util
+            imagePullPolicy: Always
+            args: ["./quota-stats-util"]
             volumeMounts:
               - name: {{ template "sfk-interface.fullname" . }}-config
                 mountPath: "/etc/conf"
           restartPolicy: Never
+          volumes:
+            - name: {{ template "sfk-interface.fullname" . }}-config
+              configMap:
+                name: {{ template "sfk-interface.fullname" . }}-config
