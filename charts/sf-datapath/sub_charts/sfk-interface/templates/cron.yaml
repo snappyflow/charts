@@ -60,7 +60,6 @@ spec:
           - name: main
             image: kushagratandon12/sfk-quota_stats:dev1
             imagePullPolicy: Always
-            args: ["./quota-stats-util"]
             volumeMounts:
               - name: {{ template "sfk-interface.fullname" . }}-config
                 mountPath: "/etc/conf"
