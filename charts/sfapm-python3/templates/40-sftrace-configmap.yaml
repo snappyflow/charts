@@ -24,7 +24,7 @@ data:
       topic: beats
       worker: 8
       channel_buffer_size: 2048
-      bulk_max_size: 2024
+      bulk_max_size: 2048
       compression: "snappy"
     {{- else }}
     output.kafkarest:
