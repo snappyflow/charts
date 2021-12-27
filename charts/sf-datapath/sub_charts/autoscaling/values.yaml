@@ -4,13 +4,23 @@
 customMetrics:
   enabled: true
 
-resources:
-  limits:
-    cpu: 200m
-    memory: 256Mi
-  requests:
-    cpu: 100m
-    memory: 150Mi
+prometheus-adapter:
+  containerResources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+
+prometheus:
+  containerResources:
+    limits:
+      cpu: 200m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 512Mi
 
 archivalConnectAutoscaling:
   enabled: true

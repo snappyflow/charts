@@ -85,8 +85,8 @@ containerResources:
       cpu: 500m
       memory: 1Gi
     requests:
-      cpu: 50m
-      memory: 100Mi
+      cpu: 250m
+      memory: 1Gi
   connector:
     limits:
       cpu: 800m

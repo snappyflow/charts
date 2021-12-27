@@ -35,14 +35,6 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name:
 
-resources: {}
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-
 rules:
   default: false
   custom:

@@ -129,8 +129,8 @@ prometheus:
     ## See the `resources` documentation above for details.
     resources:
       limits:
-        cpu: 100m
-        memory: 400Mi
+        cpu: 200m
+        memory: 512Mi
       requests:
-        cpu: 50m
-        memory: 128Mi
+        cpu: 100m
+        memory: 512Mi

@@ -120,7 +120,7 @@ spec:
             failureThreshold: {{ .Values.server.livenessProbeFailureThreshold }}
             successThreshold: {{ .Values.server.livenessProbeSuccessThreshold }}
           resources:
-{{ toYaml .Values.server.resources | indent 12 }}
+{{ toYaml .Values.containerResources | indent 12 }}
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
