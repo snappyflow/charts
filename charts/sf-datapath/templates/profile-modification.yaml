@@ -76,7 +76,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: main
-        image: snappyflowml/datapath-profile-modification:1
+        image: snappyflowml/datapath-profile-modification:3
         imagePullPolicy: Always
         volumeMounts:
           - name: {{ .Release.Name }}-profile-modification-config
