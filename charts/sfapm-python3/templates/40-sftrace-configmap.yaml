@@ -20,7 +20,7 @@ data:
     {{- if .Values.sftrace.output.kafka.enabled }}
     output.kafka:
       enabled: true
-      hosts: {{ .Values.sftrace.output.kafka.hosts }}
+      hosts: {{ .Values.sftrace.output.kafka.hosts | toJson }}
       topic: beats
       worker: 8
       channel_buffer_size: 2048
