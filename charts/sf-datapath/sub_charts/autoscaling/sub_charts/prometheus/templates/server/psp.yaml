@@ -1,29 +1,33 @@
-{{- if .Values.rbac.create }}
-{{- if .Values.podSecurityPolicy.enabled }}
+{{- if and .Values.server.enabled .Values.rbac.create .Values.podSecurityPolicy.enabled }}
 apiVersion: {{ template "prometheus.podSecurityPolicy.apiVersion" . }}
 kind: PodSecurityPolicy
 metadata:
-  name: {{ template "prometheus.alertmanager.fullname" . }}
+  name: {{ template "prometheus.server.fullname" . }}
   labels:
-    {{- include "prometheus.alertmanager.labels" . | nindent 4 }}
+    {{- include "prometheus.server.labels" . | nindent 4 }}
   annotations:
-{{- if .Values.alertmanager.podSecurityPolicy.annotations }}
-{{ toYaml .Values.alertmanager.podSecurityPolicy.annotations | indent 4 }}
+{{- if .Values.server.podSecurityPolicy.annotations }}
+{{ toYaml .Values.server.podSecurityPolicy.annotations | indent 4 }}
 {{- end }}
 spec:
   privileged: false
   allowPrivilegeEscalation: false
-  requiredDropCapabilities:
-    - ALL
+  allowedCapabilities:
+    - 'CHOWN'
   volumes:
     - 'configMap'
     - 'persistentVolumeClaim'
     - 'emptyDir'
     - 'secret'
+    - 'hostPath'
   allowedHostPaths:
     - pathPrefix: /etc
       readOnly: true
-    - pathPrefix: {{ .Values.alertmanager.persistentVolume.mountPath }}
+    - pathPrefix: {{ .Values.server.persistentVolume.mountPath }}
+  {{- range .Values.server.extraHostPathMounts }}
+    - pathPrefix: {{ .hostPath }}
+      readOnly: {{ .readOnly }}
+  {{- end }}
   hostNetwork: false
   hostPID: false
   hostIPC: false
@@ -43,6 +47,5 @@ spec:
       # Forbid adding the root group.
       - min: 1
         max: 65535
-  readOnlyRootFilesystem: true
-{{- end }}
+  readOnlyRootFilesystem: false
 {{- end }}

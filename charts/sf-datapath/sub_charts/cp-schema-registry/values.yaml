@@ -63,7 +63,7 @@ prometheus:
 
 schemaGenerator:
   enabled: true
-  intervalInMin: 180
+  intervalInMin: 60
   image: snappyflowml/schema-generator
   imageTag: 12
   imagePullPolicy: IfNotPresent
