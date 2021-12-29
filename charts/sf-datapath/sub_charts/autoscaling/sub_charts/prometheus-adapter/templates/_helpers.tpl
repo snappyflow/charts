@@ -43,7 +43,7 @@ Create the name of the service account to use
 {{- end -}}
 
 {{- define "k8s-prometheus-adapter.prometheusUrl" -}}
-{{- printf "http://%s-%s" .Release.Name "prometheus-server" | trunc 63 | trimSuffix "-" -}}
+{{- printf "http://%s-%s" .Release.Name "prometheus-server-new" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "k8s-prometheus-adapter.prometheusPort" -}}
