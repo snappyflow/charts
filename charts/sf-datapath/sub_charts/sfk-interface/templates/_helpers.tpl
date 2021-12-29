@@ -88,5 +88,5 @@ Create the name of the service account to use
 {{- end -}}
 
 {{- define "sfk-interface.prometheus.fullname" -}}
-{{- printf "%s-%s" .Release.Name "prometheus-server" | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" .Release.Name "prometheus-server-new" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}

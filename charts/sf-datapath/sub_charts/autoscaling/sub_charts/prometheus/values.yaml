@@ -56,12 +56,12 @@ serviceAccounts:
 
 server:
 
-  extraArgs:
-    web.config.file: /etc/config/web.config.yml
+  # extraArgs:
+  #   web.config.file: /etc/config/web.config.yml
   
-  probeHeaders:
-    - name: Authorization
-      value: Basic dXNlcjpzbmFwcHlmbG93
+  # probeHeaders:
+  #   - name: Authorization
+  #     value: Basic dXNlcjpzbmFwcHlmbG93
   ## Prometheus server container name
   ##
   enabled: true
@@ -476,9 +476,9 @@ server:
 ## Prometheus server ConfigMap entries
 ##
 serverFiles:
-  web.config.yml:
-    basic_auth_users:
-      user: '$2b$12$DNHTLFJ.sTLAmgGyBx3n..fOEbvDdp5lWTl3ORP3m9tYdo5Nq0uJG'
+  # web.config.yml:
+  #   basic_auth_users:
+  #     user: '$2b$12$DNHTLFJ.sTLAmgGyBx3n..fOEbvDdp5lWTl3ORP3m9tYdo5Nq0uJG'
 
   ## Alerts configuration
   ## Ref: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/
