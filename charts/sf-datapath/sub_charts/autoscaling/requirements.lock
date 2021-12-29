@@ -4,6 +4,6 @@ dependencies:
   version: 2.5.0
 - name: prometheus
   repository: file://./sub_charts/prometheus
-  version: 11.11.0
-digest: sha256:6daa577b68f0803736110af394147d75d60bbabf2da971704aa63469831308a3
-generated: "2021-05-22T23:25:54.262059854+05:30"
+  version: 15.0.2
+digest: sha256:14a9feab9160667dea4446a3b46d09a50738ac97330bcdd1d415a223733587af
+generated: "2021-12-29T16:33:25.287402596+05:30"
