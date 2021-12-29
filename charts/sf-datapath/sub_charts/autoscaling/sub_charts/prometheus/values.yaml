@@ -80,9 +80,9 @@ server:
   # namespaces:
   #   - yournamespace
 
-  name: server
+  name: server-new
   sidecarContainers:
-
+  
   ## Prometheus server container image
   ##
   image:
