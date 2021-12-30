@@ -3,7 +3,7 @@ global:
   clusterQuotaGBperDay: 100
 
   # Percentate of cluster quota reserved for system managed profiles
-  sysReservedclusterQuotaPCNT: 0
+  sysReservedclusterQuotaPCNT: 65
 
   ingress:
     enabled: false
