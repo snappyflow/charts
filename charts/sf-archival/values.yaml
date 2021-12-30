@@ -54,7 +54,7 @@ global:
   imagePullSecrets:
   - name: xxxx
 
-  maxTasksPerTopic: 5
+  maxTasksPerTopic: 3
 
 # Pod priority class value
 priority: 100
