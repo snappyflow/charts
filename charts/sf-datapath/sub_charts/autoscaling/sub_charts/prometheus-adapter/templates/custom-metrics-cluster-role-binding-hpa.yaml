@@ -1,12 +1,17 @@
-{{- if .Values.rbac.create -}}
+{{- /*
+This if must be aligned with custom-metrics-cluster-role.yaml
+as otherwise this binding will point to not existing role.
+*/ -}}
+{{- if and .Values.rbac.create (or .Values.rules.default .Values.rules.custom) -}}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
+  {{- if .Values.customAnnotations }}
+  annotations:
+  {{- toYaml .Values.customAnnotations | nindent 4 }}
+  {{- end }}
   labels:
-    app: {{ template "k8s-prometheus-adapter.name" . }}
-    chart: {{ template "k8s-prometheus-adapter.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "k8s-prometheus-adapter.labels" . | indent 4 }}
   name: {{ template "k8s-prometheus-adapter.name" . }}-hpa-controller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
