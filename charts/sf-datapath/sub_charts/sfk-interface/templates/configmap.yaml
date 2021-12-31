@@ -16,6 +16,7 @@ data:
             "signature_and_kafka_apis": "http://{{ template "sfk-interface.signatures-and-kafka-apis.fullname" . }}",
             "cluster_byte_rate_quota": {{ mul .Values.global.clusterQuotaGBperDay 11574.07 }},
             "prometheus_endpoint": "http://{{ template "sfk-interface.prometheus.fullname" . }}",
+            "prometheus_auth": "dXNlcjpzbmFwcHlmbG93",
             "sys_rsvd_cluster_byte_rate_quota_pcnt": {{ .Values.global.sysReservedclusterQuotaPCNT }},
             "db": {
                 "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
