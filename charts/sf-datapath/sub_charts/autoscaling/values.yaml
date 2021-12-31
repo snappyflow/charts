@@ -8,18 +8,18 @@ prometheus-adapter:
   containerResources:
     limits:
       cpu: 200m
-      memory: 256Mi
+      memory: 512Mi
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 50m
+      memory: 128Mi
 
 prometheus:
   containerResources:
     limits:
-      cpu: 200m
-      memory: 512Mi
+      cpu: 300m
+      memory: 1Gi
     requests:
-      cpu: 100m
+      cpu: 200m
       memory: 512Mi
 
 archivalConnectAutoscaling:
