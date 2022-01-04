@@ -1,14 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  {{- if .Values.customAnnotations }}
-  annotations:
-  {{- toYaml .Values.customAnnotations | nindent 4 }}
-  {{- end }}
   labels:
-    {{- include "k8s-prometheus-adapter.labels" . | indent 4 }}
+    app: {{ template "k8s-prometheus-adapter.name" . }}
+    chart: {{ template "k8s-prometheus-adapter.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
   name: {{ template "k8s-prometheus-adapter.fullname" . }}
-  namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.replicas }}
   strategy: {{ toYaml .Values.strategy | nindent 4 }}
