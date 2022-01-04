@@ -58,7 +58,7 @@ spec:
         spec:
           containers:
           - name: main
-            image: snappyflowml/sfk-quota-stats:1
+            image: snappyflowml/sfk-quota-stats:2
             imagePullPolicy: IfNotPresent
             volumeMounts:
               - name: {{ template "sfk-interface.fullname" . }}-config

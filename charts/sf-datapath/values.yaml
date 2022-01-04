@@ -96,11 +96,9 @@ priority: 100
 autoscaling:
   archivalConnectAutoscaling:
     minReplicas: 2
-    maxReplicas: 5
 
   apmConnectAutoscaling:
     minReplicas: 2
-    maxReplicas: 5
 
   restKafkaAutoscaling:
     minReplicas: 2
@@ -108,7 +106,6 @@ autoscaling:
 
   minioAutoscaling:
     minReplicas: 2
-    maxReplicas: 5
 
 sfk-interface:
   schedules:

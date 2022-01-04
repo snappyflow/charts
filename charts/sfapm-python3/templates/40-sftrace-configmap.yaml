@@ -22,8 +22,8 @@ data:
       enabled: true
       hosts: {{ .Values.sftrace.output.kafka.hosts | toJson }}
       topic: beats
-      worker: 8
-      channel_buffer_size: 2048
+      worker: 4
+      channel_buffer_size: 8192
       bulk_max_size: 2048
       compression: "snappy"
     {{- else }}

@@ -18,7 +18,15 @@ data:
     whitelistObjectNames:
     - "java.lang:*"
     - "java.nio:*"
-    - "kafka.connect:*"
+    - "kafka.connect:type=connect-worker-metrics,*"
+    - "kafka.connect:type=connect-worker-rebalance-metrics,*"
+    - "kafka.connect:type=task-error-metrics,*"
+    - "kafka.connect:type=connector-task-metrics,*"
+    - "kafka.connect:type=source-task-metrics,*"
+    - "kafka.connect:type=sink-task-metrics,*"
+    - "kafka.connect:type=connect-metrics,*"
+    - "kafka.connect:type=connect-node-metrics,*"
+    - "kafka.connect:type=connect-coordinator-metrics,*"
     - "kafka.producer:type=producer-metrics,*"
     - "kafka.producer:type=producer-node-metrics,*"
     - "kafka.producer:type=producer-topic-metrics,*"
@@ -83,22 +91,62 @@ data:
       name: kafka_consumer_client_coord_$2
       labels:
         clientID: "$1"
-    - pattern: "kafka.connect<type=connect-worker-metrics>"
+    - pattern: "kafka.connect<type=connect-worker-metrics, connector=(.+)><>(.+)\\:"
       cache: true
-    - pattern: "kafka.connect<type=connect-worker-metrics>([^:]+):"
+      name: kafka_connect_worker_connector_$2
+      labels:
+        connector: "$1"
+    - pattern: "kafka.connect<type=connect-worker-metrics><>(.+)\\:"
       cache: true
-    - pattern: "kafka.connect<type=connect-worker-metrics, connector=([^:]+)>([^:]+):"
+      name: kafka_connect_worker_$1
+    - pattern: "kafka.connect<type=connect-worker-rebalance-metrics><>(.+)\\:"
       cache: true
-    - pattern: "kafka.connect<type=connect-metrics, client-id=([^:]+)><>([^:]+)"
+      name: kafka_connect_worker_rebalance_$1
+    - pattern: "kafka.connect<type=task-error-metrics, connector=(.+), task=(\\d)+><>(.+)\\:"
       cache: true
-    - pattern: "kafka.connect<type=connector-task-metrics, connector=([^:]+), task=([^:]+)><>([^:]+)"
+      name: kafka_connect_task_error_$3
+      labels:
+        connector: "$1"
+        task: "$2"
+        connector_task: "$1_$2"
+    - pattern: "kafka.connect<type=connector-task-metrics, connector=(.+), task=(\\d)+><>(.+)\\:"
       cache: true
-    - pattern: kafka.connect<type=connect-worker-rebalance-metrics><>([a-z-]+)
+      name: kafka_connect_task_$3
+      labels:
+        connector: "$1"
+        task: "$2"
+        connector_task: "$1_$2"
+    - pattern: "kafka.connect<type=sink-task-metrics, connector=(.+), task=(\\d)+><>(.+)\\:"
       cache: true
-    - pattern: kafka.connect<type=connector-metrics, connector=(.+)><>([a-z-]+)
+      name: kafka_connect_sink_task_$3
+      labels:
+        connector: "$1"
+        task: "$2"
+        connector_task: "$1_$2"
+    - pattern: "kafka.connect<type=source-task-metrics, connector=(.+), task=(\\d)+><>(.+)\\:"
       cache: true
-    - pattern: kafka.connect<type=(.+)-metrics, connector=(.+), task=(.+)><>(.+-total|.+-count|.+-ms|.+-ratio|.+-avg|.+-failures|.+-requests|.+-timestamp|.+-logged|.+-errors|.+-retries|.+-skipped|.+-rate|.+-max)
+      name: kafka_connect_source_task_$3
+      labels:
+        connector: "$1"
+        task: "$2"
+        connector_task: "$1_$2"
+    - pattern: "kafka.connect<type=connect-metrics, client-id=(.+)><>(.+)\\:"
       cache: true
+      name: kafka_connect_client_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.connect<type=connect-coordinator-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_connect_client_coord_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.connect<type=connect-node-metrics, client-id=(.+), node-id=node-(\\d)><>(.+)\\:"
+      cache: true
+      name: kafka_connect_client_node_$3
+      labels:
+        clientID: "$1"
+        nodeID: "$2"
+        clientID_nodeID: "$1-$2"
     - pattern: java.lang<type=(.+), name=(.+)><(.+)>(\w+)
       name: java_lang_$1_$4_$3_$2
       cache: true
