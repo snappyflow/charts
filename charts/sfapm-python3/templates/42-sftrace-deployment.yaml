@@ -23,6 +23,7 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
+        helm.sh/chart: {{ include "sfapm.chart" . }}
         {{- include "sfapm.selectorLabels" . | nindent 8 }}
         app: sftrace
         role: sftrace-server
