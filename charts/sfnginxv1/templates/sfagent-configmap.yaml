@@ -26,14 +26,14 @@ data:
       - name: nginx-access
         enabled: true
         config:
-          log_path: "/var/log/nginx/access-local.log"
+          log_path: "/var/log/nginx/access_local.log"
           geo_info: true
           ua_parser: true
           url_normalizer: true
       - name: nginx-error
         enabled: true
         config:
-          log_path: "/var/log/nginx/error.log"
+          log_path: "/var/log/nginx/error.log, /var/log/nginx/error_local.log"
 ---
 apiVersion: v1
 data:

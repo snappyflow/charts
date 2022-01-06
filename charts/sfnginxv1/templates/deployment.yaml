@@ -32,7 +32,7 @@ spec:
       {{- if .Values.sfagent.enabled }}
       - name: sfagent
         image: "{{ .Values.sfagent.image.repository }}:{{ .Values.sfagent.image.tag }}"
-        imagePullPolicy: "{{ .Values.sfagent.image.repository }}:{{ .Values.sfagent.image.tag }}"
+        imagePullPolicy: "{{ .Values.sfagent.image.pullPolicy }}"
         command:
           - /app/sfagent
           - -enable-console-log
@@ -79,6 +79,8 @@ spec:
       - name: apmconfig
         configMap:
           name: {{ include "sfnginx.fullname" . }}
+      - emptyDir: {}
+        name: varlog
       - name: sfagent-config
         configMap:
           name: {{ include "sfnginx.fullname" . }}-sfagent-config
