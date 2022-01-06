@@ -89,10 +89,10 @@ cp-kafka:
     disksPerBroker: 1
   resources:
     requests:
-      cpu: 100m
+      cpu: 300m
       memory: 1500Mi
     limits:
-      cpu: 200m
+      cpu: 500m
       memory: 2500Mi
 
   securityContext: 
