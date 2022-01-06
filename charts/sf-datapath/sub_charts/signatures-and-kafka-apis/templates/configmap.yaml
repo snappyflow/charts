@@ -14,6 +14,7 @@ data:
         "port": {{ .Values.global.postgresql.servicePort }}
       },
       "default-patterns": "upstream timed out,upstream server temporarily disabled while reading response header from upstream,upstream server temporarily disabled while connecting to upstream,upstream prematurely closed connection while reading response header from upstream,session opened for user,session closed for user,possible break,invalid user,dhcprequest,dhcpack",
+      "set-default-patterns": {{ .Values.useDefaultPatterns }},
       "registered-urls": [
       {{- if (eq .Values.global.archival.enabled true) -}}
         "http://{{ template "signatures-and-kafka-apis.ingest-controller.fullname" . }}/ingest/datasets/updatepatterns",

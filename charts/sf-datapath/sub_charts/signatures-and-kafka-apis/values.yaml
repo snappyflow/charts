@@ -27,3 +27,4 @@ containerResources:
       cpu: 50m
       memory: 256Mi
 
+useDefaultPatterns: false
