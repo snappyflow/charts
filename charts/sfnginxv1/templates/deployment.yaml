@@ -29,60 +29,62 @@ spec:
         prometheus.io/port: {{ .Values.nginx.metrics.port | quote }}
     spec:
       containers:
-        - name: metrics
-          image: nginx/nginx-prometheus-exporter:latest
-          imagePullPolicy: IfNotPresent
-          env:
-            - name: HOST_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
-            - name: SCRAPE_URI
-              value: http://127.0.0.1:80/status
-            - name: NGINX_RETRIES
-              value: "5"
-            - name: NGINX_RETRY_INTERVAL
-              value: "10s"
-          ports:
-            - name: nginx-exporter
-              containerPort: 9113
-          livenessProbe:
-            httpGet:
-              path: /metric
-              port: nginx-exporter
-            initialDelaySeconds: 90
-            timeoutSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /metric
-              port: nginx-exporter
-            initialDelaySeconds: 60
-            timeoutSeconds: 10
-          resources: {{ toYaml .Values.exporter | nindent 12 }}
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: 9200
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /status
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /status
-              port: http
-          volumeMounts:
-          - mountPath: /etc/nginx/conf.d
-            name: apmconfig
-          resources:
+      {{- if .Values.sfagent.enabled }}
+      - name: sfagent
+        image: "{{ .Values.sfagent.image.repository }}:{{ .Values.sfagent.image.tag }}"
+        imagePullPolicy: "{{ .Values.sfagent.image.repository }}:{{ .Values.sfagent.image.tag }}"
+        command:
+          - /app/sfagent
+          - -enable-console-log
+        env:
+          - name: APP_NAME
+            value: "{{ .Values.global.sfappname }}"
+          - name: PROJECT_NAME
+            value: "{{ .Values.global.sfprojectname }}"
+        volumeMounts:
+        - name: varlog
+          mountPath: /var/log/nginx
+        - name: sfagent-config
+          mountPath: /opt/sfagent/config.yaml
+          subPath: config.yaml
+        - name: normalization-config
+          mountPath: /opt/sfagent/normalization/config.yaml
+          subPath: config.yaml
+        resources:
+{{ toYaml .Values.sfagent.resources | indent 12 }}
+       {{- end }}
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+          - name: http
+            containerPort: 9200
+            protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: http
+        readinessProbe:
+          httpGet:
+            path: /status
+            port: http
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d
+          name: apmconfig
+        - name: varlog
+          mountPath: /var/log/nginx
+        resources:
 {{ toYaml .Values.resources | indent 12 }}
       volumes:
       - name: apmconfig
         configMap:
           name: {{ include "sfnginx.fullname" . }}
+      - name: sfagent-config
+        configMap:
+          name: {{ include "sfnginx.fullname" . }}-sfagent-config
+      - name: normalization-config
+        configMap:
+          name: {{ include "sfnginx.fullname" . }}-normalization-config
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
