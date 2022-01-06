@@ -9,24 +9,34 @@ global:
   sfprojectname_key: snappyflow/projectname
   
 prometheus:
+
+  jmx:
+    enabled: true
+    image: solsson/kafka-prometheus-jmx-exporter@sha256
+    imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
+    imagePullPolicy: IfNotPresent
+    port: 5556
+
+    ## Resources configuration for the JMX exporter container.
+    ## See the `resources` documentation above for details.
+    resources:
+      limits:
+        cpu: 100m
+        memory: 1Gi
+      requests:
+        cpu: 50m
+        memory: 128Mi
   
   ## Prometheus Kafka Exporter: exposes complimentary metrics to JMX Exporter
   kafka:
     enabled: true
-
-    ## The image to use for the metrics collector
     image: danielqsj/kafka-exporter
-
-    ## The image tag to use for the metrics collector
     imageTag: v1.0.1
-
-    ## Interval at which Prometheus scrapes metrics, note: only used by Prometheus Operator
-    interval: 10s
-
-    ## Port kafka-exporter exposes for Prometheus to scrape metrics
+    interval: 30s
     port: 9308
 
-    ## Resource limits
+    ## Resources configuration for the JMX exporter container.
+    ## See the `resources` documentation above for details.
     resources:
       limits:
         cpu: 200m
@@ -158,28 +168,6 @@ affinity: {}
 ## ref: https://docs.confluent.io/current/kafka/monitoring.html
 jmx:
   port: 5555
-
-## Prometheus Exporter Configuration
-## ref: https://prometheus.io/docs/instrumenting/exporters/
-prometheus:
-  ## JMX Exporter Configuration
-  ## ref: https://github.com/prometheus/jmx_exporter
-  jmx:
-    enabled: true
-    image: solsson/kafka-prometheus-jmx-exporter@sha256
-    imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
-    imagePullPolicy: IfNotPresent
-    port: 5556
-
-    ## Resources configuration for the JMX exporter container.
-    ## See the `resources` documentation above for details.
-    resources:
-      limits:
-        cpu: 100m
-        memory: 1Gi
-      requests:
-        cpu: 50m
-        memory: 128Mi
 
 nodeport:
   enabled: false
