@@ -76,7 +76,7 @@ spec:
           imagePullPolicy: IfNotPresent
           args:
             - {{ .Values.global.kafkaBrokers }}
-            - "{{ .Values.inByteRate }}"
+            - {{ div .Values.inByteRate .Values.global.numKafkaBrokers }}
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: exporter

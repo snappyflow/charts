@@ -7,7 +7,7 @@ global:
 
   # Percentage buffer to be used while applying quota
   # If it is set to 40%, a quota request of 1000 Bytes/s will allocate 1000 * (1 + 0.4) Bytes/s
-  quotaBufferPCNT: 100
+  quotaBufferPCNT: 30
 
   ingress:
     enabled: false

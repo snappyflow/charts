@@ -76,7 +76,8 @@ prometheus:
 cp-schema-registry:
   url: ""
 
-inByteRate: "1157400"
+# Resolves to 150 GB/day
+inByteRate: 1736111
 
 # Changing a value below would necessitate change in HPA (autoscaling chart)
 containerResources:
