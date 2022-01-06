@@ -9159,6 +9159,15 @@ entries:
   sfnginxv1:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2022-01-06T13:54:38.746394597Z"
+    description: A Helm chart for Kubernetes
+    digest: 930ea989a778d1e8d9e08777327f66863f8fcd9f2de64bed3cc2f93437b12104
+    name: sfnginxv1
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfnginxv1-0.1.7/sfnginxv1-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2021-12-01T06:50:52.31397196Z"
     description: A Helm chart for Kubernetes
     digest: 7ab8de862c408fbb57ee08f4ff02bc20606495aec85fa4256a1aaa91c5be3069
