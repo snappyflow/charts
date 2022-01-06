@@ -24,6 +24,20 @@ multidbUser: data
 # password for multi db
 multidbUserPassord: database
 
+backup:
+  enabled: false
+  # db list separated by space
+  dblist : "db1 db2"
+  backupdays: "7"
+  # everyday 1 task will run
+  schedule: "0 1 * * *"
+  persistence:
+    enabled: true
+    ## if enabled storage class name and size in GiB
+    storageClass: ""
+    size: 8Gi
+    accessMode: ReadWriteOnce
+
 initconfig:
   create-multi-db.sh: |-
     #!/bin/sh

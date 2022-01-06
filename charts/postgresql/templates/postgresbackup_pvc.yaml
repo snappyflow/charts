@@ -1,0 +1,25 @@
+{{- if .Values.backup.enabled }}
+{{- if .Values.backup.persistence.enabled }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgresbackup-pvc-dont-delete
+  annotations:
+    "helm.sh/resource-policy": keep
+  labels:
+    {{- include "postgresql.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.backup.persistence.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.backup.persistence.size | quote }}
+{{- if .Values.backup.persistence.storageClass }}
+{{- if (eq "-" .Values.backup.persistence.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.backup.persistence.storageClass }}"
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
