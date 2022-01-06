@@ -95,8 +95,8 @@ configurationOverrides:
   "message.max.bytes": "15728640"
   "delete.topic.enable": true
   "log.roll.hours": 1
-  "quota.window.num": 6
-  "quota.window.size.seconds": 20
+  "quota.window.num": 121
+  "quota.window.size.seconds": 1
 
   ## Options required for external access via NodePort
   ## ref:
