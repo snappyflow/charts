@@ -62,3 +62,6 @@ autoscaling:
 sfk-interface:
   schedules:
     sink: "*/15 * * * *"
+
+signatures-and-kafka-apis:
+  useDefaultPatterns: false
