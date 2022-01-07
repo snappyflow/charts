@@ -42,8 +42,6 @@ spec:
         {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
         {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
         snappyflow/component: nginx
-        snappyflow/geo_info: "true"
-        snappyflow/ua_parser: "true"
     spec:
     {{- if .Values.controller.dnsConfig }}
       dnsConfig: {{ toYaml .Values.controller.dnsConfig | nindent 8 }}
@@ -78,9 +76,9 @@ spec:
             - -enable-console-log
           env:
             - name: APP_NAME
-              value: "{{ .Values.global.sfappname }}"
+              value: "{{ .Values.global.snappyflowAppName }}"
             - name: PROJECT_NAME
-              value: "{{ .Values.global.sfprojectname }}"
+              value: "{{ .Values.global.snappyflowProjectName }}"
           volumeMounts:
           - name: varlog
             mountPath: /var/log/nginx

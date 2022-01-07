@@ -52,13 +52,19 @@ tolerations: []
 
 affinity: {}
 
-exporter:
-  limits:
-    cpu: 50m
-    memory: 256Mi
-  requests:
-    cpu: 50m
-    memory: 256Mi
+sfagent:
+  enabled: false
+  image:
+   repository: snappyflowml/sfagent
+   tag: latest
+   pullPolicy: Always
+  resources:
+    limits:
+      cpu: 50m
+      memory: 256Mi
+    requests:
+      cpu: 50m
+      memory: 256Mi
 
 nginx:
   metrics:
@@ -69,3 +75,4 @@ global:
   sfprojectname: snappyflow-apm
   sfappname_key: snappyflow/appname
   sfprojectname_key: snappyflow/projectname
+  key: ""

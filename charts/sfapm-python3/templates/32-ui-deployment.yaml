@@ -58,6 +58,9 @@ spec:
           - name: sfagent
             mountPath: /opt/sfagent/config.yaml
             subPath: config.yaml
+          - name: normalization-config
+            mountPath: /opt/sfagent/normalization/config.yaml
+            subPath: config.yaml
           resources:
             {{- toYaml .Values.sfapmui.resources | nindent 12 }}
       {{- end }}
@@ -153,6 +156,9 @@ spec:
         - name: sfagent
           configMap:
             name: {{ include "sfapm.fullname" . }}-ui-sfagent
+        - name: normalization-config
+          configMap:
+            name: {{ include "sfapm.fullname" . }}-sfagent-normalization-nginx
         - name: nginx-log
           emptyDir: {}
         {{- end }}
