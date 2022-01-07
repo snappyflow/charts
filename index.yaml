@@ -1265,6 +1265,26 @@ entries:
     version: 1.0.0
   nginx-ingress:
   - apiVersion: v1
+    appVersion: 0.40.7
+    created: "2022-01-07T09:06:44.073750009Z"
+    description: Ingress controller for Kubernetes using NGINX as a reverse proxy
+      and load balancer
+    digest: aeecf304a974b69bc0681bf0341223af74030729c12a1054b009657c4f3dc857
+    home: https://github.com/kubernetes/ingress-nginx
+    icon: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Nginx_logo.svg/500px-Nginx_logo.svg.png
+    keywords:
+    - ingress
+    - nginx
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - name: Maplelabs
+    name: nginx-ingress
+    sources:
+    - https://github.com/kubernetes/ingress-nginx
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/nginx-ingress-3.6.19/nginx-ingress-3.6.19.tgz
+    version: 3.6.19
+  - apiVersion: v1
     appVersion: 0.40.6
     created: "2021-12-05T18:03:05.487834107Z"
     description: Ingress controller for Kubernetes using NGINX as a reverse proxy
