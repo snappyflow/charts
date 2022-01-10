@@ -1,0 +1,56 @@
+{{- if .Values.sfagent.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sfnginx.fullname" . }}-sfagent-config
+  labels:
+    app.kubernetes.io/name: {{ include "sfnginx.name" . }}
+    helm.sh/chart: {{ include "sfnginx.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  config.yaml: |+
+    ---
+    key: "{{ .Values.global.key }}"
+    metrics:
+      plugins:
+      - name: kube-sfagent-nginx
+        enabled: true
+        interval: 300
+        config:
+          location: status
+          port: 80
+          secure: false
+    logging:
+      plugins:
+      - name: nginx-access
+        enabled: true
+        config:
+          log_path: "/var/log/nginx/access_local.log"
+          geo_info: true
+          ua_parser: true
+          url_normalizer: true
+      - name: nginx-error
+        enabled: true
+        config:
+          log_path: "/var/log/nginx/error.log, /var/log/nginx/error_local.log"
+---
+apiVersion: v1
+data:
+  config.yaml: |
+    ---
+    interval: 600
+    dynamic_rule_generation:
+      enabled: false #Rely on normalization algorithm for rule generation.
+      rules_length_limit: 10000 #set the value to -1  for specifying no limit
+      log_volume: 100000 #set the value to -1  for specifying no limit
+    rules: []
+kind: ConfigMap
+metadata:
+  name: {{ include "sfnginx.fullname" . }}-normalization-config
+  labels:
+    app.kubernetes.io/name: {{ include "sfnginx.name" . }}
+    helm.sh/chart: {{ include "sfnginx.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}

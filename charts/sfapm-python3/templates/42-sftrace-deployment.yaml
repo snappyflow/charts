@@ -56,9 +56,10 @@ spec:
           failureThreshold: 3
           periodSeconds: 30
           timeoutSeconds: 5
-          httpGet:
-            path: /
-            port: http
+          exec:
+            command:
+            - sh
+            - probe.sh
         readinessProbe:
           initialDelaySeconds: 30
           failureThreshold: 3
