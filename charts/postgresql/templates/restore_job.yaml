@@ -1,0 +1,62 @@
+{{- if .Values.restore.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "postgresql.fullname" . }}-restore
+  labels:
+    {{- include "postgresql.labels" . | nindent 4 }}
+    snappyflow/component: postgresql
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+  annotations:
+    "helm.sh/resource-policy": delete-job-after-run
+spec:
+  backoffLimit: 1
+  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: postgresql-restore
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["sh", "-c", "/scripts/restore.sh"]
+        env:
+        - name: POSTGRES_PASS
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "postgresql.fullname" . }}
+              key: rootPassword
+        - name: POSTGRES_USER
+          value: {{ .Values.rootUser }}
+        - name: PG_MULTI_DB_USER
+          value: {{ .Values.rootUser }}
+        - name: PG_MULTI_DB
+          value: "{{ .Values.restore.dblist }}"
+        - name: BASEDIR
+          value: "backup"
+        - name: RESTORE_DAYS_BEFORE
+          value: "{{ .Values.restore.backup }}"
+        - name: COMPRESS
+          value: "{{ .Values.restore.compress }}"
+        - name: FILEPATH
+          value: "{{ .Values.restore.filepath }}"
+        - name: POSTGRES_HOST
+          value: {{ include "postgresql.fullname" . }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        volumeMounts:
+        - name: scripts
+          mountPath: /scripts
+          readOnly: true
+        - name: backup
+          mountPath: /backup
+      volumes:
+      - name: scripts
+        configMap:
+          name: postgresqlbackup
+          defaultMode: 0755
+      - name: backup
+        persistentVolumeClaim:
+          claimName: postgresbackup-pvc-dont-delete
+{{- end -}}

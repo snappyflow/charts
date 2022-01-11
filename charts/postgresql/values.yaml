@@ -38,6 +38,19 @@ backup:
     size: 8Gi
     accessMode: ReadWriteOnce
 
+restore:
+  enabled: false
+  # db list separated by space
+  dblist : "db1 db2"
+  backup: "0 0"
+  # backup can be in days with .sql or .gz backup files
+  # example "backup": "0 0" it will pick todays backup file to restore from pvc
+  #         "backup": "1 1" it will pick yesterday backup file to restore from pvc
+  # will keep last 7 backup files in pvc
+  # can update filepath directly in backup varaible, update filepath to true 
+  filepath: "false"
+  compress: "true"
+
 initconfig:
   create-multi-db.sh: |-
     #!/bin/sh
