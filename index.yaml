@@ -1871,6 +1871,16 @@ entries:
   postgresql:
   - apiVersion: v2
     appVersion: "9.6"
+    created: "2022-01-11T12:30:13.53376007Z"
+    description: A Helm chart for Postgresql server to use with sfapm
+    digest: ac716a78d4b182d42b0a6c22bff54cd0759db4be0416b0d26be5ae3bf7079714
+    name: postgresql
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/postgresql-0.1.6/postgresql-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
+    appVersion: "9.6"
     created: "2022-01-04T14:10:31.784543702Z"
     description: A Helm chart for Postgresql server to use with sfapm
     digest: 25e23f229083c5e0ee178e2028652d1b7c49ef3b82c7b971036519ec78fee91f
