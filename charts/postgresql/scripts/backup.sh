@@ -22,7 +22,7 @@ for DB in ${PG_MULTI_DB}; do
   FILENAME=${BACKUPDIR}/${DB}.${MYDATE}.gz
 
 
-  PGPASSWORD=${POSTGRES_PASS} pg_dump ${PG_CONN_PARAMETERS} ${DUMP_ARGS}  -d ${DB} | gzip > ${FILENAME}
+  PGPASSWORD=${POSTGRES_PASS} pg_dump ${PG_CONN_PARAMETERS} ${DUMP_ARGS} -O -d ${DB} | gzip > ${FILENAME}
 
   echo "Backing up $FILENAME"
 

@@ -55,7 +55,7 @@ for i in ${!PG_MULTI_DB[@]}; do
         echo "Restoring dump file"
         # Only works if the cluster is different- all the credentials are the same
         #psql -f /backups/globals.sql ${TARGET_DB}
-        PGPASSWORD=${POSTGRES_PASS} pg_restore ${PG_CONN_PARAMETERS} ${BACKUPDIR} -c -d ${TARGET_DB} ${RESTORE_ARGS}
+        PGPASSWORD=${POSTGRES_PASS} pg_restore ${PG_CONN_PARAMETERS} ${BACKUPDIR} -c -v -O --schema=public -d ${TARGET_DB} ${RESTORE_ARGS}
     if  [ ${COMPRESS}  == "true" ]
     then
       rm -rf ${BACKUPDIR}
