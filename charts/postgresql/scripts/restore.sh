@@ -43,19 +43,19 @@ for i in ${!PG_MULTI_DB[@]}; do
                 echo "BACKUPDIR needed."
                 exit 1
     fi
-    echo "Dropping target DB ${PG_MULTI_DB[$i]}"
-        PGPASSWORD=${POSTGRES_PASS} dropdb ${PG_CONN_PARAMETERS} --if-exists ${TARGET_DB}
+    #echo "Dropping target DB ${PG_MULTI_DB[$i]}"
+    #    PGPASSWORD=${POSTGRES_PASS} dropdb ${PG_CONN_PARAMETERS} --if-exists ${TARGET_DB}
 
 
 
-        echo "Recreate target DB ${PG_MULTI_DB[$i]}"
-        PGPASSWORD=${POSTGRES_PASS} createdb ${PG_CONN_PARAMETERS} -O ${POSTGRES_USER} ${TARGET_DB}
+     #   echo "Recreate target DB ${PG_MULTI_DB[$i]}"
+     #   PGPASSWORD=${POSTGRES_PASS} createdb ${PG_CONN_PARAMETERS} -O ${POSTGRES_USER} ${TARGET_DB}
 
 
         echo "Restoring dump file"
         # Only works if the cluster is different- all the credentials are the same
         #psql -f /backups/globals.sql ${TARGET_DB}
-        PGPASSWORD=${POSTGRES_PASS} pg_restore ${PG_CONN_PARAMETERS} ${BACKUPDIR}  -d ${TARGET_DB} ${RESTORE_ARGS}
+        PGPASSWORD=${POSTGRES_PASS} pg_restore ${PG_CONN_PARAMETERS} ${BACKUPDIR} -c -d ${TARGET_DB} ${RESTORE_ARGS}
     if  [ ${COMPRESS}  == "true" ]
     then
       rm -rf ${BACKUPDIR}
