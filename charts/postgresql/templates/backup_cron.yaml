@@ -10,9 +10,9 @@ metadata:
     {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
 spec:
   schedule: {{ .Values.backup.schedule | quote }}
-  successfulJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 1
   concurrencyPolicy: Forbid
-  failedJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       template:
