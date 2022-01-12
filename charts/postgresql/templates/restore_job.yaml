@@ -26,11 +26,11 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ include "postgresql.fullname" . }}
-              key: rootPassword
+              key: multidbUserPassord
         - name: POSTGRES_USER
-          value: {{ .Values.rootUser }}
+          value: {{ .Values.multidbUser }}
         - name: PG_MULTI_DB_USER
-          value: {{ .Values.rootUser }}
+          value: {{ .Values.multidbUser }}
         - name: PG_MULTI_DB
           value: "{{ .Values.restore.dblist }}"
         - name: BASEDIR
