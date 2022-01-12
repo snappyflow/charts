@@ -44,10 +44,32 @@ data:
       name: kafka_network_$1_$2_$4
       labels:
         request: $3
-    - pattern: kafka.server<type=(.+), name=(.+), topic=(.+)><>(FiveMinuteRate|Count|OneMinuteRate)
+    - pattern: kafka.server<type=([^,]+), name=([^,]+), topic=([^>]+)><>(Count|OneMinuteRate|MeanRate|FifteenMinuteRate|FiveMinuteRate)
       name: kafka_server_$1_$2_$4
       labels:
         topic: $3
+    - pattern: kafka.server<type=([^,]+), name=([^,]+), fetcherType=([^>]+)><>(Count|OneMinuteRate|MeanRate|FifteenMinuteRate|FiveMinuteRate)
+      name: kafka_server_$1_$2_$4
+      labels:
+        fetcherType: $3
+    - pattern: kafka.server<type=([^,]+), name=([^,]+)><>(Count|OneMinuteRate|MeanRate|FifteenMinuteRate|FiveMinuteRate)
+      name: kafka_server_$1_$2_$3
+    - pattern: kafka.server<type=([^,]+), client-id=([^>]+)><>(throttle-time|request-time|byte-rate)
+      name: kafka_server_$1_$3
+      labels:
+        client-id: $2
+    - pattern: kafka.server<type=([^,]+), user=([^,]+), client-id=([^>]+)><>(throttle-time|byte-rate)
+      name: kafka_server_$1_$4
+      labels:
+        user: $2
+        client-id: $3
+    - pattern: kafka.server<type=(.+)><>(queue-size)
+      name: kafka_server_$1_$2
+    - pattern: kafka.cluster<type=([^,]+), name=([^,]+), topic=([^,]+), partition=([^>]+)><>Value
+      name: kafka_cluster_$1_$2
+      labels:
+        topic: $3
+        partition: $4
     - pattern: kafka.server<type=(DelayedOperationPurgatory), name=(.+), delayedOperation=(.+)><>(Value)
       name: kafka_server_$1_$2_$3_$4
     - pattern: kafka.server<type=(.+), name=(.+)><>(Count|Value|FiveMinuteRate|OneMinuteRate)
@@ -64,5 +86,7 @@ data:
       labels:
         topic: $3
         partition: $4
+    - pattern: kafka.log<type=(.+), name=(.+)><>Value
+      name: kafka_log_$1_$2
 
 {{- end }}
