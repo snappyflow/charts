@@ -19,8 +19,10 @@ data:
     - kafka.controller:*
     - kafka.server:*
     - java.lang:*
+    - java.nio:*
     - kafka.network:*
     - kafka.log:*
+    - kafka.cluster:*
     rules:
     - pattern: kafka.controller<type=(ControllerChannelManager), name=(QueueSize), broker-id=(\d+)><>(Value)
       name: kafka_controller_$1_$2_$4
@@ -36,11 +38,17 @@ data:
       name: kafka_server_$1_$2_$4
       labels:
         client_id: "$3"
-    - pattern: kafka.server<type=([^,]+), name=([^,]+), topic=([^>]+)><>(Count|OneMinuteRate|MeanRate|FifteenMinuteRate|FiveMinuteRate)
+    - pattern: kafka.server<type=([^,]+), name=([^,]+), topic=([^,]+), partition=([^,]+)><>(Count|OneMinuteRate|MeanRate|FifteenMinuteRate|FiveMinuteRate)
+      name: kafka_server_$1_$2_$5
+      labels:
+        topic: $3
+        partition: $4
+        topic_partition: $3_$4
+    - pattern: kafka.server<type=([^,]+), name=([^,]+), topic=([^,]+)><>(Count|OneMinuteRate|MeanRate|FifteenMinuteRate|FiveMinuteRate)
       name: kafka_server_$1_$2_$4
       labels:
         topic: $3
-    - pattern: kafka.server<type=([^,]+), name=([^,]+), fetcherType=([^>]+)><>(Count|OneMinuteRate|MeanRate|FifteenMinuteRate|FiveMinuteRate)
+    - pattern: kafka.server<type=([^,]+), name=([^,]+), fetcherType=([^,]+)><>(Count|OneMinuteRate|MeanRate|FifteenMinuteRate|FiveMinuteRate)
       name: kafka_server_$1_$2_$4
       labels:
         fetcherType: $3
@@ -51,16 +59,19 @@ data:
       labels:
         user: $2
         client-id: $3
+        client-id_user: $3_$2
     - pattern: kafka.server<type=([^,]+), client-id=([^,]+)><>(throttle-time|byte-rate|request-time)
       name: kafka_server_$1_$3
       labels:
-        user: "user"
+        user: "none"
         client-id: $2
+        client-id_user: $2_none
     - pattern: kafka.server<type=([^,]+), user=([^,]+)><>(throttle-time|byte-rate|request-time)
       name: kafka_server_$1_$3
       labels:
         user: $2
-        client-id: "client-id"
+        client-id: "none"
+        client-id_user: none_$2
     - pattern: kafka.server<type=(.+)><>(queue-size)
       name: kafka_server_$1_$2
     - pattern: kafka.server<type=(DelayedOperationPurgatory), name=(.+), delayedOperation=(.+)><>(Value)
@@ -73,7 +84,7 @@ data:
       name: kafka_network_$1_$2_$4
       labels:
         request: $3
-    - pattern: kafka.cluster<type=([^,]+), name=([^,]+), topic=([^,]+), partition=([^>]+)><>Value
+    - pattern: kafka.cluster<type=([^,]+), name=([^,]+), topic=([^,]+), partition=([^,]+)><>Value
       name: kafka_cluster_$1_$2
       labels:
         topic: $3
@@ -83,6 +94,7 @@ data:
       labels:
         topic: $3
         partition: $4
+        topic_partition: $3_$4
     - pattern: kafka.log<type=(.+), name=(.+)><>Value
       name: kafka_log_$1_$2
     - pattern: java.lang<type=(.+), name=(.+)><(.+)>(\w+)
