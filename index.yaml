@@ -2042,6 +2042,42 @@ entries:
   sf-archival:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2022-01-18T18:23:53.625119988Z"
+    dependencies:
+    - name: compaction-controller
+      repository: file://./sub_charts/compaction-controller
+      version: 0.1.0
+    - name: dataset-controller
+      repository: file://./sub_charts/dataset-controller
+      version: 0.1.0
+    - name: ingest-controller
+      repository: file://./sub_charts/ingest-controller
+      version: 0.1.0
+    - name: log-archival
+      repository: file://./sub_charts/log-archival
+      version: 0.1.0
+    - name: query-controller
+      repository: file://./sub_charts/query-controller
+      version: 0.1.0
+    - name: spark-manager
+      repository: file://./sub_charts/spark-manager
+      version: 0.1.0
+    - condition: global.hive.internal.enabled
+      name: hive-and-hadoop
+      repository: file://./sub_charts/hive-and-hadoop
+      version: 0.1.0
+    - condition: spark-history-server.enabled
+      name: spark-history-server
+      repository: file://./sub_charts/spark-history-server
+      version: 1.4.3
+    description: A Helm chart for Kubernetes
+    digest: b6bb05b6e711db3d8ce9f8f210e4355a5f675f3576d2f02602b385afd90369b5
+    name: sf-archival
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-archival-2.0.23/sf-archival-2.0.23.tgz
+    version: 2.0.23
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2022-01-17T20:49:50.748545908Z"
     dependencies:
     - name: compaction-controller
