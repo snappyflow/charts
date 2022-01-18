@@ -10,7 +10,9 @@ metadata:
 spec:
   ports:
     - port: 9092
-      name: broker
+      name: broker-plain
+    - port: 9093
+      name: broker-sasl
   clusterIP: None
   selector:
     app: {{ template "cp-kafka.name" . }}

@@ -5,7 +5,6 @@ global:
   sfprojectname_key: snappyflow/projectname
 
 prometheus:
-
   ## Prometheus Kafka Exporter: exposes complimentary metrics to JMX Exporter
   kafka:
     enabled: true
@@ -30,9 +29,7 @@ prometheus:
       requests:
         cpu: 10m
         memory: 50Mi
-## ------------------------------------------------------
-## Zookeeper
-## ------------------------------------------------------
+
 cp-zookeeper:
   enabled: true
   servers: 3
@@ -75,14 +72,11 @@ cp-zookeeper:
   #   cpu: 100m
   #   memory: 128Mi
 
-## ------------------------------------------------------
-## Kafka
-## ------------------------------------------------------
 cp-kafka:
   enabled: true
   brokers: 3
-  image: confluentinc/cp-enterprise-kafka
-  imageTag: 6.0.1
+  image: snappyflowml/cp-kafka
+  imageTag: 6.0.2
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
   ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   imagePullSecrets:
@@ -95,12 +89,11 @@ cp-kafka:
     disksPerBroker: 1
   resources:
     requests:
-      cpu: 100m
+      cpu: 300m
       memory: 1500Mi
     limits:
-      cpu: 200m
+      cpu: 500m
       memory: 2500Mi
 
   securityContext: 
     runAsUser: 0
-

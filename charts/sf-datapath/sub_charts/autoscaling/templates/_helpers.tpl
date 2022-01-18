@@ -59,3 +59,12 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- define "autoscaling.minioAutoscaling.fullname" -}}
 {{- printf "%s-%s" .Release.Name "minio" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{- define "autoscaling.maxReplicas" -}}
+{{- $extra := 0 -}}
+{{- $GBPerPod := 100 -}}
+{{- if ne (mod .Values.global.clusterQuotaGBperDay $GBPerPod) 0 -}}
+{{- $extra = (sub $GBPerPod (mod .Values.global.clusterQuotaGBperDay $GBPerPod)) -}}
+{{- end -}}
+{{- add 2 (div (add .Values.global.clusterQuotaGBperDay $extra) $GBPerPod) -}}
+{{- end -}}

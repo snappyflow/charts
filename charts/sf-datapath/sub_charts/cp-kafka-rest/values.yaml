@@ -103,8 +103,8 @@ containerResources:
       memory: 600Mi
   jmx:
     limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
       cpu: 100m
       memory: 256Mi
-    requests:
-      cpu: 10m
-      memory: 100Mi

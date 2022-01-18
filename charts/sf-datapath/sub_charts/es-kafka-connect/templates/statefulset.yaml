@@ -75,7 +75,7 @@ spec:
           imagePullPolicy: IfNotPresent
           args:
             - {{ .Values.global.kafkaBrokers }}
-            - "{{ .Values.inByteRate }}"
+            - {{ div .Values.inByteRate .Values.global.numKafkaBrokers | quote }}
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: exporter
@@ -142,13 +142,13 @@ spec:
             - name: CONNECT_BOOTSTRAP_SERVERS
               value: {{ template "es-kafka-connect.kafka.bootstrapServers" . }}
             - name: CONNECT_GROUP_ID
-              value: {{ template "es-kafka-connect.groupId" . }}
+              value: {{ template "es-kafka-connect.group.id" . }}
             - name: CONNECT_CONFIG_STORAGE_TOPIC
-              value: {{ template "es-kafka-connect.fullname" . }}-config
+              value: {{ template "es-kafka-connect.config.storage.topic" . }}
             - name: CONNECT_OFFSET_STORAGE_TOPIC
-              value: {{ template "es-kafka-connect.fullname" . }}-offset
+              value: {{ template "es-kafka-connect.offset.storage.topic" . }}
             - name: CONNECT_STATUS_STORAGE_TOPIC
-              value: {{ template "es-kafka-connect.fullname" . }}-status
+              value: {{ template "es-kafka-connect.status.storage.topic" . }}
             - name: CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL
               value: {{ template "es-kafka-connect.cp-schema-registry.service-name" .}}
             - name: CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL

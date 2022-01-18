@@ -19,9 +19,11 @@ configurationOverrides:
   "value.converter.schemas.enable": "false"
   "internal.key.converter": "org.apache.kafka.connect.json.JsonConverter"
   "internal.value.converter": "org.apache.kafka.connect.json.JsonConverter"
-  "config.storage.replication.factor": "2"
-  "offset.storage.replication.factor": "2"
-  "status.storage.replication.factor": "2"
+  "config.storage.replication.factor": "3"
+  "offset.storage.replication.factor": "3"
+  "offset.storage.partitions": "3"
+  "status.storage.replication.factor": "3"
+  "status.storage.partitions": "3"
   "connector.client.config.override.policy": "All"
   "task.shutdown.graceful.timeout.ms": "120000"
   "offset.flush.timeout.ms": "15000"
@@ -32,6 +34,12 @@ configurationOverrides:
   "consumer.max.poll.records": "5000"
   "scheduled.rebalance.max.delay.ms": "60000"
   "connect.protocol": "apm_sessioned"
+  "security.protocol": SASL_PLAINTEXT
+  "sasl.mechanism": PLAIN
+  "sasl.jaas.config": org.apache.kafka.common.security.plain.PlainLoginModule required username="snp-kconnect" password="snp-kconnect";
+  "consumer.security.protocol": SASL_PLAINTEXT
+  "consumer.sasl.mechanism": PLAIN
+  "consumer.sasl.jaas.config": org.apache.kafka.common.security.plain.PlainLoginModule required username="snp-kconnect" password="snp-kconnect";
 
 ## Kafka Connect JVM Heap Option
 # Changing a memory value below would necessitate change in memory request/limits & HPA (autoscaling chart)
@@ -90,7 +98,8 @@ prometheus:
 cp-schema-registry:
   url: ""
 
-inByteRate: "1157400"
+# Resolves to 150 GB/day
+inByteRate: 1736111
 
 # Changing a value below would necessitate change in HPA (autoscaling chart)
 containerResources:
@@ -99,8 +108,8 @@ containerResources:
       cpu: 500m
       memory: 1Gi
     requests:
-      cpu: 50m
-      memory: 100Mi
+      cpu: 100m
+      memory: 256Mi
   connector:
     limits:
       cpu: 600m

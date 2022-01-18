@@ -27,7 +27,7 @@ Form the Kafka URL. If Kafka is installed as part of this chart, use k8s service
 else use user-provided URL
 */}}
 {{- define "es-kafka-connect.kafka.bootstrapServers" -}}
-{{- .Values.global.kafkaBrokers -}}
+{{- regexReplaceAllLiteral ":\\d+" .Values.global.kafkaBrokers (printf ":%s" .Values.global.kafkaSASLPort) -}}
 {{- end -}}
 
 {{/*
@@ -48,8 +48,20 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
-Default GroupId to Release Name but allow it to be overridden
+Worker configurations that kafka-connect needs
 */}}
-{{- define "es-kafka-connect.groupId" -}}
-{{- printf "%s-%s" "main" .Release.Name -}}
+{{- define "es-kafka-connect.group.id" -}}
+{{- printf "%s-%s-%s" .Release.Namespace .Release.Name "es-connect"  -}}
+{{- end -}}
+
+{{- define "es-kafka-connect.config.storage.topic" -}}
+{{- printf "%s-%s-%s" .Release.Namespace .Release.Name "es-connect-config"  -}}
+{{- end -}}
+
+{{- define "es-kafka-connect.offset.storage.topic" -}}
+{{- printf "%s-%s-%s" .Release.Namespace .Release.Name "es-connect-offset"  -}}
+{{- end -}}
+
+{{- define "es-kafka-connect.status.storage.topic" -}}
+{{- printf "%s-%s-%s" .Release.Namespace .Release.Name "es-connect-status"  -}}
 {{- end -}}

@@ -10,7 +10,8 @@ imagePullPolicy: IfNotPresent
 
 ## Schema Registry Settings Overrides
 ## Configuration Options can be found here: https://docs.confluent.io/current/schema-registry/docs/config.html
-configurationOverrides: {}
+configurationOverrides:
+  kafkastore.init.timeout.ms: 300000
 
 ## Additional env variables
 customEnv: {}
@@ -62,7 +63,7 @@ prometheus:
 
 schemaGenerator:
   enabled: true
-  intervalInMin: 180
+  intervalInMin: 60
   image: snappyflowml/schema-generator
   imageTag: 13
   imagePullPolicy: IfNotPresent

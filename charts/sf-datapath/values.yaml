@@ -1,4 +1,14 @@
 global:
+
+  clusterQuotaGBperDay: 100
+
+  # Percentate of cluster quota reserved for system managed profiles
+  sysReservedclusterQuotaPCNT: 0
+
+  # Percentage buffer to be used while applying quota
+  # If it is set to 40%, a quota request of 1000 Bytes/s will allocate 1000 * (1 + 0.4) Bytes/s
+  quotaBufferPCNT: 5
+
   ingress:
     enabled: false
 
@@ -9,7 +19,19 @@ global:
     postgresqlPassword: archive123
     servicePort: 5432
 
-  kafkaBrokers: ""
+  externalKafka: false
+
+  numKafkaBrokers: 3
+
+  # Below parameter needs to use the PLAIN_TEXT port
+  # if external-kafka is being used, specify all the broker URLs
+  kafkaBrokers: "localhost:9092,localhost1:9092"
+
+  # Certain components which use SASL_PLAIN will use this port along with above kafka broker IPs
+  kafkaSASLPort: "9093"
+
+  # Certain components which use JMX data will use this port with above kafka broker IPs
+  kafkaJMXPort: "5556"
 
   secrets:
     gcs:
@@ -26,7 +48,40 @@ global:
     port: 443
     scheme: https
 
-  maxTasksPerTopic: 5
+  maxTasksPerTopic: 3
+
+  topicTypeDetails: [
+    {
+      "type": log,
+      "num_partitions": 3,
+      "replication_factor": 2,
+      "retention_ms": "86400000"
+    },
+    {
+      "type": metric,
+      "num_partitions": 3,
+      "replication_factor": 2,
+      "retention_ms": "86400000"
+    },
+    {
+      "type": control,
+      "num_partitions": 3,
+      "replication_factor": 2,
+      "retention_ms": "3600000"
+    },
+    {
+      "type": trace,
+      "num_partitions": 3,
+      "replication_factor": 2,
+      "retention_ms": "3600000"
+    },
+    {
+      "type": profile,
+      "num_partitions": 3,
+      "replication_factor": 2,
+      "retention_ms": "3600000"
+    }
+  ]
 
   snappyflowProjectLabel: snappyflow/projectname
   snappyflowAppLabel: snappyflow/appname
@@ -45,11 +100,9 @@ priority: 100
 autoscaling:
   archivalConnectAutoscaling:
     minReplicas: 2
-    maxReplicas: 5
 
   apmConnectAutoscaling:
     minReplicas: 2
-    maxReplicas: 5
 
   restKafkaAutoscaling:
     minReplicas: 2
@@ -57,7 +110,6 @@ autoscaling:
 
   minioAutoscaling:
     minReplicas: 2
-    maxReplicas: 5
 
 sfk-interface:
   schedules:

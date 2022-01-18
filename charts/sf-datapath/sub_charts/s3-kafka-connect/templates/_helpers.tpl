@@ -48,8 +48,20 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
-Default GroupId to Release Name but allow it to be overridden
+Worker configurations that kafka-connect needs
 */}}
-{{- define "s3-kafka-connect.groupId" -}}
-{{- printf "%s-%s" "s3" .Release.Name -}}
+{{- define "s3-kafka-connect.group.id" -}}
+{{- printf "%s-%s-%s" .Release.Namespace .Release.Name "s3-connect"  -}}
+{{- end -}}
+
+{{- define "s3-kafka-connect.config.storage.topic" -}}
+{{- printf "%s-%s-%s" .Release.Namespace .Release.Name "s3-connect-config"  -}}
+{{- end -}}
+
+{{- define "s3-kafka-connect.offset.storage.topic" -}}
+{{- printf "%s-%s-%s" .Release.Namespace .Release.Name "s3-connect-offset"  -}}
+{{- end -}}
+
+{{- define "s3-kafka-connect.status.storage.topic" -}}
+{{- printf "%s-%s-%s" .Release.Namespace .Release.Name "s3-connect-status"  -}}
 {{- end -}}

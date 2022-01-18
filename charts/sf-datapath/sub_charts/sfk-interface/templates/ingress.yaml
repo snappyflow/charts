@@ -18,3 +18,7 @@ spec:
         backend:
           serviceName: {{ template "sfk-interface.fullname" . }}
           servicePort: 80
+      - path: /profile-quotas
+        backend:
+          serviceName: {{ template "sfk-interface.fullname" . }}
+          servicePort: 80
