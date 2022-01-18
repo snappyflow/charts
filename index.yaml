@@ -2754,6 +2754,48 @@ entries:
   sf-datapath:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2022-01-18T18:26:48.289180874Z"
+    dependencies:
+    - name: nginx-ingress
+      repository: file://./sub_charts/nginx-ingress
+      version: 3.6.3
+    - name: cp-schema-registry
+      repository: file://./sub_charts/cp-schema-registry
+      version: 0.1.0
+    - name: cp-kafka-rest
+      repository: file://./sub_charts/cp-kafka-rest
+      version: 0.1.0
+    - condition: global.archival.enabled
+      name: s3-kafka-connect
+      repository: file://./sub_charts/s3-kafka-connect
+      version: 0.1.0
+    - name: es-kafka-connect
+      repository: file://./sub_charts/es-kafka-connect
+      version: 0.1.0
+    - name: autoscaling
+      repository: file://./sub_charts/autoscaling
+      version: 0.1.0
+    - name: authenticator
+      repository: file://./sub_charts/authenticator
+      version: 0.1.0
+    - name: sfk-interface
+      repository: file://./sub_charts/sfk-interface
+      version: 0.1.0
+    - name: signatures-and-kafka-apis
+      repository: file://./sub_charts/signatures-and-kafka-apis
+      version: 0.1.0
+    - condition: global.secrets.gcs.enable
+      name: minio
+      repository: file://./sub_charts/minio
+      version: 8.0.10
+    description: A Helm chart for Confluent Open Source
+    digest: 489c13dd3cf5f89d28500f98924417a93d0b1dd9f41b774e9a92d558f7d355de
+    name: sf-datapath
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-datapath-2.0.35/sf-datapath-2.0.35.tgz
+    version: 2.0.35
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2022-01-07T15:09:21.582206455Z"
     dependencies:
     - name: nginx-ingress
