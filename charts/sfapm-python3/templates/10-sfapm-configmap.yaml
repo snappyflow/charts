@@ -63,7 +63,7 @@ data:
     CONTROL_ROLLOVER_MAX_AGE: "{{ .Values.sfapm.rollover.control.rollover_max_age }}"
     CONTROL_ROLLOVER_MAX_DOCS: "{{ .Values.sfapm.rollover.control.rollover_max_docs }}"
     CONTROL_ROLLOVER_MAX_SIZE: "{{ .Values.sfapm.rollover.control.rollover_max_size }}"
-    {{-end }}
+    {{- end }}
     SWITCH_OFF_PRESTO_COORD: "{{ .Values.sfapm.switchOffPrestoCoord }}"
     ARCHIVER_API_URL: "{{ .Values.sfapm.ingress.kafka_api }}"
     ARCHIVER_URL: "{{ .Values.sfapm.ingress.arhiver_url }}"
