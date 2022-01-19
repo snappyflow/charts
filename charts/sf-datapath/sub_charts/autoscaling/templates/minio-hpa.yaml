@@ -11,7 +11,7 @@ spec:
     kind: Deployment
     name: {{ include "autoscaling.minioAutoscaling.fullname" . }}
   minReplicas: {{ .Values.minioAutoscaling.minReplicas }}
-  maxReplicas: {{ template "autoscaling.maxReplicas" . }}
+  maxReplicas: {{ template "autoscaling.minioAutoscaling.maxReplicas" . }}
   metrics:
   - type: Resource
     resource:

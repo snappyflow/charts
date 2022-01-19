@@ -11,7 +11,7 @@ spec:
     kind: StatefulSet
     name: {{ include "autoscaling.archivalConnectAutoscaling.fullname" . }}
   minReplicas: {{ .Values.archivalConnectAutoscaling.minReplicas }}
-  maxReplicas: {{ template "autoscaling.maxReplicas" . }}
+  maxReplicas: {{ template "autoscaling.archivalConnectAutoscaling.maxReplicas" . }}
   metrics:
   - type: Pods
     pods:
