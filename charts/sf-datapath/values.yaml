@@ -100,9 +100,13 @@ priority: 100
 autoscaling:
   archivalConnectAutoscaling:
     minReplicas: 2
+    # Enabling below parameter overrides the max replicas calculated by datapath based on pod level byte-rate
+    # maxReplicasOverride: 5
 
   apmConnectAutoscaling:
     minReplicas: 2
+    # Enabling below parameter overrides the max replicas calculated by datapath based on pod level byte-rate
+    # maxReplicasOverride: 5
 
   restKafkaAutoscaling:
     minReplicas: 2
@@ -110,6 +114,8 @@ autoscaling:
 
   minioAutoscaling:
     minReplicas: 2
+    # Enabling below parameter overrides the max replicas calculated by datapath based on pod level byte-rate
+    # maxReplicasOverride: 5
 
 sfk-interface:
   schedules:
