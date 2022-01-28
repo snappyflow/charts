@@ -423,6 +423,25 @@ controller:
       volumeMounts:
       - name: varlog
         mountPath: /var/log/nginx
+
+  logrotate:
+    image:
+      repository: linkyard/logrotate
+      tag: latest
+      pullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 100m
+        memory: 256Mi
+    config:
+      interval: daily
+      rotate_count: 2
+      maxsize: 150M
+      mode: copytruncate
+
   ## Containers, which are run before the app containers are started.
   # - name: init-myservice
   #   image: busybox
