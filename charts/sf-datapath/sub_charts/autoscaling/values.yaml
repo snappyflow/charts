@@ -17,10 +17,10 @@ prometheus:
   containerResources:
     limits:
       cpu: 300m
-      memory: 1Gi
+      memory: 2Gi
     requests:
       cpu: 200m
-      memory: 512Mi
+      memory: 1Gi
 
 archivalConnectAutoscaling:
   enabled: true
