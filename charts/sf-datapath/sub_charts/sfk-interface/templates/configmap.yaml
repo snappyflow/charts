@@ -37,13 +37,26 @@ data:
             "behavior.on.malformed.documents": "warn",
             "behavior.on.null.values": "delete",
             "max.buffered.records": "5000",
-            "retry.backoff.ms": "1000",
-            "connection.timeout.ms": "10000",
-            "read.timeout.ms": "40000",
-            "flush.timeout.ms": "60000",
+            "retry.backoff.ms": "3000",
+            "max.retries": "3",
+            "connection.timeout.ms": "5000",
+            "read.timeout.ms": "30000",
+            # flush.timeout.ms is set to 120s considering max.retries, retry.backoff.ms, read.timeout.ms
+            # ------------------------------------------------------------------------------------------
+            # If Elasticsearch is extremely slow (Worst case for us)
+            # 30,000 (read timed out / socket-timeout-exception)
+            # 3000 (max sleep time for 1st retry)
+            # 30,000 (read timed out / socket-timeout-exception)
+            # 6000 (max sleep time for 2nd retry)
+            # 30,000 (read timed out / socket-timeout-exception)
+            # 12,000 (max sleep time for 3rd retry)
+            # 30,000 (read timed out / socket-timeout-exception)
+            # Raise exception after ~1,50,000 milliseconds
+            # ------------------------------------------------------------------------------------------
+            "flush.timeout.ms": "150000",
             "batch.size": "5000",
             "max.in.flight.requests": "1",
-            "linger.ms": "2000",
+            "linger.ms": "1000",
             "schema.ignore": "true",
             "value.converter.schemas.enable": "false",
             "value.converter": "org.apache.kafka.connect.json.JsonConverter",
