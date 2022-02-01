@@ -920,6 +920,15 @@ entries:
   kafka-cluster:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2022-02-01T19:13:55.404730438Z"
+    description: A Helm chart for kafka and zookeeper
+    digest: dc86e69192cafd0fa6267eede56efca0abe121cdbf2c00b0cd27ee2004114966
+    name: kafka-cluster
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/kafka-cluster-0.6.29/kafka-cluster-0.6.29.tgz
+    version: 0.6.29
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2022-01-18T17:59:44.14991553Z"
     description: A Helm chart for kafka and zookeeper
     digest: 73ff3dbe95b6d9dd918f6742fda8c3e1836c1b220f40d49ffbc734db84b067b7
