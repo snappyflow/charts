@@ -41,18 +41,6 @@ data:
             "max.retries": "3",
             "connection.timeout.ms": "5000",
             "read.timeout.ms": "30000",
-            # flush.timeout.ms is set to 120s considering max.retries, retry.backoff.ms, read.timeout.ms
-            # ------------------------------------------------------------------------------------------
-            # If Elasticsearch is extremely slow (Worst case for us)
-            # 30,000 (read timed out / socket-timeout-exception)
-            # 3000 (max sleep time for 1st retry)
-            # 30,000 (read timed out / socket-timeout-exception)
-            # 6000 (max sleep time for 2nd retry)
-            # 30,000 (read timed out / socket-timeout-exception)
-            # 12,000 (max sleep time for 3rd retry)
-            # 30,000 (read timed out / socket-timeout-exception)
-            # Raise exception after ~1,50,000 milliseconds
-            # ------------------------------------------------------------------------------------------
             "flush.timeout.ms": "150000",
             "batch.size": "5000",
             "max.in.flight.requests": "1",
