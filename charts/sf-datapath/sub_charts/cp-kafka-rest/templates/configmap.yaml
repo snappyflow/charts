@@ -20,4 +20,4 @@ data:
     log4j.logger.org.apache.zookeeper=ERROR
     log4j.logger.org.I0Itec.zkclient=ERROR
     log4j.logger.org.reflections=ERROR
-    log4j.io.confluent.rest-utils.requests=WARN
+    log4j.logger.io.confluent.rest-utils.requests=WARN
