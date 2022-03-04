@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   repository: snappyflowml/sfk-interface
   pullPolicy: IfNotPresent
-  tag: 19
+  tag: 20
 
 nameOverride: ""
 fullnameOverride: ""
