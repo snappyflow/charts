@@ -13,3 +13,5 @@ data:
     VIZBUILDER_PORT: "{{ .Values.vizbuilder.service.port }}"
     COMMANDSERVER_HOST: {{ include "sfapm.fullname" . }}-commands
     COMMANDSERVER_PORT: "{{ .Values.commands.service.port }}"
+    ES_MANAGER_HOST: {{ include "sfapm.fullname" . }}-esmanager
+    ES_MANAGER_PORT: "{{ .Values.esmanager.service.port }}"
