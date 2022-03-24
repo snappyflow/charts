@@ -570,7 +570,7 @@ postgresql:
   # when local postgresql is enabled below values are used to configure database
   rootPassword: postgres
   rootUser: postgres
-  multidb: snappyflow;vizbuilder;commands
+  multidb: snappyflow;vizbuilder;commands;elasticsearch_manager
   multidbUser: snappyflow
   multidbUserPassord: maplelabs
 
