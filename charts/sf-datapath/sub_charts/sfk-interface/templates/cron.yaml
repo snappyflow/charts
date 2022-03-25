@@ -68,3 +68,38 @@ spec:
             - name: {{ template "sfk-interface.fullname" . }}-config
               configMap:
                 name: {{ template "sfk-interface.fullname" . }}-config
+
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-sink-monitor-consumer-group
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "sfk-interface.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "*/1 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  startingDeadlineSeconds: 200
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+        spec:
+          containers:
+          - name: main
+            image: kushagratandon12/sink-monitor-consumer-group:latest
+            imagePullPolicy: Always
+            volumeMounts:
+              - name: {{ template "sfk-interface.fullname" . }}-config
+                mountPath: "/etc/config"
+          restartPolicy: Never
+          volumes:
+            - name: {{ template "sfk-interface.fullname" . }}-config
+              configMap:
+                name: {{ template "sfk-interface.fullname" . }}-config
