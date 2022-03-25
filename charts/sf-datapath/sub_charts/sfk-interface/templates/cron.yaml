@@ -69,6 +69,7 @@ spec:
               configMap:
                 name: {{ template "sfk-interface.fullname" . }}-config
 
+---
 
 apiVersion: batch/v1beta1
 kind: CronJob
@@ -103,3 +104,5 @@ spec:
             - name: {{ template "sfk-interface.fullname" . }}-config
               configMap:
                 name: {{ template "sfk-interface.fullname" . }}-config
+
+---
