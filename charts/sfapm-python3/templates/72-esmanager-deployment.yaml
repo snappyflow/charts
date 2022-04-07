@@ -86,7 +86,7 @@ spec:
             - configMapRef:
                 name: {{ include "sfapm.fullname" . }}-esmanager
       containers:
-        - name: elasticsearch_manager
+        - name: elasticsearch-manager
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.esmanager.image.repository }}:{{ .Values.esmanager.image.tag }}"
