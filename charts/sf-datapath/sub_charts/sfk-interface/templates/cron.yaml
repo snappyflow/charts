@@ -37,7 +37,7 @@ spec:
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}-sink-monitor-consumer-group
+  name: {{ .Release.Name }}-sinks-monitor
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "sfk-interface.labels" . | indent 4 }}
