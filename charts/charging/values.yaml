@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: snappyflowml/charging
   pullPolicy: Always
-  tag: latest
+  tag: release
 
 # controls period for which hourly data is retained
 # setting value to 0 disables clean up
