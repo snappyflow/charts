@@ -59,6 +59,8 @@ spec:
           - name: main
             image: snappyflowml/sink-monitor-consumer-groups:latest
             imagePullPolicy: Always
+            command: ["bash"]
+            args: ["-c", "python app.py connect-es"]
             volumeMounts:
               - name: {{ template "sfk-interface.fullname" . }}-config
                 mountPath: "/etc/config"
