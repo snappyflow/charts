@@ -132,16 +132,16 @@ spec:
           livenessProbe:
             initialDelaySeconds: 30
             periodSeconds: 30
-            timeoutSeconds: 10
+            timeoutSeconds: 15
             httpGet:
-              path: /status
+              path: /es-manager/health/
               port: http
           readinessProbe:
             initialDelaySeconds: 30
             periodSeconds: 30
-            timeoutSeconds: 10
+            timeoutSeconds: 15
             httpGet:
-              path: /status
+              path: /es-manager/health/
               port: http
           resources:
             {{- toYaml .Values.esmanager.resources | nindent 12 }}

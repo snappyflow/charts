@@ -50,7 +50,8 @@ sfapmui:
     targetCPUUtilizationPercentage: 1600
     targetMemoryUtilizationPercentage: 160
   image:
-    repository: snappyflowml/sfapm-ui
+    # TODO: Revert this back to normal image name
+    repository: snappyflowml/sfapmauto-ui
     tag: stable
     pullPolicy: IfNotPresent
   resources:
@@ -382,7 +383,7 @@ esmanager_celery:
         cpu: 100m
         memory: 100Mi
     replicaCount: 1
-    command: "celery -A elasticsearch_manager worker -l $LOG_LEVEL -Q es_mng_default -c10 $CELERY_OPTS"
+    command: "celery -A elasticsearch_manager worker -l $LOG_LEVEL -Q es_mng_default -c1 $CELERY_OPTS"
 
 sftrace:
   replicaCount: 1
