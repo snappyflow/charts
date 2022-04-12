@@ -11,6 +11,8 @@ imageCredentials:
   email: supervisor@snappyflow.io
 
 config:
+  project_name: kubernetes
+  app_name: kube-cluster
   # Unique cluster name to add in documents as _tag_cloudName.
   # This is used to create account in APM, this need not be same as actual Kubernets cluster name.
   # Allowed max 32 char, Alphanumeric(a-zA-Z0-9) with dash(-) and underscore(_).
