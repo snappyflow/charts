@@ -26,11 +26,11 @@ spec:
             command: ["bash"]
             args: ["-c", "python app.py connect-s3"]
             volumeMounts:
-              - name: {{ template "log-archival.fullname" . }}
+              - name: {{ template "ingest-controller.fullname" . }}
                 mountPath: "/etc/config"
           restartPolicy: Never
           volumes:
-            - name: {{ template "log-archival.fullname" . }}
+            - name: {{ template "ingest-controller.fullname" . }}
               configMap:
-                name: {{ template "log-archival.fullname" . }}
+                name: {{ template "ingest-controller.fullname" . }}
 
