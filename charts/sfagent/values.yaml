@@ -17,7 +17,6 @@ config:
   # This is used to create account in APM, this need not be same as actual Kubernets cluster name.
   # Allowed max 32 char, Alphanumeric(a-zA-Z0-9) with dash(-) and underscore(_).
   # REQUIRED field with non empty value
-  cluster_name: kubernetes
   # project name label key, value of the label will be added in documents as _tag_projectName
   # projectname_label: snappyflow/projectname
   #
