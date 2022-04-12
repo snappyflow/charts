@@ -57,7 +57,7 @@ spec:
         spec:
           containers:
           - name: main
-            image: snappyflowml/sink-monitor-consumer-groups:latest
+            image: snappyflowml/sink-monitor-consumer-groups:2
             imagePullPolicy: Always
             command: ["bash"]
             args: ["-c", "python app.py connect-es"]
