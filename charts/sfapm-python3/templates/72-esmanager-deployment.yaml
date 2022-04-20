@@ -147,21 +147,48 @@ spec:
             {{- toYaml .Values.esmanager.resources | nindent 12 }}
           volumeMounts:
             - name: log
-              mountPath: /app/log/
+              mountPath: /var/log/snappyflow/elasticsearch_manager
             {{- if .Values.global.enable_sftrace }}
             - mountPath: /sfagent
               name: python-agent
             {{- end }}
         {{- if .Values.sidecarLogger.enabled }}
-        - name: application-logger
+        - name: audit-logger
           image:  "{{ .Values.sidecarLogger.image.repository }}:{{ .Values.sidecarLogger.image.tag }}"
           imagePullPolicy: {{ .Values.sidecarLogger.image.pullPolicy | quote }}
-          args: [/bin/sh, -c, 'tail -n+1 -F /app/log/elasticsearch_manager.log']
+          args: [/bin/sh, -c, 'tail -n+1 -F /var/log/snappyflow/elasticsearch_manager/audit.log']
           resources:
             {{- toYaml .Values.sidecarLogger.resources | nindent 12 }}
           volumeMounts:
           - name: log
-            mountPath: /app/log/
+            mountPath: /var/log/snappyflow/elasticsearch_manager
+        - name: es-cleanup-logger
+          image:  "{{ .Values.sidecarLogger.image.repository }}:{{ .Values.sidecarLogger.image.tag }}"
+          imagePullPolicy: {{ .Values.sidecarLogger.image.pullPolicy | quote }}
+          args: [/bin/sh, -c, 'tail -n+1 -F /var/log/snappyflow/elasticsearch_manager/es_cleanup.log']
+          resources:
+            {{- toYaml .Values.sidecarLogger.resources | nindent 12 }}
+          volumeMounts:
+          - name: log
+            mountPath: /var/log/snappyflow/elasticsearch_manager
+        - name: application-logger
+          image:  "{{ .Values.sidecarLogger.image.repository }}:{{ .Values.sidecarLogger.image.tag }}"
+          imagePullPolicy: {{ .Values.sidecarLogger.image.pullPolicy | quote }}
+          args: [/bin/sh, -c, 'tail -n+1 -F -q /var/log/snappyflow/elasticsearch_manager/elasticsearch_manager.log /var/log/snappyflow/elasticsearch_manager/django.log /var/log/snappyflow/elasticsearch_manager/cloud.log']
+          resources:
+            {{- toYaml .Values.sidecarLogger.resources | nindent 12 }}
+          volumeMounts:
+          - name: log
+            mountPath: /var/log/snappyflow/elasticsearch_manager
+        - name: cache-logger
+          image:  "{{ .Values.sidecarLogger.image.repository }}:{{ .Values.sidecarLogger.image.tag }}"
+          imagePullPolicy: {{ .Values.sidecarLogger.image.pullPolicy | quote }}
+          args: [/bin/sh, -c, 'tail -n+1 -F /var/log/snappyflow/elasticsearch_manager/cache.log']
+          resources:
+            {{- toYaml .Values.sidecarLogger.resources | nindent 12 }}
+          volumeMounts:
+          - name: log
+            mountPath: /var/log/snappyflow/elasticsearch_manager
         {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
