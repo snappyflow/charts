@@ -8,6 +8,7 @@ metadata:
     role: server
 data:
     DISABLE_SERVER_SIDE_CURSORS: {{ .Values.disable_server_side_cursors | quote }}
+
     {{- if .Values.postgresql.enabled }}
     DB_HOST: {{ .Release.Name }}-postgresql
     DB_PORT: "5432"
@@ -20,10 +21,19 @@ data:
     DB_USER: {{ .Values.postgresql.external.dbUser }}
     DB_PASSWORD: {{ .Values.postgresql.external.dbPassword }}
     {{- end }}
+
     REDIS_HOST: {{ .Release.Name  }}-redis
     REDIS_PORT: "6379"
+
     VIZBUILDER_HOST: {{ include "sfapm.fullname" . }}-vizbuilder
     VIZBUILDER_PORT: "{{ .Values.vizbuilder.service.port }}"
+
     APM_HOST: {{ include "sfapm.fullname" . }}-apm
     APM_PORT: "{{ .Values.sfapm.service.port }}"
-    
+
+    ES_USER: "{{ .Values.sfapm.ingress.es_user }}"
+    ES_PROTOCOL: "{{ .Values.sfapm.ingress.es_http }}"
+    ES_HOST: "{{ .Values.sfapm.ingress.es_host }}"
+    ES_PASS: "{{ .Values.sfapm.ingress.es_pass }}"
+    ES_PORT: "{{ .Values.sfapm.ingress.es_port }}"
+    ES_OPERATING_MODE: "{{ .Values.sfapm.ingress.es_operating_mode }}"
