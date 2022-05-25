@@ -1,6 +1,7 @@
 # Default values for charging.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+enableDebug: false
 
 replicaCount: 1
 
@@ -17,7 +18,7 @@ hourly_data_retain_days: 0
 # use command base64 -w 0 <filename>
 tls_key:
 tls_cert:
- 
+
 #Keycloak settings
 keycloak_server: ""
 keycloak_user: ""
@@ -92,7 +93,7 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: 
+resources:
   limits:
     cpu: 500m
     memory: 250Mi
@@ -116,14 +117,13 @@ affinity: {}
 celery:
   env:
     C_FORCE_ROOT: true
-    LOG_LEVEL: INFO
-    CELERY_OPTS: "-O fair"
+    CELERY_OPTS: "-O fair --max-tasks-per-child 20 -P gevent"
   beat:
     command: "celery beat -A charging -l $LOG_LEVEL"
   default:
     replicaCount: 1
     command: "celery worker -n charging@%n -A charging -l $LOG_LEVEL -c4 $CELERY_OPTS"
-  resources: 
+  resources:
     limits:
       cpu: 1000m
       memory: 500Mi
