@@ -119,10 +119,10 @@ celery:
     C_FORCE_ROOT: true
     CELERY_OPTS: "-O fair --max-tasks-per-child 20 -P gevent"
   beat:
-    command: "celery beat -A charging -l $LOG_LEVEL"
+    command: "celery -A charging beat -l $LOG_LEVEL"
   default:
     replicaCount: 1
-    command: "celery worker -n charging@%n -A charging -l $LOG_LEVEL -c4 $CELERY_OPTS"
+    command: "celery -A charging worker -n charging@%n -l $LOG_LEVEL -c10 $CELERY_OPTS"
   resources:
     limits:
       cpu: 1000m
