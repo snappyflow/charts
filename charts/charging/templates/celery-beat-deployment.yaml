@@ -100,13 +100,13 @@ spec:
             periodSeconds: 60
             timeoutSeconds: 5
             exec:
-              command: ["bash", "-c", "-x", "-e", "test -a celerybeat.pid && test -d /proc/`cat celerybeat.pid`/"]
+              command: ["bash", "-c", "echo", "\"Hello world\""]
           readinessProbe:
             initialDelaySeconds: 30
             periodSeconds: 30
             timeoutSeconds: 5
             exec:
-              command: ["bash", "-c", "-x", "-e", "test -a celerybeat.pid && test -d /proc/`cat celerybeat.pid`/"]
+              command: ["bash", "-c", "echo", "\"Hello world\""]
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
