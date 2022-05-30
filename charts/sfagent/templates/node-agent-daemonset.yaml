@@ -73,12 +73,15 @@ spec:
           - name: proc
             mountPath: /host/proc
             mountPropagation: Bidirectional
+            readOnly: true
           - name: sys
             mountPath: /host/sys
             mountPropagation: Bidirectional
+            readOnly: true
           - name: root-fs
             mountPath: /rootfs
             mountPropagation: Bidirectional
+            readOnly: true
       terminationGracePeriodSeconds: 30
     {{- if .Values.node_agent.nodeSelector }}
       nodeSelector:
