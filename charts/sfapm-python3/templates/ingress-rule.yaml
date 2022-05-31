@@ -1,5 +1,5 @@
 {{- if .Values.sfapm.ingress.enabled }}
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "sfapm.fullname" . }}-ingress
@@ -12,43 +12,73 @@ spec:
   - http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: {{ include "sfapm.fullname" . }}-ui
-          servicePort: 80
+          service:
+            name: {{ include "sfapm.fullname" . }}-ui
+            port:
+              number: 80
       - path: /snappyflow
+        pathType: Prefix
         backend:
-          serviceName: {{ include "sfapm.fullname" . }}-apm
-          servicePort: 8000
+          service:
+            name: {{ include "sfapm.fullname" . }}-apm
+            port:
+              number: 8000
       - path: /user
+        pathType: Prefix
         backend:
-          serviceName: {{ include "sfapm.fullname" . }}-apm
-          servicePort: 8000
+          service:
+            name: {{ include "sfapm.fullname" . }}-apm
+            port:
+              number: 8000
       - path: /login/
+        pathType: Prefix
         backend:
-          serviceName: {{ include "sfapm.fullname" . }}-apm
-          servicePort: 8000
+          service:
+            name: {{ include "sfapm.fullname" . }}-apm
+            port:
+              number: 8000
       - path: /sso
+        pathType: Prefix
         backend:
-          serviceName: {{ include "sfapm.fullname" . }}-apm
-          servicePort: 8000
+          service:
+            name: {{ include "sfapm.fullname" . }}-apm
+            port:
+              number: 8000
       - path: /vizbuilder
+        pathType: Prefix
         backend:
-          serviceName: {{ include "sfapm.fullname" . }}-vizbuilder
-          servicePort: 8000
+          service:
+            name: {{ include "sfapm.fullname" . }}-vizbuilder
+            port:
+              number: 8000
       - path: /alert
+        pathType: Prefix
         backend:
-          serviceName: {{ include "sfapm.fullname" . }}-vizbuilder
-          servicePort: 8000
+          service:
+            name: {{ include "sfapm.fullname" . }}-vizbuilder
+            port:
+              number: 8000
       - path: /deployments
+        pathType: Prefix
         backend:
-          serviceName: {{ include "sfapm.fullname" . }}-vizbuilder
-          servicePort: 8000
+          service:
+            name: {{ include "sfapm.fullname" . }}-vizbuilder
+            port:
+              number: 8000
       - path: /logoperation
+        pathType: Prefix
         backend:
-          serviceName: {{ include "sfapm.fullname" . }}-vizbuilder
-          servicePort: 8000
+          service:
+            name: {{ include "sfapm.fullname" . }}-vizbuilder
+            port:
+              number: 8000
       - path: /cserver
+        pathType: Prefix
         backend:
-          serviceName: {{ include "sfapm.fullname" . }}-commands
-          servicePort: 8000
+          service:
+            name: {{ include "sfapm.fullname" . }}-commands
+            port:
+              number: 8000
 {{- end }}
