@@ -102,8 +102,8 @@ spec:
           resources:
             {{- toYaml .Values.celery.resources | nindent 12 }}
           livenessProbe:
-            initialDelaySeconds: 30
-            periodSeconds: 60
+            initialDelaySeconds: 300
+            periodSeconds: 180
             timeoutSeconds: 10
             exec:
               command: ["python", "check.py"]
