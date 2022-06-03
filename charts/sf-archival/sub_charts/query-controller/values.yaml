@@ -3,12 +3,12 @@
 # Declare variables to be passed into your templates.
 image:
   repository: snappyflowml/query-controller
-  tag: 9
+  tag: 10
   pullPolicy: IfNotPresent
 
 executionControler:
   repository: snappyflowml/query-execution-controller
-  tag: 13
+  tag: 14
   pullPolicy: IfNotPresent
 
 cleanup:
