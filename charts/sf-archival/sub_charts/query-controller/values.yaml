@@ -1,25 +1,50 @@
 affinity: {}
 cleanIntervalInHour: 1
-cleanup: {pullPolicy: IfNotPresent, repository: snappyflowml/query-cleanup, tag: '9'}
+cleanup:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/query-cleanup
+  tag: '9'
 containerResources:
   querycleanup:
-    limits: {cpu: 50m, memory: 50Mi}
-    requests: {cpu: 10m, memory: 10Mi}
+    limits:
+      cpu: 50m
+      memory: 50Mi
+    requests:
+      cpu: 10m
+      memory: 10Mi
   querycontroller:
-    limits: {cpu: 50m, memory: 50Mi}
-    requests: {cpu: 10m, memory: 10Mi}
+    limits:
+      cpu: 50m
+      memory: 50Mi
+    requests:
+      cpu: 10m
+      memory: 10Mi
   queryexecutioncontroller:
-    limits: {cpu: 50m, memory: 50Mi}
-    requests: {cpu: 10m, memory: 10Mi}
+    limits:
+      cpu: 50m
+      memory: 50Mi
+    requests:
+      cpu: 10m
+      memory: 10Mi
 dataset-controller:
-  service: {servicePort: 5001}
-executionControler: {pullPolicy: IfNotPresent, repository: snappyflowml/query-execution-controller,
-  tag: '14'}
-external: {enabled: false, externalTrafficPolicy: Cluster, type: NodePort}
+  service:
+    servicePort: 5001
+executionControler:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/query-execution-controller
+  tag: '14'
+external:
+  enabled: false
+  externalTrafficPolicy: Cluster
+  type: NodePort
 fullnameOverride: ''
-image: {pullPolicy: IfNotPresent, repository: snappyflowml/query-controller, tag: '10'}
+image:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/query-controller
+  tag: '10'
 ingest-controller:
-  service: {servicePort: 5000}
+  service:
+    servicePort: 5000
 ingress:
   annotations: {}
   enabled: false
@@ -28,9 +53,12 @@ ingress:
     paths: []
   tls: []
 kafka:
-  schemaRegistry: {host: 10.10.10.10, port: 8081}
+  schemaRegistry:
+    host: 10.10.10.10
+    port: 8081
 log-archival:
-  service: {servicePort: 5003}
+  service:
+    servicePort: 5003
 monitorInterval: 5
 nameOverride: ''
 nodeSelector: {}
@@ -38,8 +66,10 @@ prestoCatalog: hive
 prestoSchema: default
 prestoUser: ubuntu
 serverPort: :5004
-service: {servicePort: 5004}
+service:
+  servicePort: 5004
 spark-manager:
   jobserver:
-    service: {servicePort: 5002}
+    service:
+      servicePort: 5002
 tolerations: []

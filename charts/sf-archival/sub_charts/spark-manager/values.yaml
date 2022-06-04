@@ -3,17 +3,33 @@ compactionImage: snappyflowml/spark-compact-orc:1
 fullnameOverride: ''
 jobserver:
   containerResources:
-    limits: {cpu: 200m, memory: 512Mi}
-    requests: {cpu: 10m, memory: 50Mi}
-  image: {pullPolicy: IfNotPresent, repository: snappyflowml/job-server, tag: '11'}
+    limits:
+      cpu: 200m
+      memory: 512Mi
+    requests:
+      cpu: 10m
+      memory: 50Mi
+  image:
+    pullPolicy: IfNotPresent
+    repository: snappyflowml/job-server
+    tag: '11'
   serverPort: 5002
-  service: {servicePort: 5002}
-  sparkProperties: {logDirectory: sparkhs/spark-hs}
+  service:
+    servicePort: 5002
+  sparkProperties:
+    logDirectory: sparkhs/spark-hs
 monitor:
   containerResources:
-    limits: {cpu: 100m, memory: 256Mi}
-    requests: {cpu: 10m, memory: 10Mi}
-  image: {pullPolicy: IfNotPresent, repository: snappyflowml/monitor, tag: '7'}
+    limits:
+      cpu: 100m
+      memory: 256Mi
+    requests:
+      cpu: 10m
+      memory: 10Mi
+  image:
+    pullPolicy: IfNotPresent
+    repository: snappyflowml/monitor
+    tag: '7'
 nameOverride: ''
 nodeSelector: {}
 tolerations: []
