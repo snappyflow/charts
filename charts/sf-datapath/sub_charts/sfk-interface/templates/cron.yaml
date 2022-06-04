@@ -7,8 +7,8 @@ metadata:
 {{ include "sfk-interface.labels" . | indent 4 }}
 spec:
   concurrencyPolicy: Forbid
-  schedule: "*/30 * * * *"
-  successfulJobsHistoryLimit: 1
+  schedule: {{ .Values.schedules.quotas | quote }}
+  successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 1
   startingDeadlineSeconds: 200
   jobTemplate:
@@ -44,7 +44,7 @@ metadata:
 spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.sink | quote }}
-  successfulJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 1
   startingDeadlineSeconds: 200
   jobTemplate:
@@ -57,8 +57,8 @@ spec:
         spec:
           containers:
           - name: main
-            image: snappyflowml/sink-monitor-consumer-groups:2
-            imagePullPolicy: Always
+            image: snappyflowml/sink-monitor-consumer-groups:3
+            imagePullPolicy: IfNotPresent
             command: ["bash"]
             args: ["-c", "python app.py connect-es"]
             volumeMounts:
@@ -69,5 +69,3 @@ spec:
             - name: {{ template "sfk-interface.fullname" . }}-config
               configMap:
                 name: {{ template "sfk-interface.fullname" . }}-config
-
----
