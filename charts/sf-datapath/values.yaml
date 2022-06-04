@@ -117,9 +117,5 @@ autoscaling:
     # Enabling below parameter overrides the max replicas calculated by datapath based on pod level byte-rate
     # maxReplicasOverride: 5
 
-sfk-interface:
-  schedules:
-    sink: "*/15 * * * *"
-
 signatures-and-kafka-apis:
   useDefaultPatterns: false

@@ -64,4 +64,5 @@ containerResources:
       memory: 50Mi
 
 schedules:
-  sink: "*/5 * * * *"
+  sink: "*/15 * * * *"
+  quotas: "*/30 * * * *"
