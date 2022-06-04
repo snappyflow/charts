@@ -1,77 +1,37 @@
-# Default values for Ingest Controller.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-image:
-  repository: snappyflowml/compaction-controller
-  tag: 15
-  pullPolicy: IfNotPresent
-
-nameOverride: ""
-fullnameOverride: ""
-
-serverPort: ":5005"
-
-service:
-  servicePort: 5005
-
-maxRunningHours: 3 # Max hours a compaction job is allowed to run for
-maxPendingHours: 1 # Max hours a compaction job is allowed to stay in pending state for
-maxSimultaneousRun: 1 # Max number of compaction jobs that can run parallely
-maxAttempts: 2 # Max number of times a compaction job will be executed in case of failures etc.
-
-ingress:
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths: []
-
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
-
-nodeSelector: {}
-
-tolerations: []
-
 affinity: {}
-
-dataset-controller:
-  service:
-    servicePort: 5001
-
-ingest-controller:
-  service:
-    servicePort: 5000
-
-spark-manager:
-  jobserver:
-    service:
-      servicePort: 5002
-
-log-archival:
-  service:
-    servicePort: 5003
-
-kafka:
-  schemaRegistry:
-    host: 10.10.10.10
-    port: 8081
-
 containerResources:
   compaction:
-    limits:
-      cpu: 50m
-      memory: 75Mi
-    requests:
-      cpu: 10m
-      memory: 10Mi
-
-schedules:
-  create: "*/10 * * * *"
-  queue: "*/10 * * * *"
-  processStuck: "*/10 * * * *"
-  start: "*/10 * * * *"
+    limits: {cpu: 50m, memory: 75Mi}
+    requests: {cpu: 10m, memory: 10Mi}
+dataset-controller:
+  service: {servicePort: 5001}
+fullnameOverride: ''
+image: {pullPolicy: IfNotPresent, repository: snappyflowml/compaction-controller,
+  tag: '15'}
+ingest-controller:
+  service: {servicePort: 5000}
+ingress:
+  annotations: {}
+  enabled: false
+  hosts:
+  - host: chart-example.local
+    paths: []
+  tls: []
+kafka:
+  schemaRegistry: {host: 10.10.10.10, port: 8081}
+log-archival:
+  service: {servicePort: 5003}
+maxAttempts: 2
+maxPendingHours: 1
+maxRunningHours: 3
+maxSimultaneousRun: 1
+nameOverride: ''
+nodeSelector: {}
+schedules: {create: '*/10 * * * *', processStuck: '*/10 * * * *', queue: '*/10 * *
+    * *', start: '*/10 * * * *'}
+serverPort: :5005
+service: {servicePort: 5005}
+spark-manager:
+  jobserver:
+    service: {servicePort: 5002}
+tolerations: []
