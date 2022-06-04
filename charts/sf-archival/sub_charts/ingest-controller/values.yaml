@@ -1,48 +1,4 @@
-# Default values for Ingest Controller.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-image:
-  repository: snappyflowml/ingest-controller
-  tag: 15
-  pullPolicy: IfNotPresent
-
-nameOverride: ""
-fullnameOverride: ""
-
-serverPort: ":5000"
-
-service:
-  servicePort: 5000
-
-external:
-  enabled: false
-  type: NodePort
-  externalTrafficPolicy: Cluster
-
-nodeSelector: {}
-
-tolerations: []
-
 affinity: {}
-
-dataset-controller:
-  service:
-    servicePort: 5001
-
-minio:
-  secrets:
-    accessKey: gcpminio
-    accessId: gcpminio
-
-spark-manager:
-  jobserver:
-    service:
-      servicePort: 5002
-
-log-archival:
-  service:
-    servicePort: 5003
-
 containerResources:
   ingestcontroller:
     limits:
@@ -51,7 +7,34 @@ containerResources:
     requests:
       cpu: 10m
       memory: 10Mi
-
+dataset-controller:
+  service:
+    servicePort: 5001
+external:
+  enabled: false
+  externalTrafficPolicy: Cluster
+  type: NodePort
+fullnameOverride: ''
+image:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/ingest-controller
+  tag: '15'
+log-archival:
+  service:
+    servicePort: 5003
+minio:
+  secrets:
+    accessId: gcpminio
+    accessKey: gcpminio
+nameOverride: ''
+nodeSelector: {}
 schedules:
-  sink: "*/5 * * * *"
-
+  sink: '*/5 * * * *'
+serverPort: :5000
+service:
+  servicePort: 5000
+spark-manager:
+  jobserver:
+    service:
+      servicePort: 5002
+tolerations: []

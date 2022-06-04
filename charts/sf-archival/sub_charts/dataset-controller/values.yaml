@@ -1,36 +1,8 @@
-# Default values for sf.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-image:
-  repository: snappyflowml/dataset-controller
-  tag: 7
-  pullPolicy: IfNotPresent
-
-nameOverride: ""
-fullnameOverride: ""
-
-serverPort: ":5001"
-
-rawDataCleanupDays: 2
-
-service:
-  servicePort: 5001
-
-ingest-controller:
-  service:
-    servicePort: 5000
-
+affinity: {}
 billing-service:
   enabled: false
-  url: 127.0.0.1:8000/api/v1/records/
   scheme: https
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
-
+  url: 127.0.0.1:8000/api/v1/records/
 containerResources:
   datasetcontroller:
     limits:
@@ -39,10 +11,24 @@ containerResources:
     requests:
       cpu: 10m
       memory: 256Mi
-
+fullnameOverride: ''
+image:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/dataset-controller
+  tag: '7'
+ingest-controller:
+  service:
+    servicePort: 5000
+nameOverride: ''
+nodeSelector: {}
+rawDataCleanupDays: 2
 schedules:
-  expired: "1 0 * * *"
-  raw_version_compacted: "5 2 * * *"
-  detect: "*/30 * * * *"
-  refresh_size: "5 1 * * *"
-  billing: "0 * * * *"
+  billing: 0 * * * *
+  detect: '*/30 * * * *'
+  expired: 1 0 * * *
+  raw_version_compacted: 5 2 * * *
+  refresh_size: 5 1 * * *
+serverPort: :5001
+service:
+  servicePort: 5001
+tolerations: []
