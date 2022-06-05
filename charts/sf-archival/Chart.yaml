@@ -19,6 +19,9 @@ dependencies:
 - name: query-controller
   repository: file://charts/query-controller
   version: 0.1.0
+- name: raw-query-exec-controller
+  repository: file://charts/raw-query-exec-controller
+  version: 0.1.0
 - name: spark-manager
   repository: file://charts/spark-manager
   version: 0.1.0
