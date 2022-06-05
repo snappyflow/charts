@@ -48,6 +48,7 @@ Selector labels
 {{- define "raw-query-exec-controller.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "raw-query-exec-controller.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+release: {{ .Release.Name }}
 {{- end }}
 
 {{- define "raw-query-exec-controller.log-archival.fullname" -}}
