@@ -12,7 +12,7 @@ jobserver:
   image:
     pullPolicy: IfNotPresent
     repository: snappyflowml/job-server
-    tag: '11'
+    tag: dev-16
   serverPort: 5002
   service:
     servicePort: 5002
@@ -29,7 +29,7 @@ monitor:
   image:
     pullPolicy: IfNotPresent
     repository: snappyflowml/monitor
-    tag: '7'
+    tag: dev-9
 nameOverride: ''
 nodeSelector: {}
 tolerations: []

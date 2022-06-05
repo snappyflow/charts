@@ -41,7 +41,7 @@ spec:
               mountPath: /etc/conf
           envFrom:
             - configMapRef:
-              name: {{ .Release.Name }}-cloud-env
+                name: {{ .Release.Name }}-cloud-env
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
