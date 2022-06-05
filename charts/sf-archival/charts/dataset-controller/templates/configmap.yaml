@@ -11,6 +11,11 @@ data:
       "logArchivalURL": "http://{{ template "dataset-controller.log-archival.fullname" . }}",
       "billingURL": "{{ index .Values "billing-service" "scheme" }}://{{ index .Values "billing-service" "url" }}",
       "rawDataCleanupDays": {{ .Values.rawDataCleanupDays}},
+      "presto": {
+        "user": "{{ .Values.presto.user }}",
+        "catalog": "{{ .Values.presto.catalog }}",
+        "schema": "{{ .Values.presto.schema }}"
+      },
       "db": {
         "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
         "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
