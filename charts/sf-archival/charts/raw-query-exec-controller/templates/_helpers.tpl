@@ -34,6 +34,7 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "raw-query-exec-controller.labels" -}}
+release: {{ .Release.Name }}
 helm.sh/chart: {{ include "raw-query-exec-controller.chart" . }}
 {{ include "raw-query-exec-controller.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
@@ -48,7 +49,6 @@ Selector labels
 {{- define "raw-query-exec-controller.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "raw-query-exec-controller.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-release: {{ .Release.Name }}
 {{- end }}
 
 {{- define "raw-query-exec-controller.log-archival.fullname" -}}

@@ -7,6 +7,7 @@ data:
   config.json: |-
     {
       "ingestControllerURL": "http://{{ template "dataset-controller.ingest-controller.fullname" . }}",
+      "rawQueryExecControllerURL": "http://{{ template "dataset-controller.raw-query-exec-controller.fullname" . }}",
       "logArchivalURL": "http://{{ template "dataset-controller.log-archival.fullname" . }}",
       "billingURL": "{{ index .Values "billing-service" "scheme" }}://{{ index .Values "billing-service" "url" }}",
       "rawDataCleanupDays": {{ .Values.rawDataCleanupDays}},
