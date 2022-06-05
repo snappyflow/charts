@@ -3,3 +3,30 @@ appVersion: '1.0'
 description: A Helm chart for Kubernetes
 name: sf-archival
 version: 2.0.28
+dependencies:
+- name: compaction-controller
+  repository: file://charts/compaction-controller
+  version: 0.1.0
+- name: dataset-controller
+  repository: file://charts/dataset-controller
+  version: 0.1.0
+- name: ingest-controller
+  repository: file://charts/ingest-controller
+  version: 0.1.0
+- name: log-archival
+  repository: file://charts/log-archival
+  version: 0.1.0
+- name: query-controller
+  repository: file://charts/query-controller
+  version: 0.1.0
+- name: spark-manager
+  repository: file://charts/spark-manager
+  version: 0.1.0
+- name: hive-and-hadoop
+  repository: file://charts/hive-and-hadoop
+  condition: global.hive.internal.enabled
+  version: 0.1.0
+- name: spark-history-server
+  repository: file://charts/spark-history-server
+  condition: spark-history-server.enabled
+  version: 1.4.3
