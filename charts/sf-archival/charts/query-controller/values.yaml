@@ -64,7 +64,7 @@ nameOverride: ''
 nodeSelector: {}
 prestoCatalog: hive
 prestoSchema: default
-prestoUser: ubuntu
+prestoUser: maplelabs
 serverPort: :5004
 service:
   servicePort: 5004
