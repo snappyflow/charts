@@ -47,4 +47,4 @@ affinity: {}
 presto:
   catalog: hive
   schema: default
-  user: ubuntu
+  user: maplelabs

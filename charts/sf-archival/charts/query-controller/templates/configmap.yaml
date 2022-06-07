@@ -46,10 +46,11 @@ data:
         "port": {{ .Values.global.postgresql.servicePort }}
       },
       "presto": {
-        "user": "{{ .Values.prestoUser }}",
-        "catalog": "{{ .Values.prestoCatalog }}",
-        "schema": "{{ .Values.prestoSchema }}"
+        "user": "{{ .Values.presto.user }}",
+        "catalog": "{{ .Values.presto.catalog }}",
+        "schema": "{{ .Values.presto.schema }}"
       },
+
       "logArchivalURL": "http://{{ template "query-controller.log-archival.fullname" . }}",
       "interval": {{ .Values.monitorInterval }}
     }

@@ -62,9 +62,6 @@ log-archival:
 monitorInterval: 5
 nameOverride: ''
 nodeSelector: {}
-prestoCatalog: hive
-prestoSchema: default
-prestoUser: maplelabs
 serverPort: :5004
 service:
   servicePort: 5004
@@ -73,3 +70,8 @@ spark-manager:
     service:
       servicePort: 5002
 tolerations: []
+presto:
+  catalog: hive
+  schema: default
+  user: maplelabs
+
