@@ -11,6 +11,7 @@ data:
       "logArchivalURL": "http://{{ template "dataset-controller.log-archival.fullname" . }}",
       "billingURL": "{{ index .Values "billing-service" "scheme" }}://{{ index .Values "billing-service" "url" }}",
       "rawDataCleanupDays": {{ .Values.rawDataCleanupDays}},
+      "maxPartitionsToAnalyzeConcurrently": {{ .Values.maxPartitionsToAnalyzeConcurrently }},
       "presto": {
         "user": "{{ .Values.presto.user }}",
         "catalog": "{{ .Values.presto.catalog }}",
