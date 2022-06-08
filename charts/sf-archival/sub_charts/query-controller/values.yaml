@@ -32,7 +32,7 @@ dataset-controller:
 executionControler:
   pullPolicy: IfNotPresent
   repository: snappyflowml/query-execution-controller
-  tag: '14'
+  tag: '15'
 external:
   enabled: false
   externalTrafficPolicy: Cluster
