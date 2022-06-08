@@ -13,9 +13,9 @@ containerResources:
       memory: 256Mi
 fullnameOverride: ''
 image:
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   repository: snappyflowml/dataset-controller
-  tag: '7'
+  tag: dev-test
 ingest-controller:
   service:
     servicePort: 5000
@@ -32,3 +32,8 @@ serverPort: :5001
 service:
   servicePort: 5001
 tolerations: []
+maxPartitionsToAnalyzeConcurrently: 5
+presto:
+  catalog: hive
+  schema: default
+  user: ubuntu

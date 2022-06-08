@@ -72,3 +72,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- define "dataset-controller.spark-history-server.fullname" -}}
 {{- printf "%s-%s" .Release.Name "spark-history-server" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{- define "dataset-controller.raw-query-exec-controller.fullname" -}}
+{{- printf "%s-%s" .Release.Name "raw-query-exec-controller" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}

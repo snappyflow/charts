@@ -15,7 +15,7 @@ spec:
   - host: 
     http:
       paths:
-      - path: /datasets
+      - path: /sparkman
         backend:
           serviceName: {{ template "spark-manager.fullname" . }}
           servicePort: 80
