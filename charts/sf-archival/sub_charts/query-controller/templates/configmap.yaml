@@ -51,7 +51,8 @@ data:
         "schema": "{{ .Values.prestoSchema }}"
       },
       "logArchivalURL": "http://{{ template "query-controller.log-archival.fullname" . }}",
-      "interval": {{ .Values.monitorInterval }}
+      "interval": {{ .Values.monitorInterval }},
+      "internal_hive": {{ .Values.global.hive.internal.enabled }}
     }
 
 ---
