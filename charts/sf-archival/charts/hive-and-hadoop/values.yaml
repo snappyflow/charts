@@ -36,6 +36,9 @@ service:
     port: 9083
     externalPort: 32500
 
+hiveServer:
+  jvmHeapMB: 750
+
 containerResources:
   namenode:
     limits:
