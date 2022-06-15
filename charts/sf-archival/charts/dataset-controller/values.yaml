@@ -13,9 +13,9 @@ containerResources:
       memory: 256Mi
 fullnameOverride: ''
 image:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   repository: snappyflowml/dataset-controller
-  tag: dev-test
+  tag: '7'
 ingest-controller:
   service:
     servicePort: 5000
