@@ -27,7 +27,8 @@ podAnnotations: {}
 podSecurityContext: {}
 replicaCount: 1
 schedules:
-  sink: '*/5 * * * *'
+  sink: "*/15 * * * *"
+  quotas: "*/30 * * * *"
 securityContext: {}
 service:
   port: 8080

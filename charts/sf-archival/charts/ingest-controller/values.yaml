@@ -1,0 +1,40 @@
+affinity: {}
+containerResources:
+  ingestcontroller:
+    limits:
+      cpu: 50m
+      memory: 512Mi
+    requests:
+      cpu: 10m
+      memory: 10Mi
+dataset-controller:
+  service:
+    servicePort: 5001
+external:
+  enabled: false
+  externalTrafficPolicy: Cluster
+  type: NodePort
+fullnameOverride: ''
+image:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/ingest-controller
+  tag: dev-27
+log-archival:
+  service:
+    servicePort: 5003
+minio:
+  secrets:
+    accessId: gcpminio
+    accessKey: gcpminio
+nameOverride: ''
+nodeSelector: {}
+schedules:
+  sink: '*/5 * * * *'
+serverPort: :5000
+service:
+  servicePort: 5000
+spark-manager:
+  jobserver:
+    service:
+      servicePort: 5002
+tolerations: []

@@ -1,0 +1,77 @@
+affinity: {}
+cleanIntervalInHour: 1
+cleanup:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/query-cleanup
+  tag: dev-12
+containerResources:
+  querycleanup:
+    limits:
+      cpu: 50m
+      memory: 50Mi
+    requests:
+      cpu: 10m
+      memory: 10Mi
+  querycontroller:
+    limits:
+      cpu: 50m
+      memory: 50Mi
+    requests:
+      cpu: 10m
+      memory: 10Mi
+  queryexecutioncontroller:
+    limits:
+      cpu: 50m
+      memory: 50Mi
+    requests:
+      cpu: 10m
+      memory: 10Mi
+dataset-controller:
+  service:
+    servicePort: 5001
+executionControler:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/query-execution-controller
+  tag: '16'
+external:
+  enabled: false
+  externalTrafficPolicy: Cluster
+  type: NodePort
+fullnameOverride: ''
+image:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/query-controller
+  tag: dev-21
+ingest-controller:
+  service:
+    servicePort: 5000
+ingress:
+  annotations: {}
+  enabled: false
+  hosts:
+  - host: chart-example.local
+    paths: []
+  tls: []
+kafka:
+  schemaRegistry:
+    host: 10.10.10.10
+    port: 8081
+log-archival:
+  service:
+    servicePort: 5003
+monitorInterval: 5
+nameOverride: ''
+nodeSelector: {}
+serverPort: :5004
+service:
+  servicePort: 5004
+spark-manager:
+  jobserver:
+    service:
+      servicePort: 5002
+tolerations: []
+presto:
+  catalog: hive
+  schema: default
+  user: maplelabs
+
