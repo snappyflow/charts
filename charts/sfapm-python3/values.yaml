@@ -441,8 +441,7 @@ esmanager:
 esmanager_celery:
   env:
     C_FORCE_ROOT: true
-    CELERY_OPTS: "-O fair --max-tasks-per-child 20 -P gevent"
-
+    CELERY_OPTS: "-O fair --max-tasks-per-child 200 -P solo"
   beat:
     resources:
       limits:
@@ -461,8 +460,8 @@ esmanager_celery:
       requests:
         cpu: 100m
         memory: 100Mi
-    replicaCount: 1
-    command: "celery -A elasticsearch_manager worker -l $LOG_LEVEL -Q es_mng_default -c1 $CELERY_OPTS"
+    replicaCount: 2
+    command: "celery -A elasticsearch_manager worker -l $LOG_LEVEL -Q es_mng_default  $CELERY_OPTS"
 
 sftrace:
   replicaCount: 1
