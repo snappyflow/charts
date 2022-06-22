@@ -129,23 +129,25 @@ spec:
             - name: http
               containerPort: 8000
               protocol: TCP
-          # livenessProbe:
-          #   initialDelaySeconds: 30
-          #   periodSeconds: 30
-          #   timeoutSeconds: 15
-          #   httpGet:
-          #     path: /es-manager/health/
-          #     port: http
-          # readinessProbe:
-          #   initialDelaySeconds: 30
-          #   periodSeconds: 30
-          #   timeoutSeconds: 15
-          #   httpGet:
-          #     path: /es-manager/health/
-          #     port: http
+          livenessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 15
+            httpGet:
+              path: /es-manager/health/
+              port: http
+          readinessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 15
+            httpGet:
+              path: /es-manager/health/
+              port: http
           resources:
             {{- toYaml .Values.esmanager.resources | nindent 12 }}
           volumeMounts:
+            - name: warm-movement-rules
+              mountPath: /etc/conf
             - name: log
               mountPath: /var/log/snappyflow/elasticsearch_manager
             {{- if .Values.global.enable_sftrace }}
@@ -209,3 +211,6 @@ spec:
         - name: python-agent
           emptyDir: {}
         {{- end }}
+        - name: warm-movement-rules
+          configMap:
+            name: {{ template "sfapm.fullname" . }}-esmanager-warm-movement
