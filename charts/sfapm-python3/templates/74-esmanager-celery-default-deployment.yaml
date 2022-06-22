@@ -11,7 +11,7 @@ metadata:
     {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
     {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
 spec:
-  replicas: {{ .Values.sfapm_celery.default.replicaCount }}
+  replicas: {{ .Values.esmanager_celery.default.replicaCount }}
   minReadySeconds: 10
   selector:
     matchLabels:
