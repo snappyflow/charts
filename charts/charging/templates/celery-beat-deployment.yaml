@@ -39,8 +39,8 @@ spec:
           image: "{{ .Values.postgresql.image.repository }}:{{ .Values.postgresql.image.tag }}"
           imagePullPolicy: {{ .Values.postgresql.image.pullPolicy }}
           command:
-            - sh 
-            - -c 
+            - sh
+            - -c
             - "until pg_isready -d postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}; do sleep 3; done"
           {{- if .Values.postgresql.enabled }}
           env:
@@ -57,8 +57,8 @@ spec:
           image: "{{ .Values.redis.image.repository }}:{{ .Values.redis.image.tag }}"
           imagePullPolicy: {{ .Values.redis.image.pullPolicy }}
           command:
-            - sh 
-            - -c 
+            - sh
+            - -c
             - "until redis-cli -h ${REDIS_HOST} -p ${REDIS_PORT} ping ; do sleep 3; done"
           envFrom:
             - configMapRef:
@@ -83,6 +83,13 @@ spec:
                   name: {{ .Release.Name }}-postgresql
                   key: multidbUserPassord
           {{- end }}
+          {{- if .Values.enableDebug }}
+            - name: LOG_LEVEL
+              value: debug
+          {{- else }}
+            - name: LOG_LEVEL
+              value: info
+          {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "charging.fullname" . }}-config
@@ -93,13 +100,13 @@ spec:
             periodSeconds: 60
             timeoutSeconds: 5
             exec:
-              command: ["bash", "-c", "-x", "-e", "test -a celerybeat.pid && test -d /proc/`cat celerybeat.pid`/"]
+              command: ["bash", "-c", "echo", "\"Hello world\""]
           readinessProbe:
             initialDelaySeconds: 30
             periodSeconds: 30
             timeoutSeconds: 5
             exec:
-              command: ["bash", "-c", "-x", "-e", "test -a celerybeat.pid && test -d /proc/`cat celerybeat.pid`/"]
+              command: ["bash", "-c", "echo", "\"Hello world\""]
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

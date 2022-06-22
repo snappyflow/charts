@@ -1,0 +1,36 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-sinks-monitor
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "ingest-controller.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: {{ .Values.schedules.sink | quote }}
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  startingDeadlineSeconds: 200
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+        spec:
+          containers:
+          - name: main
+            image: snappyflowml/sink-monitor-consumer-groups:3
+            imagePullPolicy: IfNotPresent
+            command: ["bash"]
+            args: ["-c", "python app.py connect-s3"]
+            volumeMounts:
+              - name: {{ template "ingest-controller.fullname" . }}
+                mountPath: "/etc/config"
+          restartPolicy: Never
+          volumes:
+            - name: {{ template "ingest-controller.fullname" . }}
+              configMap:
+                name: {{ template "ingest-controller.fullname" . }}
+

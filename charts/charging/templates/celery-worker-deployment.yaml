@@ -45,8 +45,8 @@ spec:
           image: "{{ .Values.postgresql.image.repository }}:{{ .Values.postgresql.image.tag }}"
           imagePullPolicy: {{ .Values.postgresql.image.pullPolicy }}
           command:
-            - sh 
-            - -c 
+            - sh
+            - -c
             - "until pg_isready -d postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}; do sleep 3; done"
           {{- if .Values.postgresql.enabled }}
           env:
@@ -63,8 +63,8 @@ spec:
           image: "{{ .Values.redis.image.repository }}:{{ .Values.redis.image.tag }}"
           imagePullPolicy: {{ .Values.redis.image.pullPolicy }}
           command:
-            - sh 
-            - -c 
+            - sh
+            - -c
             - "until redis-cli -h ${REDIS_HOST} -p ${REDIS_PORT} ping ; do sleep 3; done"
           envFrom:
             - configMapRef:
@@ -89,23 +89,24 @@ spec:
                   name: {{ .Release.Name }}-postgresql
                   key: multidbUserPassord
           {{- end }}
+          {{- if .Values.enableDebug }}
+            - name: LOG_LEVEL
+              value: debug
+          {{- else }}
+            - name: LOG_LEVEL
+              value: info
+          {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "charging.fullname" . }}-config
           resources:
             {{- toYaml .Values.celery.resources | nindent 12 }}
           livenessProbe:
-            initialDelaySeconds: 30
-            periodSeconds: 60
+            initialDelaySeconds: 300
+            periodSeconds: 180
             timeoutSeconds: 10
             exec:
-              command: ["bash", "-c", "-x", "-e", "celery -b redis://$REDIS_HOST:$REDIS_PORT/0 -d charging@$HOSTNAME inspect ping"]
-          readinessProbe:
-            initialDelaySeconds: 30
-            periodSeconds: 30
-            timeoutSeconds: 10
-            exec:
-              command: ["bash", "-c", "-x", "-e", "celery -b redis://$REDIS_HOST:$REDIS_PORT/0 -d charging@$HOSTNAME inspect ping"]
+              command: ["python", "check.py"]
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -118,4 +119,3 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      

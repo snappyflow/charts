@@ -1,0 +1,53 @@
+affinity: {}
+containerResources:
+  compaction:
+    limits:
+      cpu: 50m
+      memory: 75Mi
+    requests:
+      cpu: 10m
+      memory: 10Mi
+dataset-controller:
+  service:
+    servicePort: 5001
+fullnameOverride: ''
+image:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/compaction-controller
+  tag: '15'
+ingest-controller:
+  service:
+    servicePort: 5000
+ingress:
+  annotations: {}
+  enabled: false
+  hosts:
+  - host: chart-example.local
+    paths: []
+  tls: []
+kafka:
+  schemaRegistry:
+    host: 10.10.10.10
+    port: 8081
+log-archival:
+  service:
+    servicePort: 5003
+maxAttempts: 2
+maxPendingHours: 1
+maxRunningHours: 3
+maxSimultaneousRun: 1
+nameOverride: ''
+nodeSelector: {}
+schedules:
+  create: '*/10 * * * *'
+  processStuck: '*/10 * * * *'
+  queue: '*/10 * * * *'
+  start: '*/10 * * * *'
+serverPort: :5005
+service:
+  servicePort: 5005
+spark-manager:
+  jobserver:
+    service:
+      servicePort: 5002
+tolerations: []

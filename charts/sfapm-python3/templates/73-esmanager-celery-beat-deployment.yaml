@@ -130,6 +130,8 @@ spec:
             exec:
               command: ["bash", "-c", "echo", "\"Hello world\""]
           volumeMounts:
+            - name: warm-movement-rules
+              mountPath: /etc/conf
             {{- if .Values.global.enable_sftrace }}
             - mountPath: /sfagent
               name: sftrace-agent
@@ -151,4 +153,6 @@ spec:
         - name: sftrace-agent
           emptyDir: {}
         {{- end }}
-
+        - name: warm-movement-rules
+          configMap:
+            name: {{ template "sfapm.fullname" . }}-esmanager-warm-movement

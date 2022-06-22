@@ -60,6 +60,7 @@ global:
 priority: 100
 
 dataset-controller:
+  maxPartitionsToAnalyzeConcurrently: 5
   billing-service:
     enabled: false
     url: 127.0.0.1:8000/api/v1/records/

@@ -1,31 +1,3 @@
-kind: ConfigMap
-apiVersion: v1
-metadata:
-    name: {{ .Release.Name }}-profile-modification-config
-    namespace: {{ .Release.Namespace }}
-data:
-    config.json: |-
-        {
-          "db": {
-            "name": "{{ .Values.global.postgresql.postgresqlDatabase }}",
-            "user": "{{ .Values.global.postgresql.postgresqlUsername }}",
-            "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
-            "host": "{{ .Values.global.postgresql.host }}",
-            "port": {{ .Values.global.postgresql.servicePort }}
-          },
-          "kafka_brokers": "{{ .Values.global.kafkaBrokers }}",
-          "es_kafka_connect_url": "http://{{ .Release.Name }}-es-kafka-connect:8083",
-          "s3_kafka_connect_url": "http://{{ .Release.Name }}-s3-kafka-connect:8083",
-          "signature_and_kafka_apis": "http://{{ .Release.Name }}-signatures-and-kafka-apis",
-          "kafka_rest_auth_url": "http://{{ .Release.Name }}-authenticator",
-          "cluster_byte_rate_quota": {{ mul .Values.global.clusterQuotaGBperDay 11574.07 }},
-          "sys_rsvd_cluster_byte_rate_quota_pcnt": {{ .Values.global.sysReservedclusterQuotaPCNT }},
-          "max_tasks_per_topic": {{ .Values.global.maxTasksPerTopic }},
-          "topic_type_details": {{ toJson .Values.global.topicTypeDetails }}
-        }
-
----
-
 apiVersion: batch/v1
 kind: Job
 metadata:

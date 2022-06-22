@@ -1,32 +1,8 @@
-# Default values for Ingest Controller.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-image:
-  repository: snappyflowml/authenticator
-  tag: 7
-  pullPolicy: IfNotPresent
-
-nameOverride: ""
-fullnameOverride: ""
-
-serverPort: ":5006"
-
 admin:
+  password: admin
   profileKey: admin
   userName: admin
-  password: admin
-
-signingKey: "mysecretkey"
-
-service:
-  servicePort: 5006
-
-nodeSelector: {}
-
-tolerations: []
-
 affinity: {}
-
 containerResources:
   authenticator:
     limits:
@@ -35,3 +11,15 @@ containerResources:
     requests:
       cpu: 10m
       memory: 50Mi
+fullnameOverride: ''
+image:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/authenticator
+  tag: '7'
+nameOverride: ''
+nodeSelector: {}
+serverPort: :5006
+service:
+  servicePort: 5006
+signingKey: mysecretkey
+tolerations: []
