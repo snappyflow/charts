@@ -1,93 +1,27 @@
-# Default values for cp-kafka-connect.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-replicaCount: 1
-
-image: snappyflowml/arch-kafka-connect
-imageTag: 15
-imagePullPolicy: IfNotPresent
-
-servicePort: 8083
-
-## Kafka Connect properties
-## ref: https://docs.confluent.io/current/connect/userguide.html#configuring-workers
 configurationOverrides:
-  "plugin.path": "/usr/share/java,/etc/kafka-connect/custom_smt,/usr/share/confluent-hub-components"
-  "key.converter": "org.apache.kafka.connect.json.JsonConverter"
-  "value.converter": "org.apache.kafka.connect.json.JsonConverter"
-  "key.converter.schemas.enable": "false"
-  "value.converter.schemas.enable": "false"
-  "internal.key.converter": "org.apache.kafka.connect.json.JsonConverter"
-  "internal.value.converter": "org.apache.kafka.connect.json.JsonConverter"
-  "config.storage.replication.factor": "3"
-  "offset.storage.replication.factor": "3"
-  "offset.storage.partitions": "3"
-  "status.storage.replication.factor": "3"
-  "status.storage.partitions": "3"
-  "connector.client.config.override.policy": "All"
-  "task.shutdown.graceful.timeout.ms": "180000"
-  "offset.flush.timeout.ms": "45000"
-  "offset.flush.interval.ms": "60000"
-  "consumer.partition.assignment.strategy": "org.apache.kafka.clients.consumer.RoundRobinAssignor"
-  "scheduled.rebalance.max.delay.ms": "60000"
-  "connect.protocol": "apm_sessioned"
-  "consumer.fetch.max.bytes": "1048576"
-  "consumer.max.partition.fetch.bytes": "1048576"
-  "consumer.max.poll.records": "5000"
-
-## Kafka Connect JVM Heap Option
-# Changing a memory value below would necessitate change in memory request/limits & HPA (autoscaling chart)
-heapOptions: "-Xms250M -Xmx1000M -Xmns200M -Xmnx800M -XX:MaxDirectMemorySize=100M -Xcodecachetotal50M -Xmso128K -Xgc:concurrentScavenge -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,20,100 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt -Xdump:system+heap+java"
-
-## Additional env variables
-customEnv: {}
-
-## Custom pod annotations
-podAnnotations: {}
-
-## Node labels for pod assignment
-## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
-nodeSelector: {}
-
-## Taints to tolerate on node assignment:
-## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
-tolerations: {}
-
-## Monitoring
-## Kafka Connect JMX Settings
-## ref: https://kafka.apache.org/documentation/#connect_monitoring
-jmx:
-  port: 5555
-
-## Prometheus Exporter Configuration
-## ref: https://prometheus.io/docs/instrumenting/exporters/
-prometheus:
-  ## JMX Exporter Configuration
-  ## ref: https://github.com/prometheus/jmx_exporter
-  jmx:
-    enabled: true
-    image: solsson/kafka-prometheus-jmx-exporter@sha256
-    imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
-    imagePullPolicy: IfNotPresent
-    port: 5556
-
-## If the Kafka Chart is disabled a URL and port are required to connect
-## e.g. gnoble-panther-cp-schema-registry:8081
-cp-schema-registry:
-  url: ""
-
-# Resolves to 150 GB/day
-inByteRate: 1736111
-
-# Changing a value below would necessitate change in HPA (autoscaling chart)
+  config.storage.replication.factor: '3'
+  connect.protocol: apm_sessioned
+  connector.client.config.override.policy: All
+  consumer.fetch.max.bytes: '1048576'
+  consumer.max.partition.fetch.bytes: '1048576'
+  consumer.max.poll.records: '5000'
+  consumer.partition.assignment.strategy: org.apache.kafka.clients.consumer.RoundRobinAssignor
+  internal.key.converter: org.apache.kafka.connect.json.JsonConverter
+  internal.value.converter: org.apache.kafka.connect.json.JsonConverter
+  key.converter: org.apache.kafka.connect.json.JsonConverter
+  key.converter.schemas.enable: 'false'
+  offset.flush.interval.ms: '60000'
+  offset.flush.timeout.ms: '45000'
+  offset.storage.partitions: '3'
+  offset.storage.replication.factor: '3'
+  plugin.path: /usr/share/java,/etc/kafka-connect/custom_smt,/usr/share/confluent-hub-components
+  scheduled.rebalance.max.delay.ms: '60000'
+  status.storage.partitions: '3'
+  status.storage.replication.factor: '3'
+  task.shutdown.graceful.timeout.ms: '180000'
+  value.converter: org.apache.kafka.connect.json.JsonConverter
+  value.converter.schemas.enable: 'false'
 containerResources:
-  jmx:
-    limits:
-      cpu: 500m
-      memory: 1Gi
-    requests:
-      cpu: 100m
-      memory: 256Mi
   connector:
     limits:
       cpu: 800m
@@ -95,3 +29,36 @@ containerResources:
     requests:
       cpu: 256m
       memory: 1536Mi
+  jmx:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+cp-schema-registry:
+  url: ''
+customEnv: {}
+heapOptions: -Xms250M -Xmx1000M -Xmns200M -Xmnx800M -XX:MaxDirectMemorySize=100M -Xcodecachetotal50M
+  -Xmso128K -Xgc:concurrentScavenge -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+CompactStrings
+  -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,20,100 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp
+  -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt
+  -Xdump:system+heap+java
+image: snappyflowml/arch-kafka-connect
+imagePullPolicy: IfNotPresent
+imageTag: '15'
+inByteRate: 1736111
+jmx:
+  port: 5555
+nodeSelector: {}
+podAnnotations: {}
+prometheus:
+  jmx:
+    enabled: true
+    image: solsson/kafka-prometheus-jmx-exporter@sha256
+    imagePullPolicy: IfNotPresent
+    imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
+    port: 5556
+replicaCount: 1
+servicePort: 8083
+tolerations: {}

@@ -14,19 +14,19 @@
       "default": {},
       "description": "Global config for APM SFPod",
       "required": [
-        "cluster_name",
+        "project_name",
         "key"
       ],
       "title": "The config schema",
       "properties": {
-        "cluster_name": {
+        "project_name": {
           "default": "",
           "description": "An explanation about the purpose of this instance.",
           "examples": [
             "kubernetes"
           ],
           "pattern": "^[a-zA-Z0-9-_]{1,32}$",
-          "title": "The cluster_name schema"
+          "title": "The project_name schema"
         },
         "key": {
           "default": "",

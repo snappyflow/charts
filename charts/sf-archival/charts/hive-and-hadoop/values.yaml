@@ -1,0 +1,76 @@
+# Default values for Log Archival.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+image:
+  namenode:
+    repository: snappyflowml/hadoop-2.10.1
+    pullPolicy: IfNotPresent
+    tag: namenode-v1
+  datanode:
+    repository: snappyflowml/hadoop-2.10.1
+    pullPolicy: IfNotPresent
+    tag: datanode-v1
+  hiveServer:
+    repository: snappyflowml/hive-2.3.8-and-hadoop-2.10.1
+    pullPolicy: IfNotPresent
+    tag: server-v1
+  hiveMetastore:
+    repository: snappyflowml/hive-2.3.8-and-hadoop-2.10.1
+    pullPolicy: IfNotPresent
+    tag: metastore-v1
+
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations:
+  prometheus.io/scrape: "false"
+
+service:
+  namenode:
+    port: 8020
+  datanode:
+    port: 50010
+  hiveServer:
+    port: 10000
+  hiveMetastore:
+    port: 9083
+    externalPort: 32500
+
+hiveServer:
+  jvmHeapMB: 750
+
+containerResources:
+  namenode:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 1Gi
+  datanode:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 1Gi
+  hiveServer:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 1Gi
+  hiveMetastore:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 1Gi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

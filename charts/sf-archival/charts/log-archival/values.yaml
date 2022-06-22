@@ -1,0 +1,26 @@
+affinity: {}
+containerResources:
+  logarchival:
+    limits:
+      cpu: 50m
+      memory: 50Mi
+    requests:
+      cpu: 10m
+      memory: 10Mi
+dataset-controller:
+  service:
+    servicePort: 5001
+fullnameOverride: ''
+image:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/log-archival
+  tag: '6'
+ingest-controller:
+  service:
+    servicePort: 5000
+nameOverride: ''
+nodeSelector: {}
+serverPort: :5003
+service:
+  servicePort: 5003
+tolerations: []

@@ -1,0 +1,61 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ template "ingest-controller.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+data:
+  config.json: |-
+    {
+      "datasetURL": "http://{{ template "ingest-controller.dataset-controller.fullname" . }}",
+      "queryControlURL": "http://{{ template "ingest-controller.query-controller.fullname" . }}",
+      "db": {
+        "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
+        "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
+        "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
+        "host": "{{ template "ingest-controller.postgresql.fullname" . }}",
+        "port": {{ .Values.global.postgresql.servicePort }}
+      },
+      "partitionColumnNames": ["year", "month", "day"],
+      "hive": {
+        "userName": "{{ template "ingest-controller.hive-server.username" . }}",
+        "host": "{{ template "ingest-controller.hive-server.host" . }}",
+        "port": {{ template "ingest-controller.hive-server.port" . }},
+        "auth": "{{ template "ingest-controller.hive-server.auth" . }}"
+      },
+      "logArchivalURL": "http://{{ template "ingest-controller.log-archival.fullname" . }}",
+      "schemaRegistryURL": "http://{{ template "ingest-controller.schemaRegistry.fullname" . }}:8081",
+      "kafkaConnectURL": "http://{{ template "ingest-controller.archivalKafkaConnect.fullname" . }}:8083",
+      "kafkaBrokers": "{{ .Values.global.kafkaBrokers }}",
+      "patternsURL": "http://{{ template "ingest-controller.signatures-and-kafka-apis.fullname" . }}",
+      "serverPort": "{{ .Values.serverPort }}"
+    }
+  s3_sink_defaults.json: |-
+    {
+      "connector.class": "io.confluent.connect.s3.S3SinkConnector",
+      "max_tasks_per_topic": {{ .Values.global.maxTasksPerTopic }},
+      "store.url": "http://{{ template "ingest-controller.minio-svc.fullname". }}",
+      "s3.part.size": 5242880,
+      "flush.size": 10000,
+      "storage.class": "io.confluent.connect.s3.storage.S3Storage",
+      "format.class": "io.confluent.connect.s3.format.orc.OrcFormat",
+      "partitioner.class": "io.confluent.connect.storage.partitioner.SfFieldTimePartitioner",
+      "path.format": "'year'=YYYY/'month'=M/'day'=d",
+      "locale": "US",
+      "timezone": "UTC",
+      "partition.field.name": "_tag_projectName, _tag_appName, _plugin, _documentType",
+      "timestamp.extractor": "RecordField",
+      "timestamp.field": "time",
+      "schema.compatibility": "NONE",
+      "rotate.schedule.interval.ms": 180000,
+      "partition.duration.ms": 3600000,
+      "transforms": "filter,insertsignature",
+      "transforms.filter.type": "com.logarchival.MarkDrop$Value",
+      "transforms.insertsignature.type": "com.signature.InsertSignature$Value",
+      "transforms.insertsignature.connectorname.field": "s3",
+      "sf.archival.schema.keys": "_tag_projectName, _tag_appName, _plugin, _documentType",
+      {{- if .Values.global.secrets.gcs.enable }}
+      "aws.access.key.id": "{{ .Values.minio.secrets.accessId }}",
+      "aws.secret.access.key": "{{ .Values.minio.secrets.accessKey }}",
+      {{- end }}
+      "errors.tolerance": "all"
+    }

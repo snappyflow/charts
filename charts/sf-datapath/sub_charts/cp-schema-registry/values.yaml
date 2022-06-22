@@ -1,78 +1,5 @@
-# Default values for cp-schema-registry.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-## Number of Scheme Registry Pod
-replicaCount: 1
-
-image: confluentinc/cp-schema-registry
-imageTag: 6.0.1
-imagePullPolicy: IfNotPresent
-
-## Schema Registry Settings Overrides
-## Configuration Options can be found here: https://docs.confluent.io/current/schema-registry/docs/config.html
 configurationOverrides:
   kafkastore.init.timeout.ms: 300000
-
-## Additional env variables
-customEnv: {}
-
-## The port on which the Schema Registry will be available and serving requests
-servicePort: 8081
-
-## Schema registry JVM Heap Option
-heapOptions: "-Xms32M -Xmx256M -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:G1HeapRegionSize=1M -XX:MaxMetaspaceSize=100M -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30 -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=30"
-
-livenessProbe:
-  failureThreshold: 3
-  initialDelaySeconds: 300
-  periodSeconds: 60
-  successThreshold: 1
-  timeoutSeconds: 10
-  port: 8081
-  path: /
-  scheme: HTTP
-
-## Custom pod annotations
-podAnnotations: {}
-
-## Node labels for pod assignment
-## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
-nodeSelector: {}
-
-## Taints to tolerate on node assignment:
-## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
-tolerations: {}
-
-## Monitoring
-## Schema Registry JMX Settings
-## ref: https://docs.confluent.io/current/schema-registry/docs/monitoring.html
-jmx:
-  port: 5555
-
-## Prometheus Exporter Configuration
-## ref: https://prometheus.io/docs/instrumenting/exporters/
-prometheus:
-  ## JMX Exporter Configuration
-  ## ref: https://github.com/prometheus/jmx_exporter
-  jmx:
-    enabled: false
-    image: solsson/kafka-prometheus-jmx-exporter@sha256
-    imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
-    imagePullPolicy: IfNotPresent
-    port: 5556
-
-schemaGenerator:
-  enabled: true
-  intervalInMin: 60
-  image: snappyflowml/schema-generator
-  imageTag: 13
-  imagePullPolicy: IfNotPresent
-  targets:
-    - name: schema-registry
-      enabled: true
-      # Default URL is http://{archiva.releaseName}-ingest-controller/ingest/schema-registry
-      # Change in configmap, if required.
-
 containerResources:
   jmx:
     limits:
@@ -81,13 +8,6 @@ containerResources:
     requests:
       cpu: 10m
       memory: 50Mi
-  schemaregistry:
-    limits:
-      cpu: 100m
-      memory: 512Mi
-    requests:
-      cpu: 10m
-      memory: 200Mi
   schemaGenerator:
     limits:
       cpu: 100m
@@ -95,3 +15,49 @@ containerResources:
     requests:
       cpu: 10m
       memory: 256Mi
+  schemaregistry:
+    limits:
+      cpu: 100m
+      memory: 512Mi
+    requests:
+      cpu: 10m
+      memory: 200Mi
+customEnv: {}
+heapOptions: -Xms32M -Xmx256M -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:G1HeapRegionSize=1M
+  -XX:MaxMetaspaceSize=100M -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30
+  -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=30
+image: confluentinc/cp-schema-registry
+imagePullPolicy: IfNotPresent
+imageTag: 6.0.1
+jmx:
+  port: 5555
+livenessProbe:
+  failureThreshold: 3
+  initialDelaySeconds: 300
+  path: /
+  periodSeconds: 60
+  port: 8081
+  scheme: HTTP
+  successThreshold: 1
+  timeoutSeconds: 10
+nodeSelector: {}
+podAnnotations: {}
+prometheus:
+  jmx:
+    enabled: false
+    image: solsson/kafka-prometheus-jmx-exporter@sha256
+    imagePullPolicy: IfNotPresent
+    imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
+    port: 5556
+replicaCount: 1
+schemaGenerator:
+  enabled: true
+  image: snappyflowml/schema-generator
+  imagePullPolicy: IfNotPresent
+  imageTag: '13'
+  intervalInMin: 60
+  targets:
+  - enabled: true
+    name: schema-registry
+servicePort: 8081
+tolerations: {}
