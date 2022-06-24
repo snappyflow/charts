@@ -1,0 +1,108 @@
+global:
+  postgresql:
+    host: host
+    postgresqlDatabase: new_archival
+    postgresqlUsername: archive
+    postgresqlPassword: archive123
+    servicePort: 5432
+
+  secrets:
+    gcs:
+      enable: false
+      # Set all of the below entities when Google-Service-Account is being used. Recommended approach unless K8s is running outside GCP (K8s outside GCP flow which will use JSON service-account-keys is not yet implemented)
+      use_google_service_account: true
+      GCP_SERVICE_ACCOUNT_EMAIL: "XXXX-compute@developer.gserviceaccount.com OR XXXX@XXXX.iam.gserviceaccount.com"
+      GCP_DEFAULT_REGION: us-west1
+      GCP_DEFAULT_ZONE: us-west1-c
+    aws:
+      enable: true
+      # Set use_iam_role = true and AWS_IAM_ROLE_ARN to appropriate IAM ARN in case of IAM role usage
+      use_iam_role: false
+      AWS_IAM_ROLE_ARN: arn:aws:iam::XXXX:role/XXXX
+      # Set all of the below entities when IAM role isn't being used. This is not recommended unless K8s is running outside AWS
+      AWS_ACCESS_KEY_ID: XXXX
+      AWS_SECRET_ACCESS_KEY: XXXX
+      AWS_DEFAULT_REGION: us-west-2
+
+  snappyflowProjectLabel: snappyflow/projectname
+  snappyflowAppLabel: snappyflow/appname
+
+  snappyflowProjectName: "snappyflow-app"
+  snappyflowAppName: "archival"
+
+  imagePullSecrets:
+  - name: xxxx
+
+image:
+  namenode:
+    repository: snappyflowml/hadoop-2.10.1
+    pullPolicy: IfNotPresent
+    tag: namenode-v1
+  datanode:
+    repository: snappyflowml/hadoop-2.10.1
+    pullPolicy: IfNotPresent
+    tag: datanode-v1
+  hiveServer:
+    repository: snappyflowml/hive-2.3.8-and-hadoop-2.10.1
+    pullPolicy: IfNotPresent
+    tag: server-v1
+  hiveMetastore:
+    repository: snappyflowml/hive-2.3.8-and-hadoop-2.10.1
+    pullPolicy: IfNotPresent
+    tag: metastore-v1
+
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations:
+  prometheus.io/scrape: "false"
+
+service:
+  namenode:
+    port: 8020
+  datanode:
+    port: 50010
+  hiveServer:
+    port: 10000
+  hiveMetastore:
+    port: 9083
+    externalPort: 32500
+
+hiveServer:
+  jvmHeapMB: 2000
+
+containerResources:
+  namenode:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 1Gi
+  datanode:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 1Gi
+  hiveServer:
+    limits:
+      cpu: 500m
+      memory: 3Gi
+    requests:
+      cpu: 300m
+      memory: 3Gi
+  hiveMetastore:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 1Gi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
