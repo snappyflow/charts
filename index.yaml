@@ -900,6 +900,17 @@ entries:
     urls:
     - https://github.com/snappyflow/helm-charts/releases/download/ha-proxy-0.3.4/ha-proxy-0.3.4.tgz
     version: 0.3.4
+  hive-and-hadoop:
+  - apiVersion: v2
+    appVersion: 2.3.8-and-2.10.0
+    created: "2022-06-24T15:23:24.753762312Z"
+    description: A Helm chart for Kubernetes
+    digest: 7ac5f32fd29795e72d53853ded596a5acba759d80dd95aa90082f6a7e54ed8c0
+    name: hive-and-hadoop
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/hive-and-hadoop-0.1.0/hive-and-hadoop-0.1.0.tgz
+    version: 0.1.0
   kafka:
   - apiVersion: v1
     appVersion: 5.3.1
