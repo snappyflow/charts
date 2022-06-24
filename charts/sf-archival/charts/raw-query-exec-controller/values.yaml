@@ -2,8 +2,8 @@ replicaCount: 1
 
 image:
   repository: snappyflowml/raw-query-exec-controller
-  pullPolicy: Always
-  tag: "dev-test"
+  pullPolicy: IfNotPresent
+  tag: "dev-1"
 
 imagePullSecrets: []
 nameOverride: ""
