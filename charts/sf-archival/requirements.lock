@@ -1,27 +1,9 @@
 dependencies:
-- name: compaction-controller
-  repository: file://charts/compaction-controller
-  version: 0.1.0
-- name: dataset-controller
-  repository: file://charts/dataset-controller
-  version: 0.1.0
-- name: ingest-controller
-  repository: file://charts/ingest-controller
-  version: 0.1.0
-- name: log-archival
-  repository: file://charts/log-archival
-  version: 0.1.0
-- name: query-controller
-  repository: file://charts/query-controller
-  version: 0.1.0
-- name: spark-manager
-  repository: file://charts/spark-manager
-  version: 0.1.0
 - name: hive-and-hadoop
-  repository: file://charts/hive-and-hadoop
+  repository: https://snappyflow.github.io/helm-charts
   version: 0.1.0
 - name: spark-history-server
-  repository: file://charts/spark-history-server
+  repository: https://snappyflow.github.io/helm-charts
   version: 1.4.3
-digest: sha256:a59bfb1130b135d2dd012623a5f9cd08509e47bd2cbc88856baef47feb8dde21
-generated: "2022-06-05T14:29:19.162862036+05:30"
+digest: sha256:54cdda610e30667d7ea41d6df58bd63880c3ea4a3c3aecd956f0e88d1ee74a67
+generated: "2022-06-25T12:13:31.382304788+05:30"
