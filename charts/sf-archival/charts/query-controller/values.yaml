@@ -3,7 +3,7 @@ cleanIntervalInHour: 1
 cleanup:
   pullPolicy: IfNotPresent
   repository: snappyflowml/query-cleanup
-  tag: dev-12
+  tag: '11'
 containerResources:
   querycleanup:
     limits:
@@ -32,7 +32,7 @@ dataset-controller:
 executionControler:
   pullPolicy: IfNotPresent
   repository: snappyflowml/query-execution-controller
-  tag: '16'
+  tag: '19'
 external:
   enabled: false
   externalTrafficPolicy: Cluster
@@ -41,7 +41,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/query-controller
-  tag: dev-21
+  tag: '12'
 ingest-controller:
   service:
     servicePort: 5000
@@ -62,6 +62,10 @@ log-archival:
 monitorInterval: 5
 nameOverride: ''
 nodeSelector: {}
+presto:
+  catalog: hive
+  schema: default
+  user: maplelabs
 serverPort: :5004
 service:
   servicePort: 5004
@@ -70,8 +74,3 @@ spark-manager:
     service:
       servicePort: 5002
 tolerations: []
-presto:
-  catalog: hive
-  schema: default
-  user: maplelabs
-

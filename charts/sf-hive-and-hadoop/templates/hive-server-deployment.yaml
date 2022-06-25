@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hive.fullname" . }}-server
+  labels:
+    {{- include "hive.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "hive.name" . }}-server
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | sha256sum }}
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/name: {{ include "hive.name" . }}-server
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        release: {{ .Release.Name }}
+        {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+        {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
+    spec:
+      priorityClassName: {{ .Release.Name }}-priority-class
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if or (and (eq .Values.global.secrets.aws.enable true) (eq .Values.global.secrets.aws.use_iam_role true)) (and (eq .Values.global.secrets.gcs.enable true) (eq .Values.global.secrets.gcs.use_google_service_account true)) }}
+      serviceAccountName: {{ .Release.Name }}-service-account
+      {{- end}}
+      initContainers:
+        - name: db-ready
+          image: "bitnami/postgresql:11.5.0-debian-9-r34"
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -c
+            - "until pg_isready -d postgresql://'{{ .Values.global.postgresql.postgresqlUsername }}':'{{ .Values.global.postgresql.postgresqlPassword }}'@'{{ template "hive.postgresql.fullname" . }}':{{ .Values.global.postgresql.servicePort }}/'hive_metastore'; do sleep 3; done"
+        - name: namenode-ready
+          image: busybox:1.28
+          command:
+            - 'sh'
+            - '-c'
+            - "until nslookup {{ include "hadoop.namenode.service" . }}; do echo waiting for namenode; sleep 2; done"
+        - name: datanode-ready
+          image: busybox:1.28
+          command:
+            - 'sh'
+            - '-c'
+            - "until nslookup {{ include "hadoop.datanode.service" . }}; do echo waiting for datanode; sleep 2; done"
+        - name: metastore-ready
+          image: busybox:1.28
+          command:
+            - 'sh'
+            - '-c'
+            - "until nslookup {{ include "hive.metastore.service" . }}; do echo waiting for metastore; sleep 2; done"
+      containers:
+        - name: server
+          image: "{{ .Values.image.hiveServer.repository }}:{{ index .Values.image.hiveServer.tag }}"
+          imagePullPolicy: {{ .Values.image.hiveServer.pullPolicy }}
+          ports:
+            - name: server
+              containerPort: {{ .Values.service.hiveServer.port }}
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ template "hive-and-hadoop.fullname" . }}-env
+            - configMapRef:
+                name: {{ .Release.Name }}-cloud-env
+          env:
+            - name: HADOOP_HEAPSIZE
+              value: {{ .Values.hiveServer.jvmHeapMB | quote }}
+          startupProbe:
+            tcpSocket:
+              port: server
+            initialDelaySeconds: 180
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 20
+            timeoutSeconds: 9
+          livenessProbe:
+            tcpSocket:
+              port: server
+            initialDelaySeconds: 300
+            periodSeconds: 60
+            timeoutSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          resources:
+{{- toYaml .Values.containerResources.hiveServer | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

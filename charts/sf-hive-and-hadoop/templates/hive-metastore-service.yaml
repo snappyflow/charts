@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "hive.metastore.service" . }}
+  labels:
+    {{- include "hive.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+  - port: {{ .Values.service.hiveMetastore.port }}
+    name: metastore
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ include "hive.name" . }}-metastore
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    release: {{ .Release.Name }}

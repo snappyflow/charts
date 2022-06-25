@@ -1,35 +1,29 @@
-replicaCount: 1
-
+affinity: {}
+fullnameOverride: ''
 image:
-  repository: snappyflowml/raw-query-exec-controller
   pullPolicy: IfNotPresent
-  tag: "dev-1"
-
+  repository: snappyflowml/raw-query-exec-controller
+  tag: '1'
 imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
-
-podAnnotations: {}
-
-podSecurityContext: {}
-
-securityContext: {}
-
-service:
-  type: ClusterIP
-  port: 80
-
 ingress:
-  enabled: false
-  className: ""
   annotations: {}
+  className: ''
+  enabled: false
   hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
+  - host: chart-example.local
+    paths:
+    - path: /
+      pathType: ImplementationSpecific
   tls: []
-
+nameOverride: ''
+nodeSelector: {}
+podAnnotations: {}
+podSecurityContext: {}
+presto:
+  catalog: hive
+  schema: default
+  user: maplelabs
+replicaCount: 1
 resources:
   limits:
     cpu: 50m
@@ -37,14 +31,8 @@ resources:
   requests:
     cpu: 10m
     memory: 10Mi
-
-nodeSelector: {}
-
+securityContext: {}
+service:
+  port: 80
+  type: ClusterIP
 tolerations: []
-
-affinity: {}
-
-presto:
-  catalog: hive
-  schema: default
-  user: maplelabs
