@@ -18,7 +18,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/ingest-controller
-  tag: dev-27
+  tag: '15'
 log-archival:
   service:
     servicePort: 5003
