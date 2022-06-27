@@ -16,6 +16,8 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
+        {{ .Values.global.snappyflowProjectLabel }}: {{ .Values.global.snappyflowProjectName }}
+        {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
         {{- include "raw-query-exec-controller.selectorLabels" . | nindent 8 }}
     spec:
       priorityClassName: {{ .Release.Name }}-priority-class
