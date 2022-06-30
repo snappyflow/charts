@@ -99,6 +99,10 @@ sfapm:
       rollover_max_age: 1d
       rollover_max_docs: "None"
       rollover_max_size: 10gb
+    rum:
+      rollover_max_age: 1d
+      rollover_max_docs: "None"
+      rollover_max_size: 10gb
     profile:
       rollover_max_age: 1d
       rollover_max_docs: "None"
