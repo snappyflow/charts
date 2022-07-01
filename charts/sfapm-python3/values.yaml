@@ -39,6 +39,7 @@ mappingUpdator:
       memory: 50Mi
 
 sfapmui:
+  quotasEnabled: false
   replicaCount: 1
   autoscaling:
     enabled: true
