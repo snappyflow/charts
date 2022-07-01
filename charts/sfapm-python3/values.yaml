@@ -39,7 +39,6 @@ mappingUpdator:
       memory: 50Mi
 
 sfapmui:
-  quotasEnabled: false
   replicaCount: 1
   autoscaling:
     enabled: true
@@ -86,6 +85,7 @@ sfapm:
     kafka_user: ""
     kafka_pwd: ""
 
+  quotasEnabled: false
   rollover:
     custom_config: false
     metric:
