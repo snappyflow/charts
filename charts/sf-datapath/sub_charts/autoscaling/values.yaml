@@ -14,13 +14,18 @@ prometheus-adapter:
       memory: 128Mi
 
 prometheus:
+  server:
+    readinessProbeInitialDelay: 60
+    readinessProbePeriodSeconds: 60
+    livenessProbeInitialDelay: 60
+    livenessProbePeriodSeconds: 60
   containerResources:
     limits:
       cpu: 300m
-      memory: 2Gi
+      memory: 3Gi
     requests:
       cpu: 200m
-      memory: 1Gi
+      memory: 2Gi
 
 archivalConnectAutoscaling:
   enabled: true

@@ -1,5 +1,7 @@
 global:
 
+  quotasEnabled: true
+
   clusterQuotaGBperDay: 100
 
   # Percentate of cluster quota reserved for system managed profiles

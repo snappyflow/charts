@@ -26,7 +26,8 @@ data:
                 "port": {{ .Values.global.postgresql.servicePort }}
             },
             "max_tasks_per_topic": {{ .Values.global.maxTasksPerTopic }},
-            "topic_type_details": {{ toJson .Values.global.topicTypeDetails }}
+            "topic_type_details": {{ toJson .Values.global.topicTypeDetails }},
+            "quotas_enabled": {{ .Values.global.quotasEnabled }}
         }
     es_sink_defaults.json: |-
         {

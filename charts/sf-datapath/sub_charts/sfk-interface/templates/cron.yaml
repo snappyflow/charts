@@ -1,3 +1,4 @@
+{{- if .Values.global.quotasEnabled -}}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -31,6 +32,7 @@ spec:
             - name: {{ template "sfk-interface.fullname" . }}-config
               configMap:
                 name: {{ template "sfk-interface.fullname" . }}-config
+{{- end -}}
 
 ---
 

@@ -85,6 +85,7 @@ sfapm:
     kafka_user: ""
     kafka_pwd: ""
 
+  quotasEnabled: false
   rollover:
     custom_config: false
     metric:
@@ -96,6 +97,10 @@ sfapm:
       rollover_max_docs: "None"
       rollover_max_size: 10gb
     trace:
+      rollover_max_age: 1d
+      rollover_max_docs: "None"
+      rollover_max_size: 10gb
+    rum:
       rollover_max_age: 1d
       rollover_max_docs: "None"
       rollover_max_size: 10gb
