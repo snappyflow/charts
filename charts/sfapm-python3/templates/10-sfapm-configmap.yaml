@@ -60,6 +60,9 @@ data:
     PROFILE_ROLLOVER_MAX_AGE: "{{ .Values.sfapm.rollover.profile.rollover_max_age }}"
     PROFILE_ROLLOVER_MAX_DOCS: "{{ .Values.sfapm.rollover.profile.rollover_max_docs }}"
     PROFILE_ROLLOVER_MAX_SIZE: "{{ .Values.sfapm.rollover.profile.rollover_max_size }}"
+    RUM_ROLLOVER_MAX_AGE: "{{ .Values.sfapm.rollover.rum.rollover_max_age }}"
+    RUM_ROLLOVER_MAX_DOCS: "{{ .Values.sfapm.rollover.rum.rollover_max_docs }}"
+    RUM_ROLLOVER_MAX_SIZE: "{{ .Values.sfapm.rollover.rum.rollover_max_size }}"
     CONTROL_ROLLOVER_MAX_AGE: "{{ .Values.sfapm.rollover.control.rollover_max_age }}"
     CONTROL_ROLLOVER_MAX_DOCS: "{{ .Values.sfapm.rollover.control.rollover_max_docs }}"
     CONTROL_ROLLOVER_MAX_SIZE: "{{ .Values.sfapm.rollover.control.rollover_max_size }}"
@@ -88,3 +91,4 @@ data:
     GCP_REGION: "{{ .Values.cloud.gcs.region }}"
     GCP_ZONE: "{{ .Values.cloud.gcs.zone }}"
     {{- end }}
+    QUOTAS_ENABLED: "{{ .Values.sfapm.quotasEnabled }}"
