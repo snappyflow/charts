@@ -4,6 +4,8 @@ metadata:
   name: {{ include "charging.fullname" . }}-config
   labels:
     {{- include "charging.labels" . | nindent 4 }}
+    app: charging
+    role: server
 data:
     {{- if .Values.postgresql.enabled }}
     DB_HOST: {{ .Release.Name }}-postgresql
