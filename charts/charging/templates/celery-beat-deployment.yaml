@@ -5,6 +5,8 @@ metadata:
   labels:
     {{- include "charging.labels" . | nindent 4 }}
     role: beat
+    app: charging
+    role: celery
     snappyflow/component: charging
     {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
     {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
@@ -14,6 +16,8 @@ spec:
     matchLabels:
       {{- include "charging.selectorLabels" . | nindent 6 }}
       role: beat
+      app: charging
+      role: celery
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -23,6 +27,8 @@ spec:
       labels:
         {{- include "charging.selectorLabels" . | nindent 8 }}
         role: beat
+        app: charging
+        role: celery
         snappyflow/component: charging
         {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
         {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}

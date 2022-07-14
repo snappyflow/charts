@@ -91,4 +91,8 @@ data:
     GCP_REGION: "{{ .Values.cloud.gcs.region }}"
     GCP_ZONE: "{{ .Values.cloud.gcs.zone }}"
     {{- end }}
-    QUOTAS_ENABLED: "{{ .Values.sfapm.quotasEnabled }}"
+    {{- if .Values.sfapm.quotasEnabled }}
+    QUOTAS_ENABLED: "True"
+    {{- else }}
+    QUOTAS_ENABLED: ""
+    {{- end }}
