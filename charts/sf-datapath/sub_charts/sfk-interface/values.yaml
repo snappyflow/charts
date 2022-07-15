@@ -20,15 +20,15 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/sfk-interface
-  tag: '20'
+  tag: '21'
 nameOverride: ''
 nodeSelector: {}
 podAnnotations: {}
 podSecurityContext: {}
 replicaCount: 1
 schedules:
-  sink: "*/15 * * * *"
-  quotas: "*/30 * * * *"
+  quotas: '*/30 * * * *'
+  sink: '*/15 * * * *'
 securityContext: {}
 service:
   port: 8080
