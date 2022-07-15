@@ -21,5 +21,6 @@ data:
       "cluster_byte_rate_quota": {{ mul .Values.global.clusterQuotaGBperDay 11574.07 }},
       "sys_rsvd_cluster_byte_rate_quota_pcnt": {{ .Values.global.sysReservedclusterQuotaPCNT }},
       "max_tasks_per_topic": {{ .Values.global.maxTasksPerTopic }},
-      "topic_type_details": {{ toJson .Values.global.topicTypeDetails }}
+      "topic_type_details": {{ toJson .Values.global.topicTypeDetails }},
+      "quotas_enabled": {{ .Values.global.quotasEnabled }}
     }
