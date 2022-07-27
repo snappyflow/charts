@@ -54,7 +54,7 @@ heapOptions: -Xms450M -Xmx1800M -Xmns350M -Xmnx1400M -XX:MaxDirectMemorySize=200
   -Xdump:system+heap+java
 image: snappyflowml/apm-kafka-connect
 imagePullPolicy: IfNotPresent
-imageTag: '17'
+imageTag: '18'
 inByteRate: 1736111
 jmx:
   port: 5555
