@@ -12,10 +12,12 @@ imagePullSecrets: []
 
 sidecarLogger:
   enabled: true
+
   image:
     repository: busybox
     tag: latest
     pullPolicy: Always
+
   resources:
     requests:
       cpu: 10m
@@ -26,10 +28,12 @@ sidecarLogger:
 
 mappingUpdator:
   enabled: true
+
   image:
     repository: snappyflowml/plugin-mapping-updator
     tag: 0.1.1
     pullPolicy: Always
+
   resources:
     requests:
       cpu: 10m
@@ -40,6 +44,7 @@ mappingUpdator:
 
 sfapmui:
   replicaCount: 1
+
   autoscaling:
     enabled: true
     minReplicas: 1
@@ -49,10 +54,13 @@ sfapmui:
     # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
     targetCPUUtilizationPercentage: 1600
     targetMemoryUtilizationPercentage: 160
+
   image:
-    repository: snappyflowml/sfapm-ui
+    # TODO: Revert this back to normal image name
+    repository: snappyflowml/sfapmauto-ui
     tag: stable
     pullPolicy: IfNotPresent
+
   resources:
     limits:
       cpu: 200m
@@ -60,10 +68,13 @@ sfapmui:
     requests:
       cpu: 10m
       memory: 100Mi
+
   service:
     type: NodePort # this is the entrypoint change to Loadbalancer
     nodePort: 30080
+
   env: {}
+
   tls:
     enabled: true
     # change these please provide base64 encode certificate and its keys
@@ -73,6 +84,7 @@ sfapmui:
 
 sfapm:
   replicaCount: 2
+
   ingress:
     enabled: false
     es_user: ""
@@ -80,6 +92,7 @@ sfapm:
     es_host: ""
     es_pass: ""
     es_port: ""
+    es_operating_mode: ""
     kafka_api: ""
     arhiver_url: ""
     kafka_user: ""
@@ -114,7 +127,9 @@ sfapm:
       rollover_max_size: 10gb
 
   serverid: ""
+
   switchOffPrestoCoord: "true"
+
   autoscaling:
     enabled: true
     minReplicas: 2
@@ -124,10 +139,12 @@ sfapm:
     # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
     targetCPUUtilizationPercentage: 1600
     targetMemoryUtilizationPercentage: 120
+
   image:
     repository: snappyflowml/sfapm-server
     tag: python3
     pullPolicy: IfNotPresent
+
   resources:
     limits:
       cpu: 1000m
@@ -135,6 +152,7 @@ sfapm:
     requests:
       cpu: 50m
       memory: 512Mi
+
   service:
     type: ClusterIP
     port: 8000
@@ -143,6 +161,7 @@ sfapm_celery:
   env:
     C_FORCE_ROOT: true
     CELERY_OPTS: "-O fair --max-tasks-per-child 20 -P gevent"
+
   beat:
     resources:
       limits:
@@ -152,6 +171,7 @@ sfapm_celery:
         cpu: 10m
         memory: 100Mi
     command: "celery -A snappyflow beat -l $LOG_LEVEL"
+
   default:
     resources:
       limits:
@@ -162,6 +182,7 @@ sfapm_celery:
         memory: 100Mi
     replicaCount: 1
     command: "celery -A snappyflow worker -l $LOG_LEVEL -Q default -c10 $CELERY_OPTS"
+
   notify:
     resources:
       limits:
@@ -172,6 +193,7 @@ sfapm_celery:
         memory: 100Mi
     replicaCount: 1
     command: "celery -A snappyflow worker -l $LOG_LEVEL -Q notify -c20 $CELERY_OPTS"
+
   periodic:
     resources:
       limits:
@@ -188,6 +210,7 @@ sfapm_celery:
       targetCPUUtilizationPercentage: 8000
       targetMemoryUtilizationPercentage: 410
     command: "celery -A snappyflow worker -l $LOG_LEVEL -Q periodic -c5 $CELERY_OPTS"
+
   sftrace:
     resources:
       limits:
@@ -198,6 +221,7 @@ sfapm_celery:
         memory: 100Mi
     replicaCount: 1
     command: "celery -A snappyflow worker -l $LOG_LEVEL -Q sftrace -c10 $CELERY_OPTS"
+
   provision:
     resources:
       limits:
@@ -211,6 +235,7 @@ sfapm_celery:
 
 vizbuilder:
   replicaCount: 2
+
   autoscaling:
     enabled: true
     minReplicas: 2
@@ -220,10 +245,12 @@ vizbuilder:
     # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
     targetCPUUtilizationPercentage: 8000
     targetMemoryUtilizationPercentage: 240
+
   image:
     repository: snappyflowml/sfapm-vizbuilder
     tag: python3
     pullPolicy: IfNotPresent
+
   resources:
     limits:
       cpu: 1000m
@@ -231,6 +258,7 @@ vizbuilder:
     requests:
       cpu: 10m
       memory: 256Mi
+
   service:
     type: ClusterIP
     port: 8000
@@ -239,6 +267,7 @@ vizbuilder_celery:
   env:
     C_FORCE_ROOT: true
     CELERY_OPTS: "-O fair --max-tasks-per-child 20 -P gevent"
+
   beat:
     resources:
       limits:
@@ -248,6 +277,7 @@ vizbuilder_celery:
         cpu: 10m
         memory: 100Mi
     command: "celery -A vizbuilder beat -l $LOG_LEVEL"
+
   alert:
     resources:
       limits:
@@ -258,6 +288,7 @@ vizbuilder_celery:
         memory: 100Mi
     replicaCount: 3
     command: "celery -A vizbuilder worker -l $LOG_LEVEL -Q alert -c10 $CELERY_OPTS"
+
   logops:
     resources:
       limits:
@@ -268,6 +299,7 @@ vizbuilder_celery:
         memory: 100Mi
     replicaCount: 1
     command: "celery -A vizbuilder worker -l $LOG_LEVEL -Q logops -c10 $CELERY_OPTS"
+
   signature:
     resources:
       limits:
@@ -278,6 +310,7 @@ vizbuilder_celery:
         memory: 100Mi
     replicaCount: 1
     command: "celery -A vizbuilder worker -l $LOG_LEVEL -Q signature -c10 $CELERY_OPTS"
+
   provisiontemplate:
     resources:
       limits:
@@ -291,6 +324,7 @@ vizbuilder_celery:
 
 commands:
   replicaCount: 2
+
   autoscaling:
     enabled: true
     minReplicas: 2
@@ -300,10 +334,12 @@ commands:
     # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
     targetCPUUtilizationPercentage: 8000
     targetMemoryUtilizationPercentage: 240
+
   image:
     repository: snappyflowml/sfapm-commands
     tag: stable
     pullPolicy: IfNotPresent
+
   resources:
     limits:
       cpu: 1000m
@@ -311,6 +347,7 @@ commands:
     requests:
       cpu: 100m
       memory: 256Mi
+
   service:
     type: ClusterIP
     port: 8000
@@ -319,6 +356,7 @@ commands_celery:
   env:
     C_FORCE_ROOT: true
     CELERY_OPTS: "-O fair --max-tasks-per-child 20 -P gevent"
+
   beat:
     resources:
       limits:
@@ -328,6 +366,7 @@ commands_celery:
         cpu: 100m
         memory: 100Mi
     command: "celery -A command_server beat --scheduler django -l $LOG_LEVEL"
+
   default:
     resources:
       limits:
@@ -339,12 +378,104 @@ commands_celery:
     replicaCount: 1
     command: "celery -A command_server worker -l $LOG_LEVEL -Q default -c10 $CELERY_OPTS"
 
+esmanager:
+  replicaCount: 2
+
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 3
+    # Below values are based on requests.
+    # Hence value > 100 needs to be calculated based on set limits
+    # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
+    targetCPUUtilizationPercentage: 8000
+    targetMemoryUtilizationPercentage: 240
+
+  image:
+    repository: snappyflowml/sfapm-esmanager
+    tag: release
+    pullPolicy: IfNotPresent
+
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 768Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+
+  service:
+    type: ClusterIP
+    port: 8000
+
+  # Movement to warm node happens based on below threshold & pre-requisites
+  warm_movement_rules:
+    # Add all the threshold to trigger the warm movement in this section
+    # Add the rule name and condition under the rule as dict
+    # In the below, example, rule is "warm_disk_percentage" and the in-built supported conditions are:
+    # gt (greater than), lt (less than), eq (equals to), neq (not equals to) and bool (boolean)
+    # All accepts string and number input
+    # There is a logical OR between all the threshold rules
+    # i.e threshold is met if any one of the rule satisfies
+    thresholds:
+      - hot_disk_percentage:
+          gt: 80
+      - hot_store_to_heap:
+          gt: 45
+    # Add all the prereqs rules under this section
+    # These rules are considered for eligibility check for the warm movement
+    # Rules are check only after any one of the threshold is met
+    # There is a logical AND among all the pre-req rules in one group
+    # i.e all rules should meet under one group to pass
+    # Custom configurations to decide the parameters related to hot-warm / hot-optimized cluster jobs
+    # e.g., maximum indices to backup, merge etc
+    prerequisties:
+      {}
+
+  # hot-warm / hot-optimized related variables
+  warm_allocated_freedisk_percent: 80
+  min_warm_nodes: 2
+  max_relocating_index: 2
+  max_shrink_job: 2
+  max_forcemerge_job: 2
+
+  # snapshot/restore related variables
+  max_ongoing_backups: 3
+  max_ongoing_restores: 3
+
+esmanager_celery:
+  env:
+    C_FORCE_ROOT: true
+    CELERY_OPTS: "-O fair --max-tasks-per-child 200 -P solo"
+  beat:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 100Mi
+    command: "celery -A elasticsearch_manager beat --scheduler django -l $LOG_LEVEL"
+
+  default:
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 768Mi
+      requests:
+        cpu: 100m
+        memory: 100Mi
+    replicaCount: 2
+    command: "celery -A elasticsearch_manager worker -l $LOG_LEVEL -Q es_mng_default  $CELERY_OPTS"
+
 sftrace:
   replicaCount: 1
+
   image:
     repository: snappyflowml/sftrace-server
     tag: latest
     pullPolicy: Always
+
   resources:
     requests:
       cpu: 10m
@@ -352,10 +483,12 @@ sftrace:
     limits:
       cpu: 1
       memory: 512Mi
+
   service:
     type: NodePort
     port: 8200
     jaegerport: 14268
+
   output:
     # Enable either Kafka or Kafkarest as output plugin for trace server
     kafka:
@@ -367,6 +500,7 @@ sftrace:
       host: "sf-datapath-cp-kafka-rest-external.kafka"
       port: 8082
       token: " "
+
   autoscaling:
     enabled: true
     minReplicas: 2
@@ -393,10 +527,12 @@ serviceAccount:
 podAnnotations:
   prometheus.io/scrape: "false"
 
-podSecurityContext: {}
+podSecurityContext:
+  {}
   # fsGroup: 2000
 
-securityContext: {}
+securityContext:
+  {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -428,10 +564,12 @@ redis:
     repository: redis
     pullPolicy: IfNotPresent
     tag: "5.0"
+
   persistence:
     enabled: true
     storageClass: ""
     size: 4Gi
+
   resources:
     limits:
       cpu: 1000m
@@ -439,11 +577,13 @@ redis:
     requests:
       cpu: 100m
       memory: 128Mi
+
   config:
     redis.conf: |-
       appendonly yes
       maxmemory 300mb
       maxmemory-policy allkeys-lru
+
   podAnnotations:
     prometheus.io/scrape: "false"
 
@@ -484,7 +624,9 @@ pprof:
     repository: snappyflowml/pprof-server
     pullPolicy: IfNotPresent
     tag: latest
+
   replicaCount: 1
+
   resources:
     requests:
       cpu: 50m
@@ -492,6 +634,7 @@ pprof:
     limits:
       cpu: 1
       memory: 512Mi
+
   service:
     type: ClusterIP
     port: 8090
@@ -518,14 +661,16 @@ postgresql:
     repository: postgres
     pullPolicy: IfNotPresent
     tag: "9.6"
+
   persistence:
     enabled: true
     storageClass: ""
     size: 8Gi
+
   # when local postgresql is enabled below values are used to configure database
   rootPassword: postgres
   rootUser: postgres
-  multidb: snappyflow;vizbuilder;commands
+  multidb: snappyflow;vizbuilder;commands;elasticsearch_manager
   multidbUser: snappyflow
   multidbUserPassord: maplelabs
 
