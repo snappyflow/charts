@@ -56,8 +56,7 @@ sfapmui:
     targetMemoryUtilizationPercentage: 160
 
   image:
-    # TODO: Revert this back to normal image name
-    repository: snappyflowml/sfapmauto-ui
+    repository: snappyflowml/sfapm-ui
     tag: stable
     pullPolicy: IfNotPresent
 
