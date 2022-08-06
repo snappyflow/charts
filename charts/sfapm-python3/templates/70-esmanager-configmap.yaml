@@ -38,6 +38,11 @@ data:
     ES_PORT: "{{ .Values.sfapm.ingress.es_port }}"
     ES_OPERATING_MODE: "{{ .Values.sfapm.ingress.es_operating_mode }}"
 
+    {{- if .Values.cloud.aws.enable }}
+    CLOUD_TYPE: "aws"
+    {{- else if .Values.cloud.gcs.enable }}
+    CLOUD_TYPE: "gcp"
+    
     WARM_RULE_PATH: "/etc/conf/warm_movement.yaml"
 
     WARM_ALLOCATED_FREEDISK_PERCENT: "{{ .Values.esmanager.warm_allocated_freedisk_percent }}"
