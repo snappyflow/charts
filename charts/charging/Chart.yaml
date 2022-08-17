@@ -2,7 +2,7 @@ apiVersion: v2
 name: charging
 description: A Helm chart for sfapm charging and usage tracking system
 type: application
-version: 0.4.18
+version: 0.4.19
 appVersion: v1
 
 
