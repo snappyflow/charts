@@ -130,16 +130,16 @@ spec:
               containerPort: 8000
               protocol: TCP
           livenessProbe:
-            initialDelaySeconds: 30
-            periodSeconds: 30
-            timeoutSeconds: 15
+            initialDelaySeconds: 60
+            periodSeconds: 300
+            timeoutSeconds: 65
             httpGet:
               path: /es-manager/health/
               port: http
           readinessProbe:
-            initialDelaySeconds: 30
-            periodSeconds: 30
-            timeoutSeconds: 15
+            initialDelaySeconds: 60
+            periodSeconds: 300
+            timeoutSeconds: 65
             httpGet:
               path: /es-manager/health/
               port: http
