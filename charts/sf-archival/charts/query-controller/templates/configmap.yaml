@@ -23,9 +23,8 @@ data:
       "ingestControllerURL": "http://{{ template "query-controller.ingest-controller.fullname" . }}",
       "jobTypes": ["LogQuery", "Histogram"],
       "logArchivalURL": "http://{{ template "query-controller.log-archival.fullname" . }}",
-      "prestoPython": "{{ .Values.prestoPython }}",
-      "prestoPythonScript": "{{ .Values.prestoPythonScript }}",
-      "serverPort": "{{ .Values.serverPort }}"
+      "serverPort": "{{ .Values.serverPort }}",
+      "maxGBToProcessDuringSplitQuery": {{ .Values.maxGBToProcessDuringSplitQuery }}
     }
 
 ---
@@ -50,7 +49,6 @@ data:
         "catalog": "{{ .Values.presto.catalog }}",
         "schema": "{{ .Values.presto.schema }}"
       },
-
       "logArchivalURL": "http://{{ template "query-controller.log-archival.fullname" . }}",
       "interval": {{ .Values.monitorInterval }},
       "internal_hive": {{ .Values.global.hive.internal.enabled }}
