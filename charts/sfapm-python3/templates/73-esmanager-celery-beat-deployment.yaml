@@ -1,24 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "sfapm.fullname" . }}-apm-celery-periodic
+  name: {{ include "sfapm.fullname" . }}-esmanager-celery-beat
   labels:
     {{- include "sfapm.labels" . | nindent 4 }}
-    app: sfapm
+    app: elasticsearch_manager
     role: celery
-    queue: periodic
+    queue: beat
     snappyflow/component: snappyflow-apm
     {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
     {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
 spec:
-  replicas: {{ .Values.sfapm_celery.periodic.replicaCount }}
-  minReadySeconds: 10
+  replicas: 1
   selector:
     matchLabels:
       {{- include "sfapm.selectorLabels" . | nindent 6 }}
-      app: sfapm
+      app: elasticsearch_manager
       role: celery
-      queue: periodic
+      queue: beat
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -27,9 +26,9 @@ spec:
     {{- end }}
       labels:
         {{- include "sfapm.selectorLabels" . | nindent 8 }}
-        app: sfapm
+        app: elasticsearch_manager
         role: celery
-        queue: periodic
+        queue: beat
         snappyflow/component: snappyflow-apm
         {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
         {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
@@ -74,12 +73,12 @@ spec:
         - name: celery
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.sfapm.image.repository }}:{{ .Values.sfapm.image.tag }}"
-          imagePullPolicy: {{ .Values.sfapm.image.pullPolicy }}
+          image: "{{ .Values.esmanager.image.repository }}:{{ .Values.esmanager.image.tag }}"
+          imagePullPolicy: {{ .Values.esmanager.image.pullPolicy }}
           command: ["bash", "-c"]
-          args: [{{ .Values.sfapm_celery.periodic.command }}]
+          args: [{{ .Values.esmanager_celery.beat.command }}]
           env:
-          {{- range $key, $value := .Values.sfapm_celery.env }}
+          {{- range $key, $value := .Values.esmanager_celery.env }}
             - name: {{ $key }}
               value: "{{ $value }}"
           {{- end }}
@@ -93,7 +92,7 @@ spec:
             - name: ENABLE_SFTRACE
               value: "{{ .Values.global.enable_sftrace }}"
             - name: ELASTIC_APM_SERVICE_NAME
-              value: "sfapm-celery-periodic"
+              value: "sf-elasticsearch-manager-celery-beat"
           {{- end }}
           {{- if .Values.postgresql.enabled }}
             - name: DB_PASSWORD
@@ -115,35 +114,28 @@ spec:
           {{- end }}
           envFrom:
             - configMapRef:
-                name: {{ include "sfapm.fullname" . }}-apm
+                name: {{ include "sfapm.fullname" . }}-esmanager
           resources:
-            {{- toYaml .Values.sfapm_celery.periodic.resources | nindent 12 }}
+            {{- toYaml .Values.sfapm_celery.beat.resources | nindent 12 }}
           livenessProbe:
-            initialDelaySeconds: 300
-            periodSeconds: 180
-            timeoutSeconds: 10
+            initialDelaySeconds: 30
+            periodSeconds: 60
+            timeoutSeconds: 5
             exec:
-              command: ["python", "check.py"]
+              command: ["bash", "-c", "echo", "\"Hello world\""]
+          readinessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            exec:
+              command: ["bash", "-c", "echo", "\"Hello world\""]
           volumeMounts:
-            - mountPath: /data/snappyflow
-              name: data
+            - name: warm-movement-rules
+              mountPath: /etc/conf
             {{- if .Values.global.enable_sftrace }}
             - mountPath: /sfagent
               name: sftrace-agent
             {{- end }}
-            - name: snappyflowlog
-              mountPath: /var/log/snappyflow/
-        {{- if .Values.sidecarLogger.enabled }}
-        - name: apm-performance-logger
-          image:  "{{ .Values.sidecarLogger.image.repository }}:{{ .Values.sidecarLogger.image.tag }}"
-          imagePullPolicy: {{ .Values.sidecarLogger.image.pullPolicy | quote }}
-          args: [/bin/sh, -c, 'tail -n+1 -F /var/log/snappyflow/apm-performance.log']
-          resources:
-            {{- toYaml .Values.sidecarLogger.resources | nindent 12 }}
-          volumeMounts:
-          - name: snappyflowlog
-            mountPath: /var/log/snappyflow/
-        {{- end }} 
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -157,11 +149,10 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
-        - name: data
-          emptyDir: {}
         {{- if .Values.global.enable_sftrace }}
         - name: sftrace-agent
           emptyDir: {}
         {{- end }}
-        - name: snappyflowlog
-          emptyDir: {}
+        - name: warm-movement-rules
+          configMap:
+            name: {{ template "sfapm.fullname" . }}-esmanager-warm-movement

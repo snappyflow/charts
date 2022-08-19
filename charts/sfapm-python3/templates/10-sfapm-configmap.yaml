@@ -8,6 +8,7 @@ metadata:
     role: server
 data:
     DISABLE_SERVER_SIDE_CURSORS: {{ .Values.disable_server_side_cursors | quote }}
+
     {{- if .Values.postgresql.enabled }}
     DB_HOST: {{ .Release.Name }}-postgresql
     DB_PORT: "5432"
@@ -20,13 +21,21 @@ data:
     DB_USER: {{ .Values.postgresql.external.dbUser }}
     DB_PASSWORD: {{ .Values.postgresql.external.dbPassword }}
     {{- end }}
+
     REDIS_HOST: {{ .Release.Name  }}-redis
     REDIS_PORT: "6379"
+
     VIZBUILDER_HOST: {{ include "sfapm.fullname" . }}-vizbuilder
     VIZBUILDER_PORT: "{{ .Values.vizbuilder.service.port }}"
+
     COMMANDSERVER_HOST: {{ include "sfapm.fullname" . }}-commands
     COMMANDSERVER_PORT: "{{ .Values.commands.service.port }}"
+
+    ES_MANAGER_HOST: {{ include "sfapm.fullname" . }}-esmanager
+    ES_MANAGER_PORT: "{{ .Values.esmanager.service.port }}"
+
     SERVERID: "{{ .Values.sfapm.serverid }}"
+
     {{- if .Values.keycloak.enabled }}
     KEYCLOAK_MODE: "True"
     KEYCLOAK_SERVER: "{{ .Values.keycloak.serverIP }}"
@@ -42,11 +51,7 @@ data:
     {{- else }}
     KEYCLOAK_MODE: ""
     {{- end }}
-    ES_USER: "{{ .Values.sfapm.ingress.es_user }}"
-    ES_PROTOCOL: "{{ .Values.sfapm.ingress.es_http }}"
-    ES_HOST: "{{ .Values.sfapm.ingress.es_host }}"
-    ES_PASS: "{{ .Values.sfapm.ingress.es_pass }}"
-    ES_PORT: "{{ .Values.sfapm.ingress.es_port }}"
+
     {{- if .Values.sfapm.rollover.custom_config }}
     METRIC_ROLLOVER_MAX_AGE: "{{ .Values.sfapm.rollover.metric.rollover_max_age }}"
     METRIC_ROLLOVER_MAX_DOCS: "{{ .Values.sfapm.rollover.metric.rollover_max_docs }}"
@@ -67,19 +72,25 @@ data:
     CONTROL_ROLLOVER_MAX_DOCS: "{{ .Values.sfapm.rollover.control.rollover_max_docs }}"
     CONTROL_ROLLOVER_MAX_SIZE: "{{ .Values.sfapm.rollover.control.rollover_max_size }}"
     {{- end }}
+
     SWITCH_OFF_PRESTO_COORD: "{{ .Values.sfapm.switchOffPrestoCoord }}"
+
     ARCHIVER_API_URL: "{{ .Values.sfapm.ingress.kafka_api }}"
     ARCHIVER_URL: "{{ .Values.sfapm.ingress.arhiver_url }}"
+
     KAFKA_USERNAME: "{{ .Values.sfapm.ingress.kafka_user }}"
     KAFKA_PASSWORD: "{{ .Values.sfapm.ingress.kafka_pwd }}"
+
     GOOGLE_CLIENT_ID: "{{ .Values.google_client_id }}"
     GOOGLE_CLIENT_SECRET: "{{ .Values.google_client_secret }}"
     GOOGLE_CALLBACK_URL_RELATIVE: "{{ .Values.google_callback_url }}"
+
     {{- if .Values.usage_system.enabled }}
     USAGE_SERVICE_HOST: "{{ .Values.usage_system.host }}"
     USAGE_SERVICE_PORT: "{{ .Values.usage_system.port }}"
     USAGE_SERVICE_TLS: "{{ .Values.usage_system.tls }}"
     {{- end }}
+
     PPROF_SERVER_HOST: "{{ include "sfapm.fullname" . }}-pprof-server"
     PPROF_SERVER_PORT: "{{ .Values.pprof.service.port }}"
 

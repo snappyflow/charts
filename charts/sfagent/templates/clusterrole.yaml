@@ -13,5 +13,9 @@ rules:
 - apiGroups: ["*"] # "" indicates the core API group, "*" all api groups
   resources: ["*"]
   verbs: ["get", "list", "watch"]
+- apiGroups: ["*"]
+  resources: ["configmaps"]
+  resourceNames: [{{ template "sf-apm-agents.fullname" . }}]
+  verbs: ["update", "get", "edit"]
 {{- end -}}
 

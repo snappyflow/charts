@@ -51,4 +51,8 @@ spec:
         backend:
           serviceName: {{ include "sfapm.fullname" . }}-commands
           servicePort: 8000
+      - path: /es-manager
+        backend:
+          serviceName: {{ include "sfapm.fullname" . }}-esmanager
+          servicePort: 8000
 {{- end }}
