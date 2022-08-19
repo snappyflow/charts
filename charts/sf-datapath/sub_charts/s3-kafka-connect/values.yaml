@@ -39,7 +39,7 @@ containerResources:
 cp-schema-registry:
   url: ''
 customEnv: {}
-heapOptions: -Xms250M -Xmx1000M -Xmns200M -Xmnx800M -XX:MaxDirectMemorySize=100M -Xcodecachetotal50M
+heapOptions: -Xms250M -Xmx1300M -Xmns200M -Xmnx800M -XX:MaxDirectMemorySize=100M -Xcodecachetotal50M
   -Xmso128K -Xgc:concurrentScavenge -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+CompactStrings
   -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,20,100 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp
   -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt
