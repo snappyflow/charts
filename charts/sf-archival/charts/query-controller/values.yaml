@@ -59,8 +59,8 @@ kafka:
 log-archival:
   service:
     servicePort: 5003
-monitorInterval: 1
 maxGBToProcessDuringSplitQuery: 1
+monitorInterval: 1
 nameOverride: ''
 nodeSelector: {}
 presto:
