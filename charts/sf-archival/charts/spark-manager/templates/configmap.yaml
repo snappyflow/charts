@@ -127,6 +127,7 @@ data:
               "sf.org.hadoop.Compact",
               "local:///tmp/jars/application/compact-orc-scala-2.12.10.jar",
               "__PARAM__source",
+              "__PARAM__segmentFile",
               "__PARAM__destination"
             ]
           }
@@ -154,6 +155,7 @@ data:
               "sf.org.hadoop.Compact",
               "local:///tmp/jars/application/compact-orc-scala-2.12.10.jar",
               "__PARAM__source",
+              "__PARAM__segmentFile,
               "__PARAM__destination"
             ],
             "ecs_cluster": "{{ .Values.infrastructure.EcsFargate.cluster }}",
