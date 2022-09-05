@@ -15,17 +15,17 @@ containerResources:
   querycontroller:
     limits:
       cpu: 50m
-      memory: 50Mi
+      memory: 512Mi
     requests:
-      cpu: 10m
-      memory: 10Mi
+      cpu: 50m
+      memory: 512Mi
   queryexecutioncontroller:
     limits:
       cpu: 50m
-      memory: 50Mi
+      memory: 512Mi
     requests:
-      cpu: 10m
-      memory: 10Mi
+      cpu: 50m
+      memory: 512Mi
 dataset-controller:
   service:
     servicePort: 5001
