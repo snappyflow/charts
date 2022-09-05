@@ -41,7 +41,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/query-controller
-  tag: '13'
+  tag: 'dev-test'
 ingest-controller:
   service:
     servicePort: 5000
