@@ -38,3 +38,4 @@ spark-manager:
     service:
       servicePort: 5002
 tolerations: []
+timeBucketSizeMinutes: 15

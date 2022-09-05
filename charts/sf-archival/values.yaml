@@ -86,6 +86,7 @@ compaction-controller:
 ingest-controller:
   schedules:
     sink: "*/10 * * * *"
+  timeBucketSizeMinutes: 15 # Has to be an integer
 
 spark-manager:
   jobserver:
