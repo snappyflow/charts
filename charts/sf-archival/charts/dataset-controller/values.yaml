@@ -6,8 +6,8 @@ billing-service:
 containerResources:
   datasetcontroller:
     limits:
-      cpu: 100m
-      memory: 512Mi
+      cpu: 50m
+      memory: 256Mi
     requests:
       cpu: 10m
       memory: 256Mi

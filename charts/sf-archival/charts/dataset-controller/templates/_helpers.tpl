@@ -36,15 +36,6 @@ If release name contains chart name it will be used as a full name.
 {{- printf "%s-%s" .Release.Name "log-archival" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "dataset-controller.service.servicePort" -}}
-{{- printf "%s-%s" .Values.service.servicePort -}}
-{{- end -}}
-
-{{- define "ingest-controller.service.servicePort" -}}
-{{- $port := index .Values "ingest-controller" "service" "servicePort" -}}
-{{- printf "%s" $port -}}
-{{- end -}}
-
 {{/*
 Create chart name and version as used by the chart label.
 */}}
