@@ -81,7 +81,7 @@ spec:
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}-delete-raw-partn-post-compaction
+  name: {{ .Release.Name }}-delete-raw-data-post-compaction
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "dataset-raw-controller.labels" . | indent 4 }}
