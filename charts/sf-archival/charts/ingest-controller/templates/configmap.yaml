@@ -15,7 +15,7 @@ data:
         "host": "{{ template "ingest-controller.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }}
       },
-      "partitionColumnNames": ["year", "month", "day"],
+      "partitionColumnNames": ["year", "month", "day", "segment"],
       "hive": {
         "userName": "{{ template "ingest-controller.hive-server.username" . }}",
         "host": "{{ template "ingest-controller.hive-server.host" . }}",
