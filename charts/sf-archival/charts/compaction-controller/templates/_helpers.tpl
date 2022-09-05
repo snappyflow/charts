@@ -64,6 +64,10 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- printf "%s-%s" .Release.Name "dataset-controller" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{- define "compaction-controller.dataset-raw-controller.fullname" -}}
+{{- printf "%s-%s" .Release.Name "dataset-raw-controller" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
 {{- define "compaction-controller.ingest-controller.fullname" -}}
 {{- printf "%s-%s" .Release.Name "ingest-controller" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}

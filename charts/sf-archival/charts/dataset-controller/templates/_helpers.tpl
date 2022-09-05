@@ -28,6 +28,10 @@ If release name contains chart name it will be used as a full name.
 {{- printf "%s-%s" .Release.Name "ingest-controller" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{- define "dataset-controller.dataset-raw-controller.fullname" -}}
+{{- printf "%s-%s" .Release.Name "dataset-raw-controller" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
 {{- define "dataset-controller.log-archival.fullname" -}}
 {{- printf "%s-%s" .Release.Name "log-archival" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
