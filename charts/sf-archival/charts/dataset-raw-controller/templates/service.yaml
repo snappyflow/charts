@@ -5,9 +5,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   ports:
-    - port: {{ .Values.service.servicePort }}
-      targetPort: http
-      protocol: TCP
+  - port: 80
+    targetPort: {{ .Values.service.servicePort }}
+    protocol: TCP
   selector:
     app.kubernetes.io/name: {{ include "dataset-raw-controller.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
