@@ -1,7 +1,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: {{ .Release.Name }}-profile-modification-config
+  name: {{ .Release.Name }}-system-migration-config
   namespace: {{ .Release.Namespace }}
 data:
   config.json: |-
