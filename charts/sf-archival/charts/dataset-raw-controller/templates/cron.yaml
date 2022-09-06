@@ -30,11 +30,7 @@ spec:
           - name: main
             image: snappyflowml/drc-partition-detect-job:1
             imagePullPolicy: IfNotPresent
-            command: ["/bin/sh","-c","/app/drc-partition-detect-job"]
-            args:
-            - -ingest-controller-url=http://{{ include "dataset-raw-controller.ingest-controller.fullname" . }}
-            - -dataset-raw-controller-url=http://{{ include "dataset-raw-controller.fullname" . }}
-            - -parallelism-factor=5
+            command: ["/bin/sh","-c","/app/drc-partition-detect-job -ingest-controller-url http://{{ include "dataset-raw-controller.ingest-controller.fullname" . }} -dataset-raw-controller-url http://{{ include "dataset-raw-controller.fullname" . }} -parallelism-factor 5"]
           restartPolicy: Never
 
 ---
@@ -71,10 +67,7 @@ spec:
           - name: main
             image: snappyflowml/drc-process-raw-data-job:1
             imagePullPolicy: IfNotPresent
-            command: ["/bin/sh","-c", "/app/drc-process-raw-data-job"]
-            args:
-            - -dataset-raw-controller-url=http://{{ include "dataset-raw-controller.fullname" . }}
-            - -parallelism-factor=5
+            command: ["/bin/sh","-c", "/app/drc-process-raw-data-job -dataset-raw-controller-url http://{{ include "dataset-raw-controller.fullname" . }} -parallelism-factor 5"]
           restartPolicy: Never
 
 ---
@@ -111,8 +104,5 @@ spec:
           - name: main
             image: snappyflowml/drc-delete-raw-data-job:1
             imagePullPolicy: IfNotPresent
-            command: ["/bin/sh","-c", "/app/drc-delete-raw-data-job"]
-            args:
-            - -dataset-raw-controller-url=http://{{ include "dataset-raw-controller.fullname" . }}
-            - -parallelism-factor=5
+            command: ["/bin/sh","-c", "/app/drc-delete-raw-data-job -dataset-raw-controller http://{{ include "dataset-raw-controller.fullname" . }} -parallelism-factor 5"]
           restartPolicy: Never
