@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ .Release.Name }}-profile-modification
+  name: {{ .Release.Name }}-system-migration
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
@@ -13,7 +13,7 @@ metadata:
 spec:
   template:
     metadata:
-      name: {{ .Release.Name }}-profile-modification
+      name: {{ .Release.Name }}-system-migraton
       labels:
         release: {{ .Release.Name | quote }}
         app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
@@ -23,13 +23,13 @@ spec:
       restartPolicy: Never
       containers:
       - name: main
-        image: snappyflowml/datapath-profile-modification:7
-        imagePullPolicy: Always
+        image: snappyflowml/datapath-system-migration:1
+        imagePullPolicy: IfNotPresent
         volumeMounts:
-          - name: {{ .Release.Name }}-profile-modification-config
+          - name: {{ .Release.Name }}-system-migration-config
             mountPath: "/etc/conf"
             readOnly: true
       volumes:
-        - name: {{ .Release.Name }}-profile-modification-config
+        - name: {{ .Release.Name }}-system-migration-config
           configMap:
-            name: {{ .Release.Name }}-profile-modification-config
+            name: {{ .Release.Name }}-system-migration-config
