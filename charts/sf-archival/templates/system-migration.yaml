@@ -25,7 +25,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: main
-        image: snappyflowml/datapath-system-migration:1
+        image: snappyflowml/archival-system-migration:1
         imagePullPolicy: IfNotPresent
         volumeMounts:
           - name: {{ .Release.Name }}-system-migration-config
