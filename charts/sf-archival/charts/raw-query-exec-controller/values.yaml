@@ -26,11 +26,11 @@ presto:
 replicaCount: 1
 resources:
   limits:
-    cpu: 50m
-    memory: 50Mi
+    cpu: 100m
+    memory: 256Mi
   requests:
-    cpu: 10m
-    memory: 10Mi
+    cpu: 50m
+    memory: 256Mi
 securityContext: {}
 service:
   port: 80
