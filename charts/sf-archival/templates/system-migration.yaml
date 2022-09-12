@@ -7,9 +7,6 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
     app.kubernetes.io/instance: {{ .Release.Name | quote }}
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-  annotations:
-    "helm.sh/hook": post-upgrade
-    "helm.sh/hook-delete-policy": before-hook-creation
 data:
   config.json: |-
     {
