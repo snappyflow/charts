@@ -198,7 +198,7 @@ server:
     #   secretName: prom-secret-files
     #   readOnly: true
 
-  ## ConfigMap override where fullname is {{.Release.Name}}-{{.Values.server.configMapOverrideName}}
+  ## ConfigMap override where fullname is {{ .Values.global.kafka.Release.Name }}-{{.Values.server.configMapOverrideName}}
   ## Defining configMapOverrideName will cause templates/server-configmap.yaml
   ## to NOT generate a ConfigMap resource
   ##
@@ -592,3 +592,4 @@ networkPolicy:
 
 # Force namespace of namespaced resources
 forceNamespace: null
+
