@@ -42,7 +42,7 @@ data:
     - job_name: kafka-brokers
       static_configs:
       - targets:
-{{- range $brokerURL := (regexSplit "," (regexReplaceAllLiteral ":\\d+" $root.Values.global.kafkaBrokers (printf ":%s" $root.Values.global.kafkaJMXPort)) -1) }}
+{{- range $brokerURL := (regexSplit "," (regexReplaceAllLiteral ":\\d+" $root.Values.global.kafka.bootstrapServers (printf ":%s" $root.Values.global.kafka.jmxPort)) -1) }}
         - {{ print $brokerURL }}
 {{- end }}
 {{- end }}

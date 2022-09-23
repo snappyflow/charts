@@ -27,7 +27,7 @@ Form the Kafka URL. If Kafka is installed as part of this chart, use k8s service
 else use user-provided URL
 */}}
 {{- define "s3-kafka-connect.kafka.bootstrapServers" -}}
-{{- .Values.global.kafkaBrokers -}}
+{{- .Values.global.kafka.bootstrapServers -}}
 {{- end -}}
 
 {{/*
