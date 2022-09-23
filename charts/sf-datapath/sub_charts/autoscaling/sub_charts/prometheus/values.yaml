@@ -499,7 +499,7 @@ serverFiles:
           - record: kafka_incoming_byte_rate
             expr:  sum by (app, kubernetes_namespace, release)(kafka_server_brokertopicmetrics_total_bytesinpersec_oneminuterate)
           - record: kafka_incoming_byte_rate_for_log_and_metric
-            expr: sum by (app, kubernetes_namespace, release)(kafka_server_brokertopicmetrics_bytesinpersec_oneminuterate{topic="^(log|metric).*"})
+            expr: sum by (app, kubernetes_namespace, release)(kafka_server_brokertopicmetrics_bytesinpersec_oneminuterate{topic=~"^(log|metric).*"})
 
   ## DEPRECATED DEFAULT VALUE, unless explicitly naming your files, please use recording_rules.yml
   rules: {}
