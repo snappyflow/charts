@@ -13,7 +13,7 @@ data:
         "host": "{{ .Values.global.postgresql.host }}",
         "port": {{ .Values.global.postgresql.servicePort }}
       },
-      "kafka_brokers": "{{ .Values.global.kafkaBrokers }}",
+      "kafka_brokers": "{{ .Values.global.kafka.bootstrapServers }}",
       "es_kafka_connect_url": "http://{{ .Release.Name }}-es-kafka-connect:8083",
       "s3_kafka_connect_url": "http://{{ .Release.Name }}-s3-kafka-connect:8083",
       "signature_and_kafka_apis": "http://{{ .Release.Name }}-signatures-and-kafka-apis",

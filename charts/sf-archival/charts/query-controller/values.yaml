@@ -32,7 +32,7 @@ dataset-controller:
 executionControler:
   pullPolicy: IfNotPresent
   repository: snappyflowml/query-execution-controller
-  tag: '20'
+  tag: '21'
 external:
   enabled: false
   externalTrafficPolicy: Cluster
@@ -41,7 +41,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/query-controller
-  tag: '13'
+  tag: '14'
 ingest-controller:
   service:
     servicePort: 5000

@@ -36,7 +36,7 @@ spec:
           command:
             - /bin/bash
             - ./kafka-init.sh
-            - {{ .Values.global.kafkaBrokers }}
+            - {{ .Values.global.kafka.bootstrapServers }}
         - name: db-ready
           image: "bitnami/postgresql:11.5.0-debian-9-r34"
           imagePullPolicy: IfNotPresent

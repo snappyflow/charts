@@ -36,7 +36,7 @@ Form the Kafka URL. If kafka is installed as part of this chart, use k8s service
 else use user-provided URL
 */}}
 {{- define "cp-kafka-rest.cp-kafka.service-name" }}
-{{- .Values.global.kafkaBrokers }}
+{{- .Values.global.kafka.bootstrapServers }}
 {{- end -}}
 
 {{/*
