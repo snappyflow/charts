@@ -51,6 +51,7 @@ data:
       },
       "logArchivalURL": "http://{{ template "query-controller.log-archival.fullname" . }}",
       "interval": {{ .Values.monitorInterval }},
+      "intervalUnit": {{ .Values.monitorIntervalUnit | quote }},
       "internal_hive": {{ .Values.global.hive.internal.enabled }}
     }
 

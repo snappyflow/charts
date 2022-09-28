@@ -61,6 +61,7 @@ log-archival:
     servicePort: 5003
 maxGBToProcessDuringSplitQuery: 1
 monitorInterval: 1
+monitorIntervalUnit: s
 nameOverride: ''
 nodeSelector: {}
 presto:
