@@ -129,3 +129,7 @@ spark-history-server:
   gcs:
     logDirectory: sparkhs/spark-hs
 
+query-controller:
+  # Indicates the interval at which query job status is refreshed
+  monitorInterval: 250
+  monitorIntervalUnit: ms
