@@ -130,6 +130,7 @@ spark-history-server:
     logDirectory: sparkhs/spark-hs
 
 query-controller:
+  maxGBToProcessDuringSplitQuery: 0.5
   # Indicates the interval at which query job status is refreshed
   monitorInterval: 250
   monitorIntervalUnit: ms
