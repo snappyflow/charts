@@ -469,6 +469,17 @@ entries:
     urls:
     - https://github.com/snappyflow/helm-charts/releases/download/charging-0.1.0/charging-0.1.0.tgz
     version: 0.1.0
+  db-sfpoller:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-10-11T09:51:00.161077731Z"
+    description: A Helm chart for Kubernetes
+    digest: 8526e941d0dbf062c3bfff01b36c7d682800012697d8a870641147af23dc67c7
+    name: db-sfpoller
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/db-sfpoller-0.1.0/db-sfpoller-0.1.0.tgz
+    version: 0.1.0
   elasticsearch:
   - apiVersion: v1
     created: "2021-09-01T05:58:21.308065864Z"
