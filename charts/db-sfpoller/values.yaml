@@ -1,0 +1,21 @@
+project_name: <project_name>
+
+app_name: <app_name>
+
+profile_key: <profile_key>
+
+container_cpu_limit: 500m
+
+container_memory_limit: 500Mi
+
+postgres_server_details:
+- host: <host>
+  port: <port>
+  user: <user>
+  password: <password>
+
+mysql_server_details:
+- host: <host>
+  port: <port>
+  user: <user>
+  password: <password>
