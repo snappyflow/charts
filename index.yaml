@@ -472,6 +472,16 @@ entries:
   db-sfpoller:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2022-10-12T05:12:18.900164178Z"
+    description: A Helm chart for Kubernetes
+    digest: be867afe7f451ddb4fe43b3374dfde3f9789d9b250141c8340a7a02084fb9d56
+    name: db-sfpoller
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/db-sfpoller-0.1.1/db-sfpoller-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2022-10-11T09:51:00.161077731Z"
     description: A Helm chart for Kubernetes
     digest: 8526e941d0dbf062c3bfff01b36c7d682800012697d8a870641147af23dc67c7
