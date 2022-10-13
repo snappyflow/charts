@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ .Release.Name }}-profile-modification
+  name: {{ .Release.Name }}-system-migration
   namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
@@ -9,27 +9,29 @@ metadata:
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
   annotations:
     "helm.sh/hook": post-upgrade
-    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+    "helm.sh/hook-delete-policy": before-hook-creation
 spec:
   template:
     metadata:
-      name: {{ .Release.Name }}-profile-modification
+      name: {{ .Release.Name }}-system-migraton
       labels:
-        release: {{ .Release.Name | quote }}
         app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
         app.kubernetes.io/instance: {{ .Release.Name | quote }}
         helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        release: {{ .Release.Name }}
+        {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+        {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
     spec:
       restartPolicy: Never
       containers:
       - name: main
-        image: snappyflowml/datapath-profile-modification:7
-        imagePullPolicy: Always
+        image: snappyflowml/datapath-system-migration:8
+        imagePullPolicy: IfNotPresent
         volumeMounts:
-          - name: {{ .Release.Name }}-profile-modification-config
+          - name: {{ .Release.Name }}-system-migration-config
             mountPath: "/etc/conf"
             readOnly: true
       volumes:
-        - name: {{ .Release.Name }}-profile-modification-config
+        - name: {{ .Release.Name }}-system-migration-config
           configMap:
-            name: {{ .Release.Name }}-profile-modification-config
+            name: {{ .Release.Name }}-system-migration-config

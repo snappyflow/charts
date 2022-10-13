@@ -72,6 +72,8 @@ dnsConfig: {}
 
 rules:
   default: false
+  existing:
+  external: []
   custom:
   - seriesQuery: '{__name__="heap_utilization_pcnt"}'
     resources:
@@ -127,36 +129,12 @@ rules:
     name:
       matches: ""
       as: "kafka_rest_heap_utilization_pcnt"
-    metricsQuery: 'avg_over_time(<<.Series>>{kubernetes_pod_name=~".*kafka-rest.*"}[3m])'# - seriesQuery: '{__name__=~"^some_metric_count$"}'
-#   resources:
-#     template: <<.Resource>>
-#   name:
-#     matches: ""
-#     as: "my_custom_metric"
-#   metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
-  # Mounts a configMap with pre-generated rules for use. Overrides the
-  # default, custom, external and resource entries
-  existing:
-  external: []
-# - seriesQuery: '{__name__=~"^some_metric_count$"}'
-#   resources:
-#     template: <<.Resource>>
-#   name:
-#     matches: ""
-#     as: "my_external_metric"
-#   metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
-  resources: {}
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
+    metricsQuery: 'avg_over_time(<<.Series>>{kubernetes_pod_name=~".*kafka-rest.*"}[3m])'
+
 service:
   annotations: {}
   port: 443
   type: ClusterIP
-# clusterIP: 1.2.3.4
 
 tls:
   enable: false

@@ -8,7 +8,7 @@ metadata:
 spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedules.sink | quote }}
-  successfulJobsHistoryLimit: 0
+  successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   startingDeadlineSeconds: 200
   jobTemplate:
@@ -21,7 +21,7 @@ spec:
         spec:
           containers:
           - name: main
-            image: snappyflowml/sink-monitor-consumer-groups:3
+            image: snappyflowml/sink-monitor-consumer-groups:4
             imagePullPolicy: IfNotPresent
             command: ["bash"]
             args: ["-c", "python app.py connect-s3"]
