@@ -42,9 +42,10 @@ spec:
           - name: archival
             value: "{{ .Values.global.archival.enabled }}"
           - name: BOOTSTRAP_SERVERS
-            value: "{{ .Values.global.kafkaBrokers }}"
+            value: "{{ .Values.global.kafka.bootstrapServers }}"
+          # TODO: This should be dynamically detected in order to apply quotas
           - name: NUM_BOOTSTRAP_SERVERS
-            value: "{{ .Values.global.numKafkaBrokers }}"
+            value: "3"
           - name: QUOTA_BUFFER_PCNT
             value: "{{ .Values.global.quotaBufferPCNT }}"
           volumeMounts:

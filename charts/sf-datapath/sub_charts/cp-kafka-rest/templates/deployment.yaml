@@ -58,7 +58,7 @@ spec:
           command:
             - /bin/bash
             - ./kafka-init.sh
-            - {{ .Values.global.kafkaBrokers }}
+            - {{ .Values.global.kafka.bootstrapServers }}
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: exporter

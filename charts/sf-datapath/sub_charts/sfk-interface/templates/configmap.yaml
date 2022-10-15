@@ -7,7 +7,7 @@ data:
     config.json: |-
         {
             "kafka": {
-                "brokers": "{{ .Values.global.kafkaBrokers }}",
+                "brokers": "{{ .Values.global.kafka.bootstrapServers }}",
                 "rest_proxy": "http://{{ template "sfk-interface.kafkaRest.fullname" . }}:8082",
                 "rest_auth": "http://{{ template "sfk-interface.authenticator.fullname" . }}",
                 "connect": "http://{{ template "sfk-interface.apmConnect.fullname" . }}:8083"

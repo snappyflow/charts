@@ -44,39 +44,18 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
-{{- define "autoscaling.maxReplicas" -}}
-{{- $extra := 0 -}}
-{{- $GBPerPod := 100 -}}
-{{- if ne (mod .Values.global.clusterQuotaGBperDay $GBPerPod) 0 -}}
-{{- $extra = (sub $GBPerPod (mod .Values.global.clusterQuotaGBperDay $GBPerPod)) -}}
-{{- end -}}
-{{- add 2 (div (add .Values.global.clusterQuotaGBperDay $extra) $GBPerPod) -}}
-{{- end -}}
-
-{{- define "autoscaling.archivalConnectAutoscaling.fullname" -}}
+{{- define "autoscaling.s3-kafka-connect.fullname" -}}
 {{- printf "%s-%s" .Release.Name "s3-kafka-connect" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "autoscaling.archivalConnectAutoscaling.maxReplicas" -}}
-{{- .Values.archivalConnectAutoscaling.maxReplicasOverride | default (include "autoscaling.maxReplicas" .) -}}
-{{- end -}}
-
-{{- define "autoscaling.apmConnectAutoscaling.fullname" -}}
+{{- define "autoscaling.es-kafka-connect.fullname" -}}
 {{- printf "%s-%s" .Release.Name "es-kafka-connect" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "autoscaling.apmConnectAutoscaling.maxReplicas" -}}
-{{- .Values.apmConnectAutoscaling.maxReplicasOverride | default (include "autoscaling.maxReplicas" .) -}}
-{{- end -}}
-
-{{- define "autoscaling.restKafkaAutoscaling.fullname" -}}
+{{- define "autoscaling.cp-kafka-rest.fullname" -}}
 {{- printf "%s-%s" .Release.Name "cp-kafka-rest" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "autoscaling.minioAutoscaling.fullname" -}}
+{{- define "autoscaling.minio.fullname" -}}
 {{- printf "%s-%s" .Release.Name "minio" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
-{{- define "autoscaling.minioAutoscaling.maxReplicas" -}}
-{{- .Values.minioAutoscaling.maxReplicasOverride | default (include "autoscaling.maxReplicas" .) -}}
 {{- end -}}

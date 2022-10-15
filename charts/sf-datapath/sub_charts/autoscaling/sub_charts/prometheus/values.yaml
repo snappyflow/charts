@@ -198,7 +198,7 @@ server:
     #   secretName: prom-secret-files
     #   readOnly: true
 
-  ## ConfigMap override where fullname is {{.Release.Name}}-{{.Values.server.configMapOverrideName}}
+  ## ConfigMap override where fullname is {{ .Values.global.kafka.Release.Name }}-{{.Values.server.configMapOverrideName}}
   ## Defining configMapOverrideName will cause templates/server-configmap.yaml
   ## to NOT generate a ConfigMap resource
   ##
@@ -496,6 +496,10 @@ serverFiles:
             expr: (java_lang_memory_heapmemoryusage_used * 100.0) / java_lang_memory_heapmemoryusage_max
           - record: nio_memory_utilization
             expr: java_nio_bufferpool_memoryused_direct + java_nio_bufferpool_memoryused_mapped
+          - record: kafka_incoming_byte_rate
+            expr:  sum by (app, kubernetes_namespace, release)(kafka_server_brokertopicmetrics_total_bytesinpersec_oneminuterate)
+          - record: kafka_incoming_byte_rate_for_log_and_metric
+            expr: sum by (app, kubernetes_namespace, release)(kafka_server_brokertopicmetrics_bytesinpersec_oneminuterate{topic=~"^(log|metric).*"})
 
   ## DEPRECATED DEFAULT VALUE, unless explicitly naming your files, please use recording_rules.yml
   rules: {}
@@ -588,3 +592,4 @@ networkPolicy:
 
 # Force namespace of namespaced resources
 forceNamespace: null
+

@@ -69,14 +69,7 @@ spec:
           command:
             - /bin/bash
             - ./kafka-init.sh
-            - {{ .Values.global.kafkaBrokers }}
-        # Below element is disabled because of client ID limitation in Kafka JMX
-        # - name: quota-configuration
-        #   image: "snappyflowml/kafka-config-client:alpha"
-        #   imagePullPolicy: IfNotPresent
-        #   args:
-        #     - {{ .Values.global.kafkaBrokers }}
-        #     - {{ div .Values.inByteRate .Values.global.numKafkaBrokers | quote }}
+            - {{ .Values.global.kafka.bootstrapServers }}
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: exporter

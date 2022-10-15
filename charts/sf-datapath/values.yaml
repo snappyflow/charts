@@ -21,19 +21,13 @@ global:
     postgresqlPassword: archive123
     servicePort: 5432
 
-  externalKafka: false
-
-  numKafkaBrokers: 3
-
-  # Below parameter needs to use the PLAIN_TEXT port
-  # if external-kafka is being used, specify all the broker URLs
-  kafkaBrokers: "localhost:9092,localhost1:9092"
-
-  # Certain components which use SASL_PLAIN will use this port along with above kafka broker IPs
-  kafkaSASLPort: "9093"
-
-  # Certain components which use JMX data will use this port with above kafka broker IPs
-  kafkaJMXPort: "5556"
+  kafka:
+    # Below parameter needs to use the PLAIN_TEXT port
+    bootstrapServers: "localhost:9092,localhost1:9092"
+    # Certain components which use SASL_PLAIN will use this port along with above kafka broker IPs
+    saslPort: "9093"
+    releaseName: kafka
+    releaseNamespace: "kafka"
 
   secrets:
     gcs:
@@ -99,25 +93,21 @@ creds: "control:$apr1$pjbvxsh8$UnVE6PZ/3874l.cJ.Xc1e0"
 # Pod priority class value
 priority: 100
 
-autoscaling:
-  archivalConnectAutoscaling:
-    minReplicas: 2
-    # Enabling below parameter overrides the max replicas calculated by datapath based on pod level byte-rate
-    # maxReplicasOverride: 5
-
-  apmConnectAutoscaling:
-    minReplicas: 2
-    # Enabling below parameter overrides the max replicas calculated by datapath based on pod level byte-rate
-    # maxReplicasOverride: 5
-
-  restKafkaAutoscaling:
-    minReplicas: 2
-    maxReplicas: 5
-
-  minioAutoscaling:
-    minReplicas: 2
-    # Enabling below parameter overrides the max replicas calculated by datapath based on pod level byte-rate
-    # maxReplicasOverride: 5
-
 signatures-and-kafka-apis:
   useDefaultPatterns: false
+
+autoscaling:
+  s3KafkaConnect:
+    ingestRateGBPerDayPerPod: 130
+    minReplicas: 2
+    maxReplicas: 10
+  esKafkaConnect:
+    ingestRateGBPerDayPerPod: 130
+    minReplicas: 2
+    maxReplicas: 10
+  cpKafkaRestProxy:
+    minReplicas: 2
+    maxReplicas: 10
+  minio:
+    minReplicas: 2
+    maxReplicas: 10
