@@ -1,4 +1,5 @@
 # Default values for k8s-prometheus-adapter..
+
 affinity: {}
 
 image:
@@ -71,9 +72,31 @@ dnsConfig: {}
 #   - name: edns0
 
 rules:
+  
   default: false
+  
   existing:
-  external: []
+  
+  external:
+  - seriesQuery: '{__name__="kafka_incoming_byte_rate"}'
+    resources:
+      overrides:
+        kubernetes_namespace:
+          resource: namespace
+    name:
+      matches: ""
+      as: "kafka_bytesinpersec_oneminuterate"
+    metricsQuery: avg_over_time(<<.Series>>{kubernetes_namespace={{ .Values.global.kafka.releaseNamespace  | quote }}, release={{ .Values.global.kafka.releaseName | quote }}}[3m])
+  - seriesQuery: '{__name__="kafka_incoming_byte_rate_for_log_and_metric"}' 
+    resources:
+      overrides:
+        kubernetes_namespace:
+          resource: namespace
+    name:
+      matches: ""
+      as: "kafka_bytesinpersec_oneminuterate_for_log_and_metric"
+    metricsQuery: avg_over_time(<<.Series>>{kubernetes_namespace={{ .Values.global.kafka.releaseNamespace | quote  }}, release={{ .Values.global.kafka.releaseName| quote }}}[3m])
+  
   custom:
   - seriesQuery: '{__name__="heap_utilization_pcnt"}'
     resources:
@@ -206,3 +229,4 @@ certManager:
   enabled: false
   caCertDuration: 43800h
   certDuration: 8760h
+

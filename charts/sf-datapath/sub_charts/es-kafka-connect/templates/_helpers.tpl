@@ -27,7 +27,7 @@ Form the Kafka URL. If Kafka is installed as part of this chart, use k8s service
 else use user-provided URL
 */}}
 {{- define "es-kafka-connect.kafka.bootstrapServers" -}}
-{{- regexReplaceAllLiteral ":\\d+" .Values.global.kafkaBrokers (printf ":%s" .Values.global.kafkaSASLPort) -}}
+{{- regexReplaceAllLiteral ":\\d+" .Values.global.kafka.bootstrapServers (printf ":%s" .Values.global.kafka.saslPort) -}}
 {{- end -}}
 
 {{/*

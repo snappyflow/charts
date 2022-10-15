@@ -27,28 +27,24 @@ prometheus:
       cpu: 200m
       memory: 2Gi
 
-archivalConnectAutoscaling:
+s3KafkaConnect:
   enabled: true
   cpu:
     targetAverageValue: 720m # 90% of CPU limit allocated to connector
-  memory:
-    targetPCNT: 85 # 85% heap / NIO occupancy will trigger the HPA
 
-apmConnectAutoscaling:
+esKafkaConnect:
   enabled: true
   cpu:
     targetAverageValue: 540m # 90% of CPU limit allocated to connector
-  memory:
-    targetPCNT: 85 # 85% heap / NIO occupancy will trigger the HPA
 
-restKafkaAutoscaling:
+cpKafkaRestProxy:
   enabled: true
   cpu:
     targetAverageValue: 450m # 90% of CPU limit allocated to rest-server
   memory:
     targetPCNT: 85 # 85% heap / NIO occupancy will trigger the HPA
 
-minioAutoscaling:
+minio:
   enabled: true
   cpu:
     targetAverageValue: 180m # 90% of CPU limit allocated to minio

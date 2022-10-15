@@ -1,24 +1,23 @@
-{{ if and (and .Values.global.archival.enabled .Values.global.secrets.gcs.enable) .Values.archivalConnectAutoscaling.enabled -}}
+{{ if and (and .Values.global.archival.enabled .Values.global.secrets.gcs.enable) .Values.s3KafkaConnect.enabled -}}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "autoscaling.fullname" . }}-minio
+  name: {{ include "autoscaling.minio.fullname" . }}
   namespace: {{ .Release.Namespace }}
-
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "autoscaling.minioAutoscaling.fullname" . }}
-  minReplicas: {{ .Values.minioAutoscaling.minReplicas }}
-  maxReplicas: {{ template "autoscaling.minioAutoscaling.maxReplicas" . }}
+    name: {{ include "autoscaling.minio.fullname" . }}
+  minReplicas: {{ .Values.minio.minReplicas }}
+  maxReplicas: {{ .Values.minio.maxReplicas }}
   metrics:
   - type: Resource
     resource:
       name: cpu
-      targetAverageValue: {{ .Values.minioAutoscaling.cpu.targetAverageValue }}
+      targetAverageValue: {{ .Values.minio.cpu.targetAverageValue }}
   - type: Resource
     resource:
       name: memory
-      targetAverageValue: {{ .Values.minioAutoscaling.memory.targetAverageValue }}
+      targetAverageValue: {{ .Values.minio.memory.targetAverageValue }}
 {{- end }}

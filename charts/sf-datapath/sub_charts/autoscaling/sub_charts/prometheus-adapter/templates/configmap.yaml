@@ -86,7 +86,8 @@ data:
 {{- end -}}
 {{- if .Values.rules.external }}
     externalRules:
-{{ toYaml .Values.rules.external | indent 4 }}
+{{ tpl (toYaml .Values.rules.external) . | indent 4 }}
+
 {{- end -}}
 {{- if .Values.rules.resource }}
     resourceRules:
