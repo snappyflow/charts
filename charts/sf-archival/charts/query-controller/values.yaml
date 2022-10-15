@@ -30,9 +30,9 @@ dataset-controller:
   service:
     servicePort: 5001
 executionControler:
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   repository: snappyflowml/query-execution-controller
-  tag: '21'
+  tag: 'dev-test'
 external:
   enabled: false
   externalTrafficPolicy: Cluster
