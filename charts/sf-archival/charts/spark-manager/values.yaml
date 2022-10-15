@@ -1,5 +1,5 @@
 affinity: {}
-compactionImage: snappyflowml/spark-compact-orc:2
+compactionImage: snappyflowml/spark-compact-orc:4
 fullnameOverride: ''
 jobserver:
   containerResources:
@@ -10,7 +10,7 @@ jobserver:
       cpu: 10m
       memory: 50Mi
   image:
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     repository: snappyflowml/job-server
     tag: 'dev-test'
   serverPort: 5002
@@ -27,7 +27,7 @@ monitor:
       cpu: 10m
       memory: 10Mi
   image:
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     repository: snappyflowml/monitor
     tag: 'dev-test'
 nameOverride: ''

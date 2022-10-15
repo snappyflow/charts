@@ -112,6 +112,7 @@ spark-manager:
           driver: 1024m
     EcsFargate:
       enabled: false
+      containerInsightsEnabled: false
       preference: 1
       cluster: sf-archival-compaction
       numExecutors: 2

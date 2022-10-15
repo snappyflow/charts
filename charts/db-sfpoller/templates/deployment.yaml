@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: db-sfpoller
+  name: database-poller
+spec:
+  selector:
+    matchLabels:
+      app: db-sfpoller
+  template:
+    metadata:
+      labels:
+        app: db-sfpoller
+        snappyflow/appname: {{  .Values.app_name }}
+        snappyflow/projectname: {{ .Values.project_name }}
+    spec:
+      containers:
+      - command:
+          - /app/sfagent
+          - -config-file
+          - /opt/sfagent/config.yaml
+          - -enable-console-log
+        env:
+        - name: APP_NAME
+          value: {{ .Values.app_name }}
+        - name: PROJECT_NAME
+          value: {{ .Values.project_name }}
+        image: snappyflowml/sfagent:latest
+        name: sfagent-container
+        resources:
+          limits:
+            cpu: {{ .Values.container_cpu_limit }}
+            memory: {{ .Values.container_memory_limit }}
+        volumeMounts:
+        - mountPath: /opt/sfagent/config.yaml
+          name: configmap-sfkubeagent
+          subPath: config.yaml
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: sfpoller-configmap
+        name: configmap-sfkubeagent 

@@ -16,7 +16,7 @@ external:
   type: NodePort
 fullnameOverride: ''
 image:
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   repository: snappyflowml/ingest-controller
   tag: 'dev-test'
 log-archival:

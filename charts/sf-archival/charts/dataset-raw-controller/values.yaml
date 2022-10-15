@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: snappyflowml/dataset-raw-controller
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: 'dev-test'
 
 nameOverride: ""
