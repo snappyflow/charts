@@ -1,0 +1,46 @@
+apiVersion: v1
+data:
+  config.yaml: |-
+    key: {{ .Values.profile_key }}
+    metrics:
+        plugins:
+        - name: postgres
+          enabled: true
+          interval: 30
+          config:
+            documentsTypes:
+              - databaseDetails
+              - indexDetails
+              - queryDetails
+              - serverDetails
+              - tableDetails
+            server_details:
+              {{-  range  $val := .Values.postgres_server_details }}
+              - host: {{ $val.host }}
+                user: {{ $val.user }}
+                port: {{ $val.port }}
+                password: {{ $val.password | b64enc }}
+              {{- end }}
+
+        - name: mysql
+          enabled: true
+          interval: 30
+          config:
+            documentsTypes:
+              - databaseDetails
+              - indexDetails
+              - queryDetails
+              - serverDetails
+              - tableDetails
+            server_details:
+              {{-  range  $val := .Values.mysql_server_details }}
+              - host: {{ $val.host }}
+                user: {{ $val.user }}
+                port: {{ $val.port }}
+                password: {{ $val.password | b64enc }}
+              {{- end }}
+
+kind: ConfigMap
+metadata:
+  name: sfpoller-configmap
+

@@ -12,7 +12,7 @@ dataset-controller:
     servicePort: 5001
 fullnameOverride: ''
 image:
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   repository: snappyflowml/compaction-controller
   tag: 'dev-test'
 ingest-controller:

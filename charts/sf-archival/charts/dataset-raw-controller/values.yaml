@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: snappyflowml/dataset-raw-controller
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: 'dev-test'
 
 nameOverride: ""
@@ -21,7 +21,7 @@ securityContext: {}
 schedules:
   detect_raw_time_buckets: '0 * * * *'
   process_raw_data: '0 1 * * *'
-  raw_version_compacted: '5 2 * * *'
+  raw_version_compacted: '0 5 * * *'
 
 containerResources:
   limits:
