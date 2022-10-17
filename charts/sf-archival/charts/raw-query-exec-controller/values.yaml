@@ -1,9 +1,9 @@
 affinity: {}
 fullnameOverride: ''
 image:
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   repository: snappyflowml/raw-query-exec-controller
-  tag: '1'
+  tag: 'dev-test'
 imagePullSecrets: []
 ingress:
   annotations: {}
