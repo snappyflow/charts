@@ -98,30 +98,33 @@ spark-manager:
       # Kubernetes is always inserted as an infrastructure with slightly higher preference numbers
       # If some other infrastructure has higher preference, that infrastructure will be used
       preference: 10
-      numExecutors: 5
+      numExecutors: 1
       jobResources:
         cpu:
           requests:
-            executor: 0.2
-            driver: 0.2
+            executor: 1
+            driver: 0.4
           limits:
-            executor: 0.4
-            driver: 0.5
+            executor: 1
+            driver: 0.4
         memory:
-          executor: 1024m
+          executor: 2048m
           driver: 1024m
     EcsFargate:
       enabled: false
       containerInsightsEnabled: false
       preference: 1
       cluster: sf-archival-compaction
-      numExecutors: 2
       iamRole: arn:aws:iam::159750416379:role/Dev-Archival-presto_hive
       taskSubnet: subnet-09a6fcdc2b614e300
       taskSecurityGroup: sg-03b8db147f1b7b423
       jobResources:
-        cpu: 2048
-        memory: 8192
+        cpu: 1024
+        memory: 2048
+      sparkExecutorResources:
+        numExecutors: 1
+        cpu: 1
+        memory: 2048m
 
 spark-history-server:
   # If spark history server is enabled, s3.logDirectory/gcs.logDirectory param of its config should be same as spark-manager.jobserver.sparkProperties.logDirectory
