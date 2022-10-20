@@ -170,7 +170,7 @@ data:
             "task_subnet": "{{ .Values.infrastructure.EcsFargate.taskSubnet }}",
             "task_security_group": "{{ .Values.infrastructure.EcsFargate.taskSecurityGroup }}",
             "task_image": "{{ .Values.compactionImage }}",
-            "compaction_arn": "{{ .Values.infrastructure.EcsFargate.compactionArn }}"
+            "compaction_secret_arn": "{{ .Values.infrastructure.EcsFargate.compactionSecretArn }}"
           }
         }
 {{- end }}
