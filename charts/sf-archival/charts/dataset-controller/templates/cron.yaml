@@ -71,3 +71,77 @@ spec:
             - curl -X POST http://{{ include "dataset-controller.fullname" . }}/datasets/profile/billing
           restartPolicy: Never
 {{ end }}
+
+---
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-analyze-partitions
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "dataset-controller.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: {{ .Values.schedules.hourly | quote }}
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  startingDeadlineSeconds: 200
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+        spec:
+          initContainers:
+          - name: init
+            image: busybox:1.28
+            command: ['sh', '-c', "until nslookup {{ include "dataset-controller.fullname" . }}; do echo waiting for {{ include "dataset-controller.fullname" . }}; sleep 5; done"]
+          containers:
+          - name: main
+            image: snappyflowml/busybox-curl:0.0.1
+            imagePullPolicy: IfNotPresent
+            args:
+            - /bin/sh
+            - -c
+            - curl -X POST http://{{ include "dataset-controller.fullname" . }}/datasets/partitions/analyze-and-store-boundary-times
+          restartPolicy: Never
+
+---
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-mark-compaction-complete-partitions
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "dataset-controller.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: {{ .Values.schedules.hourly | quote }}
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  startingDeadlineSeconds: 200
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+        spec:
+          initContainers:
+          - name: init
+            image: busybox:1.28
+            command: ['sh', '-c', "until nslookup {{ include "dataset-controller.fullname" . }}; do echo waiting for {{ include "dataset-controller.fullname" . }}; sleep 5; done"]
+          containers:
+          - name: main
+            image: snappyflowml/busybox-curl:0.0.1
+            imagePullPolicy: IfNotPresent
+            args:
+            - /bin/sh
+            - -c
+            - curl -X POST http://{{ include "dataset-controller.fullname" . }}/datasets/partitions/mark-compaction-complete
+          restartPolicy: Never

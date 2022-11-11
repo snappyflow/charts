@@ -33,6 +33,7 @@ schedules:
   expired: 1 0 * * *
   raw_version_compacted: 5 2 * * *
   refresh_size: 5 1 * * *
+  hourly:  0 * * * *
 serverPort: :5001
 service:
   servicePort: 5001
