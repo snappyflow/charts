@@ -23,8 +23,8 @@ data:
         "port": {{ template "ingest-controller.hive-server.port" . }},
         "auth": "{{ template "ingest-controller.hive-server.auth" . }}"
       },
-      "compactPartitionColumnNames": "{{ .Values.global.hivepartitioncolumns.compactPartitionColumnNames }}",
-      "rawPartitionColumnNames": "{{ .Values.global.hivepartitioncolumns.rawPartitionColumnNames }}"
+      "compactPartitionColumnNames": {{ .Values.global.hivepartitioncolumns.compactPartitionColumnNames }},
+      "rawPartitionColumnNames": {{ .Values.global.hivepartitioncolumns.rawPartitionColumnNames }}
     }
 
 ---

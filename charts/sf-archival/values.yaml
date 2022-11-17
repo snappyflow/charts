@@ -17,8 +17,8 @@ global:
     postgresqlPassword: archive123
     servicePort: 5432
   hivepartitioncolumns:
-    compactPartitionColumnNames: ["year", "month", "day", "segment"]
-    rawPartitionColumnNames: ["year", "month", "day", "timebucket"]
+    compactPartitionColumnNames: '["year", "month", "day", "segment"]'
+    rawPartitionColumnNames: '["year", "month", "day", "timebucket"]'
   secrets:
     gcs:
       enable: false
