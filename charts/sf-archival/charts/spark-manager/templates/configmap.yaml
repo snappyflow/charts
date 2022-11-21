@@ -125,8 +125,9 @@ data:
               "spark.kubernetes.namespace={{ .Release.Namespace }}",
               "--class",
               "sf.org.hadoop.Compact",
-              "local:///tmp/jars/application/compact-orc-scala-2.12.10.jar",
+              "local:///app/compact-orc-scala-2.12.10.jar",
               "__PARAM__source",
+              "__PARAM__segmentFile",
               "__PARAM__destination"
             ]
           }
@@ -141,9 +142,13 @@ data:
               "--name",
               "__PARAM__name",
               "--master",
-              "local[{{ .Values.infrastructure.EcsFargate.numExecutors }}]",
+              "local[{{ .Values.infrastructure.EcsFargate.sparkExecutorResources.numExecutors }}]",
               "--conf",
-              "spark.executor.instances={{ .Values.infrastructure.EcsFargate.numExecutors }}",
+              "spark.executor.instances={{ .Values.infrastructure.EcsFargate.sparkExecutorResources.numExecutors }}",
+              "--conf",
+              "spark.executor.memory={{ .Values.infrastructure.EcsFargate.sparkExecutorResources.memory }}",
+              "--conf",
+              "spark.executor.cores={{ .Values.infrastructure.EcsFargate.sparkExecutorResources.cpu }}",
               "--conf",
               "spark.eventLog.enabled=true",
               "--conf",
@@ -152,11 +157,13 @@ data:
               "spark.hadoop.fs.s3a.aws.credentials.provider=com.amazonaws.auth.EC2ContainerCredentialsProviderWrapper",
               "--class",
               "sf.org.hadoop.Compact",
-              "local:///tmp/jars/application/compact-orc-scala-2.12.10.jar",
+              "local:///app/compact-orc-scala-2.12.10.jar",
               "__PARAM__source",
+              "__PARAM__segmentFile",
               "__PARAM__destination"
             ],
             "ecs_cluster": "{{ .Values.infrastructure.EcsFargate.cluster }}",
+            "container_insights_enabled": {{ .Values.infrastructure.EcsFargate.containerInsightsEnabled }},
             "task_defn_family": "{{ .Values.infrastructure.EcsFargate.cluster }}",
             "task_role": "{{ .Values.infrastructure.EcsFargate.iamRole }}",
             "task_exec_role": "{{ .Values.infrastructure.EcsFargate.iamRole }}",
@@ -166,7 +173,8 @@ data:
             },
             "task_subnet": "{{ .Values.infrastructure.EcsFargate.taskSubnet }}",
             "task_security_group": "{{ .Values.infrastructure.EcsFargate.taskSecurityGroup }}",
-            "task_image": "{{ .Values.compactionImage }}"
+            "task_image": "{{ .Values.compactionImage }}",
+            "compaction_secret_arn": "{{ .Values.infrastructure.EcsFargate.compactionSecretArn }}"
           }
         }
 {{- end }}

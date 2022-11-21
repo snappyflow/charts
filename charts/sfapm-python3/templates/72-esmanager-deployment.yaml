@@ -129,20 +129,20 @@ spec:
             - name: http
               containerPort: 8000
               protocol: TCP
-          livenessProbe:
-            initialDelaySeconds: 60
-            periodSeconds: 300
-            timeoutSeconds: 65
-            httpGet:
-              path: /es-manager/health/
-              port: http
-          readinessProbe:
-            initialDelaySeconds: 60
-            periodSeconds: 300
-            timeoutSeconds: 65
-            httpGet:
-              path: /es-manager/health/
-              port: http
+#           livenessProbe:
+#             initialDelaySeconds: 60
+#             periodSeconds: 300
+#             timeoutSeconds: 65
+#             httpGet:
+#               path: /es-manager/health/
+#               port: http
+#           readinessProbe:
+#             initialDelaySeconds: 60
+#             periodSeconds: 300
+#             timeoutSeconds: 65
+#             httpGet:
+#               path: /es-manager/health/
+#               port: http
           resources:
             {{- toYaml .Values.esmanager.resources | nindent 12 }}
           volumeMounts:
