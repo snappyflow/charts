@@ -25,4 +25,10 @@ spec:
         name: memory
         targetAverageUtilization: {{ .Values.sftrace.autoscaling.targetMemoryUtilizationPercentage }}
   {{- end }}
+  {{- if .Values.sftrace.autoscaling.targetQueuedEvents }}
+    - type: Pods
+      pods:
+        metricName: sftrace_queued_events
+        targetAverageValue: {{ .Values.sftrace.autoscaling.targetQueuedEvents }}
+  {{- end }}
 {{- end }}

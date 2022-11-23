@@ -153,6 +153,17 @@ rules:
       matches: ""
       as: "kafka_rest_heap_utilization_pcnt"
     metricsQuery: 'avg_over_time(<<.Series>>{kubernetes_pod_name=~".*kafka-rest.*"}[3m])'
+  - metricsQuery: avg_over_time(<<.Series>>{kubernetes_pod_name=~".*sftrace.*"}[3m])
+    name:
+      as: sftrace_queued_events
+      matches: ""
+    resources:
+      overrides:
+        kubernetes_namespace:
+          resource: namespace
+        kubernetes_pod_name:
+          resource: pod
+    seriesQuery: '{__name__="sftrace_queued_events"}'
 
 service:
   annotations: {}
