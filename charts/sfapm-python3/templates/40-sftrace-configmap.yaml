@@ -40,4 +40,7 @@ data:
     logging.metrics.enabled: true
     logging.to_stderr: true
     logging.json: true
+    http.enabled: true
+    http.host: localhost
+    http.port: 5066
 
