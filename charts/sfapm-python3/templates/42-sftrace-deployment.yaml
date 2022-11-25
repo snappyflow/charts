@@ -75,7 +75,7 @@ spec:
             mountPath: /usr/share/apm-server/apm-server.yml
             subPath: apm-server.yml
             readOnly: true
-      - name: custom-metrics-exporter
+      - name: sftrace-server-prometheus-exporter
         command: [/go/metrics]
         image: "{{ .Values.sftrace.image.sidecarrepository }}:{{ .Values.sftrace.image.tag }}" 
         imagePullPolicy: Always

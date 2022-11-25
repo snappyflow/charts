@@ -478,7 +478,7 @@ sftrace:
   image:
     repository: snappyflowml/sftrace-server
     tag: latest
-    sidecarrepository: snappyflowml/metrics_collector
+    sidecarrepository: snappyflowml/sftrace-server-prometheus-exporter
     pullPolicy: Always
 
   resources:
