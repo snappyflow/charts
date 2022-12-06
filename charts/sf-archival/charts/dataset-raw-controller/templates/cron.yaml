@@ -104,5 +104,5 @@ spec:
           - name: main
             image: snappyflowml/drc-delete-raw-data-job:1
             imagePullPolicy: IfNotPresent
-            command: ["/bin/sh","-c", "/app/drc-delete-raw-data-job -dataset-raw-controller http://{{ include "dataset-raw-controller.fullname" . }} -parallelism-factor 5"]
+            command: ["/bin/sh","-c", "/app/drc-delete-raw-data-job -dataset-raw-controller-url http://{{ include "dataset-raw-controller.fullname" . }} -parallelism-factor 5"]
           restartPolicy: Never
