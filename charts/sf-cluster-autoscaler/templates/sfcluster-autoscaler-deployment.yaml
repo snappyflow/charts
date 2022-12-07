@@ -1,0 +1,47 @@
+{{- if .Values.autoscaler.create -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sf-cluster-autoscaler.fullname" . }}
+  namespace: kube-system
+  labels:
+    app: {{ include "sf-cluster-autoscaler.name" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "sf-cluster-autoscaler.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "sf-cluster-autoscaler.name" . }}
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: 'false'
+    spec:
+      serviceAccountName: sfcluster-autoscaler
+      containers:
+        - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: sfcluster-autoscaler
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          command:
+            - ./cluster-autoscaler
+            - --v=4
+            - --stderrthreshold=info
+            - --cloud-provider=aws
+            - --skip-nodes-with-local-storage=false
+            - --expander=least-waste
+            - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/{{ .Values.eks.clusterName }}
+            - --balance-similar-node-groups
+            - --skip-nodes-with-system-pods=false
+            - --scale-down-unneeded-time={{ .Values.autoscaler.nodeUnneededTime }}
+          volumeMounts:
+            - name: ssl-certs
+              mountPath: /etc/ssl/certs/ca-certificates.crt #/etc/ssl/certs/ca-bundle.crt for Amazon Linux Worker Nodes
+              readOnly: true
+          imagePullPolicy: "Always"
+      volumes:
+        - name: ssl-certs
+          hostPath:
+            path: "/etc/ssl/certs/ca-bundle.crt"

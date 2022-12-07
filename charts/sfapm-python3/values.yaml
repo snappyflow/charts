@@ -510,12 +510,10 @@ sftrace:
     enabled: true
     minReplicas: 2
     maxReplicas: 3
-    # Below values are based on requests.
-    # Hence value > 100 needs to be calculated based on set limits
-    # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
-    targetCPUUtilizationPercentage: 8000
-    targetMemoryUtilizationPercentage: 820
+    #Below Value is calculated
     targetQueuedEvents: 13107
+    scaleUpPeriod: 10
+    scaleDownPeriod: 30
 
 serviceAccount:
   # Specifies whether a service account should be created
