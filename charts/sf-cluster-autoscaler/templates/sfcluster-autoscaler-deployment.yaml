@@ -18,7 +18,7 @@ spec:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'false'
     spec:
-      serviceAccountName: sfcluster-autoscaler
+      serviceAccountName: {{ .Values.autoscaler.serviceAccountName }}
       containers:
         - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
