@@ -22,7 +22,9 @@ autoscaler:
   # Specifies whether a autoscaler should be created. Set true in case of AWS
   create: false
   nodeUnneededTime: 300s
+  serviceAccountName: ""
 
 # Needed in case of eks
 eks:
   clusterName: ""
+  rolearn: ""

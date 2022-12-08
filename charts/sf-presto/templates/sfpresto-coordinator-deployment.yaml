@@ -34,6 +34,8 @@ spec:
         - name: sfpresto-coordinator
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
++          - containerPort: {{ .Values.service.servicePort }}
           env:
           {{- range $key, $value := .Values.env }}
             - name: {{ $key }}

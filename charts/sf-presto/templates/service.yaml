@@ -9,9 +9,8 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
 spec:
   ports:
-  - port: 8080
+  - port: {{ .Values.service.servicePort }}
     targetPort: {{ .Values.service.servicePort }}
     protocol: TCP
   selector:
-    app.kubernetes.io/name: {{ include "sf-presto.name" . }}-coordinator
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    app: {{ include "sf-presto.name" . }}-coordinator
