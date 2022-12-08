@@ -8,9 +8,15 @@ imagePullSecrets: []
 
 image:
   repository: snappyflowml/presto
-  sidecarrepository: snappyflowml/sfpresto-worker-prometheus-exporter
   pullPolicy: Always
   tag: latest
+
+# Helm values for sfpresto-worker-prometheus-exporter container
+sfprestoWorkerPrometheusExporter:
+  image:
+    repository: snappyflowml/sfpresto-worker-prometheus-exporter
+    tag: latest
+    pullPolicy: Always
 
 coordinator:
   resources:
@@ -30,6 +36,8 @@ env:
   STORAGE_ACCOUNT_NAME: ""
   # Required only for azure
   STORAGE_ACCOUNT_ACCESS_KEY: ""
+  # How frequently sfpresto-worker-prometheus-exporter fetch metrics
+  Metrics_Interval: 3
 
 service:
   servicePort: 8080
@@ -45,8 +53,8 @@ autoscaling:
   maxReplicas: 5
   targetQueuedQueries: 5
   targetRunningDrivers: 50
-  scaleUpPeriod: 10
-  scaleDownPeriod: 30
+  scaleUpPeriod: 30
+  scaleDownPeriod: 60
 
 nodeSelector: {}
 tolerations: []

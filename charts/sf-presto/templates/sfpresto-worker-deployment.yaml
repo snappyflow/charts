@@ -45,5 +45,5 @@ spec:
             {{- toYaml .Values.worker.resources | nindent 12 }}
         - name: sfpresto-worker-prometheus-exporter
           command: [/go/metrics]
-          image: "{{ .Values.image.sidecarrepository }}:{{ .Values.image.tag }}" 
+          image: "{{ .Values.sfprestoWorkerPrometheusExporter.image.repository }}:{{ .Values.sfprestoWorkerPrometheusExporter.image.tag }}" 
           imagePullPolicy: Always
