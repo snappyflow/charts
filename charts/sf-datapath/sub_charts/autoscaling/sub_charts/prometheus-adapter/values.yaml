@@ -164,6 +164,28 @@ rules:
         kubernetes_pod_name:
           resource: pod
     seriesQuery: '{__name__="sftrace_queued_events"}'
+  - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*sf-presto-worker.*"}
+    name:
+      as: presto_running_drivers
+      matches: ""
+    resources:
+      overrides:
+        kubernetes_namespace:
+          resource: namespace
+        kubernetes_pod_name:
+          resource: pod
+    seriesQuery: '{__name__="presto_running_drivers"}'
+  - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*sf-presto-worker.*"}
+    name:
+      as: presto_queued_queries
+      matches: ""
+    resources:
+      overrides:
+        kubernetes_namespace:
+          resource: namespace
+        kubernetes_pod_name:
+          resource: pod
+    seriesQuery: '{__name__="presto_queued_queries"}'
 
 service:
   annotations: {}
