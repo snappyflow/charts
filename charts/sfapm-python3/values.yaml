@@ -467,6 +467,14 @@ esmanager_celery:
     replicaCount: 2
     command: "celery -A elasticsearch_manager worker -l $LOG_LEVEL -Q es_mng_default  $CELERY_OPTS"
 
+# Helm values for sftrace-server-prometheus-exporter container
+sftraceServerPrometheusExporter:
+  metricsInterval: 3
+  image:
+    repository: snappyflowml/sftrace-server-prometheus-exporter
+    tag: latest
+    pullPolicy: Always
+
 sftrace:
   replicaCount: 1
 
@@ -478,9 +486,8 @@ sftrace:
   image:
     repository: snappyflowml/sftrace-server
     tag: latest
-    sidecarrepository: snappyflowml/sftrace-server-prometheus-exporter
     pullPolicy: Always
-
+  
   resources:
     requests:
       cpu: 10m
@@ -510,12 +517,10 @@ sftrace:
     enabled: true
     minReplicas: 2
     maxReplicas: 3
-    # Below values are based on requests.
-    # Hence value > 100 needs to be calculated based on set limits
-    # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
-    targetCPUUtilizationPercentage: 8000
-    targetMemoryUtilizationPercentage: 820
-    targetQueuedEvents: 13107
+    # This value is calculated as 50 % of max events trace queue can buffer 
+    targetQueuedEvents: 8192
+    scaleUpPeriod: 10
+    scaleDownPeriod: 30
 
 serviceAccount:
   # Specifies whether a service account should be created
