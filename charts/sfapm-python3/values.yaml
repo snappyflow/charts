@@ -233,6 +233,14 @@ sfapm_celery:
     command: "celery -A snappyflow worker -l $LOG_LEVEL -Q provision -c1 $CELERY_OPTS"
 
 vizbuilder:
+
+  pgBouncer:
+    enabled: false
+    dbHost: ""
+    dbPort: ""
+    dbUser: ""
+    dbPassword: ""
+
   replicaCount: 2
 
   autoscaling:
