@@ -1,3 +1,4 @@
+{{- if eq "" .Values.sfapm.cloud }}
 {{- if .Values.sfapm.ingress.enabled }}
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
@@ -16,4 +17,5 @@ spec:
         backend:
           serviceName: {{ include "sfapm.fullname" . }}-sftrace
           servicePort: 8200
+{{- end }}
 {{- end }}
