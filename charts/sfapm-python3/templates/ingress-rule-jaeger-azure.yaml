@@ -6,8 +6,9 @@ metadata:
   name: {{ include "sfapm.fullname" . }}-jaeger
   namespace: {{ .Release.Namespace}}
   annotations:
-    kubernetes.io/ingress.class: azure/application-gateway
-    appgw.ingress.kubernetes.io/appgw-ssl-certificate: "snapcert"
+    kubernetes.io/ingress.class: snappyflow-apm
+    nginx.ingress.kubernetes.io/rewrite-target: /api/traces/
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
   - http:
@@ -18,6 +19,6 @@ spec:
             name: {{ include "sfapm.fullname" . }}-jaegersftrace
             port: 
               number: 14268
-        pathType: Exact
+        pathType: Prefix
 {{- end }}
 {{- end }}
