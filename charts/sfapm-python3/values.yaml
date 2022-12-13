@@ -84,6 +84,8 @@ sfapmui:
 sfapm:
   replicaCount: 2
 
+  cloud: ""
+
   ingress:
     enabled: false
     es_user: ""

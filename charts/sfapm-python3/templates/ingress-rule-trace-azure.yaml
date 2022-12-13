@@ -1,6 +1,6 @@
-{{- if eq "" .Values.sfapm.cloud }}
+{{- if eq "azure" .Values.sfapm.cloud }}
 {{- if .Values.sfapm.ingress.enabled }}
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "sfapm.fullname" . }}-trace
@@ -15,7 +15,10 @@ spec:
       paths:
       - path: /sftrace(/|$)(.*)
         backend:
-          serviceName: {{ include "sfapm.fullname" . }}-sftrace
-          servicePort: 8200
+          service:
+            name: {{ include "sfapm.fullname" . }}-sftrace
+            port:
+              number: 8200
+        pathType: Prefix
 {{- end }}
 {{- end }}
