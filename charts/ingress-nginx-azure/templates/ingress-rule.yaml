@@ -5,7 +5,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     kubernetes.io/ingress.class: azure/application-gateway
-    appgw.ingress.kubernetes.io/appgw-ssl-certificate: "snapcert"
+    appgw.ingress.kubernetes.io/appgw-ssl-certificate: "snappyflowcert"
+    appgw.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   rules:
   - http:
