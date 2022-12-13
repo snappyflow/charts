@@ -35,7 +35,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-+          - containerPort: {{ .Values.service.servicePort }}
+          - containerPort: {{ .Values.service.servicePort }}
           env:
           {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
@@ -44,4 +44,4 @@ spec:
           command: ["/bin/bash", "-c"]
           args: ["/home/presto-config; ./coordinator-init.sh; sleep 3650d;"]
           resources:
-            {{- toYaml .Values.coordinator.resources | nindent 12 }}
+            {{- toYaml .Values.resources | nindent 12 }}
