@@ -18,17 +18,10 @@ sfprestoWorkerPrometheusExporter:
     tag: latest
     pullPolicy: Always
 
-coordinator:
-  resources:
-    requests:
-      cpu: 1000m
-      memory: 2Gi
-
-worker:
-  resources:
-    requests:
-      cpu: 1000m
-      memory: 5Gi
+resources:
+  requests:
+    cpu: 1000m
+    memory: 5Gi
 
 env:
   cloudProvider: aws
@@ -38,6 +31,10 @@ env:
   STORAGE_ACCOUNT_ACCESS_KEY: ""
   # How frequently sfpresto-worker-prometheus-exporter fetch metrics
   Metrics_Interval: 3
+  # Provide Value same as Pod memory in Mi
+  POD_MEM: 5120
+  # Max number of replicas
+  MAX_REPLICA: 5
 
 service:
   servicePort: 8080
