@@ -1,3 +1,4 @@
+{{- if not .Values.global.development }}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -180,3 +181,4 @@ spec:
             - -c
             - curl -X POST http://{{ include "compaction-controller.fullname" . }}/compaction/update-partition-compaction-status
           restartPolicy: Never
+{{- end }}

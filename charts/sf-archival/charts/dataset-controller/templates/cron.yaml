@@ -1,3 +1,4 @@
+{{- if not .Values.global.development }}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -145,3 +146,5 @@ spec:
             - -c
             - curl -X POST http://{{ include "dataset-controller.fullname" . }}/datasets/partitions/mark-compaction-complete
           restartPolicy: Never
+{{- end }}
+{{- end }}
