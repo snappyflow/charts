@@ -1,4 +1,7 @@
 global:
+
+  development: false
+
   postgresql:
     host: host
     postgresqlDatabase: new_archival

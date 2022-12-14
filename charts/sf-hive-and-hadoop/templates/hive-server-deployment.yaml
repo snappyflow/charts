@@ -90,8 +90,10 @@ spec:
             timeoutSeconds: 10
             successThreshold: 1
             failureThreshold: 3
+{{- if not .Values.global.development }}
           resources:
-{{- toYaml .Values.containerResources.hiveServer | nindent 12 }}
+            {{- toYaml .Values.containerResources.hiveServer | nindent 12 }}
+{{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
