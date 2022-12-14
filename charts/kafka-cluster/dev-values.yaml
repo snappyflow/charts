@@ -1,0 +1,44 @@
+global:
+  sfappname: sf-data-path
+  sfprojectname: snappyflow-app
+  sfappname_key: snappyflow/appname
+  sfprojectname_key: snappyflow/projectname
+
+cp-zookeeper:
+  enabled: true
+  servers: 1
+  image: snappyflowml/cp-zookeeper
+  imageTag: 6.0.1
+  imagePullSecrets:
+  #  - name: "regcred"
+  heapOptions: "-Xms384M -Xmx384M"
+  persistence:
+    enabled: false
+  securityContext:
+    runAsUser: 0
+  resources: {}
+  prometheus:
+    jmx:
+      enabled: false
+      resources: {}
+
+cp-kafka:
+  enabled: true
+  brokers: 1
+  image: snappyflowml/cp-kafka
+  imageTag: 6.0.2
+  imagePullSecrets:
+  #  - name: "regcred"
+  heapOptions: "-Xms1500M -Xmx1500M"
+  persistence:
+    enabled: false
+  resources: {}
+  securityContext:
+    runAsUser: 0
+  prometheus:
+    jmx:
+      enabled: false
+      resources: {}
+    kafka:
+      enabled: false
+      resources: {}
