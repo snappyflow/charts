@@ -11,14 +11,8 @@ global:
   # If it is set to 40%, a quota request of 1000 Bytes/s will allocate 1000 * (1 + 0.4) Bytes/s
   quotaBufferPCNT: 5
 
-  ingresschart:
-    enabled: true
-    azure:
-      enabled: false
 
   ingress:
-    # cloud value will be : azure/ ""
-    cloud: ""
     enabled: false
 
   postgresql:

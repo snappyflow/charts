@@ -1,11 +1,7 @@
 dependencies:
 - name: nginx-ingress
   repository: file://./sub_charts/nginx-ingress
-  version: 3.6.3
-- name: ingress-nginx-azure
   version: 4.4.0
-  repository: file://./sub_charts/ingress-nginx-azure
-  condition: global.ingresschart.azure.enable
 - name: cp-schema-registry
   repository: file://./sub_charts/cp-schema-registry
   version: 0.1.0

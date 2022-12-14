@@ -1,6 +1,5 @@
-{{- if eq "" .Values.global.ingress.cloud }}
 {{- if .Values.global.ingress.enabled }}
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ template "cp-kafka-rest.fullname" . }}-ingress
@@ -15,7 +14,9 @@ spec:
       paths:
       - path: /sfmetrics(/|$)(.*)
         backend:
-          serviceName: {{ template "cp-kafka-rest.fullname" . }}-external
-          servicePort: 8082
-{{- end }}
+          service:
+            name: {{ template "cp-kafka-rest.fullname" . }}-external
+            port: 
+              number: 8082
+        pathType: Prefix
 {{- end }}
