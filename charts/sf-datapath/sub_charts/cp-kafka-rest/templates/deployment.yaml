@@ -76,8 +76,10 @@ spec:
           - /etc/jmx-kafka-rest/jmx-kafka-rest-prometheus.yml
           ports:
           - containerPort: {{ .Values.prometheus.jmx.port }}
+{{- if not .Values.global.development }}
           resources:
-{{ toYaml .Values.containerResources.jmx | indent 12 }}
+            {{ toYaml .Values.containerResources.jmx | indent 12 }}
+{{- end }}
           volumeMounts:
           - name: jmx-config
             mountPath: /etc/jmx-kafka-rest
@@ -113,8 +115,10 @@ spec:
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
             successThreshold: {{ .Values.livenessProbe.successThreshold }}
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+{{- if not .Values.global.development }}
           resources:
-{{ toYaml .Values.containerResources.restserver | indent 12 }}
+            {{ toYaml .Values.containerResources.restserver | indent 12 }}
+{{- end }}
           {{- if .Values.https.enabled }}
           envFrom:
           - configMapRef:

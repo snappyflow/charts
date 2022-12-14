@@ -1,5 +1,7 @@
 global:
 
+  development: false
+
   quotasEnabled: true
 
   clusterQuotaGBperDay: 100

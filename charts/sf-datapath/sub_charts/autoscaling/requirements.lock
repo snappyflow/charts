@@ -1,9 +1,9 @@
 dependencies:
 - name: prometheus-adapter
   repository: file://./sub_charts/prometheus-adapter
-  version: 3.0.0
+  version: 3.0.1
 - name: prometheus
   repository: file://./sub_charts/prometheus
   version: 15.0.2
-digest: sha256:45bd3ddc1cb2f57834ea1873b49ab879213de22f1f1dfd78340a9fd9d2bc86b6
-generated: "2021-12-31T12:18:50.021565424+05:30"
+digest: sha256:6126de5cb2b2539b550a0346b8f47131ac698cce050241ce1727ba6daedaa75b
+generated: "2022-12-13T19:47:44.132541362+05:30"

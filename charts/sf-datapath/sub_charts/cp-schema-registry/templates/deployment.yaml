@@ -64,8 +64,10 @@ spec:
           - /etc/jmx-schema-registry/jmx-schema-registry-prometheus.yml
           ports:
           - containerPort: {{ .Values.prometheus.jmx.port }}
+{{- if not .Values.global.development }}
           resources:
-{{ toYaml .Values.containerResources.jmx | indent 12 }}
+            {{ toYaml .Values.containerResources.jmx | indent 12 }}
+{{- end }}
           volumeMounts:
           - name: jmx-config
             mountPath: /etc/jmx-schema-registry
@@ -74,8 +76,10 @@ spec:
         - name: schema-generator
           image: "{{ .Values.schemaGenerator.image }}:{{ .Values.schemaGenerator.imageTag }}"
           imagePullPolicy: "{{ .Values.schemaGenerator.imagePullPolicy }}"
+{{- if not .Values.global.development }}
           resources:
-{{ toYaml .Values.containerResources.schemaGenerator | indent 12 }}
+            {{ toYaml .Values.containerResources.schemaGenerator | indent 12 }}
+{{- end }}
           volumeMounts:
           - name: schema-generator-config
             mountPath: /opt
@@ -101,8 +105,10 @@ spec:
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
             successThreshold: {{ .Values.livenessProbe.successThreshold }}
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+{{- if not .Values.global.development }}
           resources:
-{{ toYaml .Values.containerResources.schemaregistry | indent 12 }}
+            {{ toYaml .Values.containerResources.schemaregistry | indent 12 }}
+{{- end }}
           env:
           - name: SCHEMA_REGISTRY_LOG4J_OPTS
             value: -Dlog4j.configuration=file:///etc/customlog4j/connect-log4j.properties

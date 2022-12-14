@@ -54,8 +54,10 @@ spec:
             - name: {{ template "sfk-interface.fullname" . }}-config
               mountPath: "/etc/conf"
               readOnly: true
+{{- if not .Values.global.development }}
           resources:
-{{- toYaml .Values.containerResources.interface | nindent 12 }}
+            {{- toYaml .Values.containerResources.interface | nindent 12 }}
+{{- end }}
       volumes:
         - name: {{ template "sfk-interface.fullname" . }}-config
           configMap:

@@ -151,8 +151,10 @@ spec:
             periodSeconds: {{ .Values.server.startupProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.server.startupProbe.timeoutSeconds }}
           {{- end }}
+{{- if not .Values.global.development }}
           resources:
-{{ toYaml .Values.containerResources | indent 12 }}
+            {{ toYaml .Values.containerResources | indent 12 }}
+{{- end }}
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
