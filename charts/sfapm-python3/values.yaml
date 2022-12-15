@@ -489,16 +489,16 @@ esmanager_celery:
     replicaCount: 2
     command: "celery -A elasticsearch_manager worker -l $LOG_LEVEL -Q es_mng_default  $CELERY_OPTS"
 
-# Helm values for sftrace-server-prometheus-exporter container
-sftraceServerPrometheusExporter:
-  metricsInterval: 3
-  image:
-    repository: snappyflowml/sftrace-server-prometheus-exporter
-    tag: latest
-    pullPolicy: Always
-
 sftrace:
   replicaCount: 1
+
+  # Helm values for sftrace-server-prometheus-exporter container
+  sftraceServerPrometheusExporter:
+    metricsInterval: 3
+    image:
+      repository: snappyflowml/sftrace-server-prometheus-exporter
+      tag: latest
+      pullPolicy: Always
 
   podAnnotations:
     prometheus.io/path: /metrics
