@@ -186,6 +186,17 @@ rules:
         kubernetes_pod_name:
           resource: pod
     seriesQuery: '{__name__="presto_queued_queries"}'
+  - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*vizbuilder-celery-alert.*"}
+    name:
+      as: num_executing_tasks
+      matches: ""
+    resources:
+      overrides:
+        kubernetes_namespace:
+          resource: namespace
+        kubernetes_pod_name:
+          resource: pod
+    seriesQuery: '{__name__="num_executing_tasks"}'
 
 service:
   annotations: {}

@@ -138,6 +138,10 @@ spec:
           env:
           - name: Metrics_Interval
             value: "{{ .Values.vizbuilder_celery.alert.celeryAlertPrometheusExporter.metricsInterval }}"
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
