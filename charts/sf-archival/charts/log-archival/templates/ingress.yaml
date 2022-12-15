@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ template "log-archival.fullname" . }}
@@ -17,9 +17,15 @@ spec:
       paths:
       - path: /logarchival
         backend:
-          serviceName: {{ template "log-archival.fullname" . }}
-          servicePort: 80
+          service:
+            name: {{ template "log-archival.fullname" . }}
+            port: 
+              number: 80
+        pathType: Prefix
       - path: /project
         backend:
-          serviceName: {{ template "log-archival.fullname" . }}
-          servicePort: 80
+          service:
+            name: {{ template "log-archival.fullname" . }}
+            port: 
+              number: 80
+        pathType: Prefix
