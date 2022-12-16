@@ -111,12 +111,14 @@ spark-manager:
           driver: 1024m
     EcsFargate:
       enabled: false
+      containerInsightsEnabled: false
       preference: 1
       cluster: sf-archival-compaction
       numExecutors: 2
       iamRole: arn:aws:iam::159750416379:role/Dev-Archival-presto_hive
       taskSubnet: subnet-09a6fcdc2b614e300
       taskSecurityGroup: sg-03b8db147f1b7b423
+      compactionSecretArn: arn:aws:secretsmanager:XXX:XXX:secret:XXX
       jobResources:
         cpu: 2048
         memory: 8192

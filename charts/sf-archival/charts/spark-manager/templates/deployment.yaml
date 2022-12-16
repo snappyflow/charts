@@ -68,7 +68,7 @@ spec:
             value: {{ .Values.global.secrets.aws.AWS_DEFAULT_REGION }}
           {{- end }}
           {{- end }}
-          image: snappyflowml/compaction-infra:1
+          image: snappyflowml/compaction-infra:3
           imagePullPolicy: IfNotPresent
           volumeMounts:
           - name: config-volume-compaction

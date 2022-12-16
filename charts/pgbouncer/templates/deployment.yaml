@@ -38,15 +38,15 @@ spec:
           command: ["/usr/bin/pgbouncer", "/etc/pgbouncer/pgbouncer.ini"]
           ports:
             - name: pg
-              containerPort: 5432
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
           livenessProbe:
             tcpSocket:
-              port: 5432
+              port: {{ .Values.service.port }}
             periodSeconds: 60
           readinessProbe:
             tcpSocket:
-              port: 5432
+              port: {{ .Values.service.port }}
             periodSeconds: 30
           volumeMounts:
             - name: config
