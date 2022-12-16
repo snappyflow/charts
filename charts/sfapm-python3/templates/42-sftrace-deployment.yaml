@@ -75,7 +75,6 @@ spec:
             mountPath: /usr/share/apm-server/apm-server.yml
             subPath: apm-server.yml
             readOnly: true
-      {{- if .Values.sftrace.autoscaling.enabled -}}
       - name: sftrace-server-prometheus-exporter
         command: [/go/metrics]
         image: "{{ .Values.sftrace.sftraceServerPrometheusExporter.image.repository }}:{{ .Values.sftrace.sftraceServerPrometheusExporter.image.tag }}" 
@@ -83,4 +82,3 @@ spec:
         env:
         - name: Metrics_Interval
           value: "{{ .Values.sftrace.sftraceServerPrometheusExporter.metricsInterval }}"
-      {{- end }}
