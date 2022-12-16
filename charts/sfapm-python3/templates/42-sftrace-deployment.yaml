@@ -78,7 +78,7 @@ spec:
       {{- if .Values.sftrace.autoscaling.enabled -}}
       - name: sftrace-server-prometheus-exporter
         command: [/go/metrics]
-        image: "{{ .Values.sftraceServerPrometheusExporter.image.repository }}:{{ .Values.sftraceServerPrometheusExporter.image.tag }}" 
+        image: "{{ .Values.sftrace.sftraceServerPrometheusExporter.image.repository }}:{{ .Values.sftrace.sftraceServerPrometheusExporter.image.tag }}" 
         imagePullPolicy: Always
         env:
         - name: Metrics_Interval
