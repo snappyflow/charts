@@ -1,6 +1,6 @@
 dependencies:
 - name: nginx-ingress
-  version: 3.6.3
+  version: 4.4.0
   repository: file://./sub_charts/nginx-ingress
 - name: cp-schema-registry
   version: 0.1.0
