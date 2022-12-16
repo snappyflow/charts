@@ -1,3 +1,4 @@
+{{- if .Values.presto.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -45,3 +46,4 @@ spec:
           args: ["/home/presto-config; ./coordinator-init.sh; sleep 3650d;"]
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+{{- end }}

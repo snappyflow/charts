@@ -1,3 +1,4 @@
+{{- if .Values.autoscaling.enabled -}}
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -37,3 +38,4 @@ spec:
       target:
         type: AverageValue
         averageValue: {{ .Values.autoscaling.targetQueuedQueries }}
+{{- end }}

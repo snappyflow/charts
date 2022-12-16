@@ -1,3 +1,4 @@
+{{- if .Values.vizbuilder_celery.alert.autoscaling.enabled -}}
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -32,3 +33,4 @@ spec:
       target:
         type: AverageValue
         averageValue: {{ .Values.vizbuilder_celery.alert.autoscaling.numExecutingTasks }}
+{{- end }}

@@ -131,6 +131,7 @@ spec:
             - mountPath: /sfagent
               name: sftrace-agent
             {{- end }}
+        {{- if .Values.vizbuilder_celery.alert.autoscaling.enabled -}}
         - name: celery-alert-prometheus-exporter
           command: [/go/metrics]
           image: "{{ .Values.vizbuilder_celery.alert.celeryAlertPrometheusExporter.image.repository }}:{{ .Values.vizbuilder_celery.alert.celeryAlertPrometheusExporter.image.tag }}" 
@@ -142,6 +143,7 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.name
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

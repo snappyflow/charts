@@ -1,3 +1,4 @@
+{{- if .Values.presto.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -47,3 +48,4 @@ spec:
           command: [/go/metrics]
           image: "{{ .Values.sfprestoWorkerPrometheusExporter.image.repository }}:{{ .Values.sfprestoWorkerPrometheusExporter.image.tag }}" 
           imagePullPolicy: Always
+{{- end }}

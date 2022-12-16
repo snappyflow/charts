@@ -6,6 +6,9 @@ replicaCount: 1
 
 imagePullSecrets: []
 
+presto:
+  enabled: false
+
 image:
   repository: snappyflowml/presto
   pullPolicy: Always
@@ -45,7 +48,7 @@ podAnnotations:
   prometheus.io/scrape: "true"
 
 autoscaling:
-  enabled: true
+  enabled: false
   minReplicas: 3
   maxReplicas: 5
   targetQueuedQueries: 5
