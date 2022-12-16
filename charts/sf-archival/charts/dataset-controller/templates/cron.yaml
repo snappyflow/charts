@@ -36,7 +36,7 @@ spec:
 
 ---
 
-{{ if (eq (index .Values "billing-service" "enabled") true) }}
+{{- if (eq (index .Values "billing-service" "enabled") true) }}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -71,7 +71,7 @@ spec:
             - -c
             - curl -X POST http://{{ include "dataset-controller.fullname" . }}/datasets/profile/billing
           restartPolicy: Never
-{{ end }}
+{{- end }}
 
 ---
 
@@ -146,5 +146,4 @@ spec:
             - -c
             - curl -X POST http://{{ include "dataset-controller.fullname" . }}/datasets/partitions/mark-compaction-complete
           restartPolicy: Never
-{{- end }}
 {{- end }}
