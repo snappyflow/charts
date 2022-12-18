@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ template "signatures-and-kafka-apis.fullname" . }}
@@ -17,9 +17,15 @@ spec:
       paths:
       - path: /signatures
         backend:
-          serviceName: {{ template "signatures-and-kafka-apis.fullname" . }}
-          servicePort: 80
+          service:
+            name: {{ template "signatures-and-kafka-apis.fullname" . }}
+            port: 
+              number: 80
+        pathType: Prefix
       - path: /kafka-info
         backend:
-          serviceName: {{ template "signatures-and-kafka-apis.fullname" . }}
-          servicePort: 80
+          service:
+            name: {{ template "signatures-and-kafka-apis.fullname" . }}
+            port: 
+              number: 80
+        pathType: Prefix

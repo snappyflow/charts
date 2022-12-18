@@ -1,7 +1,7 @@
 dependencies:
 - name: nginx-ingress
   repository: file://./sub_charts/nginx-ingress
-  version: 3.6.3
+  version: 4.4.0
 - name: cp-schema-registry
   repository: file://./sub_charts/cp-schema-registry
   version: 0.1.0
@@ -10,6 +10,9 @@ dependencies:
   version: 0.1.0
 - name: s3-kafka-connect
   repository: file://./sub_charts/s3-kafka-connect
+  version: 0.1.0
+- name: azureblob-kafka-connect
+  repository: file://./sub_charts/azureblob-kafka-connect
   version: 0.1.0
 - name: es-kafka-connect
   repository: file://./sub_charts/es-kafka-connect

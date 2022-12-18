@@ -1,5 +1,5 @@
-{{- if .Values.sftrace.autoscaling.enabled }}
-apiVersion: autoscaling/v2beta1
+{{- if .Values.sftrace.autoscaling.enabled -}}
+apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "sfapm.fullname" . }}-sftrace
@@ -10,25 +10,27 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ include "sfapm.fullname" . }}-sftrace
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 30
+      policies:
+      - type: Pods
+        periodSeconds: {{ .Values.sftrace.autoscaling.scaleDownPeriod }}
+        value: 1
+    scaleUp:
+      stabilizationWindowSeconds: 30
+      policies:
+      - type: Pods
+        periodSeconds: {{ .Values.sftrace.autoscaling.scaleUpPeriod }}
+        value: 1
   minReplicas: {{ .Values.sftrace.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.sftrace.autoscaling.maxReplicas }}
   metrics:
-  {{- if .Values.sftrace.autoscaling.targetCPUUtilizationPercentage }}
-    - type: Resource
-      resource:
-        name: cpu
-        targetAverageUtilization: {{ .Values.sftrace.autoscaling.targetCPUUtilizationPercentage }}
-  {{- end }}
-  {{- if .Values.sftrace.autoscaling.targetMemoryUtilizationPercentage }}
-    - type: Resource
-      resource:
-        name: memory
-        targetAverageUtilization: {{ .Values.sftrace.autoscaling.targetMemoryUtilizationPercentage }}
-  {{- end }}
-  {{- if .Values.sftrace.autoscaling.targetQueuedEvents }}
-    - type: Pods
-      pods:
-        metricName: sftrace_queued_events
-        targetAverageValue: {{ .Values.sftrace.autoscaling.targetQueuedEvents }}
-  {{- end }}
+  - type: Pods
+    pods:
+      metric:
+        name: sftrace_queued_events
+      target:
+        type: AverageValue
+        averageValue: {{ .Values.sftrace.autoscaling.targetQueuedEvents }}
 {{- end }}

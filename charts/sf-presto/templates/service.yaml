@@ -1,0 +1,18 @@
+{{- if .Values.presto.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sf-presto.fullname" . }}-coordinator
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ include "sf-presto.name" . }}-coordinator
+    release: {{ .Release.Name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+spec:
+  ports:
+  - port: {{ .Values.service.servicePort }}
+    targetPort: {{ .Values.service.servicePort }}
+    protocol: TCP
+  selector:
+    app: {{ include "sf-presto.name" . }}-coordinator
+{{- end }}
