@@ -1,0 +1,27 @@
+{{- if .Values.autoscaler.create -}}
+#This is a dummy pod. All values are static.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sf-cluster-autoscaler.fullname" . }}-overprovisioner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "sf-cluster-autoscaler.name" . }}-overprovisioner
+  template:
+    metadata:
+      labels:
+        app: {{ include "sf-cluster-autoscaler.name" . }}-overprovisioner
+    spec:
+      containers:
+      - name: overprovisioner
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "5Gi"
+            cpu: 2000m
+      priorityClassName: overprovisioner
+{{- end }}

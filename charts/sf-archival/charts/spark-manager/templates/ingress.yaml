@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ template "spark-manager.fullname" . }}
@@ -17,5 +17,8 @@ spec:
       paths:
       - path: /sparkman
         backend:
-          serviceName: {{ template "spark-manager.fullname" . }}
-          servicePort: 80
+          service:
+            name: {{ template "spark-manager.fullname" . }}
+            port: 
+              number: 80
+        pathType: Prefix
