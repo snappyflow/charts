@@ -36,3 +36,5 @@ service:
   port: 80
   type: ClusterIP
 tolerations: []
+maxGBToProcessDuringHistogramQuery: 1
+maxGBToProcessDuringLogQuery: 1
