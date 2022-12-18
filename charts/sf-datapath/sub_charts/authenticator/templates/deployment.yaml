@@ -42,8 +42,7 @@ spec:
           - name: config-volume
             mountPath: /etc/conf
 {{- if not .Values.global.development }}
-          resources:
-            {{- toYaml .Values.containerResources.authenticator | nindent 12 }}
+          resources: {{- toYaml .Values.containerResources.authenticator | nindent 12 }}
 {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

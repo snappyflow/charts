@@ -47,8 +47,9 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
-          resources:
-{{- toYaml .Values.containerResources | nindent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{- toYaml .Values.containerResources | nindent 12 }}
+{{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

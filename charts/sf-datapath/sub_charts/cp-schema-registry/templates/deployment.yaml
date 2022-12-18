@@ -65,8 +65,7 @@ spec:
           ports:
           - containerPort: {{ .Values.prometheus.jmx.port }}
 {{- if not .Values.global.development }}
-          resources:
-            {{ toYaml .Values.containerResources.jmx | indent 12 }}
+          resources: {{ toYaml .Values.containerResources.jmx | nindent 12 }}
 {{- end }}
           volumeMounts:
           - name: jmx-config
@@ -78,7 +77,7 @@ spec:
           imagePullPolicy: "{{ .Values.schemaGenerator.imagePullPolicy }}"
 {{- if not .Values.global.development }}
           resources:
-            {{ toYaml .Values.containerResources.schemaGenerator | indent 12 }}
+{{ toYaml .Values.containerResources.schemaGenerator | nindent 12 }}
 {{- end }}
           volumeMounts:
           - name: schema-generator-config
@@ -107,7 +106,7 @@ spec:
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
 {{- if not .Values.global.development }}
           resources:
-            {{ toYaml .Values.containerResources.schemaregistry | indent 12 }}
+{{ toYaml .Values.containerResources.schemaregistry | nindent 12 }}
 {{- end }}
           env:
           - name: SCHEMA_REGISTRY_LOG4J_OPTS

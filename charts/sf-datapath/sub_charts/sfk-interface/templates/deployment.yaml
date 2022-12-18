@@ -55,8 +55,7 @@ spec:
               mountPath: "/etc/conf"
               readOnly: true
 {{- if not .Values.global.development }}
-          resources:
-            {{- toYaml .Values.containerResources.interface | nindent 12 }}
+          resources: {{- toYaml .Values.containerResources.interface | nindent 12 }}
 {{- end }}
       volumes:
         - name: {{ template "sfk-interface.fullname" . }}-config

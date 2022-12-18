@@ -48,8 +48,7 @@ spec:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
 {{- if not .Values.global.development }}
-          resources:
-            {{- toYaml .Values.containerResources.querycontroller | nindent 12 }}
+          resources: {{- toYaml .Values.containerResources.querycontroller | nindent 12 }}
 {{- end }}
         - name: query-execution-controller
           image: "{{ .Values.executionControler.repository }}:{{ .Values.executionControler.tag }}"
@@ -61,8 +60,7 @@ spec:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
 {{- if not .Values.global.development }}
-          resources:
-            {{- toYaml .Values.containerResources.queryexecutioncontroller | nindent 12 }}
+          resources: {{- toYaml .Values.containerResources.queryexecutioncontroller | nindent 12 }}
 {{- end }}
         - name: query-cleanup
           image: "{{ .Values.cleanup.repository }}:{{ .Values.cleanup.tag }}"
@@ -74,8 +72,7 @@ spec:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
 {{- if not .Values.global.development }}
-          resources:
-            {{- toYaml .Values.containerResources.querycleanup | nindent 12 }}
+          resources: {{- toYaml .Values.containerResources.querycleanup | nindent 12 }}
 {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

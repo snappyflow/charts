@@ -87,8 +87,7 @@ spec:
             successThreshold: 1
             failureThreshold: 3
 {{- if not .Values.global.development }}
-          resources:
-            {{- toYaml .Values.containerResources.namenode | nindent 12 }}
+          resources: {{- toYaml .Values.containerResources.namenode | nindent 12 }}
 {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
