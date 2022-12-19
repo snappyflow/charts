@@ -1,4 +1,4 @@
-{{- if .Values.autoscaler.create -}}
+{{- if .Values.autoscaler.enabled -}}
 #This is a dummy pod. All values are static.
 apiVersion: apps/v1
 kind: Deployment

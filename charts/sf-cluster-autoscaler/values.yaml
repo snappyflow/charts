@@ -13,16 +13,20 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-resources:
+overProvisionerResources:
   requests:
     cpu: 1000m
     memory: 2Gi
 
 autoscaler:
   # Specifies whether a autoscaler should be created. Set true in case of AWS
-  create: false
+  enabled: false
   nodeUnneededTime: 300s
   serviceAccountName: ""
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 2Gi
 
 # Needed in case of eks
 eks:

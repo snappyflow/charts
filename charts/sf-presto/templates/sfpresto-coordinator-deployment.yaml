@@ -1,4 +1,3 @@
-{{- if .Values.presto.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,11 +25,6 @@ spec:
         role: sfpresto-coordinator
         snappyflow/component: snappyflow-presto
     spec:
-      serviceAccountName: sfpresto-sa
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       containers:
         - name: sfpresto-coordinator
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -42,8 +36,18 @@ spec:
             - name: {{ $key }}
               value: "{{ $value }}"
           {{- end }}
+            - name: "PRESTO_SERVICE"
+              value: {{ include "sf-presto.fullname" . }}-coordinator
+            - name: "SERVICE_PORT"
+              value: "{{ .Values.service.servicePort }}"
           command: ["/bin/bash", "-c"]
           args: ["/home/presto-config; ./coordinator-init.sh; sleep 3650d;"]
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-{{- end }}
+          volumeMounts:
+          - name: hive-properties
+            mountPath: /home/hive/.
+      volumes:
+      - name: hive-properties
+        configMap:
+          name: {{ include "sf-presto.fullname" . }}-configmap

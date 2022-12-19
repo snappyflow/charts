@@ -1,4 +1,3 @@
-{{- if .Values.presto.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -15,4 +14,3 @@ spec:
     protocol: TCP
   selector:
     app: {{ include "sf-presto.name" . }}-coordinator
-{{- end }}
