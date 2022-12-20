@@ -257,7 +257,7 @@ vizbuilder:
 
   image:
     repository: snappyflowml/sfapm-vizbuilder
-    tag: python3
+    tag: python3-master
     pullPolicy: IfNotPresent
 
   resources:
@@ -300,7 +300,7 @@ vizbuilder_celery:
     metricsCommand : "celery -A vizbuilder flower --address=localhost --port=5566"
 
     autoscaling:
-      enabled: false
+      enabled: true
       minReplicas: 2
       maxReplicas: 3
       # This value is calculated as 50 % of max active tasks of worker 
@@ -546,7 +546,7 @@ sftrace:
       token: " "
 
   autoscaling:
-    enabled: false
+    enabled: true
     minReplicas: 2
     maxReplicas: 3
     # This value is calculated as 50 % of max events trace queue can buffer 
