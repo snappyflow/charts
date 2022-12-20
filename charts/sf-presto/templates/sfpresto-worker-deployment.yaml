@@ -54,6 +54,8 @@ spec:
             value: {{ include "sf-presto.fullname" . }}-coordinator
           - name: "SERVICE_PORT"
             value: "{{ .Values.service.servicePort }}"
+          resources:
+            {{- toYaml .Values.sfprestoWorkerPrometheusExporter.resources | nindent 12 }}
       volumes:
       - name: hive-properties
         configMap:

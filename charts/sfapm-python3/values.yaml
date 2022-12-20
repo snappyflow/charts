@@ -296,8 +296,10 @@ vizbuilder_celery:
         cpu: 10m
         memory: 100Mi
     replicaCount: 3
-    command: "celery -A vizbuilder worker -l $LOG_LEVEL -Q alert -c10 $CELERY_OPTS"
-    metricsCommand : "celery -A vizbuilder flower --address=localhost --port=5566"
+    #command: "celery -A vizbuilder worker -l $LOG_LEVEL -Q alert -c10 $CELERY_OPTS"
+    #metricsCommand : "celery -A vizbuilder flower --address=localhost --port=5566"
+
+    maximumRunningTasks: 10
 
     autoscaling:
       enabled: true
@@ -313,12 +315,18 @@ vizbuilder_celery:
       prometheus.io/port: "2112"
       prometheus.io/scrape: "true"
     
+    terminationGracePeriodSeconds: 30s
+    
     celeryAlertPrometheusExporter:
       image:
         repository: snappyflowml/celery-alert-prometheus-exporter
         tag: latest
         pullPolicy: Always
       metricsInterval: 3
+      resources:
+        requests:
+          cpu: 100m
+          memory: 200Mi
 
   logops:
     resources:
@@ -502,6 +510,10 @@ esmanager_celery:
 sftrace:
   replicaCount: 1
 
+  terminationGracePeriodSeconds: 30s
+
+  maximumQueueEvents: 65536
+
   # Helm values for sftrace-server-prometheus-exporter container
   sftraceServerPrometheusExporter:
     metricsInterval: 3
@@ -509,6 +521,10 @@ sftrace:
       repository: snappyflowml/sftrace-server-prometheus-exporter
       tag: latest
       pullPolicy: Always
+    resources:
+      requests:
+        cpu: 100m
+        memory: 200Mi
 
   podAnnotations:
     prometheus.io/path: /metrics
@@ -550,7 +566,6 @@ sftrace:
     minReplicas: 2
     maxReplicas: 3
     # This value is calculated as 50 % of max events trace queue can buffer 
-    targetQueuedEvents: 8192
     scaleUpPeriod: 10
     scaleDownPeriod: 30
 
