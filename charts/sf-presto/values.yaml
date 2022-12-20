@@ -31,9 +31,9 @@ azure:
 
 env:
   # Required onlu for azure
-  STORAGE_ACCOUNT_NAME: "marketingmaplelabstest"
+  STORAGE_ACCOUNT_NAME: ""
   # Required only for azure
-  STORAGE_ACCOUNT_ACCESS_KEY: "ZxgL0foLpAlTWYf4zEC5KSWuHHoLYBN9jcknakt5kh0OxCRSAoY3sLabM80pyPxO5z7dwQe190+AStGG6Mzw=="
+  STORAGE_ACCOUNT_ACCESS_KEY: ""
   # How frequently sfpresto-worker-prometheus-exporter fetch metrics
   Metrics_Interval: 3
   # Provide Value same as Pod memory in Mi
