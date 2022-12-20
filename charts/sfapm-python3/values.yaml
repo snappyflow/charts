@@ -305,8 +305,6 @@ vizbuilder_celery:
       enabled: true
       minReplicas: 2
       maxReplicas: 3
-      # This value is calculated as 50 % of max active tasks of worker 
-      numExecutingTasks: 5
       scaleUpPeriod: 10
       scaleDownPeriod: 30
     
@@ -315,7 +313,7 @@ vizbuilder_celery:
       prometheus.io/port: "2112"
       prometheus.io/scrape: "true"
     
-    terminationGracePeriodSeconds: 30s
+    terminationGracePeriodSeconds: 30
     
     celeryAlertPrometheusExporter:
       image:
@@ -510,7 +508,7 @@ esmanager_celery:
 sftrace:
   replicaCount: 1
 
-  terminationGracePeriodSeconds: 30s
+  terminationGracePeriodSeconds: 30
 
   maximumQueueEvents: 65536
 
