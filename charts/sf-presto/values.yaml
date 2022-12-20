@@ -7,14 +7,14 @@ replicaCount: 1
 imagePullSecrets: []
 
 image:
-  repository: amansingh2708/presto-coordinator
+  repository: snappyflowml/presto
   pullPolicy: Always
   tag: latest
 
 # Helm values for sfpresto-worker-prometheus-exporter container
 sfprestoWorkerPrometheusExporter:
   image:
-    repository: amansingh2708/sfpresto-worker-prometheus-exporter
+    repository: snappyflowml/sfpresto-worker-prometheus-exporter
     tag: latest
     pullPolicy: Always
 
