@@ -27,7 +27,7 @@ aws:
   enabled: false
 
 azure:
-  enabled: true
+  enabled: false
 
 env:
   # Required onlu for azure
