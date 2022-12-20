@@ -62,6 +62,8 @@ autoscaling:
   scaleUpPeriod: 30
   scaleDownPeriod: 60
 
+terminationGracePeriodSeconds: 300
+
 nodeSelector: {}
 tolerations: []
 affinity: {}

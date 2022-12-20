@@ -58,3 +58,4 @@ spec:
       - name: hive-properties
         configMap:
           name: {{ include "sf-presto.fullname" . }}-configmap
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
