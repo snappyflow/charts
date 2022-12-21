@@ -98,6 +98,9 @@ sfapm:
     arhiver_url: ""
     kafka_user: ""
     kafka_pwd: ""
+    storage_account_name: ""
+    storage_account_key: ""
+
 
   quotasEnabled: false
   rollover:
