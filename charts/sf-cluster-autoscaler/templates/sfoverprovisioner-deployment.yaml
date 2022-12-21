@@ -1,4 +1,3 @@
-{{- if .Values.autoscaler.enabled -}}
 #This is a dummy pod. All values are static.
 apiVersion: apps/v1
 kind: Deployment
@@ -22,4 +21,3 @@ spec:
         resources:
           {{- toYaml .Values.overProvisionerResources | nindent 12 }}
       priorityClassName: overprovisioner
-{{- end }}
