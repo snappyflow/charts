@@ -52,8 +52,8 @@ data:
     KEYCLOAK_MODE: ""
     {{- end }}
     {{- if eq "azure" .Values.sfapm.cloud }}
-    STORAGE_ACCOUNT_NAME: "{{ .Values.sfapm.storage_account_name }}"
-    STORAGE_ACCOUNT_KEY: "{{ .Values.sfapm.storage_account_key }}"
+    STORAGE_ACCOUNT_NAME: "{{ .Values.sfapm.azure.storage_account_name }}"
+    STORAGE_ACCOUNT_KEY: "{{ .Values.sfapm.azure.storage_account_key }}"
     {{- end }}
     {{- if .Values.sfapm.rollover.custom_config }}
     METRIC_ROLLOVER_MAX_AGE: "{{ .Values.sfapm.rollover.metric.rollover_max_age }}"
