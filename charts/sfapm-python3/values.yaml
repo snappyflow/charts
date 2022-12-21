@@ -303,7 +303,7 @@ vizbuilder_celery:
 
     autoscaling:
       enabled: true
-      minReplicas: 1
+      minReplicas: 3
       maxReplicas: 5
       scaleUpPeriod: 30
       scaleDownPeriod: 60
@@ -561,7 +561,7 @@ sftrace:
 
   autoscaling:
     enabled: true
-    minReplicas: 1
+    minReplicas: 2
     maxReplicas: 5
     # This value is calculated as 50 % of max events trace queue can buffer 
     scaleUpPeriod: 30
