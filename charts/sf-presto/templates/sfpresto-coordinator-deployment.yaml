@@ -43,7 +43,7 @@ spec:
           command: ["/bin/bash", "-c"]
           args: ["/home/presto-config; ./coordinator-init.sh; sleep 3650d;"]
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.coordinator.resources | nindent 12 }}
           volumeMounts:
           - name: hive-properties
             mountPath: /home/hive/.

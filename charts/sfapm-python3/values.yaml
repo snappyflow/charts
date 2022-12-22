@@ -307,10 +307,10 @@ vizbuilder_celery:
 
     autoscaling:
       enabled: true
-      minReplicas: 2
-      maxReplicas: 3
-      scaleUpPeriod: 10
-      scaleDownPeriod: 30
+      minReplicas: 3
+      maxReplicas: 5
+      scaleUpPeriod: 30
+      scaleDownPeriod: 60
     
     podAnnotations:
       prometheus.io/path: /metrics
@@ -566,10 +566,10 @@ sftrace:
   autoscaling:
     enabled: true
     minReplicas: 2
-    maxReplicas: 3
+    maxReplicas: 5
     # This value is calculated as 50 % of max events trace queue can buffer 
-    scaleUpPeriod: 10
-    scaleDownPeriod: 30
+    scaleUpPeriod: 30
+    scaleDownPeriod: 60
 
 serviceAccount:
   # Specifies whether a service account should be created

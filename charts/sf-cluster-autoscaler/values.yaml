@@ -16,11 +16,11 @@ fullnameOverride: ""
 overProvisionerResources:
   requests:
     cpu: 2000m
-    memory: 5Gi
+    memory: 8Gi
 
 autoscaler:
   # Specifies whether a autoscaler should be created. Set true in case of AWS
-  enabled: false
+  enabled: true
   nodeUnneededTime: 300s
   serviceAccountName: ""
   resources:
