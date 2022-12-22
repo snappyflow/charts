@@ -13,6 +13,8 @@ data:
       "billingURL": "{{ index .Values "billing-service" "scheme" }}://{{ index .Values "billing-service" "url" }}",
       "rawDataCleanupDays": {{ .Values.rawDataCleanupDays}},
       "maxPartitionsToAnalyzeConcurrently": {{ .Values.maxPartitionsToAnalyzeConcurrently }},
+      "bucketPartitonAnalyzeIntervalInMin": {{ .Values.bucketPartitonAnalyzeIntervalInMin }},
+      "bucketPartitonsToAnalyzeInParallelMax": {{ .Values.bucketPartitonsToAnalyzeInParallelMax }},
       "presto": {
         "user": "{{ .Values.presto.user }}",
         "catalog": "{{ .Values.presto.catalog }}",

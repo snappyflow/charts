@@ -27,6 +27,8 @@ presto:
   schema: default
   user: ubuntu
 rawDataCleanupDays: 2
+bucketPartitonAnalyzeIntervalInMin: 5
+bucketPartitonsToAnalyzeInParallelMax: 5
 schedules:
   billing: 0 * * * *
   detect: '*/30 * * * *'
