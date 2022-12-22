@@ -589,12 +589,16 @@ controller:
   #      mountPath: /srv/var/lib/lemonldap-ng/portal/skins
 
   # -- Additional volumeMounts to the controller main container.
-  extraVolumeMounts: []
+  extraVolumeMounts:
+    - name: varlog
+      mountPath: /var/log/nginx
   #  - name: copy-portal-skins
   #   mountPath: /var/lib/lemonldap-ng/portal/skins
 
   # -- Additional volumes to the controller pod.
-  extraVolumes: []
+  extraVolumes: 
+    - name: varlog
+      emptyDir: {}
   #  - name: copy-portal-skins
   #    emptyDir: {}
 
@@ -921,21 +925,6 @@ defaultBackend:
   #   cpu: 10m
   #   memory: 20Mi
 
-containerResources: 
-  sfagent:
-    requests:
-      cpu: 250m
-      memory: 256Mi
-    limits:
-      cpu: 500m
-      memory: 512Mi
-  suspectedClientBlocker:
-    limits:
-      cpu: 75m
-      memory: 256Mi
-    requests:
-      cpu: 75m
-      memory: 256Mi
 
   extraVolumeMounts: []
   ## Additional volumeMounts to the default backend container.
@@ -983,6 +972,22 @@ rbac:
 ## https://kubernetes.io/docs/concepts/policy/pod-security-policy/
 podSecurityPolicy:
   enabled: false
+
+containerResources: 
+  sfagent:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  suspectedClientBlocker:
+    limits:
+      cpu: 75m
+      memory: 256Mi
+    requests:
+      cpu: 75m
+      memory: 256Mi
 
 sfagent:
   enabled: false
