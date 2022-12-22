@@ -9,6 +9,9 @@ metadata:
     {{- with .Values.controller.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
+    {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+    {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
+    snappyflow/component: nginx
   name: {{ include "ingress-nginx.controller.fullname" . }}
   namespace: {{ .Release.Namespace }}
   {{- if .Values.controller.annotations }}
@@ -76,6 +79,56 @@ spec:
       shareProcessNamespace: {{ .Values.controller.shareProcessNamespace }}
     {{- end }}
       containers:
+        {{- if .Values.sfagent.enabled }}
+        - name: sfagent
+          image: "{{ .Values.sfagent.image.repository }}:{{ .Values.sfagent.image.tag }}"
+          imagePullPolicy: {{ .Values.sfagent.image.pullPolicy }}
+          command:
+            - /app/sfagent
+            - -enable-console-log
+          env:
+            - name: APP_NAME
+              value: "{{ .Values.global.snappyflowAppName }}"
+            - name: PROJECT_NAME
+              value: "{{ .Values.global.snappyflowProjectName }}"
+          volumeMounts:
+          - name: varlog
+            mountPath: /var/log/nginx
+          - name: sfagent-config
+            mountPath: /opt/sfagent/config.yaml
+            subPath: config.yaml
+          - name: normalization-config
+            mountPath: /opt/sfagent/normalization/config.yaml
+            subPath: config.yaml
+          resources: {{ toYaml .Values.containerResources.sfagent | nindent 12 }}
+        {{- end }}
+        {{- if .Values.suspectedClientBlocker.enabled }}
+        - name: suspected-client-blocker
+          image: "{{ .Values.suspectedClientBlocker.image.repository }}:{{ .Values.suspectedClientBlocker.image.tag }}"
+          imagePullPolicy: {{ .Values.suspectedClientBlocker.image.pullPolicy }}
+          env:
+            - name: Region
+              value: "{{ .Values.suspectedClientBlocker.env.region }}"
+            - name: LoadBalancerName
+              value: "{{ .Values.suspectedClientBlocker.env.loadBalancerName }}"
+          volumeMounts:
+          - name: suspected-client-blocker-config
+            mountPath: /app/config.yaml
+            subPath: config.yaml
+          - name: varlog
+            mountPath: /var/log/nginx
+          resources: {{ toYaml .Values.containerResources.suspectedClientBlocker | nindent 12 }}
+        {{- end }}
+        - name: logrotate
+          image:  "{{ .Values.controller.logrotate.image.repository }}:{{ .Values.controller.logrotate.image.tag }}"
+          imagePullPolicy: {{ .Values.controller.logrotate.image.pullPolicy | quote }}
+          resources: {{ toYaml .Values.controller.logrotate.resources | nindent 12 }}
+          volumeMounts:
+            - name: varlog
+              mountPath: /var/log/nginx
+            - mountPath: /etc/logrotate.conf
+              name: logrotate-config
+              subPath: logrotate.conf
         - name: {{ .Values.controller.containerName }}
           {{- with .Values.controller.image }}
           image: "{{- if .repository -}}{{ .repository }}{{ else }}{{ .registry }}/{{ include "ingress-nginx.image" . }}{{- end -}}:{{ .tag }}{{ include "ingress-nginx.imageDigest" . }}"
@@ -212,6 +265,22 @@ spec:
       terminationGracePeriodSeconds: {{ .Values.controller.terminationGracePeriodSeconds }}
     {{- if (or .Values.controller.customTemplate.configMapName .Values.controller.extraVolumeMounts .Values.controller.admissionWebhooks.enabled .Values.controller.extraVolumes .Values.controller.extraModules .Values.controller.opentelemetry.enabled) }}
       volumes:
+      {{- if .Values.suspectedClientBlocker.enabled }}
+        - name: suspected-client-blocker-config
+          configMap:
+            name: {{ include "ingress-nginx.fullname" . }}-suspected-client-block
+      {{- end }}
+      {{- if .Values.sfagent.enabled }}
+        - name: sfagent-config
+          configMap:
+            name: {{ include "ingress-nginx.fullname" . }}-sfagent-plugin-configmap
+        - name: normalization-config
+          configMap:
+            name: {{ include "ingress-nginx.fullname" . }}-sfagent-normalization-nginx
+      {{- end }}
+        - name: logrotate-config
+          configMap:
+            name: {{ include "ingress-nginx.fullname" . }}-logrotate
       {{- if (or .Values.controller.extraModules .Values.controller.opentelemetry.enabled)}}
         - name: modules
           emptyDir: {}

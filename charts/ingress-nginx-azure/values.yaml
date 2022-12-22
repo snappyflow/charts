@@ -9,6 +9,12 @@
 
 ## Labels to apply to all resources
 ##
+
+global:
+  snappyflowProjectLabel: "snappyflow/projectname"
+  snappyflowAppLabel: "snappyflow/appname"
+  snappyflowProjectName: "snappyflow-app"
+  snappyflowAppName: "sf-data-path"
 commonLabels: {}
 # scmhash: abc123
 # myLabel: aakkmd
@@ -33,6 +39,23 @@ controller:
 
   # -- Use an existing PSP instead of creating one
   existingPsp: ""
+  logrotate:
+    image:
+      repository: linkyard/logrotate
+      tag: latest
+      pullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 100m
+        memory: 256Mi
+    config:
+      interval: daily
+      rotate_count: 2
+      maxsize: 150M
+      mode: copytruncate
 
   # -- Configures the controller container name
   containerName: controller
@@ -358,9 +381,12 @@ controller:
   ##  limits:
   ##    cpu: 100m
   ##    memory: 90Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
     requests:
-      cpu: 100m
-      memory: 90Mi
+      cpu: 200m
+      memory: 512Mi
 
   # Mutually exclusive with keda autoscaling
   autoscaling:
@@ -693,7 +719,10 @@ controller:
     enabled: false
 
     service:
-      annotations: {}
+      annotations: 
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '9113'
+        nginx.ingress.kubernetes.io/enable-access-log: "true"
       # prometheus.io/scrape: "true"
       # prometheus.io/port: "10254"
 
@@ -706,7 +735,7 @@ controller:
 
       # loadBalancerIP: ""
       loadBalancerSourceRanges: []
-      servicePort: 10254
+      servicePort: 9913
       type: ClusterIP
       # externalTrafficPolicy: ""
       # nodePort: ""
@@ -878,13 +907,35 @@ defaultBackend:
 
   minAvailable: 1
 
-  resources: {}
+  resources: 
+    limits:
+      cpu: 25m
+      memory: 50Mi
+    requests:
+      cpu: 25m
+      memory: 50Mi
   # limits:
   #   cpu: 10m
   #   memory: 20Mi
   # requests:
   #   cpu: 10m
   #   memory: 20Mi
+
+containerResources: 
+  sfagent:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  suspectedClientBlocker:
+    limits:
+      cpu: 75m
+      memory: 256Mi
+    requests:
+      cpu: 75m
+      memory: 256Mi
 
   extraVolumeMounts: []
   ## Additional volumeMounts to the default backend container.
@@ -932,6 +983,29 @@ rbac:
 ## https://kubernetes.io/docs/concepts/policy/pod-security-policy/
 podSecurityPolicy:
   enabled: false
+
+sfagent:
+  enabled: false
+  image:
+   repository: snappyflowml/sfagent
+   tag: latest
+   pullPolicy: Always
+
+suspectedClientBlocker:
+  enabled: false
+  image:
+    repository: snappyflowml/suspected-client-blocker
+    tag: "1.0"
+    pullPolicy: Always
+  env:
+    region: ""
+    loadBalancerName: ""
+  config:
+    interval: 30
+    failedRequestThresholdPerClient: 80 #value expressed in percent
+    minRequestInConsiderationPerClient: 10
+    logFilePath: "/var/log/nginx/access-custom.log"
+    whiteListIPs: []
 
 serviceAccount:
   create: true
