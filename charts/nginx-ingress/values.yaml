@@ -15,6 +15,7 @@ global:
   snappyflowAppLabel: "snappyflow/appname"
   snappyflowProjectName: "snappyflow-app"
   snappyflowAppName: "sf-data-path"
+  subnets: ""
 commonLabels: {}
 # scmhash: abc123
 # myLabel: aakkmd
@@ -482,6 +483,11 @@ controller:
     appProtocol: true
 
     annotations: {}
+    externalLoadbalancerAnnotation:
+      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "80,443,8443"
+      service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: '*'
+      service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: '3600'
     labels: {}
     # clusterIP: ""
 
