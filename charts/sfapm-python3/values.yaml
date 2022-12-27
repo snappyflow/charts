@@ -261,7 +261,7 @@ vizbuilder:
 
   image:
     repository: snappyflowml/sfapm-vizbuilder
-    tag: python3-master
+    tag: python3
     pullPolicy: IfNotPresent
 
   resources:
