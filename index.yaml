@@ -5587,6 +5587,16 @@ entries:
   sf-presto:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-12-27T10:45:58.906934561Z"
+    description: A Helm chart for Kubernetes
+    digest: 3c6c33b2295d0d9d45a66b19bb52f55fa7e4eea6d0a702cab5ceb2dedde6e70b
+    name: sf-presto
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-presto-1.0.8/sf-presto-1.0.8.tgz
+    version: 1.0.8
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-12-22T05:16:51.494603214Z"
     description: A Helm chart for Kubernetes
     digest: 815fd6d247373376c1c4a9036c29f5b58e2ad2508a53969365bbff4802ecba15
@@ -7881,6 +7891,25 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sfapm-2.1.3/sfapm-2.1.3.tgz
     version: 2.1.3
   sfapm-python3:
+  - apiVersion: v2
+    appVersion: "4"
+    created: "2022-12-27T10:45:59.036904595Z"
+    dependencies:
+    - name: redis
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.2.9
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.1.5
+    description: A Helm chart to deploy snappyflow on Kubernetes
+    digest: e6be0e841caa7efd2a30ed45817f877395fbf5048efc3b82dcd7dac952ff07a4
+    home: https://www.snappyflow.io
+    name: sfapm-python3
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.342/sfapm-python3-4.0.342.tgz
+    version: 4.0.342
   - apiVersion: v2
     appVersion: "4"
     created: "2022-12-27T09:11:07.678149341Z"
@@ -12861,7 +12890,7 @@ entries:
     version: 4.0.71-master
   - apiVersion: v2
     appVersion: "4"
-    created: "2021-05-29T14:03:29.151342034Z"
+    created: "2021-05-29T14:04:16.495299223Z"
     dependencies:
     - name: redis
       repository: https://snappyflow.github.io/helm-charts/
@@ -12880,7 +12909,7 @@ entries:
     version: 4.0.71-master
   - apiVersion: v2
     appVersion: "4"
-    created: "2021-05-29T14:04:16.495299223Z"
+    created: "2021-05-29T14:03:29.151342034Z"
     dependencies:
     - name: redis
       repository: https://snappyflow.github.io/helm-charts/
