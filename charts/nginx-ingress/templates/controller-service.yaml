@@ -6,6 +6,9 @@ metadata:
   {{- range $key, $value := .Values.controller.service.annotations }}
     {{ $key }}: {{ $value | quote }}
   {{- end }}
+  {{- if .Values.global.subnets }}
+    {{ toYaml .Values.controller.service.externalLoadbalancerAnnotation | nindent 4 }}
+  {{- end }}
   labels:
     {{- include "ingress-nginx.labels" . | nindent 4 }}
     app.kubernetes.io/component: controller
