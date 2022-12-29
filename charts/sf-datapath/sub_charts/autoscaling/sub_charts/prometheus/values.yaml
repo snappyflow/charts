@@ -309,7 +309,7 @@ server:
 
     ## Prometheus server data Persistent Volume size
     ##
-    size: 25Gi
+    size: 50Gi
 
     ## Prometheus server data Persistent Volume Storage Class
     ## If defined, storageClassName: <storageClass>

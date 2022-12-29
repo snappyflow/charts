@@ -24,7 +24,7 @@ prometheus:
       cpu: 500m
       memory: 3Gi
     requests:
-      cpu: 500m
+      cpu: 250m
       memory: 2Gi
 
 s3KafkaConnect:
