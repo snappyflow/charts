@@ -1,4 +1,4 @@
-{{- if .Values.autoscaler.create -}}
+{{- if .Values.autoscaler.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -24,7 +24,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           name: sfcluster-autoscaler
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.autoscaler.resources | nindent 12 }}
           command:
             - ./cluster-autoscaler
             - --v=4

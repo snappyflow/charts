@@ -130,6 +130,8 @@ spec:
             {{- if .Values.global.enable_sftrace }}
             - mountPath: /sfagent
               name: sftrace-agent
+            - mountPath: /var/log/snappyflow/elasticsearch_manager
+              name: log
             {{- end }}
         {{- if .Values.sidecarLogger.enabled }}
         - name: audit-logger

@@ -10,7 +10,7 @@ data:
     key: "{{ .Values.global.key }}"
     metrics:
         plugins:
-        - name: redisdb
+        - name: kube-sfagent-redisdb
           enabled: true
           interval: 10
           config:

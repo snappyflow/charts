@@ -1,4 +1,3 @@
-{{- if .Values.autoscaler.create -}}
 apiVersion: scheduling.k8s.io/v1
 kind: PriorityClass
 metadata:
@@ -6,4 +5,3 @@ metadata:
 value: -10
 globalDefault: false
 description: "This priority class should be used for sfoverprovisioner pod only."
-{{- end }}

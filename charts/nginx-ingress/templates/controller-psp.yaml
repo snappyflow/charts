@@ -1,14 +1,21 @@
-{{- if .Values.podSecurityPolicy.enabled -}}
+{{- if (semverCompare "<1.25.0-0" .Capabilities.KubeVersion.Version) }}
+{{- if and .Values.podSecurityPolicy.enabled (empty .Values.controller.existingPsp) -}}
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: {{ include "nginx-ingress.fullname" . }}
+  name: {{ include "ingress-nginx.fullname" . }}
   labels:
-    {{- include "nginx-ingress.labels" . | nindent 4 }}
+    {{- include "ingress-nginx.labels" . | nindent 4 }}
     app.kubernetes.io/component: controller
+    {{- with .Values.controller.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   allowedCapabilities:
     - NET_BIND_SERVICE
+  {{- if .Values.controller.image.chroot }}
+    - SYS_CHROOT
+  {{- end }}
 {{- if .Values.controller.sysctls }}
   allowedUnsafeSysctls:
   {{- range $sysctl, $value := .Values.controller.sysctls }}
@@ -20,7 +27,7 @@ spec:
   # Allow core volume types.
   volumes:
     - 'configMap'
-    #- 'emptyDir'
+    - 'emptyDir'
     #- 'projected'
     - 'secret'
     #- 'downwardAPI'
@@ -83,4 +90,5 @@ spec:
   readOnlyRootFilesystem: false
   seLinux:
     rule: 'RunAsAny'
+{{- end }}
 {{- end }}

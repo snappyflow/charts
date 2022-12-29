@@ -32,5 +32,5 @@ spec:
         name: num_executing_tasks
       target:
         type: AverageValue
-        averageValue: {{ .Values.vizbuilder_celery.alert.autoscaling.numExecutingTasks }}
+        averageValue: {{ div .Values.vizbuilder_celery.env.MAXIMUM_RUNNING_TASKS 2 }}
 {{- end }}

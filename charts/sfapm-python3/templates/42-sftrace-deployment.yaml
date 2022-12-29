@@ -38,6 +38,7 @@ spec:
       serviceAccountName: {{ include "sfapm.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.sftrace.terminationGracePeriodSeconds }}
       volumes:
         - name: sftrace-server-config
           configMap:
@@ -82,3 +83,5 @@ spec:
         env:
         - name: Metrics_Interval
           value: "{{ .Values.sftrace.sftraceServerPrometheusExporter.metricsInterval }}"
+        resources:
+          {{- toYaml .Values.sftrace.sftraceServerPrometheusExporter.resources | nindent 12 }}
