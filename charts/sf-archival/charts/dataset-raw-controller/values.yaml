@@ -58,3 +58,5 @@ appParams:
   # Number of days to look behind in time while detecting new partitions.
   # This to handle situations where old data got ingested and needs to be processed
   numBacktrackDaysToDetect: 5
+  computeBucketBoundariesUsingPresto: false
+  orcInventoryBatchFetchSize: 20000

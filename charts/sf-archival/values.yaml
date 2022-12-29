@@ -60,7 +60,7 @@ global:
   - name: xxxx
 
   maxTasksPerTopic: 3
-
+  timeBucketSizeMinutes: 15
 # Pod priority class value
 priority: 100
 
