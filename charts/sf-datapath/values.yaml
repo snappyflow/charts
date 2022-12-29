@@ -99,11 +99,11 @@ signatures-and-kafka-apis:
 
 autoscaling:
   s3KafkaConnect:
-    ingestRateGBPerDayPerPod: 130
+    ingestRateGBPerDayPerPod: 200
     minReplicas: 2
     maxReplicas: 10
   esKafkaConnect:
-    ingestRateGBPerDayPerPod: 130
+    ingestRateGBPerDayPerPod: 200
     minReplicas: 2
     maxReplicas: 10
   cpKafkaRestProxy:
