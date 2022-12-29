@@ -10,8 +10,8 @@ prometheus-adapter:
       cpu: 200m
       memory: 512Mi
     requests:
-      cpu: 50m
-      memory: 128Mi
+      cpu: 100m
+      memory: 256Mi
 
 prometheus:
   server:
@@ -21,21 +21,21 @@ prometheus:
     livenessProbePeriodSeconds: 60
   containerResources:
     limits:
-      cpu: 300m
+      cpu: 500m
       memory: 3Gi
     requests:
-      cpu: 200m
+      cpu: 500m
       memory: 2Gi
 
 s3KafkaConnect:
   enabled: true
   cpu:
-    targetAverageValue: 720m # 90% of CPU limit allocated to connector
+    targetAverageValue: 850m # 85% of CPU limit allocated to connector
 
 esKafkaConnect:
   enabled: true
   cpu:
-    targetAverageValue: 540m # 90% of CPU limit allocated to connector
+    targetAverageValue: 850m # 85% of CPU limit allocated to connector
 
 cpKafkaRestProxy:
   enabled: true

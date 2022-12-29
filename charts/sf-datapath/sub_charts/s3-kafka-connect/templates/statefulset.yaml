@@ -162,12 +162,6 @@ spec:
             - name: KAFKA_JMX_PORT
               value: "{{ .Values.jmx.port }}"
             {{- end }}
-            # Below element is disabled because of client ID limitation in Kafka JMX
-            # - name: CONNECT_CONSUMER_CLIENT_ID
-            #   valueFrom:
-            #     fieldRef:
-            #       apiVersion: v1
-            #       fieldPath: metadata.name
           volumeMounts:
           - name: connect-log4j-properties
             mountPath: /etc/customlog4j
