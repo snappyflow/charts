@@ -50,11 +50,13 @@ env:
   # Provide Value same as Pod memory in Mi
   POD_MEM: 5120
   # Max number of replicas
-  MAX_REPLICA: 5
+  MAX_REPLICA: 8
   # HiveMetaStore service
   HIVE_METASTORE_SERVICE: "archival-hive-metastore.kafka"
   # HiveMetaStore Service port
   HIVE_METASTORE_PORT: "9083"
+  #Presto worker Graceful Shutdown Period
+  Grace_Period_Seconds: 180
 
 service:
   servicePort: 8080
@@ -73,7 +75,7 @@ autoscaling:
   scaleUpPeriod: 30
   scaleDownPeriod: 60
 
-terminationGracePeriodSeconds: 300
+terminationGracePeriodSeconds: 30
 
 nodeSelector: {}
 tolerations: []

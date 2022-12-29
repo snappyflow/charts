@@ -316,7 +316,7 @@ vizbuilder_celery:
       prometheus.io/port: "2112"
       prometheus.io/scrape: "true"
     
-    terminationGracePeriodSeconds: 30
+    terminationGracePeriodSeconds: 300
     
     celeryAlertPrometheusExporter:
       image:
