@@ -30,13 +30,6 @@ spec:
       serviceAccountName: {{ .Release.Name }}-service-account
     {{- end}}
       initContainers:
-        - name: kafka-ready
-          image: "snappyflowml/kafka-zk-check:alpha"
-          imagePullPolicy: IfNotPresent
-          command:
-            - /bin/bash
-            - ./kafka-init.sh
-            - {{ .Values.global.kafkaBrokers }}
         - name: db-ready
           image: "bitnami/postgresql:11.5.0-debian-9-r34"
           imagePullPolicy: IfNotPresent
@@ -54,8 +47,9 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
-          resources:
-{{- toYaml .Values.containerResources.datasetcontroller | nindent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{- toYaml .Values.containerResources.datasetcontroller | nindent 12 }}
+{{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -83,8 +83,9 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
-          resources:
-{{- toYaml .Values.monitor.containerResources | nindent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{- toYaml .Values.monitor.containerResources | nindent 12 }}
+{{- end }}
         - name: jobserver
           image: "{{ .Values.jobserver.image.repository }}:{{ .Values.jobserver.image.tag }}"
           imagePullPolicy: {{ .Values.jobserver.image.pullPolicy }}
@@ -94,8 +95,9 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
-          resources:
-{{- toYaml .Values.jobserver.containerResources | nindent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{- toYaml .Values.jobserver.containerResources | nindent 12 }}
+{{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

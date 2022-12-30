@@ -1,3 +1,4 @@
+{{- if not .Values.global.development }}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -33,4 +34,4 @@ spec:
             - name: {{ template "ingest-controller.fullname" . }}
               configMap:
                 name: {{ template "ingest-controller.fullname" . }}
-
+{{- end }}

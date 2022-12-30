@@ -38,14 +38,18 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+            - name: grpc
+              containerPort: 8081
+              protocol: TCP
           volumeMounts:
             - name: config-volume
               mountPath: /etc/conf
           envFrom:
             - configMapRef:
                 name: {{ .Release.Name }}-cloud-env
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{- toYaml .Values.resources | nindent 12 }}
+{{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

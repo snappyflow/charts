@@ -1,0 +1,148 @@
+global:
+
+  development: true
+
+  hive:
+    internal:
+      enabled: true
+    external:
+      enabled: false
+      # Below fields must be changed when external hive.external.enabled is true
+      userName: ubuntu
+      host: 127.0.0.1
+      port: 10000
+      auth: NONE
+
+  postgresql:
+    host: "10.81.1.142"
+    postgresqlDatabase: archival
+    postgresqlUsername: snappyflow
+    postgresqlPassword: maplelabs
+    servicePort: 5432
+
+  secrets:
+    gcs:
+      enable: false
+      # Set all of the below entities when Google-Service-Account is being used. Recommended approach unless K8s is running outside GCP (K8s outside GCP flow which will use JSON service-account-keys is not yet implemented)
+      use_google_service_account: true
+      GCP_SERVICE_ACCOUNT_EMAIL: "XXXX-compute@developer.gserviceaccount.com OR XXXX@XXXX.iam.gserviceaccount.com"
+      GCP_DEFAULT_REGION: us-west1
+      GCP_DEFAULT_ZONE: us-west1-c
+    aws:
+      enable: true
+      # Set use_iam_role = true and AWS_IAM_ROLE_ARN to appropriate IAM ARN in case of IAM role usage
+      use_iam_role: false
+      AWS_IAM_ROLE_ARN: arn:aws:iam::XXXX:role/XXXX
+      # Set all of the below entities when IAM role isn't being used. This is not recommended unless K8s is running outside AWS
+      AWS_ACCESS_KEY_ID: XXXX
+      AWS_SECRET_ACCESS_KEY: XXXX
+      AWS_DEFAULT_REGION: us-west-2
+
+  # Below parameter needs to use the PLAIN_TEXT port
+  kafkaBrokers: "kafka-cp-kafka-headless:9092"
+
+  # Certain components which use SASL_PLAIN will use this port along with above machines
+  kafkaSASLPort: "9093"
+
+  snappyflowDatapath:
+    enabled: true
+    releaseName: sf-datapath
+
+  snappyflowProjectLabel: snappyflow/projectname
+  snappyflowAppLabel: snappyflow/appname
+
+  snappyflowProjectName: "snappyflow-app"
+  snappyflowAppName: "archival"
+
+  imagePullSecrets:
+  - name: xxxx
+
+  maxTasksPerTopic: 3
+
+# Pod priority class value
+priority: 100
+
+dataset-controller:
+  maxPartitionsToAnalyzeConcurrently: 5
+  billing-service:
+    enabled: false
+    url: 127.0.0.1:8000/api/v1/records/
+    scheme: https
+  schedules:
+    expired: "1 0 * * *"
+    raw_version_compacted: "5 2 * * *"
+    detect: "*/30 * * * *"
+    refresh_size: "5 1 * * *"
+    billing: "0 * * * *"
+
+compaction-controller:
+  maxRunningHours: 3 # Max hours a compaction job is allowed to run for
+  maxPendingHours: 1 # Max hours a compaction job is allowed to stay in pending state for
+  maxSimultaneousRun: 1 # Max number of compaction jobs that can run parallely
+  maxAttempts: 2 # Max number of times a compaction job will be executed in case of failures etc.
+  schedules:
+    create: "*/10 * * * *"
+    queue: "*/10 * * * *"
+    processStuck: "*/10 * * * *"
+    start: "*/10 * * * *"
+
+ingest-controller:
+  schedules:
+    sink: "*/10 * * * *"
+
+spark-manager:
+  jobserver:
+    sparkProperties:
+      # S3 bucket with aws prefix/folder for spark event logs e.g., for bucket location of s3://sparkhs/spark-hs configure as configured below
+      logDirectory: sparkhs/spark-hs
+  infrastructure:
+    Kubernetes:
+      # Kubernetes is always inserted as an infrastructure with slightly higher preference numbers
+      # If some other infrastructure has higher preference, that infrastructure will be used
+      preference: 10
+      numExecutors: 5
+      jobResources:
+        cpu:
+          requests:
+            executor: 0.2
+            driver: 0.2
+          limits:
+            executor: 0.4
+            driver: 0.5
+        memory:
+          executor: 1024m
+          driver: 1024m
+    EcsFargate:
+      enabled: false
+      containerInsightsEnabled: false
+      preference: 1
+      cluster: sf-archival-compaction
+      numExecutors: 2
+      iamRole: arn:aws:iam::159750416379:role/Dev-Archival-presto_hive
+      taskSubnet: subnet-09a6fcdc2b614e300
+      taskSecurityGroup: sg-03b8db147f1b7b423
+      compactionSecretArn: arn:aws:secretsmanager:XXX:XXX:secret:XXX
+      jobResources:
+        cpu: 2048
+        memory: 8192
+
+spark-history-server:
+  # If spark history server is enabled, s3.logDirectory/gcs.logDirectory param of its config should be same as spark-manager.jobserver.sparkProperties.logDirectory
+  enabled: false
+  s3:
+    logDirectory: sparkhs/spark-hs
+  gcs:
+    logDirectory: sparkhs/spark-hs
+
+query-controller:
+  maxGBToProcessDuringSplitQuery: 0.5
+  # Indicates the interval at which query job status is refreshed
+  monitorInterval: 250
+  monitorIntervalUnit: ms
+
+hive-and-hadoop:
+  containerResources:
+    namenode: {}
+    datanode: {}
+    hiveServer: {}
+    hiveMetastore: {}

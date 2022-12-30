@@ -98,9 +98,11 @@ spec:
         {{- if .Values.defaultBackend.extraVolumeMounts }}
           volumeMounts: {{- toYaml .Values.defaultBackend.extraVolumeMounts | nindent 12 }}
         {{- end }}
+{{- if not .Values.global.development }}
         {{- if .Values.defaultBackend.resources }}
           resources: {{ toYaml .Values.defaultBackend.resources | nindent 12 }}
         {{- end }}
+{{- end }}
     {{- if .Values.defaultBackend.nodeSelector }}
       nodeSelector: {{ toYaml .Values.defaultBackend.nodeSelector | nindent 8 }}
     {{- end }}

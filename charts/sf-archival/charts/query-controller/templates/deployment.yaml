@@ -47,8 +47,9 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
-          resources:
-{{- toYaml .Values.containerResources.querycontroller | nindent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{- toYaml .Values.containerResources.querycontroller | nindent 12 }}
+{{- end }}
         - name: query-execution-controller
           image: "{{ .Values.executionControler.repository }}:{{ .Values.executionControler.tag }}"
           imagePullPolicy: {{ .Values.executionControler.pullPolicy }}
@@ -58,8 +59,9 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
-          resources:
-{{- toYaml .Values.containerResources.queryexecutioncontroller | nindent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{- toYaml .Values.containerResources.queryexecutioncontroller | nindent 12 }}
+{{- end }}
         - name: query-cleanup
           image: "{{ .Values.cleanup.repository }}:{{ .Values.cleanup.tag }}"
           imagePullPolicy: {{ .Values.cleanup.pullPolicy }}
@@ -69,8 +71,9 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
-          resources:
-{{- toYaml .Values.containerResources.querycleanup | nindent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{- toYaml .Values.containerResources.querycleanup | nindent 12 }}
+{{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

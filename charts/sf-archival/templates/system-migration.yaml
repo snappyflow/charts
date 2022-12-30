@@ -22,7 +22,9 @@ data:
         "host": "{{ template "ingest-controller.hive-server.host" . }}",
         "port": {{ template "ingest-controller.hive-server.port" . }},
         "auth": "{{ template "ingest-controller.hive-server.auth" . }}"
-      }
+      },
+      "compactPartitionColumnNames": {{ .Values.global.hivepartitioncolumns.compactPartitionColumnNames }},
+      "rawPartitionColumnNames": {{ .Values.global.hivepartitioncolumns.rawPartitionColumnNames }}
     }
 
 ---
@@ -54,8 +56,8 @@ spec:
       restartPolicy: Never
       containers:
       - name: main
-        image: snappyflowml/archival-system-migration:1
-        imagePullPolicy: IfNotPresent
+        image: snappyflowml/archival-system-migration:dev-test
+        imagePullPolicy: Always
         volumeMounts:
           - name: {{ .Release.Name }}-system-migration-config
             mountPath: "/etc/conf"

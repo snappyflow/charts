@@ -81,8 +81,9 @@ spec:
             scheme: HTTPS
           initialDelaySeconds: 30
           timeoutSeconds: 5
-        resources:
-{{- toYaml .Values.containerResources | nindent 10 }}
+{{- if not .Values.global.development }}
+        resources: {{- toYaml .Values.containerResources | nindent 10 }}
+{{- end }}
         {{- with .Values.dnsConfig }}
         dnsConfig:
         {{ toYaml . | indent 8 }}

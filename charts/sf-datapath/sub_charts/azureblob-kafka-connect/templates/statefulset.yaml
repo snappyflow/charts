@@ -88,8 +88,9 @@ spec:
           - /etc/jmx-kafka-connect/jmx-kafka-connect-prometheus.yml
           ports:
           - containerPort: {{ .Values.prometheus.jmx.port }}
-          resources:
-{{ toYaml .Values.containerResources.jmx | indent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{ toYaml .Values.containerResources.jmx | nindent 12 }}
+{{- end }}
           volumeMounts:
           - name: jmx-config
             mountPath: /etc/jmx-kafka-connect
@@ -125,8 +126,9 @@ spec:
             timeoutSeconds: 10
             successThreshold: 1
             failureThreshold: 3
-          resources:
-{{ toYaml .Values.containerResources.connector | indent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{ toYaml .Values.containerResources.connector | nindent 12 }}
+{{- end }}
           env:
             - name: CONNECT_REST_ADVERTISED_HOST_NAME
               valueFrom:

@@ -7,6 +7,7 @@ metadata:
     {{ $key }}: {{ $value | quote }}
   {{- end }}
   {{- if .Values.global.subnets }}
+    service.beta.kubernetes.io/aws-load-balancer-subnets: {{ .Values.global.subnets | replace " " "," }}
     {{ toYaml .Values.controller.service.externalLoadbalancerAnnotation | nindent 4 }}
   {{- end }}
   labels:
@@ -68,7 +69,11 @@ spec:
     - name: https
       port: {{ .Values.controller.service.ports.https }}
       protocol: TCP
+      {{- if .Values.global.subnets }}
+      targetPort: {{ .Values.controller.service.targetPorts.http }}
+      {{- else }}
       targetPort: {{ .Values.controller.service.targetPorts.https }}
+      {{- end }}
     {{- if and (semverCompare ">=1.20" .Capabilities.KubeVersion.Version) (.Values.controller.service.appProtocol) }}
       appProtocol: https
     {{- end }}

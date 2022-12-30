@@ -97,7 +97,9 @@ spec:
           - name: normalization-config
             mountPath: /opt/sfagent/normalization/config.yaml
             subPath: config.yaml
+{{- if not .Values.global.development }}
           resources: {{ toYaml .Values.containerResources.sfagent | nindent 12 }}
+{{- end }}
         {{- end }}
         - name: {{ .Values.controller.containerName }}
           {{- with .Values.controller.image }}
@@ -194,9 +196,11 @@ spec:
             {{- toYaml .Values.controller.extraVolumeMounts | nindent 12 }}
           {{- end }}
         {{- end }}
+{{- if not .Values.global.development }}
         {{- if .Values.controller.resources }}
           resources: {{ toYaml .Values.controller.resources | nindent 12 }}
         {{- end }}
+{{- end }}
       {{- if .Values.controller.extraContainers }}
         {{ toYaml .Values.controller.extraContainers | nindent 8 }}
       {{- end }}

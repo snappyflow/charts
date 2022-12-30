@@ -43,17 +43,3 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
-
-{{- define "sf-archival.postgresql.fullname" -}}
-{{- printf "%s-%s" .Release.Name "postgresql" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
-{{- define "dataset-controller.service.servicePort" -}}
-{{- $port := index .Values "dataset-controller" "service" "servicePort" -}}
-{{- printf "%s" $port -}}
-{{- end -}}
-
-{{- define "spark-manager.service.servicePort" -}}
-{{- $port := index .Values "spark-manager" "service" "servicePort" -}}
-{{- printf "%s" $port -}}
-{{- end -}}
