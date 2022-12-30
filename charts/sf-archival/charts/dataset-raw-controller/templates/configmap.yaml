@@ -22,5 +22,7 @@ data:
       "dataset_controller_url": "http://{{ template "dataset-raw-controller.dataset-controller.fullname" . }}",
       "bucket_partition_duration_mins": {{ .Values.global.timeBucketSizeMinutes }},
       "compute_bucket_boundaries_using_presto": {{ .Values.appParams.computeBucketBoundariesUsingPresto }},
-      "orc_inventory_batch_fetch_size": {{ .Values.appParams.orcInventoryBatchFetchSize}}
+      "orc_inventory_batch_fetch_size": {{ .Values.appParams.orcInventoryBatchFetchSize}},
+      "max_buffered_events":  {{ .Values.appParams.maxBufferedEvents}} ,
+      "competingConsumers":  {{ .Values.appParams.competingConsumers}}
     }
