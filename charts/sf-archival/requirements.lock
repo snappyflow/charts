@@ -5,5 +5,5 @@ dependencies:
 - name: spark-history-server
   repository: https://snappyflow.github.io/helm-charts
   version: 1.4.3
-digest: sha256:652a0c00ec006f77996531b2740a481c705673fc3d98254e26763b9caf5c175a
-generated: "2022-12-21T10:35:45.154244378Z"
+digest: sha256:52b97d605b7d05166f99d9c1efa5fc99495f76f2af73b8fa21710cb58a23f25d
+generated: "2022-12-30T18:13:37.202821003+05:30"
