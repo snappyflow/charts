@@ -1,3 +1,4 @@
+{{- if not .Values.global.subnets }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -18,4 +19,4 @@ spec:
             port: 
               number: 80
         pathType: Prefix
-
+{{- end }}

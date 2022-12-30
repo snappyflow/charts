@@ -32,5 +32,5 @@ spec:
         name: sftrace_queued_events
       target:
         type: AverageValue
-        averageValue: {{ .Values.sftrace.autoscaling.targetQueuedEvents }}
+        averageValue: {{ div .Values.sftrace.maximumQueueEvents 2 }}
 {{- end }}

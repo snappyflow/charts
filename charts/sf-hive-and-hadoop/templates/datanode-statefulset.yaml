@@ -19,10 +19,10 @@ spec:
     spec:
       accessModes:
       - ReadWriteOnce
-      resources:
       {{ if eq .Values.global.secrets.azure.enable true }}
       storageClassName: managed-csi
       {{- end}}
+      resources:
         requests:
           storage: 10Gi
       volumeMode: Filesystem

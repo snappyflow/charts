@@ -32,10 +32,10 @@ configurationOverrides:
 containerResources:
   connector:
     limits:
-      cpu: 600m
+      cpu: "1"
       memory: 4Gi
     requests:
-      cpu: 256m
+      cpu: "1"
       memory: 2560Mi
   jmx:
     limits:
