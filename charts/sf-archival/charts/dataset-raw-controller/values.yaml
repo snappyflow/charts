@@ -60,3 +60,6 @@ appParams:
   numBacktrackDaysToDetect: 5
   computeBucketBoundariesUsingPresto: false
   orcInventoryBatchFetchSize: 20000
+  maxBufferedEvents: 10000
+  competingConsumers: 5
+  
