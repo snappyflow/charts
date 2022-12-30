@@ -18,5 +18,11 @@ data:
       "final_segment_size_buffer_pcnt": {{ .Values.appParams.segmentSizeBufferPCNT }},
       "num_orcs_in_segment": {{ .Values.appParams.numORCInSegment }},
       "num_backtrack_days": {{ .Values.appParams.numBacktrackDaysToDetect }},
-      "ingest_controller_url": "http://{{ template "dataset-raw-controller.ingest-controller.fullname" . }}"
+      "ingest_controller_url": "http://{{ template "dataset-raw-controller.ingest-controller.fullname" . }}",
+      "dataset_controller_url": "http://{{ template "dataset-raw-controller.dataset-controller.fullname" . }}",
+      "bucket_partition_duration_mins": {{ .Values.global.timeBucketSizeMinutes }},
+      "compute_bucket_boundaries_using_presto": {{ .Values.appParams.computeBucketBoundariesUsingPresto }},
+      "orc_inventory_batch_fetch_size": {{ .Values.appParams.orcInventoryBatchFetchSize}},
+      "max_buffered_events":  {{ .Values.appParams.maxBufferedEvents}} ,
+      "competingConsumers":  {{ .Values.appParams.competingConsumers}}
     }

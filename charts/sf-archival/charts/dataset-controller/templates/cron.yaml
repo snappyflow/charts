@@ -107,7 +107,7 @@ spec:
             args:
             - /bin/sh
             - -c
-            - curl -X POST http://{{ include "dataset-controller.fullname" . }}/datasets/partitions/analyze-and-store-boundary-times
+            - curl -X POST http://{{ include "dataset-controller.fullname" . }}/datasets/partitions/analyze-segments-and-store-boundary-times
           restartPolicy: Never
 
 ---

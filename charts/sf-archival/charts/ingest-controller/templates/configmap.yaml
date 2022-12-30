@@ -48,7 +48,7 @@ data:
       "timestamp.field": "time",
       "schema.compatibility": "NONE",
       "rotate.schedule.interval.ms": 180000,
-      "partition.duration.ms": {{ mul .Values.timeBucketSizeMinutes 60000 }},
+      "partition.duration.ms": {{ mul .Values.global.timeBucketSizeMinutes 60000 }},
       "transforms": "filter,insertsignature",
       "transforms.filter.type": "com.logarchival.MarkDrop$Value",
       "transforms.insertsignature.type": "com.signature.InsertSignature$Value",
