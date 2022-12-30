@@ -60,8 +60,7 @@ spec:
             periodSeconds: 30
             failureThreshold: 3
 {{- if not .Values.global.development }}
-          resources:
-            {{- toYaml .Values.containerResources.signatures | nindent 12 }}
+          resources: {{- toYaml .Values.containerResources.signatures | nindent 12 }}
 {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

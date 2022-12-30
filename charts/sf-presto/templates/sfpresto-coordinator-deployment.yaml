@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sf-presto.fullname" . }}-coordinator
+  labels:
+    app: {{ include "sf-presto.name" . }}-coordinator
+    release: {{ .Release.Name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    snappyflow/component: snappyflow-presto
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "sf-presto.name" . }}-coordinator
+      role: sfpresto-coordinator
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: {{ include "sf-presto.name" . }}-coordinator
+        release: {{ .Release.Name }}
+        role: sfpresto-coordinator
+        snappyflow/component: snappyflow-presto
+    spec:
+      containers:
+        - name: sfpresto-coordinator
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+          - containerPort: {{ .Values.service.servicePort }}
+          env:
+          {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+          {{- end }}
+            - name: "PRESTO_SERVICE"
+              value: {{ include "sf-presto.fullname" . }}-coordinator
+            - name: "SERVICE_PORT"
+              value: "{{ .Values.service.servicePort }}"
+          command: ["/bin/bash", "-c"]
+          args: ["/home/presto-config; ./coordinator-init.sh; sleep 3650d;"]
+          resources:
+            {{- toYaml .Values.coordinator.resources | nindent 12 }}
+          volumeMounts:
+          - name: hive-properties
+            mountPath: /home/hive/.
+      volumes:
+      - name: hive-properties
+        configMap:
+          name: {{ include "sf-presto.fullname" . }}-configmap
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}

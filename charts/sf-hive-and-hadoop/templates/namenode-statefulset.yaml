@@ -19,6 +19,9 @@ spec:
     spec:
       accessModes:
       - ReadWriteOnce
+      {{ if eq .Values.global.secrets.azure.enable true }}
+      storageClassName: managed-csi
+      {{- end}}
       resources:
         requests:
           storage: 10Gi
@@ -84,8 +87,7 @@ spec:
             successThreshold: 1
             failureThreshold: 3
 {{- if not .Values.global.development }}
-          resources:
-            {{- toYaml .Values.containerResources.namenode | nindent 12 }}
+          resources: {{- toYaml .Values.containerResources.namenode | nindent 12 }}
 {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

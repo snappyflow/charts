@@ -7,16 +7,23 @@ metadata:
     app: sfapm
     role: vizbuilder
 data:
+    {{- if .Values.vizbuilder.pgBouncer.enabled }}
+    DISABLE_SERVER_SIDE_CURSORS: "true"
+    DB_HOST: {{ .Values.vizbuilder.pgBouncer.dbHost }}
+    DB_PORT: {{ .Values.vizbuilder.pgBouncer.dbPort | default "6432" | quote }}
+    DB_NAME: "vizbuilder"
+    DB_USER: {{ .Values.vizbuilder.pgBouncer.dbUser }}
+    DB_PASSWORD: {{ .Values.vizbuilder.pgBouncer.dbPassword }}
+    {{- else if .Values.postgresql.enabled }}
     DISABLE_SERVER_SIDE_CURSORS: {{ .Values.disable_server_side_cursors | quote }}
-
-    {{- if .Values.postgresql.enabled }}
     DB_HOST: {{ .Release.Name }}-postgresql
     DB_PORT: "5432"
     DB_NAME: "vizbuilder"
     DB_USER: {{ .Values.postgresql.multidbUser }}
     {{- else }}
+    DISABLE_SERVER_SIDE_CURSORS: {{ .Values.disable_server_side_cursors | quote }}
     DB_HOST: {{ .Values.postgresql.external.dbHost }}
-    DB_PORT: {{ .Values.postgresql.external.dbPort | default "5432"  | quote }}
+    DB_PORT: {{ .Values.postgresql.external.dbPort | default "5432" | quote }}
     DB_NAME: "vizbuilder"
     DB_USER: {{ .Values.postgresql.external.dbUser }}
     DB_PASSWORD: {{ .Values.postgresql.external.dbPassword }}

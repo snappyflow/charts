@@ -77,8 +77,7 @@ spec:
           ports:
           - containerPort: {{ .Values.prometheus.jmx.port }}
 {{- if not .Values.global.development }}
-          resources:
-            {{ toYaml .Values.containerResources.jmx | indent 12 }}
+          resources: {{ toYaml .Values.containerResources.jmx | nindent 12 }}
 {{- end }}
           volumeMounts:
           - name: jmx-config
@@ -116,8 +115,7 @@ spec:
             successThreshold: {{ .Values.livenessProbe.successThreshold }}
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
 {{- if not .Values.global.development }}
-          resources:
-            {{ toYaml .Values.containerResources.restserver | indent 12 }}
+          resources: {{ toYaml .Values.containerResources.restserver | nindent 12 }}
 {{- end }}
           {{- if .Values.https.enabled }}
           envFrom:

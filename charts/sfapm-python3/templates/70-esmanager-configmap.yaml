@@ -22,6 +22,11 @@ data:
     DB_PASSWORD: {{ .Values.postgresql.external.dbPassword }}
     {{- end }}
 
+    {{- if eq "azure" .Values.sfapm.cloud }}
+    STORAGE_ACCOUNT_NAME: "{{ .Values.sfapm.azure.storage_account_name }}"
+    STORAGE_ACCOUNT_KEY: "{{ .Values.sfapm.azure.storage_account_key }}"
+    {{- end }}
+    
     REDIS_HOST: {{ .Release.Name  }}-redis
     REDIS_PORT: "6379"
 

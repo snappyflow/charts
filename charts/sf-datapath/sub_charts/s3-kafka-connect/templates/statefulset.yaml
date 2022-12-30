@@ -89,8 +89,7 @@ spec:
           ports:
           - containerPort: {{ .Values.prometheus.jmx.port }}
 {{- if not .Values.global.development }}
-          resources:
-            {{ toYaml .Values.containerResources.jmx | indent 12 }}
+          resources: {{ toYaml .Values.containerResources.jmx | nindent 12 }}
 {{- end }}
           volumeMounts:
           - name: jmx-config
@@ -128,8 +127,7 @@ spec:
             successThreshold: 1
             failureThreshold: 3
 {{- if not .Values.global.development }}
-          resources:
-            {{ toYaml .Values.containerResources.connector | indent 12 }}
+          resources: {{ toYaml .Values.containerResources.connector | nindent 12 }}
 {{- end }}
           env:
             - name: CONNECT_REST_ADVERTISED_HOST_NAME
@@ -166,12 +164,6 @@ spec:
             - name: KAFKA_JMX_PORT
               value: "{{ .Values.jmx.port }}"
             {{- end }}
-            # Below element is disabled because of client ID limitation in Kafka JMX
-            # - name: CONNECT_CONSUMER_CLIENT_ID
-            #   valueFrom:
-            #     fieldRef:
-            #       apiVersion: v1
-            #       fieldPath: metadata.name
           volumeMounts:
           - name: connect-log4j-properties
             mountPath: /etc/customlog4j

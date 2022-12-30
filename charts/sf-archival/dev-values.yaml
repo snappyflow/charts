@@ -14,10 +14,10 @@ global:
       auth: NONE
 
   postgresql:
-    host: "db-postgresql"
+    host: "10.81.1.142"
     postgresqlDatabase: archival
     postgresqlUsername: snappyflow
-    postgresqlPassword: snappyflow
+    postgresqlPassword: maplelabs
     servicePort: 5432
 
   secrets:

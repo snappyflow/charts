@@ -38,6 +38,7 @@ spec:
       serviceAccountName: {{ include "sfapm.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.sftrace.terminationGracePeriodSeconds }}
       volumes:
         - name: sftrace-server-config
           configMap:
@@ -77,5 +78,10 @@ spec:
             readOnly: true
       - name: sftrace-server-prometheus-exporter
         command: [/go/metrics]
-        image: "{{ .Values.sftrace.image.sidecarrepository }}:{{ .Values.sftrace.image.tag }}" 
+        image: "{{ .Values.sftrace.sftraceServerPrometheusExporter.image.repository }}:{{ .Values.sftrace.sftraceServerPrometheusExporter.image.tag }}" 
         imagePullPolicy: Always
+        env:
+        - name: Metrics_Interval
+          value: "{{ .Values.sftrace.sftraceServerPrometheusExporter.metricsInterval }}"
+        resources:
+          {{- toYaml .Values.sftrace.sftraceServerPrometheusExporter.resources | nindent 12 }}

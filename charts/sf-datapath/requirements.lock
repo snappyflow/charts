@@ -1,7 +1,7 @@
 dependencies:
 - name: nginx-ingress
   repository: file://./sub_charts/nginx-ingress
-  version: 3.6.3
+  version: 4.4.0
 - name: cp-schema-registry
   repository: file://./sub_charts/cp-schema-registry
   version: 0.1.0
@@ -10,6 +10,9 @@ dependencies:
   version: 0.1.0
 - name: s3-kafka-connect
   repository: file://./sub_charts/s3-kafka-connect
+  version: 0.1.0
+- name: azureblob-kafka-connect
+  repository: file://./sub_charts/azureblob-kafka-connect
   version: 0.1.0
 - name: es-kafka-connect
   repository: file://./sub_charts/es-kafka-connect
@@ -29,5 +32,5 @@ dependencies:
 - name: minio
   repository: file://./sub_charts/minio
   version: 8.0.10
-digest: sha256:fb13091b943bed4020b7a22a52bb93e34415d9d82a79353c62e6c2a5392b26da
-generated: "2021-11-23T09:39:05.830137096+05:30"
+digest: sha256:15ab7011a87bde60ccc765ebd92484843e93a40c450346e009aec7c417772f9b
+generated: "2022-12-18T23:36:07.675637433+05:30"

@@ -55,8 +55,7 @@ spec:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
 {{- if not .Values.global.development }}
-          resources:
-            {{- toYaml .Values.containerResources.logarchival | nindent 12 }}
+          resources: {{- toYaml .Values.containerResources.logarchival | nindent 12 }}
 {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

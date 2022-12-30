@@ -1,0 +1,21 @@
+{{- if .Values.global.archival.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "azureblob-kafka-connect.fullname" . }}
+  labels:
+    app: {{ template "azureblob-kafka-connect.name" . }}
+    chart: {{ template "azureblob-kafka-connect.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  ports:
+    - name: ab-connect
+      port: {{ .Values.servicePort }}
+    - port: 5556
+      name: jmx-exporter
+  selector:
+    app: {{ template "azureblob-kafka-connect.name" . }}
+    release: {{ .Release.Name }}
+{{- end }}
+

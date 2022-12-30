@@ -152,8 +152,7 @@ spec:
             timeoutSeconds: {{ .Values.server.startupProbe.timeoutSeconds }}
           {{- end }}
 {{- if not .Values.global.development }}
-          resources:
-            {{ toYaml .Values.containerResources | indent 12 }}
+          resources: {{ toYaml .Values.containerResources | nindent 12 }}
 {{- end }}
           volumeMounts:
             - name: config-volume

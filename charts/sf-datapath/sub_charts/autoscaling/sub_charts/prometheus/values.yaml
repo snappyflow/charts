@@ -144,13 +144,13 @@ server:
   global:
     ## How frequently to scrape targets by default
     ##
-    scrape_interval: 30s
+    scrape_interval: 5s
     ## How long until a scrape request times out
     ##
-    scrape_timeout: 28s
+    scrape_timeout: 3s
     ## How frequently to evaluate rules
     ##
-    evaluation_interval: 30s
+    evaluation_interval: 5s
     query_log_file: /prometheus/query.log
   ## https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write
   ##
@@ -309,7 +309,7 @@ server:
 
     ## Prometheus server data Persistent Volume size
     ##
-    size: 25Gi
+    size: 50Gi
 
     ## Prometheus server data Persistent Volume Storage Class
     ## If defined, storageClassName: <storageClass>

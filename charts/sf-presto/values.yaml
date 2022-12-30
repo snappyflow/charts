@@ -1,0 +1,82 @@
+# Default values for sf-presto.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+imagePullSecrets: []
+
+image:
+  repository: snappyflowml/presto
+  pullPolicy: Always
+  tag: latest
+
+# Helm values for sfpresto-worker-prometheus-exporter container
+sfprestoWorkerPrometheusExporter:
+  image:
+    repository: snappyflowml/sfpresto-worker-prometheus-exporter
+    tag: latest
+    pullPolicy: Always
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 200Mi
+
+coordinator:
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 5Gi
+
+resources:
+  requests:
+    cpu: 2000m
+    memory: 8Gi
+
+aws:
+  enabled: false
+
+azure:
+  enabled: false
+
+env:
+  # Required onlu for azure
+  STORAGE_ACCOUNT_NAME: ""
+  # Required only for azure
+  STORAGE_ACCOUNT_ACCESS_KEY: ""
+  # How frequently sfpresto-worker-prometheus-exporter fetch metrics
+  Metrics_Interval: 3
+  # Provide Value same as Pod memory in Mi
+  POD_MEM: 5120
+  # Max number of replicas
+  MAX_REPLICA: 5
+  # HiveMetaStore service
+  HIVE_METASTORE_SERVICE: "archival-hive-metastore.kafka"
+  # HiveMetaStore Service port
+  HIVE_METASTORE_PORT: "9083"
+
+service:
+  servicePort: 8080
+
+podAnnotations:
+  prometheus.io/path: /metrics
+  prometheus.io/port: "2112"
+  prometheus.io/scrape: "true"
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 8
+  targetQueuedQueries: 5
+  targetRunningDrivers: 50
+  scaleUpPeriod: 30
+  scaleDownPeriod: 60
+
+terminationGracePeriodSeconds: 300
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+imagePullSecrets: []
+
