@@ -13,6 +13,7 @@ data:
   AWS_ACCESS_KEY_ID: {{ .Values.global.secrets.aws.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: {{ .Values.global.secrets.aws.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: {{ .Values.global.secrets.aws.AWS_DEFAULT_REGION }}
+  SINK_TYPE: {{ .Values.global.secrets.aws.SINK_TYPE }}
   {{- end }}
   {{ else if eq .Values.global.secrets.gcs.enable true -}}
   CLOUD_NAME: GCP
@@ -22,6 +23,7 @@ data:
   CLOUD_NAME: AZURE
   STORAGE_ACCOUNT_ACCESS_KEY: {{ .Values.global.secrets.azure.STORAGE_ACCOUNT_ACCESS_KEY }}
   STORAGE_ACCOUNT_NAME: {{ .Values.global.secrets.azure.STORAGE_ACCOUNT_NAME }}
+  SINK_TYPE: {{ .Values.global.secrets.azure.SINK_TYPE }}
   {{- else -}}
   CLOUD_NAME: UNKNOWN
   {{- end }}
