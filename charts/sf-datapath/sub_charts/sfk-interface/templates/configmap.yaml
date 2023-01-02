@@ -49,10 +49,11 @@ data:
             "schema.ignore": "true",
             "value.converter.schemas.enable": "false",
             "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-            "transforms": "filter,router,insertsignature",
+            "transforms": "filterandrouter,insertsignature",
             "transforms.throttle.type": "apm.kafka.connect.transforms.Throttle",
-            "transforms.filter.type": "apm.kafka.connect.transforms.APMFilter",
-            "transforms.router.type": "apm.kafka.connect.transforms.APMRouter",
+            "transforms.filterandrouter.type": "apm.kafka.connect.transforms.APMFilterAndRouter",
+            "transforms.filterandrouter.sampleIndex": "log-sampling-index",
+            "transforms.filterandrouter.samplingPeriodSeconds": 3600,
             "transforms.insertsignature.type": "com.signature.InsertSignature$Value",
             "transforms.insertsignature.connectorname.field": "elastic-search"
         }
