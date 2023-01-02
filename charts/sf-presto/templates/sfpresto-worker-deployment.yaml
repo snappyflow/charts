@@ -45,7 +45,7 @@ spec:
             - name: "MAX_REPLICA"
               value: "{{ .Values.autoscaling.maxReplicas }}"
           command: ["/bin/bash", "-c"]
-          args: ["/home/presto-config; ./worker-init.sh & ./postStart.sh; sleep 3650d;"]
+          args: ["/home/presto-config; ./worker-init.sh; sleep 3650d;"]
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
