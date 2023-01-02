@@ -27,12 +27,12 @@ coordinator:
   resources:
     requests:
       cpu: 1000m
-      memory: 5Gi
+      memory: 3Gi
 
 resources:
   requests:
-    cpu: 2000m
-    memory: 8Gi
+    cpu: 1000m
+    memory: 3Gi
 
 aws:
   enabled: false
@@ -48,9 +48,7 @@ env:
   # How frequently sfpresto-worker-prometheus-exporter fetch metrics
   Metrics_Interval: 3
   # Provide Value same as Pod memory in Mi
-  POD_MEM: 5120
-  # Max number of replicas
-  MAX_REPLICA: 8
+  POD_MEM: 3221
   # HiveMetaStore service
   HIVE_METASTORE_SERVICE: "archival-hive-metastore.kafka"
   # HiveMetaStore Service port
@@ -68,8 +66,8 @@ podAnnotations:
 
 autoscaling:
   enabled: true
-  minReplicas: 2
-  maxReplicas: 8
+  minReplicas: 1
+  maxReplicas: 5
   targetQueuedQueries: 5
   targetRunningDrivers: 50
   scaleUpPeriod: 30
