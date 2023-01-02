@@ -34,11 +34,13 @@ global:
       AWS_ACCESS_KEY_ID: XXXX
       AWS_SECRET_ACCESS_KEY: XXXX
       AWS_DEFAULT_REGION: us-west-2
+      SINK_TYPE: S3
     azure:
       enable: false
       # Set below credentials to access azure storage account from hive/hadoop pods
       STORAGE_ACCOUNT_NAME: XXXX
       STORAGE_ACCOUNT_ACCESS_KEY: XXXX
+      SINK_TYPE: AzureBlob
   # Below parameter needs to use the PLAIN_TEXT port
   kafkaBrokers: "localhost:9092,localhost1:9092"
 

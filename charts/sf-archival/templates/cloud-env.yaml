@@ -18,6 +18,10 @@ data:
   CLOUD_NAME: GCP
   GCP_DEFAULT_REGION: {{ .Values.global.secrets.gcs.GCP_DEFAULT_REGION }}
   GCP_DEFAULT_ZONE: {{ .Values.global.secrets.gcs.GCP_DEFAULT_ZONE }}
+  {{ else if eq .Values.global.secrets.azure.enable true -}}
+  CLOUD_NAME: AZURE
+  STORAGE_ACCOUNT_ACCESS_KEY: {{ .Values.global.secrets.azure.STORAGE_ACCOUNT_ACCESS_KEY }}
+  STORAGE_ACCOUNT_NAME: {{ .Values.global.secrets.azure.STORAGE_ACCOUNT_NAME }}
   {{- else -}}
   CLOUD_NAME: UNKNOWN
   {{- end }}
