@@ -69,6 +69,7 @@ prometheus:
     port: 5556
     resources: {}
 replicaCount: 1
+terminationGracePeriodSeconds: 200
 resources: {}
 servicePort: 8083
 tolerations: {}

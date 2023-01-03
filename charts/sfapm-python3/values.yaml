@@ -301,12 +301,12 @@ vizbuilder_celery:
       requests:
         cpu: 10m
         memory: 100Mi
-    replicaCount: 3
+    replicaCount: 1
     command: "celery -A vizbuilder worker -l $LOG_LEVEL -Q alert -c $MAXIMUM_RUNNING_TASKS $CELERY_OPTS & celery -A vizbuilder flower --address=localhost --port=5566"
 
     autoscaling:
       enabled: true
-      minReplicas: 3
+      minReplicas: 1
       maxReplicas: 5
       scaleUpPeriod: 30
       scaleDownPeriod: 60
@@ -316,7 +316,7 @@ vizbuilder_celery:
       prometheus.io/port: "2112"
       prometheus.io/scrape: "true"
     
-    terminationGracePeriodSeconds: 30
+    terminationGracePeriodSeconds: 300
     
     celeryAlertPrometheusExporter:
       image:
@@ -513,7 +513,7 @@ sftrace:
 
   terminationGracePeriodSeconds: 30
 
-  maximumQueueEvents: 65536
+  maximumQueueEvents: 16384
 
   # Helm values for sftrace-server-prometheus-exporter container
   sftraceServerPrometheusExporter:
@@ -564,7 +564,7 @@ sftrace:
 
   autoscaling:
     enabled: true
-    minReplicas: 2
+    minReplicas: 1
     maxReplicas: 5
     # This value is calculated as 50 % of max events trace queue can buffer 
     scaleUpPeriod: 30
