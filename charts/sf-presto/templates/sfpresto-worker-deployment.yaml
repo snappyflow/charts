@@ -29,6 +29,10 @@ spec:
         - name: sfpresto-worker
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/bash", "./preStop.sh"]
           env:
           {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
@@ -38,6 +42,8 @@ spec:
               value: {{ include "sf-presto.fullname" . }}-coordinator
             - name: "SERVICE_PORT"
               value: "{{ .Values.service.servicePort }}"
+            - name: "MAX_REPLICA"
+              value: "{{ .Values.autoscaling.maxReplicas }}"
           command: ["/bin/bash", "-c"]
           args: ["/home/presto-config; ./worker-init.sh; sleep 3650d;"]
           resources:
@@ -54,10 +60,12 @@ spec:
             value: {{ include "sf-presto.fullname" . }}-coordinator
           - name: "SERVICE_PORT"
             value: "{{ .Values.service.servicePort }}"
+          - name: "MAX_REPLICA"
+            value: "{{ .Values.autoscaling.maxReplicas }}"
           resources:
             {{- toYaml .Values.sfprestoWorkerPrometheusExporter.resources | nindent 12 }}
       volumes:
       - name: hive-properties
         configMap:
           name: {{ include "sf-presto.fullname" . }}-configmap
-      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ sub (mul .Values.env.Grace_Period_Seconds 2) 10 }}
