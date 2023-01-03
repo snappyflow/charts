@@ -57,6 +57,16 @@ spec:
             value: "{{ .Values.minio.secrets.accessId }}"
           - name: AWS_SECRET_ACCESS_KEY
             value: "{{ .Values.minio.secrets.accessKey }}"
+          - name: SINK_TYPE
+            value: "{{ .Values.global.secrets.aws.SINK_TYPE }}"
+        {{- else if .Values.global.secrets.azure.enable }}
+          env:
+          - name: STORAGE_ACCOUNT_ACCESS_KEY
+            value: "{{ .Values.global.secrets.azure.STORAGE_ACCOUNT_ACCESS_KEY }}"
+          - name: STORAGE_ACCOUNT_NAME
+            value: "{{ .Values.global.secrets.azure.STORAGE_ACCOUNT_NAME }}"
+          - name: SINK_TYPE
+            value: "{{ .Values.global.secrets.azure.SINK_TYPE }}"
         {{- end }}
           envFrom:
           - configMapRef:
