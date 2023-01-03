@@ -44,7 +44,11 @@ spec:
           image: snappyflowml/cb-spark-event:1
           imagePullPolicy: IfNotPresent
           args:
+          {{- if (eq .Values.global.secrets.aws.enable true) }}
             - {{ index .Values "jobserver" "sparkProperties" "logDirectory" }}
+          {{- else if (eq .Values.global.secrets.azure.enable true) }}
+            - {{ index .Values "jobserver" "sparkProperties" "azureLogContainer" }}
+          {{- end }}
         - name: db-ready
           image: "bitnami/postgresql:11.5.0-debian-9-r34"
           imagePullPolicy: IfNotPresent
