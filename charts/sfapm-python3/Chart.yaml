@@ -8,7 +8,7 @@ appVersion: 4.0
 
 dependencies:
 - name: redis
-  version: 0.2.8
+  version: 0.2.9
   repository: https://snappyflow.github.io/helm-charts/
 - name: postgresql
   version: 0.1.5

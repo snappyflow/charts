@@ -513,7 +513,7 @@ sftrace:
 
   terminationGracePeriodSeconds: 30
 
-  maximumQueueEvents: 65536
+  maximumQueueEvents: 16384
 
   # Helm values for sftrace-server-prometheus-exporter container
   sftraceServerPrometheusExporter:
