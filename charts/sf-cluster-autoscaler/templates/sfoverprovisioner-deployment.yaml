@@ -1,4 +1,4 @@
-#This is a dummy pod. All values are static.
+{{- if .Values.overProvisioning.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,3 +21,4 @@ spec:
         resources:
           {{- toYaml .Values.overProvisionerResources | nindent 12 }}
       priorityClassName: overprovisioner
+{{- end }}
