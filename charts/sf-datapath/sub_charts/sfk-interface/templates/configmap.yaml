@@ -52,7 +52,7 @@ data:
             "transforms": "filterandrouter,insertsignature",
             "transforms.throttle.type": "apm.kafka.connect.transforms.Throttle",
             "transforms.filterandrouter.type": "apm.kafka.connect.transforms.APMFilterAndRouter",
-            "transforms.filterandrouter.sampleIndex": "log-sampling-index",
+            "transforms.filterandrouter.sampleIndex": "log-sampling-index-$",
             "transforms.filterandrouter.samplingPeriodSeconds": 3600,
             "transforms.insertsignature.type": "com.signature.InsertSignature$Value",
             "transforms.insertsignature.connectorname.field": "elastic-search"
