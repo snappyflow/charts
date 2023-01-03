@@ -98,6 +98,8 @@ spark-manager:
     sparkProperties:
       # S3 bucket with aws prefix/folder for spark event logs e.g., for bucket location of s3://sparkhs/spark-hs configure as configured below
       logDirectory: sparkhs/spark-hs
+      azureLogContainer: sparkhs
+      azureLogDirectory: spark-hs
   infrastructure:
     Kubernetes:
       # Kubernetes is always inserted as an infrastructure with slightly higher preference numbers
