@@ -21,6 +21,7 @@ data:
       "ingest_controller_url": "http://{{ template "dataset-raw-controller.ingest-controller.fullname" . }}",
       "dataset_controller_url": "http://{{ template "dataset-raw-controller.dataset-controller.fullname" . }}",
       "bucket_partition_duration_mins": {{ .Values.global.timeBucketSizeMinutes }},
+      "event_queue_handler_monitor_interval_in_sec": {{ .Values.appParams.eventQueueHandlerMonitorIntervalInSec }},
       "compute_bucket_boundaries_using_presto": {{ .Values.appParams.computeBucketBoundariesUsingPresto }},
       "orc_inventory_batch_fetch_size": {{ .Values.appParams.orcInventoryBatchFetchSize}},
       "max_buffered_events":  {{ .Values.appParams.maxBufferedEvents}} ,
