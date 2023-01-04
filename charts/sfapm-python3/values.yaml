@@ -301,12 +301,12 @@ vizbuilder_celery:
       requests:
         cpu: 10m
         memory: 100Mi
-    replicaCount: 1
+    replicaCount: 3
     command: "celery -A vizbuilder worker -l $LOG_LEVEL -Q alert -c $MAXIMUM_RUNNING_TASKS $CELERY_OPTS & celery -A vizbuilder flower --address=localhost --port=5566"
 
     autoscaling:
       enabled: true
-      minReplicas: 1
+      minReplicas: 3
       maxReplicas: 5
       scaleUpPeriod: 30
       scaleDownPeriod: 60
@@ -509,7 +509,7 @@ esmanager_celery:
     command: "celery -A elasticsearch_manager worker -l $LOG_LEVEL -Q es_mng_default  $CELERY_OPTS"
 
 sftrace:
-  replicaCount: 1
+  replicaCount: 2
 
   terminationGracePeriodSeconds: 30
 
@@ -564,7 +564,7 @@ sftrace:
 
   autoscaling:
     enabled: true
-    minReplicas: 1
+    minReplicas: 2
     maxReplicas: 5
     # This value is calculated as 50 % of max events trace queue can buffer 
     scaleUpPeriod: 30
