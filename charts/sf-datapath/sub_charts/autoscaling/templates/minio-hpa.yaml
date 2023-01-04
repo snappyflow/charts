@@ -1,4 +1,4 @@
-{{ if and (and .Values.global.archival.enabled .Values.global.secrets.gcs.enable) .Values.s3KafkaConnect.enabled -}}
+{{ if and (and .Values.global.archival.enabled .Values.global.secrets.gcs.enable) .Values.archivalKafkaConnect.enabled -}}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:

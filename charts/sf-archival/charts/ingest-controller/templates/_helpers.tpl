@@ -85,11 +85,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 {{- define "ingest-controller.archivalKafkaConnect.fullname" -}}
-{{- if .Values.global.secrets.aws.enable }}
-{{- printf "%s-%s" .Values.global.snappyflowDatapath.releaseName "s3-kafka-connect" | trunc 63 | trimSuffix "-" -}}
-{{- else if .Values.global.secrets.azure.enable }}
-{{- printf "%s-%s" .Values.global.snappyflowDatapath.releaseName "azureblob-kafka-connect" | trunc 63 | trimSuffix "-" -}}
-{{- end }}
+{{- printf "%s-%s" .Values.global.snappyflowDatapath.releaseName "archival-kafka-connect" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "ingest-controller.minio-svc.fullname" -}}

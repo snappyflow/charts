@@ -27,7 +27,7 @@ prometheus:
       cpu: 250m
       memory: 2Gi
 
-s3KafkaConnect:
+archivalKafkaConnect:
   enabled: true
   cpu:
     targetAverageValue: 850m # 85% of CPU limit allocated to connector

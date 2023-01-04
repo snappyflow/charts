@@ -44,8 +44,8 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
-{{- define "autoscaling.s3-kafka-connect.fullname" -}}
-{{- printf "%s-%s" .Release.Name "s3-kafka-connect" | trunc 63 | trimSuffix "-" -}}
+{{- define "autoscaling.archival-kafka-connect.fullname" -}}
+{{- printf "%s-%s" .Release.Name "archival-kafka-connect" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "autoscaling.es-kafka-connect.fullname" -}}
