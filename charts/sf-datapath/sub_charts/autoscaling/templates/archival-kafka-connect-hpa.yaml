@@ -1,0 +1,23 @@
+{{- if and .Values.archivalKafkaConnect.enabled .Values.global.archival.enabled -}}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "autoscaling.archival-kafka-connect.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: {{ include "autoscaling.archival-kafka-connect.fullname" . }}
+  minReplicas: {{ .Values.archivalKafkaConnect.minReplicas }}
+  maxReplicas: {{ .Values.archivalKafkaConnect.maxReplicas }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageValue: {{ .Values.archivalKafkaConnect.cpu.targetAverageValue | quote }}
+  - type: External
+    external:
+      metricName: kafka_bytesinpersec_oneminuterate_for_log_and_metric
+      targetValue: {{ mul .Values.archivalKafkaConnect.ingestRateGBPerDayPerPod 11575 }}
+{{- end -}}

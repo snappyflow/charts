@@ -85,7 +85,9 @@ data:
               "--conf",
 {{- if eq .Values.global.secrets.aws.enable true }}
               "spark.eventLog.dir=s3a://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}",
-{{- else }}
+{{- else if eq .Values.global.secrets.azure.enable true }}
+              "spark.eventLog.dir=wasb://{{ index .Values "jobserver" "sparkProperties" "azureLogContainer" }}@{{ .Values.global.secrets.azure.STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/{{ index .Values "jobserver" "sparkProperties" "azureLogDirectory" }}",
+{{- else}}
               "spark.eventLog.dir=gs://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}",
 {{- end }}
               "--conf",
@@ -111,6 +113,13 @@ data:
               "spark.kubernetes.authenticate.executor.serviceAccountName={{ .Release.Name }}-service-account",
               "--conf",
               "spark.kubernetes.authenticate.serviceAccountName={{ .Release.Name }}-service-account",
+{{- else if (eq .Values.global.secrets.azure.enable true) }}
+              "--conf",
+              "spark.hadoop.fs.AbstractFileSystem.wasb.Impl=org.apache.hadoop.fs.azure.Wasb",
+              "--conf"
+              "spark.hadoop.fs.azure.account.key.{{ .Values.global.secrets.azure.STORAGE_ACCOUNT_NAME }}.blob.core.windows.net={{ .Values.global.secrets.azure.STORAGE_ACCOUNT_ACCESS_KEY }}",
+              "--conf"
+              "spark.hadoop.fs.azure=org.apache.hadoop.fs.azure.NativeAzureFileSystem"
 {{- else }}
               "--conf",
               "spark.kubernetes.driver.secretKeyRef.AWS_ACCESS_KEY_ID={{ .Release.Name }}-aws-secret:key",

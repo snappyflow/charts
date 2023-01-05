@@ -15,12 +15,8 @@ entries:
       repository: file://./sub_charts/cp-kafka-rest
       version: 0.1.0
     - condition: global.archival.enabled
-      name: s3-kafka-connect
-      repository: file://./sub_charts/s3-kafka-connect
-      version: 0.1.0
-    - condition: global.archival.enabled
-      name: azureblob-kafka-connect
-      repository: file://./sub_charts/azureblob-kafka-connect
+      name: archival-kafka-connect
+      repository: file://./sub_charts/archival-kafka-connect
       version: 0.1.0
     - name: es-kafka-connect
       repository: file://./sub_charts/es-kafka-connect

@@ -8,11 +8,8 @@ dependencies:
 - name: cp-kafka-rest
   repository: file://./sub_charts/cp-kafka-rest
   version: 0.1.0
-- name: s3-kafka-connect
-  repository: file://./sub_charts/s3-kafka-connect
-  version: 0.1.0
-- name: azureblob-kafka-connect
-  repository: file://./sub_charts/azureblob-kafka-connect
+- name: archival-kafka-connect
+  repository: file://./sub_charts/archival-kafka-connect
   version: 0.1.0
 - name: es-kafka-connect
   repository: file://./sub_charts/es-kafka-connect
