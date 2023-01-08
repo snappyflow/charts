@@ -35,10 +35,10 @@ containerResources:
     memory: 512Mi
 
 autoscaling:
-  enabled: false
+  enabled: true
   minReplicas: 1
   maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
+  # targetCPUUtilizationPercentage: 80
   eventQueueHandlerOccupancyPercentage: 80
   scaleUpPeriod: 30
   scaleDownPeriod: 60
