@@ -10,9 +10,29 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ include "dataset-raw-controller.fullname" . }}
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Pods
+        periodSeconds: {{ .Values.autoscaling.scaleDownPeriod }}
+        value: 1
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Pods
+        periodSeconds: {{ .Values.autoscaling.scaleUpPeriod }}
+        value: 1
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
+    - type: Pods
+      pods:
+        metric:
+          name: event_queue_handler_occupancy_percent
+        target:
+          type: AverageValue
+          averageValue: {{ .Values.autoscaling.eventQueueHandlerOccupancyPercentage }}
     {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
       resource:

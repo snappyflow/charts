@@ -186,6 +186,17 @@ rules:
         kubernetes_pod_name:
           resource: pod
     seriesQuery: '{__name__="presto_queued_queries"}'
+  - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*dataset-raw-controller.*"}
+    name:
+      as: event_queue_handler_occupancy_percent
+      matches: ""
+    resources:
+      overrides:
+        kubernetes_namespace:
+          resource: namespace
+        kubernetes_pod_name:
+          resource: pod
+    seriesQuery: '{__name__="event_queue_handler_occupancy_percent"}'
   - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*vizbuilder-celery-alert.*"}
     name:
       as: num_executing_tasks
