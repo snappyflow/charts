@@ -1035,6 +1035,28 @@ entries:
   kafka:
   - apiVersion: v1
     appVersion: 5.3.1
+    created: "2023-01-09T13:53:44.085464021Z"
+    description: This topology includes 2 Kafka nodes and 2 Zookeepr nodes. Includes
+      monitoring of Pod metrics, Storage metrics, JVM metrics, Producer/Consumer Traffic,
+      Topic Metrics, and logs
+    digest: f9877eec1ee2948ee51511925088adbfb9c9d915b818dafde347f096c35654bd
+    home: https://kafka.apache.org/
+    icon: https://kafka.apache.org/images/logo.png
+    keywords:
+    - kafka
+    - zookeeper
+    - kafka statefulset
+    name: kafka
+    sources:
+    - https://github.com/kubernetes/charts/tree/master/incubator/zookeeper
+    - https://github.com/Yolean/kubernetes-kafka
+    - https://github.com/confluentinc/cp-docker-images
+    - https://github.com/apache/kafka
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/kafka-2.4.11/kafka-2.4.11.tgz
+    version: 2.4.11
+  - apiVersion: v1
+    appVersion: 5.3.1
     created: "2021-05-27T06:10:06.226968019Z"
     description: This topology includes 2 Kafka nodes and 2 Zookeepr nodes. Includes
       monitoring of Pod metrics, Storage metrics, JVM metrics, Producer/Consumer Traffic,
@@ -1122,6 +1144,15 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/kafka-2.4.5/kafka-2.4.5.tgz
     version: 2.4.5
   kafka-cluster:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2023-01-09T13:53:44.274528893Z"
+    description: A Helm chart for kafka and zookeeper
+    digest: 9031aaca5e9ac2509677a13f7935f8eb73265500a26bda4e7604d256d787fb23
+    name: kafka-cluster
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/kafka-cluster-0.6.31/kafka-cluster-0.6.31.tgz
+    version: 0.6.31
   - apiVersion: v1
     appVersion: "1.0"
     created: "2022-02-01T19:13:55.404730438Z"
