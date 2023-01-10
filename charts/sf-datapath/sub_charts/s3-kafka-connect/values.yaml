@@ -57,7 +57,7 @@ prometheus:
     enabled: true
     image: solsson/kafka-prometheus-jmx-exporter@sha256
     imagePullPolicy: IfNotPresent
-    imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
+    imageTag: 2b03ed611421c0b58dcd70270fed9209c95a5b72a3f8bab186c2dcf27f974811
     port: 5556
 replicaCount: 1
 terminationGracePeriodSeconds: 200

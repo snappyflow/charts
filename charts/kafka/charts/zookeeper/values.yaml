@@ -85,10 +85,10 @@ prometheus:
     enabled: true
 
     ## The image to use for the metrics collector
-    image: solsson/kafka-prometheus-jmx-exporter@sha256
+    image: bitnami/jmx-exporter@sha256
 
     ## The image tag to use for the metrics collector
-    imageTag: a23062396cd5af1acdf76512632c20ea6be76885dfc20cd9ff40fb23846557e8
+    imageTag: 2b03ed611421c0b58dcd70270fed9209c95a5b72a3f8bab186c2dcf27f974811
 
     ## Interval at which Prometheus scrapes metrics, note: only used by Prometheus Operator
     interval: 10s
