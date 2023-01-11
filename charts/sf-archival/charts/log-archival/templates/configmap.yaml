@@ -14,9 +14,5 @@ data:
         "port": {{ .Values.global.postgresql.servicePort }}
       },
       "serverPort": "{{ .Values.serverPort }}",
-      "datasetURL": "http://{{ template "log-archival.dataset-controller.fullname" . }}",
-      "ingestURL": "http://{{ template "log-archival.ingest-controller.fullname" . }}",
-      "kafkaBrokers": "{{ .Values.global.kafkaBrokers }}",
-      "kafkaRestURL": "http://{{ template "log-archival.kafkaRest.fullname" . }}:8082",
-      "kafkaRestAuth": "http://{{ template "log-archival.authenticator.fullname" . }}"
+      "kafkaBrokers": "{{ .Values.global.kafkaBrokers }}"
     }

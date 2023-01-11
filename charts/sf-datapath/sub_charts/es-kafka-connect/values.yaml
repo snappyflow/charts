@@ -73,3 +73,5 @@ terminationGracePeriodSeconds: 200
 resources: {}
 servicePort: 8083
 tolerations: {}
+autoscaling:
+  enabled: false

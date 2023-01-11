@@ -72,10 +72,6 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- printf "%s-%s" .Release.Name "spark-history-server" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "query-controller.cp-schema-registry.fullname" -}}
-{{- printf "%s-%s" .Values.global.snappyflowDatapath.releaseName "cp-schema-registry" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
 {{- define "dataset-controller.service.servicePort" -}}
 {{- $port := index .Values "dataset-controller" "service" "servicePort" -}}
 {{- printf "%s" $port -}}
