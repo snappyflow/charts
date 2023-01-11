@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "gateway.fullname" . }}-proxy-blocks
+data:
+  datapath-and-archival.conf: |+
+    server {
+      listen 0.0.0.0:8080;
+     
+      location /ingest {
+        proxy_pass http://{{ .Values.archivalReleaseName }}-ingest-controller/ingest;
+      }
+
+      location /logarchival {
+        proxy_pass http://{{ .Values.archivalReleaseName }}-log-archival/logarchival;
+      }
+
+      location /query {
+        proxy_pass http://{{ .Values.archivalReleaseName }}-query-controller/query;
+      }
+
+      location /datasetrawquery.DatasetRawQuery {
+        grpc_pass grpc://{{ .Values.archivalReleaseName }}-raw-query-exec-controller:8081;
+      }
+
+      location /sfkinterface {
+        proxy_pass http://{{ .Values.datapathReleaseName }}-sfk-interface/sfkinterface;
+      }
+
+      location /signatures {
+        proxy_pass http://{{ .Values.datapathReleaseName }}-signatures-and-kafka-apis/signatures;
+      }
+
+      location //kafka-info {
+        proxy_pass http://{{ .Values.datapathReleaseName }}-signatures-and-kafka-apis//kafka-info;
+      }
+    }
