@@ -98,9 +98,8 @@ spark-manager:
       logDirectory: sparkhs/spark-hs
   infrastructure:
     Kubernetes:
-      # Kubernetes is always inserted as an infrastructure with slightly higher preference numbers
-      # If some other infrastructure has higher preference, that infrastructure will be used
-      preference: 10
+      # Kubernetes infrastructure is used by default
+      preference: 1
       numExecutors: 5
       jobResources:
         cpu:
@@ -114,9 +113,11 @@ spark-manager:
           executor: 1024m
           driver: 1024m
     EcsFargate:
+      # EcsFargate is inserted as an infrastructure with slightly higher preference number
+      # EcsFargate is disabled by default
       enabled: false
       containerInsightsEnabled: false
-      preference: 1
+      preference: 10
       cluster: sf-archival-compaction
       numExecutors: 2
       iamRole: arn:aws:iam::159750416379:role/Dev-Archival-presto_hive
