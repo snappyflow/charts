@@ -17,7 +17,15 @@ logrotate:
 
 nginx:
   service:
-    type: clusterIP
+    type: ClusterIP
+    extraPorts: |-
+      - name: grpc
+        port: 8081
+        targetPort: grpc
+
+  extraContainerPorts: |-
+    - name: grpc
+      containerPort: 8081
 
   resources:
     requests:
@@ -81,8 +89,9 @@ nginx:
   extraVolumeMounts: |-
     - name: varlog
       mountPath: /var/log/nginx
-    - mountPath: /opt/bitnami/nginx/conf
+    - mountPath: /opt/bitnami/nginx/conf/nginx.conf
       name: apmconfig
+      subPath: nginx.conf
 
   extraVolumes: |-
     - name: apmconfig

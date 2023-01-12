@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "gateway.fullname" . }}-logrotate
 data:
-  logrotate.conf: |+
+  logrotate.conf: |-
     /var/log/nginx/access_local.log {
       su root root
       rotate {{ .Values.logrotate.config.rotate_count }}

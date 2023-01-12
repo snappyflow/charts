@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "gateway.fullname" . }}-nginx-conf
 data:
-  nginx.conf: |+
+  nginx.conf: |-
     user              www www;
     
     worker_processes     auto;

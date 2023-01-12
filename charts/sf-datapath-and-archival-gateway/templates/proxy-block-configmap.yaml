@@ -3,7 +3,15 @@ kind: ConfigMap
 metadata:
   name: {{ include "gateway.fullname" . }}-proxy-blocks
 data:
-  datapath-and-archival.conf: |+
+  archival-grpc.conf: |-
+    server {
+      listen 0.0.0.0:8081 http2;
+
+      location /datasetrawquery.DatasetRawQuery {
+        grpc_pass grpc://{{ .Values.archivalReleaseName }}-raw-query-exec-controller:8081;
+      }
+    }
+  datapath-and-archival-rest.conf: |-
     server {
       listen 0.0.0.0:8080;
      
@@ -19,12 +27,12 @@ data:
         proxy_pass http://{{ .Values.archivalReleaseName }}-query-controller/query;
       }
 
-      location /datasetrawquery.DatasetRawQuery {
-        grpc_pass grpc://{{ .Values.archivalReleaseName }}-raw-query-exec-controller:8081;
-      }
-
       location /sfkinterface {
         proxy_pass http://{{ .Values.datapathReleaseName }}-sfk-interface/sfkinterface;
+      }
+
+      location /profile-quotas {
+        proxy_pass http://{{ .Values.datapathReleaseName }}-sfk-interface/profile-quotas;
       }
 
       location /signatures {
