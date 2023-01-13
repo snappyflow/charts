@@ -5,13 +5,9 @@ dependencies:
 - name: cp-kafka-rest
   version: 0.1.0
   repository: file://./sub_charts/cp-kafka-rest
-- name: s3-kafka-connect
+- name: archival-kafka-connect
   version: 0.1.0
-  repository: file://./sub_charts/s3-kafka-connect
-  condition: global.archival.enabled
-- name: azureblob-kafka-connect
-  version: 0.1.0
-  repository: file://./sub_charts/azureblob-kafka-connect
+  repository: file://./sub_charts/archival-kafka-connect
   condition: global.archival.enabled
 - name: es-kafka-connect
   version: 0.1.0
