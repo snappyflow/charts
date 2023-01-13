@@ -101,7 +101,7 @@ sfk-interface:
     url: "http://pod-autoscaling-prometheus-server.default"
     auth: "snappyflow"
 
-s3-kafka-connect:
+archival-kafka-connect:
   autoscaling:
     enabled: true
     ingestRateGBPerDayPerPod: 200
