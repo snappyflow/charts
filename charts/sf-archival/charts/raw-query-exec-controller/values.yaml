@@ -5,16 +5,6 @@ image:
   repository: snappyflowml/raw-query-exec-controller
   tag: 'dev-test'
 imagePullSecrets: []
-ingress:
-  annotations: {}
-  className: ''
-  enabled: false
-  hosts:
-  - host: chart-example.local
-    paths:
-    - path: /
-      pathType: ImplementationSpecific
-  tls: []
 nameOverride: ''
 nodeSelector: {}
 podAnnotations: {}

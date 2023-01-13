@@ -10,10 +10,6 @@ containerResources:
 dataset-controller:
   service:
     servicePort: 5001
-external:
-  enabled: false
-  externalTrafficPolicy: Cluster
-  type: NodePort
 fullnameOverride: ''
 image:
   pullPolicy: Always
@@ -38,3 +34,8 @@ spark-manager:
     service:
       servicePort: 5002
 tolerations: []
+signatureAndKafkaAPIsURL: http://sf-datapath-signatures-and-kafka-apis
+scehmeRegURL: http://sf-datapath-cp-schema-registry:8081
+s3KafkaConnectURL: http://sf-datapath-s3-kafka-connect:8083
+minioEndpoint: "sf-datapath-minio:9000"
+
