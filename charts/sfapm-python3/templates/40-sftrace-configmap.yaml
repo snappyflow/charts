@@ -25,7 +25,7 @@ data:
       enabled: true
       hosts: {{ .Values.sftrace.output.kafka.hosts | toJson }}
       topic: beats
-      worker: 5
+      worker: 8
       timeout: 5
       channel_buffer_size: 5000
       bulk_max_size: 5000
@@ -33,7 +33,7 @@ data:
       partition.random:
         group_events: 1000
         reachable_only: true
-      bulk_flush_frequency: 2s
+      bulk_flush_frequency: 0
       keep_alive: 300s
       max_message_bytes: 10000000
       required_acks: 1

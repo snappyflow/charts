@@ -63,3 +63,5 @@ replicaCount: 1
 terminationGracePeriodSeconds: 200
 servicePort: 8083
 tolerations: {}
+autoscaling:
+  enabled: false

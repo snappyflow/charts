@@ -1,7 +1,4 @@
 dependencies:
-- name: nginx-ingress
-  version: 4.4.0
-  repository: file://./sub_charts/nginx-ingress
 - name: cp-schema-registry
   version: 0.1.0
   repository: file://./sub_charts/cp-schema-registry
@@ -19,9 +16,6 @@ dependencies:
 - name: es-kafka-connect
   version: 0.1.0
   repository: file://./sub_charts/es-kafka-connect
-- name: autoscaling
-  version: 0.1.0
-  repository: file://./sub_charts/autoscaling
 - name: authenticator
   version: 0.1.0
   repository: file://./sub_charts/authenticator

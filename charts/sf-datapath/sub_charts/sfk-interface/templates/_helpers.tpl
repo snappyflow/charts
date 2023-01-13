@@ -86,7 +86,3 @@ Create the name of the service account to use
 {{- define "sfk-interface.signatures-and-kafka-apis.fullname" -}}
 {{- printf "%s-%s" .Release.Name "signatures-and-kafka-apis" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
-
-{{- define "sfk-interface.prometheus.fullname" -}}
-{{- printf "%s-%s" .Release.Name "prometheus-server-new" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}

@@ -13,7 +13,6 @@ global:
   # If it is set to 40%, a quota request of 1000 Bytes/s will allocate 1000 * (1 + 0.4) Bytes/s
   quotaBufferPCNT: 5
 
-
   ingress:
     enabled: false
 
@@ -91,166 +90,39 @@ global:
   imagePullSecrets:
   - name: xxxx
 
-creds: "control:$apr1$pjbvxsh8$UnVE6PZ/3874l.cJ.Xc1e0"
-
 # Pod priority class value
 priority: 100
 
 signatures-and-kafka-apis:
   useDefaultPatterns: false
 
-autoscaling:
-  s3KafkaConnect:
-    ingestRateGBPerDayPerPod: 200
-    minReplicas: 2
-    maxReplicas: 10
-  esKafkaConnect:
-    ingestRateGBPerDayPerPod: 200
-    minReplicas: 2
-    maxReplicas: 10
-  cpKafkaRestProxy:
-    minReplicas: 2
-    maxReplicas: 10
-  minio:
-    minReplicas: 2
-    maxReplicas: 10
+sfk-interface:
   prometheus:
-    global:
-      scrape_interval: 5s
-      scrape_timeout: 3s
-      evaluation_interval: 5s
-      query_log_file: /prometheus/query.log
-  prometheus-adapter:
-    rules:
-      default: false
-      existing:
-      external:
-      - seriesQuery: '{__name__="kafka_incoming_byte_rate"}'
-        resources:
-          overrides:
-            kubernetes_namespace:
-              resource: namespace
-        name:
-          matches: ""
-          as: "kafka_bytesinpersec_oneminuterate"
-        metricsQuery: avg_over_time(<<.Series>>{kubernetes_namespace={{ .Values.global.kafka.releaseNamespace  | quote }}, release={{ .Values.global.kafka.releaseName | quote }}}[3m])
-      - seriesQuery: '{__name__="kafka_incoming_byte_rate_for_log_and_metric"}'
-        resources:
-          overrides:
-            kubernetes_namespace:
-              resource: namespace
-        name:
-          matches: ""
-          as: "kafka_bytesinpersec_oneminuterate_for_log_and_metric"
-        metricsQuery: avg_over_time(<<.Series>>{kubernetes_namespace={{ .Values.global.kafka.releaseNamespace | quote  }}, release={{ .Values.global.kafka.releaseName| quote }}}[3m])
-      custom:
-      - seriesQuery: '{__name__="heap_utilization_pcnt"}'
-        resources:
-          overrides:
-            kubernetes_namespace:
-              resource: namespace
-            kubernetes_pod_name:
-              resource: pod
-        name:
-          matches: ""
-          as: "es_connect_heap_utilization_pcnt"
-        metricsQuery: 'avg_over_time(<<.Series>>{kubernetes_pod_name=~".*es-kafka-connect.*"}[3m])'
-      - seriesQuery: '{__name__="nio_memory_utilization"}'
-        resources:
-          overrides:
-            kubernetes_namespace:
-              resource: namespace
-            kubernetes_pod_name:
-              resource: pod
-        name:
-          matches: ""
-          as: "es_connect_nio_utilization_pcnt"
-        metricsQuery: '(avg_over_time(<<.Series>>{kubernetes_pod_name=~".*es-kafka-connect.*"}[3m]) * 100.0) / (200 * 1048576)'
-      - seriesQuery: '{__name__="heap_utilization_pcnt"}'
-        resources:
-          overrides:
-            kubernetes_namespace:
-              resource: namespace
-            kubernetes_pod_name:
-              resource: pod
-        name:
-          matches: ""
-          as: "s3_connect_heap_utilization_pcnt"
-        metricsQuery: 'avg_over_time(<<.Series>>{kubernetes_pod_name=~".*s3-kafka-connect.*"}[3m])'
-      - seriesQuery: '{__name__="nio_memory_utilization"}'
-        resources:
-          overrides:
-            kubernetes_namespace:
-              resource: namespace
-            kubernetes_pod_name:
-              resource: pod
-        name:
-          matches: ""
-          as: "s3_connect_nio_utilization_pcnt"
-        metricsQuery: '(avg_over_time(<<.Series>>{kubernetes_pod_name=~".*s3-kafka-connect.*"}[3m]) * 100.0) / (100 * 1048576)'
-      - seriesQuery: '{__name__="heap_utilization_pcnt"}'
-        resources:
-          overrides:
-            kubernetes_namespace:
-              resource: namespace
-            kubernetes_pod_name:
-              resource: pod
-        name:
-          matches: ""
-          as: "kafka_rest_heap_utilization_pcnt"
-        metricsQuery: 'avg_over_time(<<.Series>>{kubernetes_pod_name=~".*kafka-rest.*"}[3m])'
-      - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*python3-sftrace.*"}
-        name:
-          as: sftrace_queued_events
-          matches: ""
-        resources:
-          overrides:
-            kubernetes_namespace:
-              resource: namespace
-            kubernetes_pod_name:
-              resource: pod
-        seriesQuery: '{__name__="sftrace_queued_events"}'
-      - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*sf-presto-worker.*"}
-        name:
-          as: presto_running_drivers
-          matches: ""
-        resources:
-          overrides:
-            kubernetes_namespace:
-              resource: namespace
-            kubernetes_pod_name:
-              resource: pod
-        seriesQuery: '{__name__="presto_running_drivers"}'
-      - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*sf-presto-worker.*"}
-        name:
-          as: presto_queued_queries
-          matches: ""
-        resources:
-          overrides:
-            kubernetes_namespace:
-              resource: namespace
-            kubernetes_pod_name:
-              resource: pod
-        seriesQuery: '{__name__="presto_queued_queries"}'
-      - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*dataset-raw-controller.*"}
-        name:
-          as: event_queue_handler_occupancy_percent
-          matches: ""
-        resources:
-          overrides:
-            kubernetes_namespace:
-              resource: namespace
-            kubernetes_pod_name:
-              resource: pod
-        seriesQuery: '{__name__="event_queue_handler_occupancy_percent"}'
-      - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*vizbuilder-celery-alert.*"}
-        name:
-          as: num_executing_tasks
-          matches: ""
-        resources:
-          overrides:
-            kubernetes_namespace:
-              resource: namespace
-            kubernetes_pod_name:
-              resource: pod
-        seriesQuery: '{__name__="num_executing_tasks"}'
+    url: "http://pod-autoscaling-prometheus-server.default"
+    auth: "snappyflow"
+
+s3-kafka-connect:
+  autoscaling:
+    enabled: true
+    ingestRateGBPerDayPerPod: 200
+    minReplicas: 2
+    maxReplicas: 10
+
+es-kafka-connect:
+  autoscaling:
+    enabled: true
+    ingestRateGBPerDayPerPod: 200
+    minReplicas: 2
+    maxReplicas: 10
+
+cp-kafka-rest:
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 10
+
+minio:
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 10
