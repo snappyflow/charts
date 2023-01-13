@@ -252,7 +252,7 @@ prometheus:
         regex: Pending|Succeeded|Failed|Completed
         action: drop
 
-  alertmanagers:
+  alertmanager:
     enabled: false
 
   kube-state-metrics:
