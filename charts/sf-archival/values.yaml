@@ -40,11 +40,13 @@ global:
       AWS_SECRET_ACCESS_KEY: XXXX
       AWS_DEFAULT_REGION: us-west-2
       AWS_QUEUE_URL: ""
+      SINK_TYPE: S3
     azure:
       enable: false
       # Set below credentials to access azure storage account from hive/hadoop pods
       STORAGE_ACCOUNT_NAME: XXXX
       STORAGE_ACCOUNT_ACCESS_KEY: XXXX
+      SINK_TYPE: AzureBlob
 
   # Below parameter needs to use the PLAIN_TEXT port
   kafkaBrokers: "localhost:9092,localhost1:9092"
@@ -104,6 +106,8 @@ spark-manager:
     sparkProperties:
       # S3 bucket with aws prefix/folder for spark event logs e.g., for bucket location of s3://sparkhs/spark-hs configure as configured below
       logDirectory: sparkhs/spark-hs
+      azureLogContainer: sparkhs
+      azureLogDirectory: spark-hs
   infrastructure:
     Kubernetes:
       # Kubernetes is always inserted as an infrastructure with slightly higher preference numbers
