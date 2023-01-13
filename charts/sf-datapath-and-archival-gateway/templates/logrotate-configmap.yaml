@@ -3,20 +3,4 @@ kind: ConfigMap
 metadata:
   name: {{ include "gateway.fullname" . }}-logrotate
 data:
-  logrotate.conf: |-
-    /var/log/nginx/access_local.log {
-      su root root
-      rotate {{ .Values.logrotate.config.rotate_count }}
-      {{ .Values.logrotate.config.interval }}
-      maxsize {{ .Values.logrotate.config.maxsize }}
-      {{ .Values.logrotate.config.mode }}
-      missingok
-    }
-    /var/log/nginx/error_local.log {
-      su root root
-      rotate {{ .Values.logrotate.config.rotate_count }}
-      {{ .Values.logrotate.config.interval }}
-      maxsize {{ .Values.logrotate.config.maxsize }}
-      {{ .Values.logrotate.config.mode }}
-      missingok
-    }
+{{ include "gateway.proxy.logrotate.config" . | indent 2 }}

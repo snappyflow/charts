@@ -1,19 +1,19 @@
 global:
   sfagent:
-    enabled: true
+    enabled: false
     profileKey: "abcd"
     projectName: "snappyflow-app"
     appName: "sf-datapath"
 
-archivalReleaseName: archival
-datapathReleaseName: sf-datapath
+  archivalReleaseName: archival
+  datapathReleaseName: sf-datapath
 
-logrotate:
-  config:
-    interval: daily
-    rotate_count: 2
-    maxsize: 50M
-    mode: copytruncate
+  logrotate:
+    config:
+      interval: daily
+      rotate: 2
+      maxsize: 50M
+      mode: copytruncate
 
 nginx:
   service:
@@ -109,4 +109,13 @@ nginx:
     - name: normalization-config
       configMap:
         name: {{ include "gateway.fullname" . }}-sfagent-normalization-nginx
+    {{- end -}}
+
+  podAnnotations: |-
+    checksum/proxy-blocks-config: {{ include "gateway.proxy.blocks.config" . | sha256sum }}
+    checksum/logrotate-config: {{ include "gateway.proxy.logrotate.config" . | sha256sum }}
+    checksum/nginx-config: {{ include "gateway.proxy.nginx.config" . | sha256sum }}
+    {{ if .Values.global.sfagent.enabled -}}
+    checksum/sfagent-config: {{ include "gateway.proxy.sfagent.config" . | sha256sum }}
+    checksum/sfagent-normalization-config: {{ include "gateway.proxy.sfagent.normalization.config" . | sha256sum }}
     {{- end -}}
