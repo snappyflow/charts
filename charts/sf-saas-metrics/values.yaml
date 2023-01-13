@@ -15,13 +15,8 @@ prometheus:
       scrape_interval: 1m
       scrape_timeout: 45s
       evaluation_interval: 1m
-    
-    extraArgs:
-    web.config.file: /etc/config/web.config.yml
-  
-    probeHeaders:
-    - name: Authorization
-      value: Basic dXNlcjpzbmFwcHlmbG93
+
+    retention: "3d"
 
     persistentVolume:
       size: 50Gi
@@ -43,10 +38,6 @@ prometheus:
     livenessProbeTimeout: 30
 
   serverFiles:
-    web.config.yml:
-      basic_auth_users:
-        user: '$2b$12$DNHTLFJ.sTLAmgGyBx3n..fOEbvDdp5lWTl3ORP3m9tYdo5Nq0uJG'
-
     recording_rules.yml:
       groups:
       - name: kafka_elements
@@ -56,9 +47,9 @@ prometheus:
         - record: nio_memory_utilization
           expr: java_nio_bufferpool_memoryused_direct + java_nio_bufferpool_memoryused_mapped
         - record: kafka_incoming_byte_rate
-          expr:  sum by (app, kubernetes_namespace, release) (kafka_server_brokertopicmetrics_total_bytesinpersec_oneminuterate)
+          expr:  sum by (app, namespace, release) (kafka_server_brokertopicmetrics_total_bytesinpersec_oneminuterate)
         - record: kafka_incoming_byte_rate_for_log_and_metric
-          expr: sum by (app, kubernetes_namespace, release) (kafka_server_brokertopicmetrics_bytesinpersec_oneminuterate{topic=~"^(log|metric).*"})
+          expr: sum by (app, namespace, release) (kafka_server_brokertopicmetrics_bytesinpersec_oneminuterate{topic=~"^(log|metric).*"})
 
     scrape_configs:
     # Scrape config for service endpoints.
@@ -269,9 +260,6 @@ prometheus-adapter:
     url: "http://{{ printf \"%s-%s\" .Release.Name \"prometheus-server\" | trunc 63 | trimSuffix \"-\" }}"
     port: 80
 
-  extraArguments:
-  - --prometheus-header=Authorization=Basic dXNlcjpzbmFwcHlmbG93
-
   resources:
     limits:
       cpu: 200m
@@ -287,119 +275,119 @@ prometheus-adapter:
     - seriesQuery: '{__name__="kafka_incoming_byte_rate"}'
       resources:
         overrides:
-          kubernetes_namespace:
+          namespace:
             resource: namespace
       name:
         matches: ""
         as: "kafka_bytesinpersec_oneminuterate"
-      metricsQuery: avg_over_time(<<.Series>>{kubernetes_namespace={{ .Values.global.kafka.releaseNamespace  | quote }}, release={{ .Values.global.kafka.releaseName | quote }}}[3m])
+      metricsQuery: avg_over_time(<<.Series>>{app="cp-kafka", namespace="kafka", release="kafka"}[3m])
     - seriesQuery: '{__name__="kafka_incoming_byte_rate_for_log_and_metric"}'
       resources:
         overrides:
-          kubernetes_namespace:
+          namespace:
             resource: namespace
       name:
         matches: ""
         as: "kafka_bytesinpersec_oneminuterate_for_log_and_metric"
-      metricsQuery: avg_over_time(<<.Series>>{kubernetes_namespace={{ .Values.global.kafka.releaseNamespace | quote  }}, release={{ .Values.global.kafka.releaseName| quote }}}[3m])
+      metricsQuery: avg_over_time(<<.Series>>{app="cp-kafka", namespace="kafka", release="kafka"}[3m])
     
     custom:
     - seriesQuery: '{__name__="heap_utilization_pcnt"}'
       resources:
         overrides:
-          kubernetes_namespace:
+          namespace:
             resource: namespace
-          kubernetes_pod_name:
+          pod:
             resource: pod
       name:
         matches: ""
         as: "es_connect_heap_utilization_pcnt"
-      metricsQuery: 'avg_over_time(<<.Series>>{kubernetes_pod_name=~".*es-kafka-connect.*"}[3m])'
+      metricsQuery: 'avg_over_time(<<.Series>>{pod=~".*es-kafka-connect.*"}[3m])'
     - seriesQuery: '{__name__="nio_memory_utilization"}'
       resources:
         overrides:
-          kubernetes_namespace:
+          namespace:
             resource: namespace
-          kubernetes_pod_name:
+          pod:
             resource: pod
       name:
         matches: ""
         as: "es_connect_nio_utilization_pcnt"
-      metricsQuery: '(avg_over_time(<<.Series>>{kubernetes_pod_name=~".*es-kafka-connect.*"}[3m]) * 100.0) / (200 * 1048576)'
+      metricsQuery: '(avg_over_time(<<.Series>>{pod=~".*es-kafka-connect.*"}[3m]) * 100.0) / (200 * 1048576)'
     - seriesQuery: '{__name__="heap_utilization_pcnt"}'
       resources:
         overrides:
-          kubernetes_namespace:
+          namespace:
             resource: namespace
-          kubernetes_pod_name:
+          pod:
             resource: pod
       name:
         matches: ""
         as: "s3_connect_heap_utilization_pcnt"
-      metricsQuery: 'avg_over_time(<<.Series>>{kubernetes_pod_name=~".*s3-kafka-connect.*"}[3m])'
+      metricsQuery: 'avg_over_time(<<.Series>>{pod=~".*s3-kafka-connect.*"}[3m])'
     - seriesQuery: '{__name__="nio_memory_utilization"}'
       resources:
         overrides:
-          kubernetes_namespace:
+          namespace:
             resource: namespace
-          kubernetes_pod_name:
+          pod:
             resource: pod
       name:
         matches: ""
         as: "s3_connect_nio_utilization_pcnt"
-      metricsQuery: '(avg_over_time(<<.Series>>{kubernetes_pod_name=~".*s3-kafka-connect.*"}[3m]) * 100.0) / (100 * 1048576)'
+      metricsQuery: '(avg_over_time(<<.Series>>{pod=~".*s3-kafka-connect.*"}[3m]) * 100.0) / (100 * 1048576)'
     - seriesQuery: '{__name__="heap_utilization_pcnt"}'
       resources:
         overrides:
-          kubernetes_namespace:
+          namespace:
             resource: namespace
-          kubernetes_pod_name:
+          pod:
             resource: pod
       name:
         matches: ""
         as: "kafka_rest_heap_utilization_pcnt"
-      metricsQuery: 'avg_over_time(<<.Series>>{kubernetes_pod_name=~".*kafka-rest.*"}[3m])'
-    - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*python3-sftrace.*"}
+      metricsQuery: 'avg_over_time(<<.Series>>{pod=~".*kafka-rest.*"}[3m])'
+    - metricsQuery: <<.Series>>{pod=~".*python3-sftrace.*"}
       name:
         as: sftrace_queued_events
         matches: ""
       resources:
         overrides:
-          kubernetes_namespace:
+          namespace:
             resource: namespace
-          kubernetes_pod_name:
+          pod:
             resource: pod
       seriesQuery: '{__name__="sftrace_queued_events"}'
-    - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*sf-presto-worker.*"}
+    - metricsQuery: <<.Series>>{pod=~".*sf-presto-worker.*"}
       name:
         as: presto_running_drivers
         matches: ""
       resources:
         overrides:
-          kubernetes_namespace:
+          namespace:
             resource: namespace
-          kubernetes_pod_name:
+          pod:
             resource: pod
       seriesQuery: '{__name__="presto_running_drivers"}'
-    - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*sf-presto-worker.*"}
+    - metricsQuery: <<.Series>>{pod=~".*sf-presto-worker.*"}
       name:
         as: presto_queued_queries
         matches: ""
       resources:
         overrides:
-          kubernetes_namespace:
+          namespace:
             resource: namespace
-          kubernetes_pod_name:
+          pod:
             resource: pod
       seriesQuery: '{__name__="presto_queued_queries"}'
-    - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*vizbuilder-celery-alert.*"}
+    - metricsQuery: <<.Series>>{pod=~".*vizbuilder-celery-alert.*"}
       name:
         as: num_executing_tasks
         matches: ""
       resources:
         overrides:
-          kubernetes_namespace:
+          namespace:
             resource: namespace
-          kubernetes_pod_name:
+          pod:
             resource: pod
       seriesQuery: '{__name__="num_executing_tasks"}'
