@@ -267,6 +267,10 @@ prometheus:
 prometheus-adapter:
   prometheus:
     url: "http://{{ printf \"%s-%s\" .Release.Name \"prometheus-server\" | trunc 63 | trimSuffix \"-\" }}"
+    port: 80
+
+  extraArguments:
+  - --prometheus-header=Authorization=Basic dXNlcjpzbmFwcHlmbG93
 
   resources:
     limits:
