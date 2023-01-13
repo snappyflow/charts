@@ -1,7 +1,4 @@
 dependencies:
-- name: nginx-ingress
-  repository: file://./sub_charts/nginx-ingress
-  version: 4.4.0
 - name: cp-schema-registry
   repository: file://./sub_charts/cp-schema-registry
   version: 0.1.0
@@ -17,9 +14,6 @@ dependencies:
 - name: es-kafka-connect
   repository: file://./sub_charts/es-kafka-connect
   version: 0.1.0
-- name: autoscaling
-  repository: file://./sub_charts/autoscaling
-  version: 0.1.0
 - name: authenticator
   repository: file://./sub_charts/authenticator
   version: 0.1.0
@@ -32,5 +26,5 @@ dependencies:
 - name: minio
   repository: file://./sub_charts/minio
   version: 8.0.10
-digest: sha256:15ab7011a87bde60ccc765ebd92484843e93a40c450346e009aec7c417772f9b
-generated: "2022-12-18T23:36:07.675637433+05:30"
+digest: sha256:e84e79334539238506c2db5aaf82e7da6075d33e5229083b08f08a1be6a16bc5
+generated: "2023-01-11T16:18:06.515585977+05:30"

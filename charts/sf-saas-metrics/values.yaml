@@ -1,0 +1,401 @@
+prometheus:
+  configmapReload:
+    prometheus:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 10Mi
+
+  serviceAccounts:
+    server:
+      create: false
+
+  server:
+    global:
+      scrape_interval: 1m
+      scrape_timeout: 45s
+      evaluation_interval: 1m
+    
+    extraArgs:
+    web.config.file: /etc/config/web.config.yml
+  
+    probeHeaders:
+    - name: Authorization
+      value: Basic dXNlcjpzbmFwcHlmbG93
+
+    persistentVolume:
+      size: 50Gi
+      storageClass: null
+
+    resources:
+      limits:
+        cpu: 500m
+        memory: 3Gi
+      requests:
+        cpu: 250m
+        memory: 2Gi
+
+    readinessProbeInitialDelay: 120
+    readinessProbePeriodSeconds: 60
+    readinessProbeTimeout: 30
+    livenessProbeInitialDelay: 120
+    livenessProbePeriodSeconds: 60
+    livenessProbeTimeout: 30
+
+  serverFiles:
+    web.config.yml:
+      basic_auth_users:
+        user: '$2b$12$DNHTLFJ.sTLAmgGyBx3n..fOEbvDdp5lWTl3ORP3m9tYdo5Nq0uJG'
+
+    recording_rules.yml:
+      groups:
+      - name: kafka_elements
+        rules:
+        - record: heap_utilization_pcnt
+          expr: (java_lang_memory_heapmemoryusage_used * 100.0) / java_lang_memory_heapmemoryusage_max
+        - record: nio_memory_utilization
+          expr: java_nio_bufferpool_memoryused_direct + java_nio_bufferpool_memoryused_mapped
+        - record: kafka_incoming_byte_rate
+          expr:  sum by (app, kubernetes_namespace, release) (kafka_server_brokertopicmetrics_total_bytesinpersec_oneminuterate)
+        - record: kafka_incoming_byte_rate_for_log_and_metric
+          expr: sum by (app, kubernetes_namespace, release) (kafka_server_brokertopicmetrics_bytesinpersec_oneminuterate{topic=~"^(log|metric).*"})
+
+    scrape_configs:
+    # Scrape config for service endpoints.
+    #
+    # The relabeling allows the actual service scrape endpoint to be configured
+    # via the following annotations:
+    #
+    # * `prometheus.io/scrape`: Only scrape services that have a value of `true`, except if `prometheus.io/scrape-slow` is set to `true` as well.
+    # * `prometheus.io/scheme`: If the metrics endpoint is secured then you will need to set this to `https` & most likely set the `tls_config` of the scrape config.
+    # * `prometheus.io/path`: If the metrics path is not `/metrics` override this.
+    # * `prometheus.io/port`: If the metrics are exposed on a different port to the service then set this appropriately.
+    # * `prometheus.io/param_<parameter>`: If the metrics endpoint uses parameters then you can set any parameter
+    - job_name: 'kubernetes-service-endpoints'
+      honor_labels: true
+      kubernetes_sd_configs:
+      - role: endpoints
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape_slow]
+        action: drop
+        regex: true
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scheme]
+        action: replace
+        target_label: __scheme__
+        regex: (https?)
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
+        action: replace
+        target_label: __address__
+        regex: (.+?)(?::\d+)?;(\d+)
+        replacement: $1:$2
+      - action: labelmap
+        regex: __meta_kubernetes_service_annotation_prometheus_io_param_(.+)
+        replacement: __param_$1
+      - action: labelmap
+        regex: __meta_kubernetes_service_label_(.+)
+      - source_labels: [__meta_kubernetes_namespace]
+        action: replace
+        target_label: namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        action: replace
+        target_label: service
+      - source_labels: [__meta_kubernetes_pod_node_name]
+        action: replace
+        target_label: node
+    # Scrape config for slow service endpoints; same as above, but with a larger
+    # timeout and a larger interval
+    #
+    # The relabeling allows the actual service scrape endpoint to be configured
+    # via the following annotations:
+    #
+    # * `prometheus.io/scrape-slow`: Only scrape services that have a value of `true`
+    # * `prometheus.io/scheme`: If the metrics endpoint is secured then you will need to set this to `https` & most likely set the `tls_config` of the scrape config.
+    # * `prometheus.io/path`: If the metrics path is not `/metrics` override this.
+    # * `prometheus.io/port`: If the metrics are exposed on a different port to the service then set this appropriately.
+    # * `prometheus.io/param_<parameter>`: If the metrics endpoint uses parameters then you can set any parameter
+    - job_name: 'kubernetes-service-endpoints-slow'
+      honor_labels: true
+      scrape_interval: 5m
+      scrape_timeout: 30s
+      kubernetes_sd_configs:
+      - role: endpoints
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape_slow]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scheme]
+        action: replace
+        target_label: __scheme__
+        regex: (https?)
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
+        action: replace
+        target_label: __address__
+        regex: (.+?)(?::\d+)?;(\d+)
+        replacement: $1:$2
+      - action: labelmap
+        regex: __meta_kubernetes_service_annotation_prometheus_io_param_(.+)
+        replacement: __param_$1
+      - action: labelmap
+        regex: __meta_kubernetes_service_label_(.+)
+      - source_labels: [__meta_kubernetes_namespace]
+        action: replace
+        target_label: namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        action: replace
+        target_label: service
+      - source_labels: [__meta_kubernetes_pod_node_name]
+        action: replace
+        target_label: node
+    # Scrape config for pods
+    #
+    # The relabeling allows the actual pod scrape endpoint to be configured via the
+    # following annotations:
+    #
+    # * `prometheus.io/scrape`: Only scrape pods that have a value of `true`, except if `prometheus.io/scrape-slow` is set to `true` as well.
+    # * `prometheus.io/scheme`: If the metrics endpoint is secured then you will need to set this to `https` & most likely set the `tls_config` of the scrape config.
+    # * `prometheus.io/path`: If the metrics path is not `/metrics` override this.
+    # * `prometheus.io/port`: Scrape the pod on the indicated port instead of the default of `9102`.
+    - job_name: 'kubernetes-pods'
+      honor_labels: true
+      kubernetes_sd_configs:
+      - role: pod
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape_slow]
+        action: drop
+        regex: true
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scheme]
+        action: replace
+        regex: (https?)
+        target_label: __scheme__
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        action: replace
+        regex: (.+?)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_annotation_prometheus_io_param_(.+)
+        replacement: __param_$1
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
+      - source_labels: [__meta_kubernetes_namespace]
+        action: replace
+        target_label: namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        action: replace
+        target_label: pod
+      - source_labels: [__meta_kubernetes_pod_phase]
+        regex: Pending|Succeeded|Failed|Completed
+        action: drop
+    # Scrape config for pods which should be scraped slower. An useful example
+    # would be stackriver-exporter which queries an API on every scrape of the pod
+    #
+    # The relabeling allows the actual pod scrape endpoint to be configured via the
+    # following annotations:
+    #
+    # * `prometheus.io/scrape-slow`: Only scrape pods that have a value of `true`
+    # * `prometheus.io/scheme`: If the metrics endpoint is secured then you will need to set this to `https` & most likely set the `tls_config` of the scrape config.
+    # * `prometheus.io/path`: If the metrics path is not `/metrics` override this.
+    # * `prometheus.io/port`: Scrape the pod on the indicated port instead of the default of `9102`.
+    - job_name: 'kubernetes-pods-slow'
+      honor_labels: true
+      scrape_interval: 5m
+      scrape_timeout: 30s
+      kubernetes_sd_configs:
+      - role: pod
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape_slow]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scheme]
+        action: replace
+        regex: (https?)
+        target_label: __scheme__
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        action: replace
+        regex: (.+?)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_annotation_prometheus_io_param_(.+)
+        replacement: __param_$1
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
+      - source_labels: [__meta_kubernetes_namespace]
+        action: replace
+        target_label: namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        action: replace
+        target_label: pod
+      - source_labels: [__meta_kubernetes_pod_phase]
+        regex: Pending|Succeeded|Failed|Completed
+        action: drop
+
+  alertmanagers:
+    enabled: false
+
+  kube-state-metrics:
+    enabled: false
+
+  prometheus-node-exporter:
+    enabled: false
+  
+  prometheus-pushgateway:
+    enabled: false
+
+prometheus-adapter:
+  prometheus:
+    url: "http://{{ printf \"%s-%s\" .Release.Name \"prometheus-server\" | trunc 63 | trimSuffix \"-\" }}"
+
+  resources:
+    limits:
+      cpu: 200m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+
+  rules:
+    default: false
+
+    external:
+    - seriesQuery: '{__name__="kafka_incoming_byte_rate"}'
+      resources:
+        overrides:
+          kubernetes_namespace:
+            resource: namespace
+      name:
+        matches: ""
+        as: "kafka_bytesinpersec_oneminuterate"
+      metricsQuery: avg_over_time(<<.Series>>{kubernetes_namespace={{ .Values.global.kafka.releaseNamespace  | quote }}, release={{ .Values.global.kafka.releaseName | quote }}}[3m])
+    - seriesQuery: '{__name__="kafka_incoming_byte_rate_for_log_and_metric"}'
+      resources:
+        overrides:
+          kubernetes_namespace:
+            resource: namespace
+      name:
+        matches: ""
+        as: "kafka_bytesinpersec_oneminuterate_for_log_and_metric"
+      metricsQuery: avg_over_time(<<.Series>>{kubernetes_namespace={{ .Values.global.kafka.releaseNamespace | quote  }}, release={{ .Values.global.kafka.releaseName| quote }}}[3m])
+    
+    custom:
+    - seriesQuery: '{__name__="heap_utilization_pcnt"}'
+      resources:
+        overrides:
+          kubernetes_namespace:
+            resource: namespace
+          kubernetes_pod_name:
+            resource: pod
+      name:
+        matches: ""
+        as: "es_connect_heap_utilization_pcnt"
+      metricsQuery: 'avg_over_time(<<.Series>>{kubernetes_pod_name=~".*es-kafka-connect.*"}[3m])'
+    - seriesQuery: '{__name__="nio_memory_utilization"}'
+      resources:
+        overrides:
+          kubernetes_namespace:
+            resource: namespace
+          kubernetes_pod_name:
+            resource: pod
+      name:
+        matches: ""
+        as: "es_connect_nio_utilization_pcnt"
+      metricsQuery: '(avg_over_time(<<.Series>>{kubernetes_pod_name=~".*es-kafka-connect.*"}[3m]) * 100.0) / (200 * 1048576)'
+    - seriesQuery: '{__name__="heap_utilization_pcnt"}'
+      resources:
+        overrides:
+          kubernetes_namespace:
+            resource: namespace
+          kubernetes_pod_name:
+            resource: pod
+      name:
+        matches: ""
+        as: "s3_connect_heap_utilization_pcnt"
+      metricsQuery: 'avg_over_time(<<.Series>>{kubernetes_pod_name=~".*s3-kafka-connect.*"}[3m])'
+    - seriesQuery: '{__name__="nio_memory_utilization"}'
+      resources:
+        overrides:
+          kubernetes_namespace:
+            resource: namespace
+          kubernetes_pod_name:
+            resource: pod
+      name:
+        matches: ""
+        as: "s3_connect_nio_utilization_pcnt"
+      metricsQuery: '(avg_over_time(<<.Series>>{kubernetes_pod_name=~".*s3-kafka-connect.*"}[3m]) * 100.0) / (100 * 1048576)'
+    - seriesQuery: '{__name__="heap_utilization_pcnt"}'
+      resources:
+        overrides:
+          kubernetes_namespace:
+            resource: namespace
+          kubernetes_pod_name:
+            resource: pod
+      name:
+        matches: ""
+        as: "kafka_rest_heap_utilization_pcnt"
+      metricsQuery: 'avg_over_time(<<.Series>>{kubernetes_pod_name=~".*kafka-rest.*"}[3m])'
+    - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*python3-sftrace.*"}
+      name:
+        as: sftrace_queued_events
+        matches: ""
+      resources:
+        overrides:
+          kubernetes_namespace:
+            resource: namespace
+          kubernetes_pod_name:
+            resource: pod
+      seriesQuery: '{__name__="sftrace_queued_events"}'
+    - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*sf-presto-worker.*"}
+      name:
+        as: presto_running_drivers
+        matches: ""
+      resources:
+        overrides:
+          kubernetes_namespace:
+            resource: namespace
+          kubernetes_pod_name:
+            resource: pod
+      seriesQuery: '{__name__="presto_running_drivers"}'
+    - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*sf-presto-worker.*"}
+      name:
+        as: presto_queued_queries
+        matches: ""
+      resources:
+        overrides:
+          kubernetes_namespace:
+            resource: namespace
+          kubernetes_pod_name:
+            resource: pod
+      seriesQuery: '{__name__="presto_queued_queries"}'
+    - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*vizbuilder-celery-alert.*"}
+      name:
+        as: num_executing_tasks
+        matches: ""
+      resources:
+        overrides:
+          kubernetes_namespace:
+            resource: namespace
+          kubernetes_pod_name:
+            resource: pod
+      seriesQuery: '{__name__="num_executing_tasks"}'

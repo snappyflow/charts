@@ -52,10 +52,6 @@ global:
   # Certain components which use SASL_PLAIN will use this port along with above machines
   kafkaSASLPort: "9093"
 
-  snappyflowDatapath:
-    enabled: true
-    releaseName: sf-datapath
-
   snappyflowProjectLabel: snappyflow/projectname
   snappyflowAppLabel: snappyflow/appname
 
@@ -95,6 +91,10 @@ compaction-controller:
     start: "*/10 * * * *"
 
 ingest-controller:
+  signatureAndKafkaAPIsURL: "http://sf-datapath-signatures-and-kafka-apis"
+  scehmaRegistryURL: "http://sf-datapath-cp-schema-registry:8081"
+  s3KafkaConnectURL: "http://sf-datapath-s3-kafka-connect:8083"
+  minioEndpoint: "sf-datapath-minio:9000"
   schedules:
     sink: "*/10 * * * *"
   timeBucketSizeMinutes: 15 # Has to be an integer

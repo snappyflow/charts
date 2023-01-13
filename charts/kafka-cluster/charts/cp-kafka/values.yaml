@@ -19,8 +19,8 @@ prometheus:
   # Prometheus Kafka Exporter: exposes complimentary metrics to JMX Exporter
   kafka:
     enabled: true
-    image: danielqsj/kafka-exporter
-    imageTag: v1.0.1
+    image: snappyflowml/kafka-lag-exporter
+    imageTag: latest
     interval: 30s
     port: 9308
     resources: {}

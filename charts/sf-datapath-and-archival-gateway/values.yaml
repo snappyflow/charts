@@ -1,0 +1,121 @@
+global:
+  sfagent:
+    enabled: false
+    profileKey: "abcd"
+    projectName: "snappyflow-app"
+    appName: "sf-datapath"
+
+  archivalReleaseName: archival
+  datapathReleaseName: sf-datapath
+
+  logrotate:
+    config:
+      interval: daily
+      rotate: 2
+      maxsize: 50M
+      mode: copytruncate
+
+nginx:
+  service:
+    type: ClusterIP
+    extraPorts: |-
+      - name: grpc
+        port: 8081
+        targetPort: grpc
+
+  extraContainerPorts: |-
+    - name: grpc
+      containerPort: 8081
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+
+  podLabels: |-
+    snappyflow/component: nginx
+    snappyflow/appname: {{ .Values.global.sfagent.appName }}
+    snappyflow/projectname: {{ .Values.global.sfagent.projectName }}
+
+  existingServerBlockConfigmap: "{{ include \"gateway.proxy-blocks\" . }}"
+
+  sidecars: |-
+    - name: logrotate
+      image: linkyard/logrotate:latest
+      imagePullPolicy: IfNotPresent
+      resources:
+        requests:
+          cpu: 10m
+          memory: 10Mi
+        limits:
+          cpu: 10m
+          memory: 10Mi
+      volumeMounts:
+      - name: varlog
+        mountPath: /var/log/nginx
+      - mountPath: /etc/logrotate.conf
+        name: logrotate-config
+        subPath: logrotate.conf
+    {{ if .Values.global.sfagent.enabled -}}
+    - name: sfagent
+      image: "snappyflowml/sfagent:latest"
+      imagePullPolicy: Always
+      command:
+      - /app/sfagent
+      - -enable-console-log
+      env:
+      - name: APP_NAME
+        value: "{{ .Values.global.sfagent.appName }}"
+      - name: PROJECT_NAME
+        value: "{{ .Values.global.sfagent.projectName }}"
+      volumeMounts:
+      - name: varlog
+        mountPath: /var/log/nginx
+      - name: sfagent-config
+        mountPath: /opt/sfagent/config.yaml
+        subPath: config.yaml
+      - name: normalization-config
+        mountPath: /opt/sfagent/normalization/config.yaml
+        subPath: config.yaml
+      resources:
+        requests:
+          cpu: 100m
+          memory: 100Mi
+        limits:
+          cpu: 100m
+          memory: 100Mi
+    {{- end -}}
+
+  extraVolumeMounts: |-
+    - name: varlog
+      mountPath: /var/log/nginx
+    - mountPath: /opt/bitnami/nginx/conf/nginx.conf
+      name: apmconfig
+      subPath: nginx.conf
+
+  extraVolumes: |-
+    - name: apmconfig
+      configMap:
+        name: {{ include "gateway.fullname" . }}-nginx-conf
+    - name: logrotate-config
+      configMap:
+        name: {{ include "gateway.fullname" . }}-logrotate
+    - emptyDir: {}
+      name: varlog
+    {{ if .Values.global.sfagent.enabled -}}
+    - name: sfagent-config
+      configMap:
+        name: {{ include "gateway.fullname" . }}-sfagent-plugin-configmap
+    - name: normalization-config
+      configMap:
+        name: {{ include "gateway.fullname" . }}-sfagent-normalization-nginx
+    {{- end -}}
+
+  podAnnotations: |-
+    checksum/proxy-blocks-config: {{ include "gateway.proxy.blocks.config" . | sha256sum }}
+    checksum/logrotate-config: {{ include "gateway.proxy.logrotate.config" . | sha256sum }}
+    checksum/nginx-config: {{ include "gateway.proxy.nginx.config" . | sha256sum }}
+    {{ if .Values.global.sfagent.enabled -}}
+    checksum/sfagent-config: {{ include "gateway.proxy.sfagent.config" . | sha256sum }}
+    checksum/sfagent-normalization-config: {{ include "gateway.proxy.sfagent.normalization.config" . | sha256sum }}
+    {{- end -}}

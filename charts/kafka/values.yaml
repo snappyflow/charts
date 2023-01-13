@@ -259,10 +259,10 @@ prometheus:
     enabled: true
 
     ## The image to use for the metrics collector
-    image: danielqsj/kafka-exporter
+    image: snappyflowml/kafka-lag-exporter
 
     ## The image tag to use for the metrics collector
-    imageTag: v1.0.1
+    imageTag: latest
 
     ## Interval at which Prometheus scrapes metrics, note: only used by Prometheus Operator
     interval: 10s
