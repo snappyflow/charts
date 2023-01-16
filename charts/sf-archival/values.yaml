@@ -19,9 +19,11 @@ global:
     postgresqlUsername: archive
     postgresqlPassword: archive123
     servicePort: 5432
+
   hivepartitioncolumns:
     compactPartitionColumnNames: '["year", "month", "day", "segment"]'
     rawPartitionColumnNames: '["year", "month", "day", "timebucket"]'
+
   secrets:
     gcs:
       enable: false
@@ -40,6 +42,7 @@ global:
       AWS_SECRET_ACCESS_KEY: XXXX
       AWS_DEFAULT_REGION: us-west-2
       AWS_QUEUE_URL: ""
+      AWS_QUEUE_ARN: ""
     azure:
       enable: false
       # Set below credentials to access azure storage account from hive/hadoop pods
@@ -63,6 +66,7 @@ global:
 
   maxTasksPerTopic: 3
   timeBucketSizeMinutes: 15
+
 # Pod priority class value
 priority: 100
 
