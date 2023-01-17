@@ -114,9 +114,9 @@ autoscaling:
     maxReplicas: 10
   prometheus:
     global:
-      scrape_interval: 5s
-      scrape_timeout: 3s
-      evaluation_interval: 5s
+      scrape_interval: 60s
+      scrape_timeout: 45s
+      evaluation_interval: 60s
       query_log_file: /prometheus/query.log
   prometheus-adapter:
     rules:
