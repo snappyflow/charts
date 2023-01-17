@@ -86,7 +86,7 @@ data:
 {{- if eq .Values.global.secrets.aws.enable true }}
               "spark.eventLog.dir=s3a://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}",
 {{- else if eq .Values.global.secrets.azure.enable true }}
-"spark.eventLog.dir=wasbs://{{ index .Values "jobserver" "sparkProperties" "azureLogContainer" }}@{{ .Values.global.secrets.azure.STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/{{ index .Values "jobserver" "sparkProperties" "azureLogDirectory" }}",
+              "spark.eventLog.dir=wasbs://{{ index .Values "jobserver" "sparkProperties" "azureLogContainer" }}@{{ .Values.global.secrets.azure.STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/{{ index .Values "jobserver" "sparkProperties" "azureLogDirectory" }}",
 {{- else}}
               "spark.eventLog.dir=gs://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}",
 {{- end }}
