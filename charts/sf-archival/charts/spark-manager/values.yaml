@@ -18,6 +18,11 @@ jobserver:
     servicePort: 5002
   sparkProperties:
     logDirectory: sparkhs/spark-hs
+cbsparkevent:
+  image:
+    pullPolicy: IfNotPresent
+    repository: snappyflowml/cb-spark-event
+    tag: 'azurestage-1'
 monitor:
   containerResources:
     limits:
