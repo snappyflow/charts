@@ -106,6 +106,8 @@ data:
               "spark.kubernetes.executor.label.release={{ .Release.Name }}",
               "--conf",
               "spark.kubernetes.container.image={{ .Values.compactionImage }}",
+              "--conf",
+              "spark.kubernetes.container.image.pullSecrets={{ .Values.global.imagePullSecrets }}",
 {{- if or (and (eq .Values.global.secrets.aws.enable true) (eq .Values.global.secrets.aws.use_iam_role true)) (and (eq .Values.global.secrets.gcs.enable true) (eq .Values.global.secrets.gcs.use_google_service_account true)) }}
               "--conf",
               "spark.kubernetes.authenticate.driver.serviceAccountName={{ .Release.Name }}-service-account",
