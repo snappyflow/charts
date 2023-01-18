@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sf-scheduler.fullname" . }}
+  labels:
+    component: scheduler
+    tier: control-plane
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      component: scheduler
+      tier: control-plane
+  template:
+    metadata:
+      labels:
+        component: scheduler
+        tier: control-plane
+        version: second
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      containers:
+      - command:
+        - /usr/local/bin/kube-scheduler
+        - --config=/etc/kubernetes/sf-scheduler/sf-scheduler-config.yaml
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 10259
+            scheme: HTTPS
+          initialDelaySeconds: 15
+        name: sf-scheduler
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 10259
+            scheme: HTTPS
+        securityContext:
+          privileged: false
+        volumeMounts:
+          - name: config-volume
+            mountPath: /etc/kubernetes/sf-scheduler
+      hostNetwork: false
+      hostPID: false
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ include "sf-scheduler.fullname" . }}-configmap
+      
