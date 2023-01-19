@@ -12,13 +12,13 @@ spec:
     name: {{ include "sfapm.fullname" . }}-sftrace
   behavior:
     scaleDown:
-      stabilizationWindowSeconds: 30
+      stabilizationWindowSeconds: 5
       policies:
       - type: Pods
         periodSeconds: {{ .Values.sftrace.autoscaling.scaleDownPeriod }}
         value: 1
     scaleUp:
-      stabilizationWindowSeconds: 30
+      stabilizationWindowSeconds: 5
       policies:
       - type: Pods
         periodSeconds: {{ .Values.sftrace.autoscaling.scaleUpPeriod }}
@@ -32,5 +32,5 @@ spec:
         name: sftrace_queued_events
       target:
         type: AverageValue
-        averageValue: {{ div .Values.sftrace.maximumQueueEvents 2 }}
+        averageValue: {{ div .Values.sftrace.maximumQueueEvents 5 }}
 {{- end }}

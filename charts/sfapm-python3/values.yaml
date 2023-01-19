@@ -513,7 +513,7 @@ sftrace:
 
   terminationGracePeriodSeconds: 30
 
-  maximumQueueEvents: 65536
+  maximumQueueEvents: 40000
 
   # Helm values for sftrace-server-prometheus-exporter container
   sftraceServerPrometheusExporter:
@@ -567,8 +567,8 @@ sftrace:
     minReplicas: 2
     maxReplicas: 5
     # This value is calculated as 50 % of max events trace queue can buffer 
-    scaleUpPeriod: 30
-    scaleDownPeriod: 60
+    scaleUpPeriod: 5
+    scaleDownPeriod: 120
 
 serviceAccount:
   # Specifies whether a service account should be created
