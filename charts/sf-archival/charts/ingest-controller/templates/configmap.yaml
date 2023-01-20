@@ -7,6 +7,7 @@ data:
   config.json: |-
     {
       "datasetURL": "http://{{ template "ingest-controller.dataset-controller.fullname" . }}",
+      "datasetRawControllerURL": "http://{{ template "ingest-controller.dataset-raw-controller.fullname" . }}",
       "queryControlURL": "http://{{ template "ingest-controller.query-controller.fullname" . }}",
       "db": {
         "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
