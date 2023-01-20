@@ -144,6 +144,6 @@ spec:
             args:
             - /bin/sh
             - -c
-            - curl -X POST http://{{ include "dataset-controller.fullname" . }}/datasets/partitions/mark-compaction-complete
+            - curl -X POST http://{{ include "dataset-controller.fullname" . }}/datasets/partitions/mark-compaction-complete-partition
           restartPolicy: Never
 {{- end }}
