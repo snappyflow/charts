@@ -109,27 +109,27 @@ sfapm:
     metric:
       rollover_max_age: 10d
       rollover_max_docs: "None"
-      rollover_max_size: 10gb
+      rollover_max_size: 30gb
     log:
       rollover_max_age: 10d
       rollover_max_docs: "None"
-      rollover_max_size: 10gb
+      rollover_max_size: 30gb
     trace:
       rollover_max_age: 1d
       rollover_max_docs: "None"
-      rollover_max_size: 10gb
+      rollover_max_size: 30gb
     rum:
       rollover_max_age: 1d
       rollover_max_docs: "None"
-      rollover_max_size: 10gb
+      rollover_max_size: 30gb
     profile:
       rollover_max_age: 1d
       rollover_max_docs: "None"
-      rollover_max_size: 10gb
+      rollover_max_size: 30gb
     control:
       rollover_max_age: 1d
       rollover_max_docs: "None"
-      rollover_max_size: 10gb
+      rollover_max_size: 30gb
 
   serverid: ""
 
