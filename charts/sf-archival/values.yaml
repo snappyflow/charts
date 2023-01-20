@@ -50,6 +50,8 @@ global:
       STORAGE_ACCOUNT_NAME: XXXX
       STORAGE_ACCOUNT_ACCESS_KEY: XXXX
       SINK_TYPE: AzureBlob
+      AZURE_SERVICEBUS_QUEUE_NAME: XXXX
+      AZURE_SERVICEBUS_CONNECTION_STR: XXXX
 
   # Below parameter needs to use the PLAIN_TEXT port
   kafkaBrokers: "localhost:9092,localhost1:9092"
