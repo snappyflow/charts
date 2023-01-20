@@ -31,7 +31,8 @@ data:
       "patternsURL": {{ .Values.signatureAndKafkaAPIsURL | quote }},
       "serverPort": "{{ .Values.serverPort }}"
     }
-  s3_sink_defaults.json: |-
+  {{ if eq .Values.global.secrets.aws.enable true -}}
+  sink_defaults.json: |-
     {
       "connector.class": "io.confluent.connect.s3.S3SinkConnector",
       "max_tasks_per_topic": {{ .Values.global.maxTasksPerTopic }},
@@ -65,3 +66,32 @@ data:
       {{- end }}
       "errors.tolerance": "all"
     }
+  {{ else if eq .Values.global.secrets.azure.enable true -}}
+  sink_defaults.json: |-
+    {
+      "connector.class": "io.confluent.connect.azureblob.AzureBlobSinkConnector",
+      "max_tasks_per_topic": {{ .Values.global.maxTasksPerTopic }},
+      "azureblob.block.size": 5242880,
+      "flush.size": 10000,
+      "storage.class": "io.confluent.connect.azureblob.storage.AzureBlobStorage",
+      "format.class": "io.confluent.connect.azureblob.format.orc.OrcFormat",
+      "partitioner.class": "io.confluent.connect.storage.partitioner.SfFieldTimeBucketPartitioner",
+      "path.format": "'year'=YYYY/'month'=M/'day'=d/'time-bucket'='TIME-BUCKET'",
+      "locale": "US",
+      "timezone": "UTC",
+      "partition.field.name": "_tag_projectName, _tag_appName, _plugin, _documentType",
+      "timestamp.extractor": "RecordField",
+      "timestamp.field": "time",
+      "schema.compatibility": "NONE",
+      "rotate.schedule.interval.ms": 180000,
+      "partition.duration.ms": {{ mul .Values.timeBucketSizeMinutes 60000 }},
+      "transforms": "filter,insertsignature",
+      "transforms.filter.type": "com.logarchival.MarkDrop$Value",
+      "transforms.insertsignature.type": "com.signature.InsertSignature$Value",
+      "transforms.insertsignature.connectorname.field": "azureblob",
+      "sf.archival.schema.keys": "_tag_projectName, _tag_appName, _plugin, _documentType",
+      "azureblob.account.key": "{{ .Values.global.secrets.azure.STORAGE_ACCOUNT_ACCESS_KEY }}",
+      "azureblob.storage.account.name": "{{ .Values.global.secrets.azure.STORAGE_ACCOUNT_NAME }}",
+      "errors.tolerance": "all"
+    }
+  {{- end }}

@@ -323,8 +323,8 @@ prometheus-adapter:
             resource: pod
       name:
         matches: ""
-        as: "s3_connect_heap_utilization_pcnt"
-      metricsQuery: 'avg_over_time(<<.Series>>{pod=~".*s3-kafka-connect.*"}[3m])'
+        as: "archival_connect_heap_utilization_pcnt"
+      metricsQuery: 'avg_over_time(<<.Series>>{kubernetes_pod_name=~".*archival-kafka-connect.*"}[3m])'
     - seriesQuery: '{__name__="nio_memory_utilization"}'
       resources:
         overrides:
@@ -334,8 +334,8 @@ prometheus-adapter:
             resource: pod
       name:
         matches: ""
-        as: "s3_connect_nio_utilization_pcnt"
-      metricsQuery: '(avg_over_time(<<.Series>>{pod=~".*s3-kafka-connect.*"}[3m]) * 100.0) / (100 * 1048576)'
+        as: "archival_connect_nio_utilization_pcnt"
+      metricsQuery: '(avg_over_time(<<.Series>>{kubernetes_pod_name=~".*archival-kafka-connect.*"}[3m]) * 100.0) / (100 * 1048576)'
     - seriesQuery: '{__name__="heap_utilization_pcnt"}'
       resources:
         overrides:

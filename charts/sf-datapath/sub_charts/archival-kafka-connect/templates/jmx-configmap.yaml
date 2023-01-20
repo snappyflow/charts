@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "s3-kafka-connect.fullname" . }}-jmx-configmap
+  name: {{ template "archival-kafka-connect.fullname" . }}-jmx-configmap
   labels:
-    app: {{ template "s3-kafka-connect.name" . }}
-    chart: {{ template "s3-kafka-connect.chart" . }}
+    app: {{ template "archival-kafka-connect.name" . }}
+    chart: {{ template "archival-kafka-connect.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:

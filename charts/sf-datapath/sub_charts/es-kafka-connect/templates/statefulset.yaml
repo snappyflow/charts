@@ -52,7 +52,7 @@ spec:
                 - key: app
                   operator: In
                   values:
-                  - "s3-kafka-connect"
+                  - "archival-kafka-connect"
           - weight: 2
             podAffinityTerm:
               topologyKey: "kubernetes.io/hostname"
