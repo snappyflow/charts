@@ -18,5 +18,6 @@ data:
           - name: TaintToleration
           - name: NodeResourcesLeastAllocated
           - name: InterPodAffinity
+          - name: PodTopologySpread
     leaderElection:
       leaderElect: false
