@@ -20,6 +20,7 @@ spec:
         {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
         {{- include "raw-query-exec-controller.selectorLabels" . | nindent 8 }}
     spec:
+      schedulerName: {{ .Values.schedulerName }}
       priorityClassName: {{ .Release.Name }}-priority-class
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

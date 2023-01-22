@@ -21,6 +21,7 @@ spec:
         {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
         {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
     spec:
+      schedulerName: {{ .Values.schedulerName }}
       priorityClassName: {{ .Release.Name }}-priority-class
     {{- with .Values.global.imagePullSecrets }}
       imagePullSecrets:
