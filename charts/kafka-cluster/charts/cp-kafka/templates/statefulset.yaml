@@ -42,6 +42,7 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+      schedulerName: {{ .Values.schedulerName }}
       affinity:
       {{- if .Values.affinity }}
 {{ toYaml .Values.affinity | indent 8 }}
