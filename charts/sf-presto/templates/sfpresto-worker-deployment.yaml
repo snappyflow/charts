@@ -25,6 +25,7 @@ spec:
         role: sfpresto-worker
         snappyflow/component: snappyflow-presto
     spec:
+      schedulerName: {{ .Values.schedulerName }}
       containers:
         - name: sfpresto-worker
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

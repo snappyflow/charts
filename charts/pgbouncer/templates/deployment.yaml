@@ -22,6 +22,7 @@ spec:
       labels:
         {{- include "pgbouncer.selectorLabels" . | nindent 8 }}
     spec:
+      schedulerName: {{ .Values.schedulerName }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}

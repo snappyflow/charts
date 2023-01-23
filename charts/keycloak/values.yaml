@@ -4,6 +4,8 @@
 
 replicaCount: 3
 
+schedulerName: sf-scheduler
+
 image:
   #repository: quay.io/keycloak/keycloak
   repository: jboss/keycloak

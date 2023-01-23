@@ -21,6 +21,7 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     spec:
+      schedulerName: {{ .Values.schedulerName }}
       containers:
       - name: forwardmetric
         image: "{{ .Values.forwardmetric.image.repository }}:{{ .Values.forwardmetric.image.tag }}"

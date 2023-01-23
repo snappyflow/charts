@@ -18,6 +18,7 @@ spec:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'false'
     spec:
+      schedulerName: {{ .Values.schedulerName }}
       serviceAccountName: {{ .Values.autoscaler.serviceAccountName }}
       containers:
         - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

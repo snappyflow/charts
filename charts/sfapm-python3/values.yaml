@@ -6,6 +6,8 @@
 # apm and vizbuilder
 enableDebug: false
 
+schedulerName: sf-scheduler
+
 nameOverride: ""
 fullnameOverride: ""
 imagePullSecrets: []
