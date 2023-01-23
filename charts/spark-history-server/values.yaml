@@ -16,6 +16,13 @@ global:
       AWS_ACCESS_KEY_ID: XXXX
       AWS_SECRET_ACCESS_KEY: XXXX
       AWS_DEFAULT_REGION: us-west-2
+    azure:
+      enable: false
+      # Set below credentials to access azure storage account from hive/hadoop pods
+      STORAGE_ACCOUNT_NAME: XXXX
+      STORAGE_ACCOUNT_ACCESS_KEY: XXXX
+      SPARK_HS_CONTAINER_NAME: sparkhs
+
 
 replicaCount: 1
 nameOverride: ""
@@ -29,8 +36,8 @@ serviceAccount:
   name:
 
 image:
-  repository: lightbend/spark-history-server
-  tag: 2.4.0
+  repository: snappyflowml/spark-history-server
+  tag: azurestage-1
   pullPolicy: IfNotPresent
 
 service:
@@ -114,13 +121,8 @@ s3:
 
 wasbs:
   enableWASBS: false
-  sasKeyMode: true
-  secret: azure-secrets
-  sasKeyName: azure-blob-sas-key
-  storageAccountKeyName: azure-storage-account-key
-  storageAccountNameKeyName: azure-storage-account-name
-  containerKeyName: azure-blob-container-name
-  logDirectory: wasbs:///spark-hs
+  sasKeyMode: false
+  logDirectory: wasbs://spark-hs
 
 imagePullSecrets: []
 
