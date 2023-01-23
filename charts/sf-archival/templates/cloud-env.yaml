@@ -24,6 +24,8 @@ data:
   STORAGE_ACCOUNT_ACCESS_KEY: {{ .Values.global.secrets.azure.STORAGE_ACCOUNT_ACCESS_KEY }}
   STORAGE_ACCOUNT_NAME: {{ .Values.global.secrets.azure.STORAGE_ACCOUNT_NAME }}
   SINK_TYPE: {{ .Values.global.secrets.azure.SINK_TYPE }}
+  AZURE_SERVICEBUS_CONNECTION_STR: {{ .Values.global.secrets.azure.AZURE_SERVICEBUS_CONNECTION_STR }}
+  AZURE_SERVICEBUS_QUEUE_NAME: {{ .Values.global.secrets.azure.AZURE_SERVICEBUS_QUEUE_NAME }}
   {{- else -}}
   CLOUD_NAME: UNKNOWN
   {{- end }}
