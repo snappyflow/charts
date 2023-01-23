@@ -70,20 +70,18 @@ spec:
               -Dspark.hadoop.fs.s3a.secret.key=$awsSecretAccessKey";
             fi;
           elif [ "$enableWASBS" == "true" ]; then
-            container=$(cat /etc/secrets/${containerKeyName})
-            storageAccount=$(cat /etc/secrets/${storageAccountNameKeyName})
             export SPARK_HISTORY_OPTS="$SPARK_HISTORY_OPTS \
-              -Dspark.history.fs.logDirectory=$logDirectory \
-              -Dspark.hadoop.fs.defaultFS=wasbs://$container@$storageAccount.blob.core.windows.net \
+              -Dspark.history.fs.logDirectory=wasbs://$containerName@$storageAccountName.blob.core.windows.net/spark-hs \
+              -Dspark.hadoop.fs.defaultFS=wasbs://$containerName@$storageAccountName.blob.core.windows.net \
               -Dspark.hadoop.fs.wasbs.impl=org.apache.hadoop.fs.azure.NativeAzureFileSystem \
               -Dspark.hadoop.fs.AbstractFileSystem.wasbs.impl=org.apache.hadoop.fs.azure.Wasbs";
             if [ "$sasKeyMode" == "true" ]; then
               export SPARK_HISTORY_OPTS="$SPARK_HISTORY_OPTS \
                 -Dspark.hadoop.fs.azure.local.sas.key.mode=true \
-                -Dspark.hadoop.fs.azure.sas.$container.$storageAccount.blob.core.windows.net=$(cat /etc/secrets/${sasKeyName})";
+                -Dspark.hadoop.fs.azure.sas.$containerName.$storageAccountName.blob.core.windows.net=$(cat /etc/secrets/${sasKeyName})";
             else
               export SPARK_HISTORY_OPTS="$SPARK_HISTORY_OPTS \
-                -Dspark.hadoop.fs.azure.account.key.$storageAccount.blob.core.windows.net=$(cat /etc/secrets/${storageAccountKeyName})";
+                -Dspark.hadoop.fs.azure.account.key.$storageAccountName.blob.core.windows.net=$storageAccountKey";
             fi;
           else
             export SPARK_HISTORY_OPTS="$SPARK_HISTORY_OPTS \
