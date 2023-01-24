@@ -48,7 +48,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
-Worker configurations that kafka-connect needs
+Worker configurations that kafka-connect needs. This is using "s3" instead of "archival" as "archival" was introduced in between and we didn't want to change consumer-groups
 */}}
 {{- define "s3-kafka-connect.group.id" -}}
 {{- printf "%s-%s-%s" .Release.Namespace .Release.Name "s3-connect"  -}}

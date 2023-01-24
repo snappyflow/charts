@@ -1,4 +1,4 @@
-{{- if or (and (eq .Values.global.secrets.aws.enable true) (eq .Values.global.secrets.aws.use_iam_role true)) (and (eq .Values.global.secrets.gcs.enable true) (eq .Values.global.secrets.gcs.use_google_service_account true)) (eq .Values.global.secrets.azure.enable true) }}
+{{- if or (and .Values.global.secrets.aws.enable .Values.global.secrets.aws.use_iam_role) (and .Values.global.secrets.gcs.enable .Values.global.secrets.gcs.use_google_service_account) .Values.global.secrets.azure.enable }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -12,7 +12,7 @@ roleRef:
   kind: ClusterRole
   name: edit
   apiGroup: rbac.authorization.k8s.io
-{{ else }}
+{{- else }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:

@@ -37,16 +37,21 @@ global:
       AWS_ACCESS_KEY_ID: XXXX
       AWS_SECRET_ACCESS_KEY: XXXX
       AWS_DEFAULT_REGION: us-west-2
+      AWS_QUEUE_URL: ""
+      AWS_QUEUE_ARN: ""
+    azure:
+      enable: false
+      # Set below credentials to access azure storage account from hive/hadoop pods
+      STORAGE_ACCOUNT_NAME: XXXX
+      STORAGE_ACCOUNT_ACCESS_KEY: XXXX
+      AZURE_SERVICEBUS_QUEUE_NAME: XXXX
+      AZURE_SERVICEBUS_CONNECTION_STR: XXXX
 
   # Below parameter needs to use the PLAIN_TEXT port
   kafkaBrokers: "kafka-cp-kafka-headless:9092"
 
   # Certain components which use SASL_PLAIN will use this port along with above machines
   kafkaSASLPort: "9093"
-
-  snappyflowDatapath:
-    enabled: true
-    releaseName: sf-datapath
 
   snappyflowProjectLabel: snappyflow/projectname
   snappyflowAppLabel: snappyflow/appname
@@ -58,6 +63,7 @@ global:
   - name: xxxx
 
   maxTasksPerTopic: 3
+  timeBucketSizeMinutes: 15
 
 # Pod priority class value
 priority: 100
@@ -87,6 +93,10 @@ compaction-controller:
     start: "*/10 * * * *"
 
 ingest-controller:
+  signatureAndKafkaAPIsURL: "http://sf-datapath-signatures-and-kafka-apis"
+  scehmaRegistryURL: "http://sf-datapath-cp-schema-registry:8081"
+  archivalKafkaConnectURL: "http://sf-datapath-archival-kafka-connect:8083"
+  minioEndpoint: "sf-datapath-minio:9000"
   schedules:
     sink: "*/10 * * * *"
 
@@ -95,6 +105,8 @@ spark-manager:
     sparkProperties:
       # S3 bucket with aws prefix/folder for spark event logs e.g., for bucket location of s3://sparkhs/spark-hs configure as configured below
       logDirectory: sparkhs/spark-hs
+      azureLogContainer: sparkhs
+      azureLogDirectory: spark-hs
   infrastructure:
     Kubernetes:
       # Kubernetes is always inserted as an infrastructure with slightly higher preference numbers
@@ -139,6 +151,10 @@ query-controller:
   # Indicates the interval at which query job status is refreshed
   monitorInterval: 250
   monitorIntervalUnit: ms
+
+raw-query-exec-controller:
+  maxGBToProcessDuringHistogramQuery: 0.2
+  maxGBToProcessDuringLogQuery: 0.05
 
 hive-and-hadoop:
   containerResources:

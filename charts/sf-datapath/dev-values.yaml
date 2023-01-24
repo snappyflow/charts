@@ -90,28 +90,28 @@ global:
   imagePullSecrets:
   - name: xxxx
 
-creds: "control:$apr1$pjbvxsh8$UnVE6PZ/3874l.cJ.Xc1e0"
-
 # Pod priority class value
 priority: 100
 
-autoscaling:
-  archivalKafkaConnect:
-    ingestRateGBPerDayPerPod: 130
-    minReplicas: 1
-    maxReplicas: 1
-  esKafkaConnect:
-    ingestRateGBPerDayPerPod: 130
-    minReplicas: 1
-    maxReplicas: 1
-  cpKafkaRestProxy:
-    minReplicas: 1
-    maxReplicas: 1
-  minio:
-    minReplicas: 1
-    maxReplicas: 1
+signatures-and-kafka-apis:
+  useDefaultPatterns: false
+
+sfk-interface:
+  prometheus:
+    url: "http://pod-autoscaling-prometheus-server.default"
+    auth: "snappyflow"
+
+cp-kafka-rest:
+  autoscaling:
+    enabled: false
+
+minio:
+  autoscaling:
+    enabled: false
 
 es-kafka-connect:
+  autoscaling:
+    enabled: true
   configurationOverrides:
     config.storage.replication.factor: '1'
     connect.protocol: apm_sessioned
@@ -143,6 +143,8 @@ es-kafka-connect:
     value.converter.schemas.enable: 'false'
 
 archival-kafka-connect:
+  autoscaling:
+    enabled: true
   configurationOverrides:
     config.storage.replication.factor: '1'
     connect.protocol: apm_sessioned

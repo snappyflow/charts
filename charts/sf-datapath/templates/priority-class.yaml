@@ -5,4 +5,4 @@ metadata:
 value: {{ .Values.priority }}
 preemptionPolicy: Never
 globalDefault: false
-description: "This priority class is used by sf-datapath components: es/s3 connect, kafka rest/registry servers"
+description: "This priority class is used by sf-datapath components: es/archival connect, kafka rest/registry servers"

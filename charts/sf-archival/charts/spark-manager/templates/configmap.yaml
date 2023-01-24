@@ -83,11 +83,11 @@ data:
               "--conf",
               "spark.eventLog.enabled=true",
               "--conf",
-{{- if eq .Values.global.secrets.aws.enable true }}
+{{- if .Values.global.secrets.aws.enable }}
               "spark.eventLog.dir=s3a://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}",
-{{- else if eq .Values.global.secrets.azure.enable true }}
+{{- else if .Values.global.secrets.azure.enable }}
               "spark.eventLog.dir=wasbs://{{ index .Values "jobserver" "sparkProperties" "azureLogContainer" }}@{{ .Values.global.secrets.azure.STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/{{ index .Values "jobserver" "sparkProperties" "azureLogDirectory" }}",
-{{- else}}
+{{- else }}
               "spark.eventLog.dir=gs://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}",
 {{- end }}
               "--conf",
@@ -108,14 +108,14 @@ data:
               "spark.kubernetes.container.image={{ .Values.compactionImage }}",
               "--conf",
               "spark.kubernetes.container.image.pullSecrets={{ .Values.global.imagePullSecrets }}",
-{{- if or (and (eq .Values.global.secrets.aws.enable true) (eq .Values.global.secrets.aws.use_iam_role true)) (and (eq .Values.global.secrets.gcs.enable true) (eq .Values.global.secrets.gcs.use_google_service_account true)) }}
+{{- if or (and .Values.global.secrets.aws.enable .Values.global.secrets.aws.use_iam_role) (and .Values.global.secrets.gcs.enable .Values.global.secrets.gcs.use_google_service_account) }}
               "--conf",
               "spark.kubernetes.authenticate.driver.serviceAccountName={{ .Release.Name }}-service-account",
               "--conf",
               "spark.kubernetes.authenticate.executor.serviceAccountName={{ .Release.Name }}-service-account",
               "--conf",
               "spark.kubernetes.authenticate.serviceAccountName={{ .Release.Name }}-service-account",
-{{- else if (eq .Values.global.secrets.azure.enable true) }}
+{{- else if .Values.global.secrets.azure.enable }}
               "--conf",
               "spark.kubernetes.authenticate.driver.serviceAccountName={{ .Release.Name }}-service-account",
               "--conf",

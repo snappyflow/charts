@@ -2,8 +2,8 @@ global:
   sfagent:
     enabled: false
     profileKey: "abcd"
-    projectName: "snappyflow-app"
-    appName: "sf-datapath"
+    projectName: snappyflow-app
+    appName: sf-data-path
 
   archivalReleaseName: archival
   datapathReleaseName: sf-datapath

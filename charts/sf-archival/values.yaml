@@ -19,9 +19,11 @@ global:
     postgresqlUsername: archive
     postgresqlPassword: archive123
     servicePort: 5432
+
   hivepartitioncolumns:
     compactPartitionColumnNames: '["year", "month", "day", "segment"]'
     rawPartitionColumnNames: '["year", "month", "day", "timebucket"]'
+
   secrets:
     gcs:
       enable: false
@@ -40,13 +42,12 @@ global:
       AWS_SECRET_ACCESS_KEY: XXXX
       AWS_DEFAULT_REGION: us-west-2
       AWS_QUEUE_URL: ""
-      SINK_TYPE: S3
+      AWS_QUEUE_ARN: ""
     azure:
       enable: false
       # Set below credentials to access azure storage account from hive/hadoop pods
       STORAGE_ACCOUNT_NAME: XXXX
       STORAGE_ACCOUNT_ACCESS_KEY: XXXX
-      SINK_TYPE: AzureBlob
       AZURE_SERVICEBUS_QUEUE_NAME: XXXX
       AZURE_SERVICEBUS_CONNECTION_STR: XXXX
 
@@ -67,6 +68,7 @@ global:
 
   maxTasksPerTopic: 3
   timeBucketSizeMinutes: 15
+
 # Pod priority class value
 priority: 100
 
@@ -101,7 +103,6 @@ ingest-controller:
   minioEndpoint: "sf-datapath-minio:9000"
   schedules:
     sink: "*/10 * * * *"
-  timeBucketSizeMinutes: 15 # Has to be an integer
 
 spark-manager:
   jobserver:

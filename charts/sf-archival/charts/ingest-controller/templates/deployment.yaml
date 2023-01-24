@@ -26,7 +26,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-    {{- if or (and (eq .Values.global.secrets.aws.enable true) (eq .Values.global.secrets.aws.use_iam_role true)) (and (eq .Values.global.secrets.gcs.enable true) (eq .Values.global.secrets.gcs.use_google_service_account true)) }}
+    {{- if or (and .Values.global.secrets.aws.enable .Values.global.secrets.aws.use_iam_role) (and .Values.global.secrets.gcs.enable .Values.global.secrets.gcs.use_google_service_account) }}
       serviceAccountName: {{ .Release.Name }}-service-account
     {{- end}}
       initContainers:
@@ -57,16 +57,12 @@ spec:
             value: "{{ .Values.minio.secrets.accessId }}"
           - name: AWS_SECRET_ACCESS_KEY
             value: "{{ .Values.minio.secrets.accessKey }}"
-          - name: SINK_TYPE
-            value: "{{ .Values.global.secrets.aws.SINK_TYPE }}"
         {{- else if .Values.global.secrets.azure.enable }}
           env:
           - name: STORAGE_ACCOUNT_ACCESS_KEY
             value: "{{ .Values.global.secrets.azure.STORAGE_ACCOUNT_ACCESS_KEY }}"
           - name: STORAGE_ACCOUNT_NAME
             value: "{{ .Values.global.secrets.azure.STORAGE_ACCOUNT_NAME }}"
-          - name: SINK_TYPE
-            value: "{{ .Values.global.secrets.azure.SINK_TYPE }}"
         {{- end }}
           envFrom:
           - configMapRef:
