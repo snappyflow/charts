@@ -36,6 +36,8 @@ global:
       enable: false
     aws:
       enable: true
+    azure:
+      enable: false
 
   archival:
     enabled: true

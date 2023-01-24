@@ -51,28 +51,22 @@ data:
       "transforms.insertsignature.connectorname.field": "archiver",
       "errors.tolerance": "all",
       "sf.archival.schema.keys": "_tag_projectName, _tag_appName, _plugin, _documentType",
-
-{{- if or .Values.global.secrets.aws.enable .Values.global.secrets.gcs.enable -}}
-
+{{- if or .Values.global.secrets.aws.enable .Values.global.secrets.gcs.enable }}
       "connector.class": "io.confluent.connect.s3.S3SinkConnector",
       "s3.part.size": 5242880,
       "storage.class": "io.confluent.connect.s3.storage.S3Storage",
       "format.class": "io.confluent.connect.s3.format.orc.OrcFormat",
-
-{{- if .Values.global.secrets.gcs.enable -}}
+{{- if .Values.global.secrets.gcs.enable }}
       "store.url": {{ .Values.minioEndpoint | quote }},
       "aws.access.key.id": "{{ .Values.minio.secrets.accessId }}",
       "aws.secret.access.key": "{{ .Values.minio.secrets.accessKey }}"
 {{- else }}
       "store.url": "s3.amazonaws.com"
 {{- end }}
-
-{{- else if .Values.global.secrets.azure.enable -}}
-
+{{- else if .Values.global.secrets.azure.enable }}
       "connector.class": "io.confluent.connect.azureblob.AzureBlobSinkConnector",
       "azureblob.block.size": 5242880,
       "storage.class": "io.confluent.connect.azureblob.storage.AzureBlobStorage",
       "format.class": "io.confluent.connect.azureblob.format.orc.OrcFormat"
-
 {{- end }}
     }

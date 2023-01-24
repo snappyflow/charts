@@ -96,11 +96,6 @@ priority: 100
 signatures-and-kafka-apis:
   useDefaultPatterns: false
 
-sfk-interface:
-  prometheus:
-    url: "http://pod-autoscaling-prometheus-server.default"
-    auth: "snappyflow"
-
 cp-kafka-rest:
   autoscaling:
     enabled: false
@@ -111,7 +106,7 @@ minio:
 
 es-kafka-connect:
   autoscaling:
-    enabled: true
+    enabled: false
   configurationOverrides:
     config.storage.replication.factor: '1'
     connect.protocol: apm_sessioned
@@ -144,7 +139,7 @@ es-kafka-connect:
 
 archival-kafka-connect:
   autoscaling:
-    enabled: true
+    enabled: false
   configurationOverrides:
     config.storage.replication.factor: '1'
     connect.protocol: apm_sessioned
