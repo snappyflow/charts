@@ -44,7 +44,7 @@ spec:
             - name: "MAX_REPLICA"
               value: "{{ .Values.autoscaling.maxReplicas }}"
           command: ["/bin/bash", "-c"]
-          args: ["/home/presto-config; ./coordinator-init.sh; sleep 3650d;"]
+          args: ["/home/presto-config; ./coordinator-init.sh;"]
           resources:
             {{- toYaml .Values.coordinator.resources | nindent 12 }}
           volumeMounts:
