@@ -6,7 +6,6 @@ on:
       - master
     paths:
       - 'charts/**'
-      - '!charts/sfapm-python3/**'
 
 jobs:
   release:

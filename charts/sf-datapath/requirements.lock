@@ -16,7 +16,7 @@ dependencies:
   version: 0.1.0
 - name: autoscaling
   repository: file://./sub_charts/autoscaling
-  version: 0.1.0
+  version: 0.1.1
 - name: authenticator
   repository: file://./sub_charts/authenticator
   version: 0.1.0
@@ -29,5 +29,5 @@ dependencies:
 - name: minio
   repository: file://./sub_charts/minio
   version: 8.0.10
-digest: sha256:15ab7011a87bde60ccc765ebd92484843e93a40c450346e009aec7c417772f9b
-generated: "2022-12-18T23:36:07.675637433+05:30"
+digest: sha256:4179013db2abefcc6ed5f00ac0dbec2ae6682e6fc0cc64b1d273025cd145a18b
+generated: "2023-01-17T07:03:14.275030078Z"
