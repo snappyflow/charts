@@ -110,14 +110,13 @@ data:
 {{- with (index .Values.global.imagePullSecrets 0) }}
               "spark.kubernetes.container.image.pullSecrets={{ .name }}",
 {{- end }}
-{{- if or (and .Values.global.secrets.aws.enable .Values.global.secrets.aws.use_iam_role) .Values.global.secrets.gcs.enable }}
               "--conf",
               "spark.kubernetes.authenticate.driver.serviceAccountName={{ .Release.Name }}-service-account",
               "--conf",
               "spark.kubernetes.authenticate.executor.serviceAccountName={{ .Release.Name }}-service-account",
               "--conf",
               "spark.kubernetes.authenticate.serviceAccountName={{ .Release.Name }}-service-account",
-{{- else if .Values.global.secrets.azure.enable }}
+{{- if .Values.global.secrets.azure.enable }}
               "--conf",
               "spark.hadoop.fs.AbstractFileSystem.wasbs.Impl=org.apache.hadoop.fs.azure.wasbs",
               "--conf",
