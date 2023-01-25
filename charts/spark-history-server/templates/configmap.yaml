@@ -20,7 +20,7 @@ data:
   {{ $key }}: {{ $val | quote }}
   {{- end }}
   {{- else if .Values.global.secrets.gcs.enable }}
-  enableIAM: {{ .Values.global.secrets.gcs.use_google_service_account | quote }}
+  enableIAM: "true"
   {{- range $key, $val := .Values.gcs }}
   {{ $key }}: {{ $val | quote }}
   {{- end }}
