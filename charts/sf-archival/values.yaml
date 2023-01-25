@@ -27,27 +27,26 @@ global:
   secrets:
     gcs:
       enable: false
-      # Set all of the below entities when Google-Service-Account is being used. Recommended approach unless K8s is running outside GCP (K8s outside GCP flow which will use JSON service-account-keys is not yet implemented)
-      use_google_service_account: true
       GCP_SERVICE_ACCOUNT_EMAIL: "XXXX-compute@developer.gserviceaccount.com OR XXXX@XXXX.iam.gserviceaccount.com"
       GCP_DEFAULT_REGION: us-west1
       GCP_DEFAULT_ZONE: us-west1-c
     aws:
       enable: true
-      # Set use_iam_role = true and AWS_IAM_ROLE_ARN to appropriate IAM ARN in case of IAM role usage
-      use_iam_role: false
+      use_iam_role: false # Set this to true and AWS_IAM_ROLE_ARN to appropriate IAM ARN in case of IAM role usage
       AWS_IAM_ROLE_ARN: arn:aws:iam::XXXX:role/XXXX
       # Set all of the below entities when IAM role isn't being used. This is not recommended unless K8s is running outside AWS
       AWS_ACCESS_KEY_ID: XXXX
       AWS_SECRET_ACCESS_KEY: XXXX
       AWS_DEFAULT_REGION: us-west-2
-      AWS_QUEUE_URL: ""
-      AWS_QUEUE_ARN: ""
+      AWS_QUEUE_URL: XXXX
+      AWS_QUEUE_ARN: XXXX
     azure:
       enable: false
-      # Set below credentials to access azure storage account from hive/hadoop pods
       STORAGE_ACCOUNT_NAME: XXXX
       STORAGE_ACCOUNT_ACCESS_KEY: XXXX
+      AZURE_SERVICEBUS_QUEUE_NAME: XXXX
+      AZURE_SERVICEBUS_CONNECTION_STR: XXXX
+      SPARK_HS_CONTAINER_NAME: sparkhs
 
   # Below parameter needs to use the PLAIN_TEXT port
   kafkaBrokers: "localhost:9092,localhost1:9092"
@@ -97,17 +96,18 @@ compaction-controller:
 ingest-controller:
   signatureAndKafkaAPIsURL: "http://sf-datapath-signatures-and-kafka-apis"
   scehmaRegistryURL: "http://sf-datapath-cp-schema-registry:8081"
-  s3KafkaConnectURL: "http://sf-datapath-s3-kafka-connect:8083"
+  archivalKafkaConnectURL: "http://sf-datapath-archival-kafka-connect:8083"
   minioEndpoint: "sf-datapath-minio:9000"
   schedules:
     sink: "*/10 * * * *"
-  timeBucketSizeMinutes: 15 # Has to be an integer
 
 spark-manager:
   jobserver:
     sparkProperties:
       # S3 bucket with aws prefix/folder for spark event logs e.g., for bucket location of s3://sparkhs/spark-hs configure as configured below
       logDirectory: sparkhs/spark-hs
+      azureLogContainer: sparkhs
+      azureLogDirectory: spark-hs
   infrastructure:
     Kubernetes:
       # Kubernetes is always inserted as an infrastructure with slightly higher preference numbers
@@ -149,6 +149,10 @@ spark-history-server:
     logDirectory: sparkhs/spark-hs
   gcs:
     logDirectory: sparkhs/spark-hs
+  wasbs:
+    enableWASBS: false
+    sasKeyMode: false
+    logDirectory: wasbs://spark-hs
 
 query-controller:
   maxGBToProcessDuringSplitQuery: 0.5

@@ -11,8 +11,8 @@ data:
   config.json: |-
     {
       "db": {
-        "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
-        "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
+        "name": "{{ .Values.global.postgresql.postgresqlDatabase }}",
+        "user": "{{ .Values.global.postgresql.postgresqlUsername }}",
         "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
         "host": "{{ template "ingest-controller.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }}

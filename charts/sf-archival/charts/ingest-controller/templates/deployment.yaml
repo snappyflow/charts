@@ -26,7 +26,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-    {{- if or (and (eq .Values.global.secrets.aws.enable true) (eq .Values.global.secrets.aws.use_iam_role true)) (and (eq .Values.global.secrets.gcs.enable true) (eq .Values.global.secrets.gcs.use_google_service_account true)) }}
+    {{- if or (and .Values.global.secrets.aws.enable .Values.global.secrets.aws.use_iam_role) .Values.global.secrets.gcs.enable }}
       serviceAccountName: {{ .Release.Name }}-service-account
     {{- end}}
       initContainers:
@@ -51,13 +51,6 @@ spec:
           volumeMounts:
           - name: config-volume
             mountPath: /etc/conf
-        {{- if .Values.global.secrets.gcs.enable }}
-          env:
-          - name: AWS_ACCESS_KEY_ID
-            value: "{{ .Values.minio.secrets.accessId }}"
-          - name: AWS_SECRET_ACCESS_KEY
-            value: "{{ .Values.minio.secrets.accessKey }}"
-        {{- end }}
           envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env

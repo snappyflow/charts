@@ -2,20 +2,21 @@ global:
   secrets:
     gcs:
       enable: false
-      # Set all of the below entities when Google-Service-Account is being used. Recommended approach unless K8s is running outside GCP (K8s outside GCP flow which will use JSON service-account-keys is not yet implemented)
-      use_google_service_account: true
       GCP_SERVICE_ACCOUNT_EMAIL: "XXXX-compute@developer.gserviceaccount.com OR XXXX@XXXX.iam.gserviceaccount.com"
       GCP_DEFAULT_REGION: us-west1
       GCP_DEFAULT_ZONE: us-west1-c
     aws:
       enable: true
-      # Set use_iam_role = true and AWS_IAM_ROLE_ARN to appropriate IAM ARN in case of IAM role usage
-      use_iam_role: false
+      use_iam_role: false # Set this to true and AWS_IAM_ROLE_ARN to appropriate IAM ARN in case of IAM role usage
       AWS_IAM_ROLE_ARN: arn:aws:iam::XXXX:role/XXXX
-      # Set all of the below entities when IAM role isn't being used. This is not recommended unless K8s is running outside AWS
       AWS_ACCESS_KEY_ID: XXXX
       AWS_SECRET_ACCESS_KEY: XXXX
       AWS_DEFAULT_REGION: us-west-2
+    azure:
+      enable: false
+      STORAGE_ACCOUNT_NAME: XXXX
+      STORAGE_ACCOUNT_ACCESS_KEY: XXXX
+      SPARK_HS_CONTAINER_NAME: sparkhs
 
 replicaCount: 1
 nameOverride: ""
@@ -29,8 +30,8 @@ serviceAccount:
   name:
 
 image:
-  repository: lightbend/spark-history-server
-  tag: 2.4.0
+  repository: snappyflowml/spark-history-server
+  tag: azurestage-1
   pullPolicy: IfNotPresent
 
 service:
@@ -114,13 +115,8 @@ s3:
 
 wasbs:
   enableWASBS: false
-  sasKeyMode: true
-  secret: azure-secrets
-  sasKeyName: azure-blob-sas-key
-  storageAccountKeyName: azure-storage-account-key
-  storageAccountNameKeyName: azure-storage-account-name
-  containerKeyName: azure-blob-container-name
-  logDirectory: wasbs:///spark-hs
+  sasKeyMode: false
+  logDirectory: wasbs://spark-hs
 
 imagePullSecrets: []
 

@@ -6,24 +6,24 @@ apiVersion: apps/v1beta2
 {{- end }}
 kind: StatefulSet
 metadata:
-  name: {{ template "s3-kafka-connect.fullname" . }}
+  name: {{ template "archival-kafka-connect.fullname" . }}
   labels:
-    app: {{ template "s3-kafka-connect.name" . }}
-    chart: {{ template "s3-kafka-connect.chart" . }}
+    app: {{ template "archival-kafka-connect.name" . }}
+    chart: {{ template "archival-kafka-connect.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "s3-kafka-connect.name" . }}
+      app: {{ template "archival-kafka-connect.name" . }}
       release: {{ .Release.Name }}
-  serviceName: {{ template "s3-kafka-connect.fullname" . }}
+  serviceName: {{ template "archival-kafka-connect.fullname" . }}
   podManagementPolicy: Parallel
   template:
     metadata:
       labels:
-        app: {{ template "s3-kafka-connect.name" . }}
+        app: {{ template "archival-kafka-connect.name" . }}
         release: {{ .Release.Name }}
         snappyflow/projectname: {{ .Values.global.snappyflowProjectName }}
         snappyflow/appname: {{ .Values.global.snappyflowAppName }}
@@ -62,7 +62,7 @@ spec:
                 - key: app
                   operator: In
                   values:
-                  - "s3-kafka-connect"
+                  - "archival-kafka-connect"
       priorityClassName: {{ .Release.Name }}-priority-class
       initContainers:
         - name: kafka-ready
@@ -102,7 +102,7 @@ spec:
           image: "{{ .Values.image }}:{{ .Values.imageTag }}"
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
           ports:
-            - name: s3-connect
+            - name: arch-connect
               containerPort: {{ .Values.servicePort}}
               protocol: TCP
             {{- if .Values.prometheus.jmx.enabled }}
@@ -138,19 +138,19 @@ spec:
             - name: KAFKA_LOG4J_OPTS
               value: -Dlog4j.configuration=file:///etc/customlog4j/connect-log4j.properties
             - name: CONNECT_BOOTSTRAP_SERVERS
-              value: {{ template "s3-kafka-connect.kafka.bootstrapServers" . }}
+              value: {{ template "archival-kafka-connect.kafka.bootstrapServers" . }}
             - name: CONNECT_GROUP_ID
-              value: {{ template "s3-kafka-connect.group.id" . }}
+              value: {{ template "archival-kafka-connect.group.id" . }}
             - name: CONNECT_CONFIG_STORAGE_TOPIC
-              value: {{ template "s3-kafka-connect.config.storage.topic" . }}
+              value: {{ template "archival-kafka-connect.config.storage.topic" . }}
             - name: CONNECT_OFFSET_STORAGE_TOPIC
-              value: {{ template "s3-kafka-connect.offset.storage.topic" . }}
+              value: {{ template "archival-kafka-connect.offset.storage.topic" . }}
             - name: CONNECT_STATUS_STORAGE_TOPIC
-              value: {{ template "s3-kafka-connect.status.storage.topic" . }}
+              value: {{ template "archival-kafka-connect.status.storage.topic" . }}
             - name: CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL
-              value: {{ template "s3-kafka-connect.cp-schema-registry.service-name" .}}
+              value: {{ template "archival-kafka-connect.cp-schema-registry.service-name" .}}
             - name: CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL
-              value: {{ template "s3-kafka-connect.cp-schema-registry.service-name" .}}
+              value: {{ template "archival-kafka-connect.cp-schema-registry.service-name" .}}
             - name: KAFKA_HEAP_OPTS
               value: "{{ .Values.heapOptions }}"
             {{- range $key, $value := .Values.configurationOverrides }}
@@ -178,11 +178,11 @@ spec:
       {{- if .Values.prometheus.jmx.enabled }}
       - name: jmx-config
         configMap:
-          name: {{ template "s3-kafka-connect.fullname" . }}-jmx-configmap
+          name: {{ template "archival-kafka-connect.fullname" . }}-jmx-configmap
       {{- end }}
       - name: connect-log4j-properties
         configMap:
-          name: {{ template "s3-kafka-connect.fullname" . }}-kafka-log
+          name: {{ template "archival-kafka-connect.fullname" . }}-kafka-log
       - name: memory-util-logs
         emptyDir: {}
       {{- if .Values.nodeSelector }}
@@ -194,4 +194,3 @@ spec:
 {{ toYaml .Values.tolerations | indent 8 }}
       {{- end }}
 {{- end }}
-

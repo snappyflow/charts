@@ -90,28 +90,23 @@ global:
   imagePullSecrets:
   - name: xxxx
 
-creds: "control:$apr1$pjbvxsh8$UnVE6PZ/3874l.cJ.Xc1e0"
-
 # Pod priority class value
 priority: 100
 
-autoscaling:
-  s3KafkaConnect:
-    ingestRateGBPerDayPerPod: 130
-    minReplicas: 1
-    maxReplicas: 1
-  esKafkaConnect:
-    ingestRateGBPerDayPerPod: 130
-    minReplicas: 1
-    maxReplicas: 1
-  cpKafkaRestProxy:
-    minReplicas: 1
-    maxReplicas: 1
-  minio:
-    minReplicas: 1
-    maxReplicas: 1
+signatures-and-kafka-apis:
+  useDefaultPatterns: false
+
+cp-kafka-rest:
+  autoscaling:
+    enabled: false
+
+minio:
+  autoscaling:
+    enabled: false
 
 es-kafka-connect:
+  autoscaling:
+    enabled: false
   configurationOverrides:
     config.storage.replication.factor: '1'
     connect.protocol: apm_sessioned
@@ -142,7 +137,9 @@ es-kafka-connect:
     value.converter: org.apache.kafka.connect.json.JsonConverter
     value.converter.schemas.enable: 'false'
 
-s3-kafka-connect:
+archival-kafka-connect:
+  autoscaling:
+    enabled: false
   configurationOverrides:
     config.storage.replication.factor: '1'
     connect.protocol: apm_sessioned
