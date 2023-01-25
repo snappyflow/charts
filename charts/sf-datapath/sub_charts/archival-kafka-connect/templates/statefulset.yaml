@@ -140,13 +140,13 @@ spec:
             - name: CONNECT_BOOTSTRAP_SERVERS
               value: {{ template "archival-kafka-connect.kafka.bootstrapServers" . }}
             - name: CONNECT_GROUP_ID
-              value: {{ template "s3-kafka-connect.group.id" . }}
+              value: {{ template "archival-kafka-connect.group.id" . }}
             - name: CONNECT_CONFIG_STORAGE_TOPIC
-              value: {{ template "s3-kafka-connect.config.storage.topic" . }}
+              value: {{ template "archival-kafka-connect.config.storage.topic" . }}
             - name: CONNECT_OFFSET_STORAGE_TOPIC
-              value: {{ template "s3-kafka-connect.offset.storage.topic" . }}
+              value: {{ template "archival-kafka-connect.offset.storage.topic" . }}
             - name: CONNECT_STATUS_STORAGE_TOPIC
-              value: {{ template "s3-kafka-connect.status.storage.topic" . }}
+              value: {{ template "archival-kafka-connect.status.storage.topic" . }}
             - name: CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL
               value: {{ template "archival-kafka-connect.cp-schema-registry.service-name" .}}
             - name: CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL

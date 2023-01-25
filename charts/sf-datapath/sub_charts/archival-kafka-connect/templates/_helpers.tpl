@@ -50,18 +50,42 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{/*
 Worker configurations that kafka-connect needs. This is using "s3" instead of "archival" as "archival" was introduced in between and we didn't want to change consumer-groups
 */}}
-{{- define "s3-kafka-connect.group.id" -}}
+{{- define "archival-kafka-connect.group.id" -}}
+{{- if .Values.global.secrets.aws.enable }}
 {{- printf "%s-%s-%s" .Release.Namespace .Release.Name "s3-connect"  -}}
+{{- else if .Values.global.secrets.gcs.enable }}
+{{- printf "%s-%s-%s" .Release.Namespace .Release.Name "gcs-connect"  -}}
+{{- else }}
+{{- printf "%s-%s-%s" .Release.Namespace .Release.Name "wasb-connect"  -}}
+{{- end }}
 {{- end -}}
 
-{{- define "s3-kafka-connect.config.storage.topic" -}}
+{{- define "archival-kafka-connect.config.storage.topic" -}}
+{{- if .Values.global.secrets.aws.enable }}
 {{- printf "%s-%s-%s" .Release.Namespace .Release.Name "s3-connect-config"  -}}
+{{- else if .Values.global.secrets.gcs.enable }}
+{{- printf "%s-%s-%s" .Release.Namespace .Release.Name "gcs-connect-config"  -}}
+{{- else }}
+{{- printf "%s-%s-%s" .Release.Namespace .Release.Name "wasb-connect-config"  -}}
+{{- end }}
 {{- end -}}
 
-{{- define "s3-kafka-connect.offset.storage.topic" -}}
+{{- define "archival-kafka-connect.offset.storage.topic" -}}
+{{- if .Values.global.secrets.aws.enable }}
 {{- printf "%s-%s-%s" .Release.Namespace .Release.Name "s3-connect-offset"  -}}
+{{- else if .Values.global.secrets.gcs.enable }}
+{{- printf "%s-%s-%s" .Release.Namespace .Release.Name "gcs-connect-offset"  -}}
+{{- else }}
+{{- printf "%s-%s-%s" .Release.Namespace .Release.Name "wasb-connect-offset"  -}}
+{{- end }}
 {{- end -}}
 
-{{- define "s3-kafka-connect.status.storage.topic" -}}
+{{- define "archival-kafka-connect.status.storage.topic" -}}
+{{- if .Values.global.secrets.aws.enable }}
 {{- printf "%s-%s-%s" .Release.Namespace .Release.Name "s3-connect-status"  -}}
+{{- else if .Values.global.secrets.gcs.enable }}
+{{- printf "%s-%s-%s" .Release.Namespace .Release.Name "gcs-connect-status"  -}}
+{{- else }}
+{{- printf "%s-%s-%s" .Release.Namespace .Release.Name "wasb-connect-status"  -}}
+{{- end }}
 {{- end -}}
