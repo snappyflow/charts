@@ -10,8 +10,8 @@ data:
       "datasetRawControllerURL": "http://{{ template "ingest-controller.dataset-raw-controller.fullname" . }}",
       "queryControlURL": "http://{{ template "ingest-controller.query-controller.fullname" . }}",
       "db": {
-        "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
-        "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
+        "name": "{{ .Values.global.postgresql.postgresqlDatabase }}",
+        "user": "{{ .Values.global.postgresql.postgresqlUsername }}",
         "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
         "host": "{{ template "ingest-controller.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }}
@@ -26,7 +26,7 @@ data:
       },
       "logArchivalURL": "http://{{ template "ingest-controller.log-archival.fullname" . }}",
       "schemaRegistryURL": {{ .Values.scehmaRegistryURL | quote }},
-      "kafkaConnectURL": {{ .Values.s3KafkaConnectURL | quote }},
+      "kafkaConnectURL": {{ .Values.archivalKafkaConnectURL | quote }},
       "kafkaBrokers": {{ .Values.global.kafkaBrokers | quote }},
       "patternsURL": {{ .Values.signatureAndKafkaAPIsURL | quote }},
       "serverPort": "{{ .Values.serverPort }}"
@@ -58,8 +58,6 @@ data:
       "format.class": "io.confluent.connect.s3.format.orc.OrcFormat",
 {{- if .Values.global.secrets.gcs.enable }}
       "store.url": {{ .Values.minioEndpoint | quote }},
-      "aws.access.key.id": "{{ .Values.minio.secrets.accessId }}",
-      "aws.secret.access.key": "{{ .Values.minio.secrets.accessKey }}"
 {{- else }}
       "store.url": "s3.amazonaws.com"
 {{- end }}

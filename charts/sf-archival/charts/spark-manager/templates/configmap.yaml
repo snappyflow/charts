@@ -7,8 +7,8 @@ data:
   config.json: |-
     {
       "db": {
-        "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
-        "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
+        "name": "{{ .Values.global.postgresql.postgresqlDatabase }}",
+        "user": "{{ .Values.global.postgresql.postgresqlUsername }}",
         "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
         "host": "{{ template "spark-manager.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }}
@@ -26,8 +26,8 @@ data:
   config.json: |-
     {
       "db": {
-        "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
-        "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
+        "name": "{{ .Values.global.postgresql.postgresqlDatabase }}",
+        "user": "{{ .Values.global.postgresql.postgresqlUsername }}",
         "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
         "host": "{{ template "spark-manager.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }}
@@ -46,8 +46,8 @@ data:
   config.json: |-
     {
       "db": {
-        "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
-        "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
+        "name": "{{ .Values.global.postgresql.postgresqlDatabase }}",
+        "user": "{{ .Values.global.postgresql.postgresqlUsername }}",
         "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
         "host": "{{ template "spark-manager.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }}
@@ -108,7 +108,7 @@ data:
               "spark.kubernetes.container.image={{ .Values.compactionImage }}",
               "--conf",
               "spark.kubernetes.container.image.pullSecrets={{ .Values.global.imagePullSecrets }}",
-{{- if or (and .Values.global.secrets.aws.enable .Values.global.secrets.aws.use_iam_role) (and .Values.global.secrets.gcs.enable .Values.global.secrets.gcs.use_google_service_account) }}
+{{- if or (and .Values.global.secrets.aws.enable .Values.global.secrets.aws.use_iam_role) .Values.global.secrets.gcs.enable }}
               "--conf",
               "spark.kubernetes.authenticate.driver.serviceAccountName={{ .Release.Name }}-service-account",
               "--conf",
@@ -116,12 +116,6 @@ data:
               "--conf",
               "spark.kubernetes.authenticate.serviceAccountName={{ .Release.Name }}-service-account",
 {{- else if .Values.global.secrets.azure.enable }}
-              "--conf",
-              "spark.kubernetes.authenticate.driver.serviceAccountName={{ .Release.Name }}-service-account",
-              "--conf",
-              "spark.kubernetes.authenticate.executor.serviceAccountName={{ .Release.Name }}-service-account",
-              "--conf",
-              "spark.kubernetes.authenticate.serviceAccountName={{ .Release.Name }}-service-account",
               "--conf",
               "spark.hadoop.fs.AbstractFileSystem.wasbs.Impl=org.apache.hadoop.fs.azure.wasbs",
               "--conf",

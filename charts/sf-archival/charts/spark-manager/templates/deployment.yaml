@@ -26,7 +26,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-    {{- if or (and .Values.global.secrets.aws.enable .Values.global.secrets.aws.use_iam_role) (and .Values.global.secrets.gcs.enable .Values.global.secrets.gcs.use_google_service_account) .Values.global.secrets.azure.enable }}
+    {{- if or (and .Values.global.secrets.aws.enable .Values.global.secrets.aws.use_iam_role) .Values.global.secrets.gcs.enable }}
       serviceAccountName: {{ .Release.Name }}-service-account
     {{- end}}
       initContainers:
@@ -53,21 +53,9 @@ spec:
             - -c
             - "until pg_isready -d postgresql://'{{ .Values.global.postgresql.postgresqlUsername }}':'{{ .Values.global.postgresql.postgresqlPassword }}'@'{{ template "spark-manager.postgresql.fullname" . }}':{{ .Values.global.postgresql.servicePort }}/'{{ .Values.global.postgresql.postgresqlDatabase }}'; do sleep 3; done"
         - name: compaction-infrastructure
-          env:
-          {{- if (eq .Values.global.secrets.gcs.enable true) }}
-          - name: GOOGLE_APPLICATION_CREDENTIALS
-            value: /var/secrets/google/key.json
-          {{- end }}
-          {{- if (eq .Values.global.secrets.aws.enable true) }}
-          {{- if (eq .Values.global.secrets.aws.use_iam_role false) }}
-          - name: AWS_ACCESS_KEY_ID
-            value: {{ .Values.global.secrets.aws.AWS_ACCESS_KEY_ID }}
-          - name: AWS_SECRET_ACCESS_KEY
-            value: {{ .Values.global.secrets.aws.AWS_SECRET_ACCESS_KEY }}
-          - name: AWS_REGION
-            value: {{ .Values.global.secrets.aws.AWS_DEFAULT_REGION }}
-          {{- end }}
-          {{- end }}
+          envFrom:
+          - configMapRef:
+              name: {{ .Release.Name }}-cloud-env
           image: snappyflowml/compaction-infra:3
           imagePullPolicy: IfNotPresent
           volumeMounts:
@@ -120,4 +108,3 @@ spec:
         - name: config-volume-compaction
           configMap:
             name: {{ template "spark-manager.fullname" . }}-infrastructure
-
