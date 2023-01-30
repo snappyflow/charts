@@ -25,6 +25,7 @@ spec:
         {{ $key }}: {{ $value | quote }}
       {{- end }}
     spec:
+      schedulerName: {{ .Values.schedulerName }}
       priorityClassName: {{ .Release.Name }}-priority-class
       serviceAccountName: {{ include "spark-history-server.serviceAccountName" . }}
       containers:
