@@ -46,6 +46,7 @@ spec:
         {{- toYaml .Values.controller.podLabels | nindent 8 }}
       {{- end }}
     spec:
+      schedulerName: {{ .Values.schedulerName }}
     {{- if .Values.controller.dnsConfig }}
       dnsConfig: {{ toYaml .Values.controller.dnsConfig | nindent 8 }}
     {{- end }}

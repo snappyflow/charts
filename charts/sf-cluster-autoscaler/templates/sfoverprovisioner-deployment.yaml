@@ -13,6 +13,7 @@ spec:
       labels:
         app: {{ include "sf-cluster-autoscaler.name" . }}-overprovisioner
     spec:
+      schedulerName: {{ .Values.schedulerName }}
       containers:
       - name: overprovisioner
         image: nginx:1.14.2

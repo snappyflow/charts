@@ -2,5 +2,5 @@ apiVersion: v2
 name: pgbouncer
 description: A Helm chart for PgBouncer, Lightweight connection pooler for PostgreSQL 
 type: application
-version: 0.1.5
+version: 0.1.6
 appVersion: 1.14.1

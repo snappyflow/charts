@@ -4,6 +4,8 @@
 
 replicaCount: 1
 
+schedulerName: sf-scheduler
+
 imagePullSecrets: []
 
 image:
@@ -27,7 +29,7 @@ coordinator:
   resources:
     requests:
       cpu: 1000m
-      memory: 3Gi
+      memory: 6Gi
 
 resources:
   requests:
