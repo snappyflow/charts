@@ -1526,6 +1526,29 @@ entries:
       artifacthub.io/prerelease: "false"
     apiVersion: v2
     appVersion: 1.5.1
+    created: "2023-01-30T08:25:31.995112177Z"
+    description: Ingress controller for Kubernetes using NGINX as a reverse proxy
+      and load balancer
+    digest: fbe33a5de2ffc928b81dc47a3e737b1470438fc1a7c02071fe85aae9998969e2
+    home: https://github.com/kubernetes/ingress-nginx
+    icon: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Nginx_logo.svg/500px-Nginx_logo.svg.png
+    keywords:
+    - ingress
+    - nginx
+    kubeVersion: '>=1.20.0-0'
+    name: nginx-ingress
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/nginx-ingress-3.6.27/nginx-ingress-3.6.27.tgz
+    version: 3.6.27
+  - annotations:
+      artifacthub.io/changes: |
+        - Adding support for disabling liveness and readiness probes to the Helm chart
+        - add:(admission-webhooks) ability to set securityContext
+        - Updated Helm chart to use the fullname for the electionID if not specified
+        - Rename controller-wehbooks-networkpolicy.yaml
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    appVersion: 1.5.1
     created: "2023-01-27T06:30:43.618097366Z"
     description: Ingress controller for Kubernetes using NGINX as a reverse proxy
       and load balancer
@@ -2368,6 +2391,16 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/prometheus-elasticsearch-exporter-4.15.0/prometheus-elasticsearch-exporter-4.15.0.tgz
     version: 4.15.0
   redis:
+  - apiVersion: v2
+    appVersion: "5"
+    created: "2023-01-30T08:25:32.149813765Z"
+    description: A Helm chart for Redis server for use with sfapm
+    digest: 7df66051da035d06d329865dfe22bdcc225942a18f49be1e411b10279b34ba0b
+    name: redis
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/redis-0.2.10/redis-0.2.10.tgz
+    version: 0.2.10
   - apiVersion: v2
     appVersion: "5"
     created: "2022-12-26T16:38:46.242881986Z"
@@ -8239,6 +8272,25 @@ entries:
   sfapm-python3:
   - apiVersion: v2
     appVersion: "4"
+    created: "2023-01-30T08:25:32.674538378Z"
+    dependencies:
+    - name: redis
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.2.9
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.1.5
+    description: A Helm chart to deploy snappyflow on Kubernetes
+    digest: 3be8987f170682b9bceb33c2e026a2f4d01ac07dbe421338fb5360836ce14ce5
+    home: https://www.snappyflow.io
+    name: sfapm-python3
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.355/sfapm-python3-4.0.355.tgz
+    version: 4.0.355
+  - apiVersion: v2
+    appVersion: "4"
     created: "2023-01-27T06:33:53.852740899Z"
     dependencies:
     - name: redis
@@ -13426,25 +13478,6 @@ entries:
     version: 4.0.74
   - apiVersion: v2
     appVersion: "4"
-    created: "2021-05-29T14:03:29.151342034Z"
-    dependencies:
-    - name: redis
-      repository: https://snappyflow.github.io/helm-charts/
-      version: 0.2.8
-    - condition: postgresql.enabled
-      name: postgresql
-      repository: https://snappyflow.github.io/helm-charts/
-      version: 0.1.2
-    description: A Helm chart to deploy snappyflow on Kubernetes
-    digest: 88143abf7e597a1f97efab659d3b68b25683d9079b3a75242e0e5d689f57c5c0
-    home: https://www.snappyflow.io
-    name: sfapm-python3
-    type: application
-    urls:
-    - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.71-master/sfapm-python3-4.0.71-master.tgz
-    version: 4.0.71-master
-  - apiVersion: v2
-    appVersion: "4"
     created: "2021-05-29T14:47:36.775382193Z"
     dependencies:
     - name: redis
@@ -13465,6 +13498,25 @@ entries:
   - apiVersion: v2
     appVersion: "4"
     created: "2021-05-29T14:04:16.495299223Z"
+    dependencies:
+    - name: redis
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.2.8
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.1.2
+    description: A Helm chart to deploy snappyflow on Kubernetes
+    digest: 88143abf7e597a1f97efab659d3b68b25683d9079b3a75242e0e5d689f57c5c0
+    home: https://www.snappyflow.io
+    name: sfapm-python3
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.71-master/sfapm-python3-4.0.71-master.tgz
+    version: 4.0.71-master
+  - apiVersion: v2
+    appVersion: "4"
+    created: "2021-05-29T14:03:29.151342034Z"
     dependencies:
     - name: redis
       repository: https://snappyflow.github.io/helm-charts/
@@ -14432,6 +14484,15 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sfnginx-0.1.1/sfnginx-0.1.1.tgz
     version: 0.1.1
   sfnginxv1:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2023-01-30T08:25:32.762869099Z"
+    description: A Helm chart for Kubernetes
+    digest: 21444f8c99ebace3fb8389ce20b9daac0254ad5cf964238653e3f6dbfa70ce9c
+    name: sfnginxv1
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfnginxv1-0.2.2/sfnginxv1-0.2.2.tgz
+    version: 0.2.2
   - apiVersion: v1
     appVersion: "1.0"
     created: "2023-01-27T06:09:05.856785194Z"
