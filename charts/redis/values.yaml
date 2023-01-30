@@ -12,6 +12,7 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
+schedulerName: sf-scheduler
 
 service:
   type: ClusterIP
