@@ -3,6 +3,24 @@ entries:
   charging:
   - apiVersion: v2
     appVersion: v1
+    created: "2023-01-30T10:33:55.108125416Z"
+    dependencies:
+    - name: redis
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.2.10
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.1.2
+    description: A Helm chart for sfapm charging and usage tracking system
+    digest: 33fe7158df0034afe53ac1706e89fe34b40af68ff441c99e5b5806de7c96269a
+    name: charging
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/charging-0.4.22/charging-0.4.22.tgz
+    version: 0.4.22
+  - apiVersion: v2
+    appVersion: v1
     created: "2022-08-17T05:12:33.859454673Z"
     dependencies:
     - name: redis
@@ -1156,6 +1174,15 @@ entries:
   kafka-cluster:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2023-01-30T10:33:55.279681673Z"
+    description: A Helm chart for kafka and zookeeper
+    digest: 5d8cd50f7a87489435ed73328ff0f3fcb44955b15b30425c86bd748d38d330d5
+    name: kafka-cluster
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/kafka-cluster-0.6.33/kafka-cluster-0.6.33.tgz
+    version: 0.6.33
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2023-01-09T13:53:44.274528893Z"
     description: A Helm chart for kafka and zookeeper
     digest: 9031aaca5e9ac2509677a13f7935f8eb73265500a26bda4e7604d256d787fb23
@@ -1400,6 +1427,28 @@ entries:
   kafka-sfagent:
   - apiVersion: v1
     appVersion: 5.3.1
+    created: "2023-01-30T10:33:55.447199355Z"
+    description: This topology includes 2 Kafka nodes and 2 Zookeepr nodes. Includes
+      monitoring of Pod metrics, Storage metrics, JVM metrics, Producer/Consumer Traffic,
+      Topic Metrics, and logs
+    digest: 483886e5d1a69f5026bed5fcbe44a9092aab5269b0151cbde1514d9db830d29a
+    home: https://kafka.apache.org/
+    icon: https://kafka.apache.org/images/logo.png
+    keywords:
+    - kafka
+    - zookeeper
+    - kafka statefulset
+    name: kafka-sfagent
+    sources:
+    - https://github.com/kubernetes/charts/tree/master/incubator/zookeeper
+    - https://github.com/Yolean/kubernetes-kafka
+    - https://github.com/confluentinc/cp-docker-images
+    - https://github.com/apache/kafka
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/kafka-sfagent-1.0.2/kafka-sfagent-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v1
+    appVersion: 5.3.1
     created: "2020-09-07T06:42:22.180015442Z"
     description: This topology includes 2 Kafka nodes and 2 Zookeepr nodes. Includes
       monitoring of Pod metrics, Storage metrics, JVM metrics, Producer/Consumer Traffic,
@@ -1421,6 +1470,21 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/kafka-sfagent-1.0.1/kafka-sfagent-1.0.1.tgz
     version: 1.0.1
   keycloak:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2023-01-30T10:33:55.618190616Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.1.2
+    description: A Helm chart for Kubernetes
+    digest: 80c518d350d261b55863a232ae2fa63b1929e0e7fec6602e649973cb4838edc4
+    name: keycloak
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/keycloak-1.6.2/keycloak-1.6.2.tgz
+    version: 1.6.2
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2020-12-08T07:42:33.641004696Z"
@@ -1527,6 +1591,29 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/keycloak-1.0.0/keycloak-1.0.0.tgz
     version: 1.0.0
   nginx-ingress:
+  - annotations:
+      artifacthub.io/changes: |
+        - Adding support for disabling liveness and readiness probes to the Helm chart
+        - add:(admission-webhooks) ability to set securityContext
+        - Updated Helm chart to use the fullname for the electionID if not specified
+        - Rename controller-wehbooks-networkpolicy.yaml
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    appVersion: 1.5.1
+    created: "2023-01-30T10:33:55.80006681Z"
+    description: Ingress controller for Kubernetes using NGINX as a reverse proxy
+      and load balancer
+    digest: 2b4178263f7a6344d7bf84361b2b587881d50a77417de556772b476c91fa6eff
+    home: https://github.com/kubernetes/ingress-nginx
+    icon: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Nginx_logo.svg/500px-Nginx_logo.svg.png
+    keywords:
+    - ingress
+    - nginx
+    kubeVersion: '>=1.20.0-0'
+    name: nginx-ingress
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/nginx-ingress-3.6.28/nginx-ingress-3.6.28.tgz
+    version: 3.6.28
   - annotations:
       artifacthub.io/changes: |
         - Adding support for disabling liveness and readiness probes to the Helm chart
@@ -2261,6 +2348,16 @@ entries:
   pgbouncer:
   - apiVersion: v2
     appVersion: 1.14.1
+    created: "2023-01-30T10:33:55.953964075Z"
+    description: A Helm chart for PgBouncer, Lightweight connection pooler for PostgreSQL
+    digest: d1522d79b24094d10c5f0156f0d76525d3270d1ac02f364c56ad8cb185430523
+    name: pgbouncer
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/pgbouncer-0.1.7/pgbouncer-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
+    appVersion: 1.14.1
     created: "2022-12-13T05:45:09.158430638Z"
     description: A Helm chart for PgBouncer, Lightweight connection pooler for PostgreSQL
     digest: 45c0d8483c1d944bd500f3b58c45ccea1fc64584ef9835f52085a97121ec212c
@@ -2300,6 +2397,16 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/pgbouncer-0.1.1/pgbouncer-0.1.1.tgz
     version: 0.1.1
   postgresql:
+  - apiVersion: v2
+    appVersion: "9.6"
+    created: "2023-01-30T10:33:56.15063718Z"
+    description: A Helm chart for Postgresql server to use with sfapm
+    digest: 3c39c0861efc787bddd858cccc48329a822d096bce4734b773d75019c54709e2
+    name: postgresql
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/postgresql-0.1.11/postgresql-0.1.11.tgz
+    version: 0.1.11
   - apiVersion: v2
     appVersion: "9.6"
     created: "2022-01-12T16:01:37.101893462Z"
@@ -2502,6 +2609,15 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sample-petclinic-1.1.2/sample-petclinic-1.1.2.tgz
     version: 1.1.2
   sf-archival:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2023-01-30T10:33:56.32496072Z"
+    description: A Helm chart for Kubernetes
+    digest: 8162b03c6d15a88783aa8173fed5bc304804861081c386cb190df5c0f11977d1
+    name: sf-archival
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-archival-2.0.58/sf-archival-2.0.58.tgz
+    version: 2.0.58
   - apiVersion: v1
     appVersion: "1.0"
     created: "2023-01-30T08:56:29.503731799Z"
@@ -3648,6 +3764,16 @@ entries:
   sf-cluster-autoscaler:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2023-01-30T10:33:56.488139229Z"
+    description: A Helm chart for Kubernetes
+    digest: 77a2f5a75c3d406c5b6fb70e52cf8c9e210f95ba8c327481d9cc3b53b195c7d9
+    name: sf-cluster-autoscaler
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-cluster-autoscaler-1.0.10/sf-cluster-autoscaler-1.0.10.tgz
+    version: 1.0.10
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2023-01-11T05:56:04.153533593Z"
     description: A Helm chart for Kubernetes
     digest: a1bf49aa4fd12f0bd76c04630c5f41c03bcd55924122b690f6025647ef6a7647
@@ -3737,6 +3863,48 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sf-cluster-autoscaler-1.0.0/sf-cluster-autoscaler-1.0.0.tgz
     version: 1.0.0
   sf-datapath:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2023-01-30T10:33:56.728492668Z"
+    dependencies:
+    - name: nginx-ingress
+      repository: file://./sub_charts/nginx-ingress
+      version: 4.4.1
+    - name: cp-schema-registry
+      repository: file://./sub_charts/cp-schema-registry
+      version: 0.1.1
+    - name: cp-kafka-rest
+      repository: file://./sub_charts/cp-kafka-rest
+      version: 0.1.1
+    - condition: global.archival.enabled
+      name: s3-kafka-connect
+      repository: file://./sub_charts/s3-kafka-connect
+      version: 0.1.1
+    - name: es-kafka-connect
+      repository: file://./sub_charts/es-kafka-connect
+      version: 0.1.1
+    - name: autoscaling
+      repository: file://./sub_charts/autoscaling
+      version: 0.1.3
+    - name: authenticator
+      repository: file://./sub_charts/authenticator
+      version: 0.1.1
+    - name: sfk-interface
+      repository: file://./sub_charts/sfk-interface
+      version: 0.1.1
+    - name: signatures-and-kafka-apis
+      repository: file://./sub_charts/signatures-and-kafka-apis
+      version: 0.1.1
+    - condition: global.secrets.gcs.enable
+      name: minio
+      repository: file://./sub_charts/minio
+      version: 8.0.11
+    description: A Helm chart for Confluent Open Source
+    digest: 613512925390a8e488c00e39431fd071bf50110c15c91128ea22c6a330cc0cc7
+    name: sf-datapath
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-datapath-2.0.67/sf-datapath-2.0.67.tgz
+    version: 2.0.67
   - apiVersion: v1
     appVersion: "1.0"
     created: "2023-01-17T07:24:37.181559573Z"
@@ -5984,6 +6152,16 @@ entries:
   sf-presto:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2023-01-30T10:33:56.891240879Z"
+    description: A Helm chart for Kubernetes
+    digest: 69d3def74418e1cacfdd0969878cb9bcc3ce6d1446209fe76cea679fefa94a7e
+    name: sf-presto
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-presto-1.0.12/sf-presto-1.0.12.tgz
+    version: 1.0.12
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2023-01-03T05:16:04.42174324Z"
     description: A Helm chart for Kubernetes
     digest: b945446cf6d611d975c5614b16fa11bbaa0418f02cc2d9eae5c35ac8e7e10643
@@ -6075,6 +6253,16 @@ entries:
   sf-scheduler:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2023-01-30T10:33:57.043892151Z"
+    description: A Helm chart for Kubernetes
+    digest: 3e4c7d7104671748174deeb0aa1ae049ef8821aca5768003db86fc67f9875e8e
+    name: sf-scheduler
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-scheduler-0.1.2/sf-scheduler-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-01-30T09:58:10.461637121Z"
     description: A Helm chart for Kubernetes
     digest: 620ead24cce1a0b612ac014fdad48762ebe6b568d01fe078df9b75b4482a443a
@@ -6084,6 +6272,25 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sf-scheduler-0.1.1/sf-scheduler-0.1.1.tgz
     version: 0.1.1
   sfagent:
+  - apiVersion: v1
+    appVersion: "2.1"
+    created: "2023-01-30T10:33:57.222060168Z"
+    description: Cluster and Application Monitoring and Logging system for Maplelabs'
+      snappyFlow APM.
+    digest: 20f3b91e62287d56427ff453b2cfa3ca5bcc15ba942b98f85f9e421e87fb3e72
+    home: http://www.snappyflow.io
+    keywords:
+    - monitoring
+    - alerting
+    - metric
+    - logging
+    maintainers:
+    - email: upendra.sahu@maplelabs.com
+      name: Upendra
+    name: sfagent
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfagent-3.1.32/sfagent-3.1.32.tgz
+    version: 3.1.32
   - apiVersion: v1
     appVersion: "2.1"
     created: "2022-08-04T11:32:52.931279512Z"
@@ -13536,25 +13743,6 @@ entries:
     version: 4.0.74
   - apiVersion: v2
     appVersion: "4"
-    created: "2021-05-29T14:04:16.495299223Z"
-    dependencies:
-    - name: redis
-      repository: https://snappyflow.github.io/helm-charts/
-      version: 0.2.8
-    - condition: postgresql.enabled
-      name: postgresql
-      repository: https://snappyflow.github.io/helm-charts/
-      version: 0.1.2
-    description: A Helm chart to deploy snappyflow on Kubernetes
-    digest: 88143abf7e597a1f97efab659d3b68b25683d9079b3a75242e0e5d689f57c5c0
-    home: https://www.snappyflow.io
-    name: sfapm-python3
-    type: application
-    urls:
-    - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.71-master/sfapm-python3-4.0.71-master.tgz
-    version: 4.0.71-master
-  - apiVersion: v2
-    appVersion: "4"
     created: "2021-05-29T14:03:29.151342034Z"
     dependencies:
     - name: redis
@@ -13575,6 +13763,25 @@ entries:
   - apiVersion: v2
     appVersion: "4"
     created: "2021-05-29T14:47:36.775382193Z"
+    dependencies:
+    - name: redis
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.2.8
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.1.2
+    description: A Helm chart to deploy snappyflow on Kubernetes
+    digest: 88143abf7e597a1f97efab659d3b68b25683d9079b3a75242e0e5d689f57c5c0
+    home: https://www.snappyflow.io
+    name: sfapm-python3
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.71-master/sfapm-python3-4.0.71-master.tgz
+    version: 4.0.71-master
+  - apiVersion: v2
+    appVersion: "4"
+    created: "2021-05-29T14:04:16.495299223Z"
     dependencies:
     - name: redis
       repository: https://snappyflow.github.io/helm-charts/
