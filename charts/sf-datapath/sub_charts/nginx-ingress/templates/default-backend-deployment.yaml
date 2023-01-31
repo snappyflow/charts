@@ -34,6 +34,7 @@ spec:
         {{- toYaml .Values.defaultBackend.podLabels | nindent 8 }}
       {{- end }}
     spec:
+      schedulerName: {{ .Values.schedulerName }}
     {{- if .Values.imagePullSecrets }}
       imagePullSecrets: {{ toYaml .Values.imagePullSecrets | nindent 8 }}
     {{- end }}
