@@ -51,7 +51,6 @@ data:
     {{- else }}
     KEYCLOAK_MODE: ""
     {{- end }}
-
     {{- if .Values.sfapm.rollover.custom_config }}
     METRIC_ROLLOVER_MAX_AGE: "{{ .Values.sfapm.rollover.metric.rollover_max_age }}"
     METRIC_ROLLOVER_MAX_DOCS: "{{ .Values.sfapm.rollover.metric.rollover_max_docs }}"

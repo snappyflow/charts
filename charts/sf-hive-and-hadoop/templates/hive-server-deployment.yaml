@@ -24,6 +24,7 @@ spec:
         {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
         {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
     spec:
+      schedulerName: {{ .Values.schedulerName }}
       priorityClassName: {{ .Release.Name }}-priority-class
       {{- with .Values.global.imagePullSecrets }}
       imagePullSecrets:
@@ -90,8 +91,9 @@ spec:
             timeoutSeconds: 10
             successThreshold: 1
             failureThreshold: 3
-          resources:
-{{- toYaml .Values.containerResources.hiveServer | nindent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{- toYaml .Values.containerResources.hiveServer | nindent 12 }}
+{{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

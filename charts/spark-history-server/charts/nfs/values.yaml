@@ -5,4 +5,6 @@ pvStorage: 1Mi
 pvName: nfs-pv
 pvcName: nfs-pvc
 
+schedulerName: sf-scheduler
+
 enableExampleNFS: true

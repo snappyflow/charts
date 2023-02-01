@@ -1,6 +1,7 @@
 affinity: {}
 compactionImage: snappyflowml/spark-compact-orc:4
 fullnameOverride: ''
+schedulerName: sf-scheduler
 jobserver:
   containerResources:
     limits:

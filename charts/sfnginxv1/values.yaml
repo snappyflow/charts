@@ -9,6 +9,8 @@ image:
   tag: stable
   pullPolicy: IfNotPresent
 
+schedulerName: sf-scheduler
+
 nameOverride: ""
 fullnameOverride: ""
 

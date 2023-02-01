@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ template "sfk-interface.fullname" . }}
@@ -16,9 +16,15 @@ spec:
       paths:
       - path: /sfkinterface
         backend:
-          serviceName: {{ template "sfk-interface.fullname" . }}
-          servicePort: 80
+          service:
+            name: {{ template "sfk-interface.fullname" . }}
+            port: 
+              number: 80
+        pathType: Prefix
       - path: /profile-quotas
         backend:
-          serviceName: {{ template "sfk-interface.fullname" . }}
-          servicePort: 80
+          service:
+            name: {{ template "sfk-interface.fullname" . }}
+            port: 
+              number: 80
+        pathType: Prefix

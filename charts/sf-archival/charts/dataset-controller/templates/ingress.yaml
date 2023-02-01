@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ template "dataset-controller.fullname" . }}
@@ -17,5 +17,8 @@ spec:
       paths:
       - path: /datasets
         backend:
-          serviceName: {{ template "dataset-controller.fullname" . }} 
-          servicePort: 80
+          service:
+            name: {{ template "dataset-controller.fullname" . }} 
+            port: 
+              number: 80
+        pathType: Prefix

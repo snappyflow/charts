@@ -24,10 +24,10 @@ configurationOverrides:
 containerResources:
   connector:
     limits:
-      cpu: 800m
+      cpu: "1"
       memory: 3Gi
     requests:
-      cpu: 256m
+      cpu: "1"
       memory: 1536Mi
   jmx:
     limits:
@@ -44,6 +44,7 @@ heapOptions: -Xms250M -Xmx1300M -Xmns200M -Xmnx800M -XX:MaxDirectMemorySize=100M
   -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,20,100 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp
   -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt
   -Xdump:system+heap+java
+schedulerName: sf-scheduler
 image: snappyflowml/arch-kafka-connect
 imagePullPolicy: IfNotPresent
 imageTag: '17'
@@ -60,5 +61,6 @@ prometheus:
     imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
     port: 5556
 replicaCount: 1
+terminationGracePeriodSeconds: 200
 servicePort: 8083
 tolerations: {}

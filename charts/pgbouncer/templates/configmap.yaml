@@ -5,17 +5,16 @@
 {{- end }}
 [pgbouncer]
 listen_addr = 0.0.0.0
-listen_port = 5432
+listen_port = {{ .Values.service.port }}
 auth_type = plain
 auth_file = /etc/pgbouncer/userlist.txt
 {{- $users := (join "," (keys .Values.users | sortAlpha)) }}
 admin_users = {{ $users }}
 stats_users = {{ $users }},stats
 pool_mode = {{ .Values.connConfig.poolMode }}
-max_client_conn = {{ .Values.connConfig.maxClientConn }}
 default_pool_size = {{ .Values.connConfig.defaultPoolSize }}
-min_pool_size = {{ .Values.connConfig.minPoolSize }}
-reserve_pool_size = {{ .Values.connConfig.reservePoolSize }}
+max_db_connections = {{ .Values.connConfig.maxDBConnections }}
+
 # extra config
 {{- range $k, $v := .Values.extraConfig }}
 {{ $k }} = {{ $v }}

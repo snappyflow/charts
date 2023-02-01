@@ -4,6 +4,8 @@
 
 replicaCount: 1
 
+schedulerName: sf-scheduler
+
 image:
   repository: edoburu/pgbouncer
   pullPolicy: IfNotPresent
@@ -39,7 +41,7 @@ securityContext:
 
 service:
   type: ClusterIP
-  port: 5432
+  port: 6432
 
 resources:
   limits:
@@ -62,14 +64,6 @@ tolerations: []
 
 affinity: {}
 
-
-# databases to be connected
-# databasename:
-#   host: host
-#   port: 5432         # DEFAULT PORT 5432 
-#   dbname: dbname     # OPTIONAL
-#   user: user         # OPTIONAL
-#   password: password # OPTIONAL 
 databases: {}
   # snappyflow:
   #   host: pg-postgresql
@@ -84,9 +78,8 @@ databases: {}
   #   user: test
   #   password: test123
 
-# username: password
 users: {}
-  # app: password
+  # username: password
 
 # pgbouncer config
 # refer: https://www.pgbouncer.org/config.html#log-settings
@@ -98,15 +91,13 @@ connConfig:
   #   transaction  - after transaction finishes
   #   statement    - after statement finishes
   poolMode: transaction
-  maxClientConn: 100
   defaultPoolSize: 20
-  minPoolSize: 10
-  reservePoolSize: 10
+  maxDBConnections: 50
 
 extraConfig:
-  log_connections: 0
-  log_disconnections: 0
+  log_connections: 1
+  log_disconnections: 1
   log_pooler_errors:  1
-  log_stats: 0
+  log_stats: 1
   stats_period: 60
   verbose: 0

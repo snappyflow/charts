@@ -17,16 +17,26 @@ data:
           host: 0.0.0.0:14268
     queue:
       mem:
-        events: 16384
+        events: {{ .Values.sftrace.maximumQueueEvents }}
+        flush.min_events: 0
+        flush.timeout: 0s
     {{- if .Values.sftrace.output.kafka.enabled }}
     output.kafka:
       enabled: true
       hosts: {{ .Values.sftrace.output.kafka.hosts | toJson }}
       topic: beats
-      worker: 1
-      channel_buffer_size: 16384
-      bulk_max_size: 2048
+      worker: 8
+      timeout: 5
+      channel_buffer_size: 5000
+      bulk_max_size: 5000
       compression: "snappy"
+      partition.random:
+        group_events: 1000
+        reachable_only: true
+      bulk_flush_frequency: 0
+      keep_alive: 300s
+      max_message_bytes: 10000000
+      required_acks: 1
     {{- else }}
     output.kafkarest:
       enabled: true

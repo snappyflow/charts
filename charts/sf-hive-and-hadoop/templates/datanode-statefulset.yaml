@@ -19,6 +19,9 @@ spec:
     spec:
       accessModes:
       - ReadWriteOnce
+      {{ if eq .Values.global.secrets.azure.enable true }}
+      storageClassName: managed-csi
+      {{- end}}
       resources:
         requests:
           storage: 10Gi
@@ -38,6 +41,7 @@ spec:
         {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
         {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
     spec:
+      schedulerName: {{ .Values.schedulerName }}
       priorityClassName: {{ .Release.Name }}-priority-class
       {{- with .Values.global.imagePullSecrets }}
       imagePullSecrets:
@@ -68,8 +72,9 @@ spec:
           env:
           - name: HADOOP_HEAPSIZE
             value: "750"
-          resources:
-{{- toYaml .Values.containerResources.datanode | nindent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{- toYaml .Values.containerResources.datanode | nindent 12 }}
+{{- end }}
           ports:
             - name: datanode
               containerPort: {{ .Values.service.datanode.port }}
@@ -90,8 +95,9 @@ spec:
             timeoutSeconds: 10
             successThreshold: 1
             failureThreshold: 3
-          resources:
-{{- toYaml .Values.containerResources.datanode | nindent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{- toYaml .Values.containerResources.datanode | nindent 12 }}
+{{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -12,6 +12,7 @@ containerResources:
       cpu: 10m
       memory: 50Mi
 fullnameOverride: ''
+schedulerName: sf-scheduler
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/authenticator
