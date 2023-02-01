@@ -44,7 +44,54 @@ data:
       enabled: false #Rely on normalization algorithm for rule generation.
       rules_length_limit: 10000 #set the value to -1  for specifying no limit
       log_volume: 100000 #set the value to -1  for specifying no limit
-    rules: []
+      rules:
+      - /_template/control/*
+      - /control-*_read/_alias
+      - /control-*_read/_search
+      - /control-*_read/_stats
+      - /control-*_write/_mapping
+      - /control-*_write/_search
+      - /control-*_write/_rollover
+      - /control-*_write/_settings
+      - /control-*/_settings
+      - /control-*/_alias
+      - /control-*_read/
+      - /control-*_write/
+      - /log-*_read/_alias
+      - /log-*_read/_search
+      - /log-*_read/_stats
+      - /log-*_write/_mapping
+      - /log-*_write/_search
+      - /log-*_write/_rollover
+      - /log-*_write/_settings
+      - /log-*_read/
+      - /log-*_write/
+      - /_template/*
+      - /trace-*_read/_alias/
+      - /trace-*_read/_search
+      - /trace-*_read/_stats
+      - /trace-*_write/_mapping
+      - /trace-*_write/_search
+      - /trace-*_write/_rollover
+      - /trace-*_write/_settings
+      - /profile-*_read/_alias/
+      - /profile-*_read/_search
+      - /profile-*_read/_stats
+      - /profile-*_write/_mapping
+      - /profile-*_write/_search
+      - /profile-*_write/_rollover
+      - /profile-*_write/_settings
+      - /metric-*_read/_alias/
+      - /metric-*_read/_search
+      - /metric-*_read/_stats
+      - /metric-*_write/_mapping
+      - /metric-*_write/_search
+      - /metric-*_write/_rollover
+      - /metric-*_write/_settings
+      - /metric-*_read/
+      - /metric-*_write/
+      - /tasks/*
+      - /.tasks/task/*/
 kind: ConfigMap
 metadata:
   name: {{ include "sfnginx.fullname" . }}-normalization-config

@@ -29,13 +29,14 @@ configurationOverrides:
   task.shutdown.graceful.timeout.ms: '180000'
   value.converter: org.apache.kafka.connect.json.JsonConverter
   value.converter.schemas.enable: 'false'
+schedulerName: sf-scheduler
 containerResources:
   connector:
     limits:
-      cpu: 600m
+      cpu: "1"
       memory: 4Gi
     requests:
-      cpu: 256m
+      cpu: "1"
       memory: 2560Mi
   jmx:
     limits:
@@ -69,6 +70,7 @@ prometheus:
     port: 5556
     resources: {}
 replicaCount: 1
+terminationGracePeriodSeconds: 200
 resources: {}
 servicePort: 8083
 tolerations: {}

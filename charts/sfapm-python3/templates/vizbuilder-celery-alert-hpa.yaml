@@ -1,0 +1,36 @@
+{{- if .Values.vizbuilder_celery.alert.autoscaling.enabled -}}
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "sfapm.fullname" . }}-vizbuilder-celery-alert
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "sfapm.fullname" . }}-vizbuilder-celery-alert
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 30
+      policies:
+      - type: Pods
+        periodSeconds: {{ .Values.vizbuilder_celery.alert.autoscaling.scaleDownPeriod }}
+        value: 1
+    scaleUp:
+      stabilizationWindowSeconds: 30
+      policies:
+      - type: Pods
+        periodSeconds: {{ .Values.vizbuilder_celery.alert.autoscaling.scaleUpPeriod }}
+        value: 1
+  minReplicas: {{ .Values.vizbuilder_celery.alert.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.vizbuilder_celery.alert.autoscaling.maxReplicas }}
+  metrics:
+  - type: Pods
+    pods:
+      metric:
+        name: num_executing_tasks
+      target:
+        type: AverageValue
+        averageValue: {{ div .Values.vizbuilder_celery.env.MAXIMUM_RUNNING_TASKS 2 }}
+{{- end }}

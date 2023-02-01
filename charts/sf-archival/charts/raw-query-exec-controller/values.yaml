@@ -1,5 +1,6 @@
 affinity: {}
 fullnameOverride: ''
+schedulerName: sf-scheduler
 image:
   pullPolicy: Always
   repository: snappyflowml/raw-query-exec-controller

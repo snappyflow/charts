@@ -25,6 +25,7 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9308"
     spec:
+      schedulerName: {{ .Values.schedulerName }}
       initContainers:
         - name: kafka-ready
           image: "snappyflowml/kafka-zk-check:alpha"
@@ -34,7 +35,7 @@ spec:
             - ./kafka-init.sh
             - {{ .Release.Name }}-cp-kafka-headless:9092
       containers:
-      - image: "danielqsj/kafka-exporter:v1.0.1"
+      - image: "snappyflowml/kafka-lag-exporter:latest"
         name: kafka-exporter
         args:
           - --kafka.server={{ .Release.Name }}-cp-kafka-headless:9092

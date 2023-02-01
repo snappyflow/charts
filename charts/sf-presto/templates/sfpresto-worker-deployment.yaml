@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sf-presto.fullname" . }}-worker
+  labels:
+    app: {{ include "sf-presto.name" . }}-worker
+    release: {{ .Release.Name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    snappyflow/component: snappyflow-presto
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "sf-presto.name" . }}-worker
+      role: sfpresto-worker
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: {{ include "sf-presto.name" . }}-worker
+        release: {{ .Release.Name }}
+        role: sfpresto-worker
+        snappyflow/component: snappyflow-presto
+    spec:
+      schedulerName: {{ .Values.schedulerName }}
+      containers:
+        - name: sfpresto-worker
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/bash", "./preStop.sh"]
+          env:
+          {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+          {{- end }}
+            - name: "PRESTO_SERVICE"
+              value: {{ include "sf-presto.fullname" . }}-coordinator
+            - name: "SERVICE_PORT"
+              value: "{{ .Values.service.servicePort }}"
+            - name: "MAX_REPLICA"
+              value: "{{ .Values.autoscaling.maxReplicas }}"
+          command: ["/bin/bash", "-c"]
+          args: ["/home/presto-config; ./worker-init.sh;"]
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - name: hive-properties
+            mountPath: /home/hive/.
+        - name: sfpresto-worker-prometheus-exporter
+          command: [/go/metrics]
+          image: "{{ .Values.sfprestoWorkerPrometheusExporter.image.repository }}:{{ .Values.sfprestoWorkerPrometheusExporter.image.tag }}" 
+          imagePullPolicy: Always
+          env:
+          - name: "PRESTO_SERVICE"
+            value: {{ include "sf-presto.fullname" . }}-coordinator
+          - name: "SERVICE_PORT"
+            value: "{{ .Values.service.servicePort }}"
+          - name: "MAX_REPLICA"
+            value: "{{ .Values.autoscaling.maxReplicas }}"
+          resources:
+            {{- toYaml .Values.sfprestoWorkerPrometheusExporter.resources | nindent 12 }}
+      volumes:
+      - name: hive-properties
+        configMap:
+          name: {{ include "sf-presto.fullname" . }}-configmap
+      terminationGracePeriodSeconds: {{ sub (mul .Values.env.Grace_Period_Seconds 2) 10 }}

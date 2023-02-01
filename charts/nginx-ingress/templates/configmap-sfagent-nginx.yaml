@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "nginx-ingress.fullname" . }}-sfagent-plugin-configmap
+  name: {{ include "ingress-nginx.fullname" . }}-sfagent-plugin-configmap
 data:
   config.yaml: |+
     ---
@@ -33,7 +33,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "nginx-ingress.fullname" . }}-sfagent-normalization-nginx
+  name: {{ include "ingress-nginx.fullname" . }}-sfagent-normalization-nginx
 data:
   config.yaml: |+
     ---
@@ -186,5 +186,6 @@ data:
     - /vizbuilder/querybuilder/visualizations/*/*/validate/importPane
     - /vizbuilder/querybuilder/visualizations/templates/templates/*/components/content/main
     - /vizbuilder/signature/operations/*
+    - /cservice/api/v1/profile/*
 
 {{- end }}

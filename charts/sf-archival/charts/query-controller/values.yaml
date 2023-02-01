@@ -38,6 +38,7 @@ external:
   externalTrafficPolicy: Cluster
   type: NodePort
 fullnameOverride: ''
+schedulerName: sf-scheduler
 image:
   pullPolicy: Always
   repository: snappyflowml/query-controller

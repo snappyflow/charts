@@ -2,6 +2,8 @@
 
 affinity: {}
 
+schedulerName: sf-scheduler
+
 image:
   repository: k8s.gcr.io/prometheus-adapter/prometheus-adapter
   tag: v0.9.1
@@ -164,6 +166,39 @@ rules:
         kubernetes_pod_name:
           resource: pod
     seriesQuery: '{__name__="sftrace_queued_events"}'
+  - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*sf-presto-worker.*"}
+    name:
+      as: presto_running_drivers
+      matches: ""
+    resources:
+      overrides:
+        kubernetes_namespace:
+          resource: namespace
+        kubernetes_pod_name:
+          resource: pod
+    seriesQuery: '{__name__="presto_running_drivers"}'
+  - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*sf-presto-worker.*"}
+    name:
+      as: presto_queued_queries
+      matches: ""
+    resources:
+      overrides:
+        kubernetes_namespace:
+          resource: namespace
+        kubernetes_pod_name:
+          resource: pod
+    seriesQuery: '{__name__="presto_queued_queries"}'
+  - metricsQuery: <<.Series>>{kubernetes_pod_name=~".*vizbuilder-celery-alert.*"}
+    name:
+      as: num_executing_tasks
+      matches: ""
+    resources:
+      overrides:
+        kubernetes_namespace:
+          resource: namespace
+        kubernetes_pod_name:
+          resource: pod
+    seriesQuery: '{__name__="num_executing_tasks"}'
 
 service:
   annotations: {}

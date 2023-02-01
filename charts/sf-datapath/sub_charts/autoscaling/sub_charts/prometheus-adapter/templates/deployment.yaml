@@ -36,6 +36,7 @@ spec:
         {{- toYaml . | trim | nindent 8 }}
         {{- end }}
     spec:
+      schedulerName: {{ .Values.schedulerName }}
       serviceAccountName: {{ template "k8s-prometheus-adapter.serviceAccountName" . }}
       {{- if .Values.hostNetwork.enabled }}
       hostNetwork: true

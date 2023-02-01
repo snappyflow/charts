@@ -12,6 +12,7 @@ containerResources:
       cpu: 10m
       memory: 256Mi
 fullnameOverride: ''
+schedulerName: sf-scheduler
 image:
   pullPolicy: Always
   repository: snappyflowml/dataset-controller
