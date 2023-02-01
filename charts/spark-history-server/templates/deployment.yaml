@@ -103,10 +103,6 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /data
-        {{- else if .Values.wasbs.enableWASBS }}
-        volumeMounts:
-        - name: secrets-volume
-          mountPath: /etc/secrets
         {{- else if .Values.hdfs.enableHDFS }}
         volumeMounts:
         - name: core-site
@@ -121,11 +117,6 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: {{ .Values.pvc.existingClaimName }}
-      {{- else if .Values.wasbs.enableWASBS }}
-      volumes:
-      - name: secrets-volume
-        secret:
-          secretName: {{ .Values.wasbs.secret }}
       {{- else if .Values.hdfs.enableHDFS }}
       volumes:
       - name: hdfs-site
