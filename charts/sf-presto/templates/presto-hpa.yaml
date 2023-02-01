@@ -27,13 +27,6 @@ spec:
   - type: Pods
     pods:
       metric:
-        name: presto_running_drivers
-      target:
-        type: AverageValue
-        averageValue: {{ .Values.autoscaling.targetRunningDrivers }}
-  - type: Pods
-    pods:
-      metric:
         name: presto_queued_queries
       target:
         type: AverageValue
