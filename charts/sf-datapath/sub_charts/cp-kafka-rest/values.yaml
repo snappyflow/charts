@@ -3,7 +3,6 @@ configurationOverrides:
   listeners: https://0.0.0.0:8081,http://0.0.0.0:8082
   max.request.size: '10485760'
   producer.retries: '5'
-schedulerName: sf-scheduler
 containerResources:
   jmx:
     limits:
@@ -65,5 +64,6 @@ prometheus:
     imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
     port: 5556
 replicaCount: 1
+schedulerName: sf-scheduler
 servicePort: 8082
 tolerations: {}
