@@ -45,6 +45,8 @@ spec:
               value: "{{ .Values.service.servicePort }}"
             - name: "MAX_REPLICA"
               value: "{{ .Values.autoscaling.maxReplicas }}"
+            - name: "POD_MEM"
+              value: "{{ .Values.worker.podmem }}"
           command: ["/bin/bash", "-c"]
           args: ["/home/presto-config; ./worker-init.sh;"]
           resources:
