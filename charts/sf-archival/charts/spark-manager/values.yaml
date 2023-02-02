@@ -11,9 +11,9 @@ jobserver:
       cpu: 10m
       memory: 50Mi
   image:
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
     repository: snappyflowml/job-server
-    tag: 'dev-test'
+    tag: '15'
   serverPort: 5002
   service:
     servicePort: 5002
@@ -28,9 +28,9 @@ monitor:
       cpu: 10m
       memory: 10Mi
   image:
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
     repository: snappyflowml/monitor
-    tag: 'dev-test'
+    tag: '8'
 nameOverride: ''
 nodeSelector: {}
 tolerations: []

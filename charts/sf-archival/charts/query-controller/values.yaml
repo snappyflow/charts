@@ -30,9 +30,9 @@ dataset-controller:
   service:
     servicePort: 5001
 executionControler:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   repository: snappyflowml/query-execution-controller
-  tag: 'dev-test'
+  tag: '28'
 external:
   enabled: false
   externalTrafficPolicy: Cluster
@@ -40,9 +40,9 @@ external:
 fullnameOverride: ''
 schedulerName: sf-scheduler
 image:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   repository: snappyflowml/query-controller
-  tag: 'dev-test'
+  tag: '15'
 ingest-controller:
   service:
     servicePort: 5000

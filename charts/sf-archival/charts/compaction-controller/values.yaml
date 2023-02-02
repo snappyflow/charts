@@ -13,9 +13,9 @@ dataset-controller:
 fullnameOverride: ''
 schedulerName: sf-scheduler
 image:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   repository: snappyflowml/compaction-controller
-  tag: 'dev-test'
+  tag: '16'
 ingest-controller:
   service:
     servicePort: 5000
