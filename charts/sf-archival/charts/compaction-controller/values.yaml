@@ -15,7 +15,7 @@ schedulerName: sf-scheduler
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/compaction-controller
-  tag: '15'
+  tag: '16'
 ingest-controller:
   service:
     servicePort: 5000
@@ -44,6 +44,7 @@ schedules:
   processStuck: '*/10 * * * *'
   queue: '*/10 * * * *'
   start: '*/10 * * * *'
+  partitionStatusUpdate: '*/10 * * * *'
 serverPort: :5005
 service:
   servicePort: 5005

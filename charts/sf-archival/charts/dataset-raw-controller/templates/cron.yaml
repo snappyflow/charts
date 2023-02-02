@@ -1,0 +1,108 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-detect-raw-time-bucket
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "dataset-raw-controller.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: {{ .Values.schedules.detect_raw_time_buckets | quote }}
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  startingDeadlineSeconds: 200
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+        spec:
+          initContainers:
+          - name: dataset-raw-controller-init
+            image: busybox:1.28
+            command: ['sh', '-c', "until nslookup {{ include "dataset-raw-controller.fullname" . }}; do echo waiting for {{ include "dataset-controller.fullname" . }}; sleep 5; done"]
+          - name: ingest-controller-init
+            image: busybox:1.28
+            command: ['sh', '-c', "until nslookup {{ include "dataset-raw-controller.ingest-controller.fullname" . }}; do echo waiting for {{ include "dataset-controller.fullname" . }}; sleep 5; done"]
+          containers:
+          - name: main
+            image: snappyflowml/drc-partition-detect-job:1
+            imagePullPolicy: IfNotPresent
+            command: ["/bin/sh","-c","/app/drc-partition-detect-job -ingest-controller-url http://{{ include "dataset-raw-controller.ingest-controller.fullname" . }} -dataset-raw-controller-url http://{{ include "dataset-raw-controller.fullname" . }} -parallelism-factor 5"]
+          restartPolicy: Never
+
+---
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-process-raw-data
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "dataset-raw-controller.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: {{ .Values.schedules.process_raw_data | quote }}
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  startingDeadlineSeconds: 200
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+        spec:
+          initContainers:
+          - name: dataset-raw-controller-init
+            image: busybox:1.28
+            command: ['sh', '-c', "until nslookup {{ include "dataset-raw-controller.fullname" . }}; do echo waiting for {{ include "dataset-controller.fullname" . }}; sleep 5; done"]
+          - name: ingest-controller-init
+            image: busybox:1.28
+            command: ['sh', '-c', "until nslookup {{ include "dataset-raw-controller.ingest-controller.fullname" . }}; do echo waiting for {{ include "dataset-controller.fullname" . }}; sleep 5; done"]
+          containers:
+          - name: main
+            image: snappyflowml/drc-process-raw-data-job:1
+            imagePullPolicy: IfNotPresent
+            command: ["/bin/sh","-c", "/app/drc-process-raw-data-job -dataset-raw-controller-url http://{{ include "dataset-raw-controller.fullname" . }} -parallelism-factor 5"]
+          restartPolicy: Never
+
+---
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-delete-raw-data-post-compaction
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "dataset-raw-controller.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: {{ .Values.schedules.raw_version_compacted | quote }}
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  startingDeadlineSeconds: 200
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+        spec:
+          initContainers:
+          - name: dataset-raw-controller-init
+            image: busybox:1.28
+            command: ['sh', '-c', "until nslookup {{ include "dataset-raw-controller.fullname" . }}; do echo waiting for {{ include "dataset-controller.fullname" . }}; sleep 5; done"]
+          - name: ingest-controller-init
+            image: busybox:1.28
+            command: ['sh', '-c', "until nslookup {{ include "dataset-raw-controller.ingest-controller.fullname" . }}; do echo waiting for {{ include "dataset-controller.fullname" . }}; sleep 5; done"]
+          containers:
+          - name: main
+            image: snappyflowml/drc-delete-raw-data-job:1
+            imagePullPolicy: IfNotPresent
+            command: ["/bin/sh","-c", "/app/drc-delete-raw-data-job -dataset-raw-controller-url http://{{ include "dataset-raw-controller.fullname" . }} -parallelism-factor 5"]
+          restartPolicy: Never

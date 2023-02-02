@@ -19,7 +19,7 @@ schedulerName: sf-scheduler
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/ingest-controller
-  tag: '16'
+  tag: '17'
 log-archival:
   service:
     servicePort: 5003
@@ -39,3 +39,4 @@ spark-manager:
     service:
       servicePort: 5002
 tolerations: []
+timeBucketSizeMinutes: 15
