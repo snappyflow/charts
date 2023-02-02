@@ -2611,6 +2611,15 @@ entries:
   sf-archival:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2023-02-02T16:13:22.862421992Z"
+    description: A Helm chart for Kubernetes
+    digest: 673803612b78f74047d449f547e1eb0ab2d02c4bbffb9922286437d86c4cbc50
+    name: sf-archival
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-archival-2.0.59/sf-archival-2.0.59.tgz
+    version: 2.0.59
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2023-01-30T10:33:56.32496072Z"
     description: A Helm chart for Kubernetes
     digest: 8162b03c6d15a88783aa8173fed5bc304804861081c386cb190df5c0f11977d1
@@ -3863,6 +3872,48 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sf-cluster-autoscaler-1.0.0/sf-cluster-autoscaler-1.0.0.tgz
     version: 1.0.0
   sf-datapath:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2023-02-02T16:13:23.028932513Z"
+    dependencies:
+    - name: nginx-ingress
+      repository: file://./sub_charts/nginx-ingress
+      version: 4.4.1
+    - name: cp-schema-registry
+      repository: file://./sub_charts/cp-schema-registry
+      version: 0.1.1
+    - name: cp-kafka-rest
+      repository: file://./sub_charts/cp-kafka-rest
+      version: 0.1.1
+    - condition: global.archival.enabled
+      name: s3-kafka-connect
+      repository: file://./sub_charts/s3-kafka-connect
+      version: 0.1.1
+    - name: es-kafka-connect
+      repository: file://./sub_charts/es-kafka-connect
+      version: 0.1.1
+    - name: autoscaling
+      repository: file://./sub_charts/autoscaling
+      version: 0.1.3
+    - name: authenticator
+      repository: file://./sub_charts/authenticator
+      version: 0.1.1
+    - name: sfk-interface
+      repository: file://./sub_charts/sfk-interface
+      version: 0.1.1
+    - name: signatures-and-kafka-apis
+      repository: file://./sub_charts/signatures-and-kafka-apis
+      version: 0.1.1
+    - condition: global.secrets.gcs.enable
+      name: minio
+      repository: file://./sub_charts/minio
+      version: 8.0.11
+    description: A Helm chart for Confluent Open Source
+    digest: 930dcf4ac4bba1f9b61fe74065fba0f4edbde4c8f10d69e4c6d5f9ce04ef35d3
+    name: sf-datapath
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-datapath-2.0.68/sf-datapath-2.0.68.tgz
+    version: 2.0.68
   - apiVersion: v1
     appVersion: "1.0"
     created: "2023-01-30T10:33:56.728492668Z"
@@ -6150,6 +6201,16 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sf-datapath-1.0.4/sf-datapath-1.0.4.tgz
     version: 1.0.4
   sf-presto:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2023-02-02T16:13:23.171953051Z"
+    description: A Helm chart for Kubernetes
+    digest: 727d144eabe83e6ba83ee39c02b9934b622d7cb63445f864fd65b238fb21a3fd
+    name: sf-presto
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-presto-1.0.15/sf-presto-1.0.15.tgz
+    version: 1.0.15
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2023-02-02T10:00:37.607909183Z"
@@ -13763,25 +13824,6 @@ entries:
     version: 4.0.74
   - apiVersion: v2
     appVersion: "4"
-    created: "2021-05-29T14:04:16.495299223Z"
-    dependencies:
-    - name: redis
-      repository: https://snappyflow.github.io/helm-charts/
-      version: 0.2.8
-    - condition: postgresql.enabled
-      name: postgresql
-      repository: https://snappyflow.github.io/helm-charts/
-      version: 0.1.2
-    description: A Helm chart to deploy snappyflow on Kubernetes
-    digest: 88143abf7e597a1f97efab659d3b68b25683d9079b3a75242e0e5d689f57c5c0
-    home: https://www.snappyflow.io
-    name: sfapm-python3
-    type: application
-    urls:
-    - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.71-master/sfapm-python3-4.0.71-master.tgz
-    version: 4.0.71-master
-  - apiVersion: v2
-    appVersion: "4"
     created: "2021-05-29T14:03:29.151342034Z"
     dependencies:
     - name: redis
@@ -13802,6 +13844,25 @@ entries:
   - apiVersion: v2
     appVersion: "4"
     created: "2021-05-29T14:47:36.775382193Z"
+    dependencies:
+    - name: redis
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.2.8
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.1.2
+    description: A Helm chart to deploy snappyflow on Kubernetes
+    digest: 88143abf7e597a1f97efab659d3b68b25683d9079b3a75242e0e5d689f57c5c0
+    home: https://www.snappyflow.io
+    name: sfapm-python3
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.71-master/sfapm-python3-4.0.71-master.tgz
+    version: 4.0.71-master
+  - apiVersion: v2
+    appVersion: "4"
+    created: "2021-05-29T14:04:16.495299223Z"
     dependencies:
     - name: redis
       repository: https://snappyflow.github.io/helm-charts/
