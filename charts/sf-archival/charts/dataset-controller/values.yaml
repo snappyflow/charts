@@ -6,17 +6,17 @@ billing-service:
 containerResources:
   datasetcontroller:
     limits:
-      cpu: 100m
-      memory: 512Mi
+      cpu: 50m
+      memory: 256Mi
     requests:
       cpu: 10m
       memory: 256Mi
 fullnameOverride: ''
 schedulerName: sf-scheduler
 image:
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   repository: snappyflowml/dataset-controller
-  tag: '10'
+  tag: 'dev-test'
 ingest-controller:
   service:
     servicePort: 5000

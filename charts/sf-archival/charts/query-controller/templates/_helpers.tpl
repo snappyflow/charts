@@ -81,21 +81,6 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- printf "%s" $port -}}
 {{- end -}}
 
-{{- define "ingest-controller.service.servicePort" -}}
-{{- $port := index .Values "ingest-controller" "service" "servicePort" -}}
-{{- printf "%s" $port -}}
-{{- end -}}
-
-{{- define "spark-manager.jobserver.service.servicePort" -}}
-{{- $port := index .Values "spark-manager" "jobserver" "service" "servicePort" -}}
-{{- printf "%s" $port -}}
-{{- end -}}
-
-{{- define "log-archival.service.servicePort" -}}
-{{- $port := index .Values "log-archival" "service" "servicePort" -}}
-{{- printf "%s" $port -}}
-{{- end -}}
-
 {{- define "query-controller.hive-server.username" -}}
 {{- if .Values.global.hive.external.enabled }}
 {{- .Values.global.hive.external.userName -}}
