@@ -50,7 +50,7 @@ spec:
           command: ["/bin/bash", "-c"]
           args: ["/home/presto-config; ./worker-init.sh;"]
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.worker.resources | nindent 12 }}
           volumeMounts:
           - name: hive-properties
             mountPath: /home/hive/.
