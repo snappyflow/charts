@@ -4,7 +4,7 @@ schedulerName: sf-scheduler
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/raw-query-exec-controller
-  tag: '1'
+  tag: '2'
 imagePullSecrets: []
 ingress:
   annotations: {}

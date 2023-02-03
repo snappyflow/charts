@@ -30,11 +30,16 @@ coordinator:
     requests:
       cpu: 1000m
       memory: 6Gi
+  # Provide Value same as Pod memory in Mi
+  podmem: 6450
 
-resources:
-  requests:
-    cpu: 1000m
-    memory: 3Gi
+worker:
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 3Gi
+  # Provide Value same as Pod memory in Mi
+  podmem: 3221
 
 aws:
   enabled: false
@@ -49,8 +54,6 @@ env:
   STORAGE_ACCOUNT_ACCESS_KEY: ""
   # How frequently sfpresto-worker-prometheus-exporter fetch metrics
   Metrics_Interval: 3
-  # Provide Value same as Pod memory in Mi
-  POD_MEM: 3221
   # HiveMetaStore service
   HIVE_METASTORE_SERVICE: "archival-hive-metastore.kafka"
   # HiveMetaStore Service port
