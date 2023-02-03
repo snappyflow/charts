@@ -13,9 +13,9 @@ dataset-controller:
 fullnameOverride: ''
 schedulerName: sf-scheduler
 image:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   repository: snappyflowml/log-archival
-  tag: 'dev-test'
+  tag: '7'
 ingest-controller:
   service:
     servicePort: 5000
