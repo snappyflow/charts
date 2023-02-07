@@ -15,7 +15,7 @@ schedulerName: sf-scheduler
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/log-archival
-  tag: '6'
+  tag: '7'
 ingest-controller:
   service:
     servicePort: 5000

@@ -8,13 +8,13 @@ containerResources:
       cpu: 50m
       memory: 256Mi
 fullnameOverride: ''
-schedulerName: sf-scheduler
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/signatures
   tag: '10'
 nameOverride: ''
 nodeSelector: {}
+schedulerName: sf-scheduler
 service:
   servicePort: 8888
 tolerations: []

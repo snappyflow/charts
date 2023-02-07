@@ -64,6 +64,10 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- printf "%s-%s" .Release.Name "dataset-controller" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{- define "compaction-controller.dataset-raw-controller.fullname" -}}
+{{- printf "%s-%s" .Release.Name "dataset-raw-controller" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
 {{- define "compaction-controller.ingest-controller.fullname" -}}
 {{- printf "%s-%s" .Release.Name "ingest-controller" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
@@ -75,19 +79,3 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- define "compaction-controller.cp-schema-registry.fullname" -}}
 {{- printf "%s-%s" .Values.global.snappyflowDatapath.releaseName "cp-schema-registry" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
-
-{{- define "dataset-controller.service.servicePort" -}}
-{{- $port := index .Values "dataset-controller" "service" "servicePort" -}}
-{{- printf "%s" $port -}}
-{{- end -}}
-
-{{- define "spark-manager.service.servicePort" -}}
-{{- $port := index .Values "spark-manager" "jobserver" "service" "servicePort" -}}
-{{- printf "%s" $port -}}
-{{- end -}}
-
-{{- define "log-archival.service.servicePort" -}}
-{{- $port := index .Values "log-archival" "service" "servicePort" -}}
-{{- printf "%s" $port -}}
-{{- end -}}
-
