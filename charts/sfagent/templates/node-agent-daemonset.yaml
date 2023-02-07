@@ -24,6 +24,7 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     spec:
       schedulerName: {{ .Values.schedulerName }}
+      priorityClassName: {{ .Values.priorityClassName }}
       serviceAccountName: {{ if .Values.rbac.create }}{{ template "sf-apm-agents.name" . }}{{ else }}"{{ .Values.rbac.serviceAccountName }}"{{ end }}
       {{ if .Values.imageCredentials.token -}}
       imagePullSecrets:

@@ -5,6 +5,7 @@ rbac:
   serviceAccountName: default
 
 schedulerName: sf-scheduler
+priorityClassName: sf-critical-pod
 
 imageCredentials:
   registry: https://index.docker.io/v1/

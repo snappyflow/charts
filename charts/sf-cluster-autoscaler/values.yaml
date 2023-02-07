@@ -5,6 +5,7 @@
 replicaCount: 1
 
 schedulerName: sf-scheduler
+priorityClassName: sf-critical-pod
 
 image:
   repository: k8s.gcr.io/autoscaling/cluster-autoscaler

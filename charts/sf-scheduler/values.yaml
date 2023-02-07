@@ -4,6 +4,8 @@
 
 replicaCount: 1
 
+priorityClassName: sf-critical-pod
+
 image:
   repository: snappyflowml/sf-kubescheduler
   pullPolicy: Always

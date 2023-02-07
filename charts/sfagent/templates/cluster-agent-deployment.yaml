@@ -23,6 +23,7 @@ spec:
         prometheus.io/scrape: "false"
     spec:
       schedulerName: {{ .Values.schedulerName }}
+      priorityClassName: {{ .Values.priorityClassName }}
       containers:
       - name: cluster-agent
         image: "{{ .Values.cluster_agent.image.repository }}:{{ .Values.cluster_agent.image.tag }}"

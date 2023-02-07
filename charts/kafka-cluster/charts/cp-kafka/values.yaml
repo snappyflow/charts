@@ -9,6 +9,7 @@ global:
   sfprojectname_key: snappyflow/projectname
 
 schedulerName: sf-scheduler
+priorityClassName: sf-critical-pod
 
 prometheus:
 

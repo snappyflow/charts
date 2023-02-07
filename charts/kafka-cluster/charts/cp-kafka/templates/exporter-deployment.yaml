@@ -26,6 +26,7 @@ spec:
         prometheus.io/port: "9308"
     spec:
       schedulerName: {{ .Values.schedulerName }}
+      priorityClassName: {{ .Values.priorityClassName }}
       initContainers:
         - name: kafka-ready
           image: "snappyflowml/kafka-zk-check:alpha"

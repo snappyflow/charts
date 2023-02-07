@@ -4,6 +4,7 @@ configurationOverrides:
   max.request.size: '10485760'
   producer.retries: '5'
 schedulerName: sf-scheduler
+priorityClassName: sf-critical-pod
 containerResources:
   jmx:
     limits:

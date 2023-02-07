@@ -39,7 +39,7 @@ spec:
       {{- end }}
     spec:
       schedulerName: {{ .Values.schedulerName }}
-      priorityClassName: {{ .Release.Name }}-priority-class
+      priorityClassName: {{ .Values.priorityClassName }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
