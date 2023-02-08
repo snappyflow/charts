@@ -54,6 +54,9 @@ spec:
         {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
     spec:
       restartPolicy: Never
+{{- if or (and .Values.global.secrets.aws.enable .Values.global.secrets.aws.use_iam_role) .Values.global.secrets.gcs.enable }}
+      serviceAccountName: {{ .Release.Name }}-service-account
+{{- end}}
       containers:
       - name: main
         image: snappyflowml/archival-system-migration:dev-test
