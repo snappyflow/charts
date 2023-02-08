@@ -24,7 +24,8 @@ data:
         "auth": "{{ template "ingest-controller.hive-server.auth" . }}"
       },
       "compactPartitionColumnNames": {{ .Values.global.hivepartitioncolumns.compactPartitionColumnNames }},
-      "rawPartitionColumnNames": {{ .Values.global.hivepartitioncolumns.rawPartitionColumnNames }}
+      "rawPartitionColumnNames": {{ .Values.global.hivepartitioncolumns.rawPartitionColumnNames }},
+      "datasetRawControllerURL": "http://{{ template "ingest-controller.dataset-raw-controller.fullname" . }}"
     }
 
 ---
