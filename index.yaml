@@ -1600,6 +1600,29 @@ entries:
       artifacthub.io/prerelease: "false"
     apiVersion: v2
     appVersion: 1.5.1
+    created: "2023-02-09T12:31:59.392467749Z"
+    description: Ingress controller for Kubernetes using NGINX as a reverse proxy
+      and load balancer
+    digest: 4edc1e97e54e0713f395ea587b9e805c90336daf18fe79d134c927d5ee833667
+    home: https://github.com/kubernetes/ingress-nginx
+    icon: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Nginx_logo.svg/500px-Nginx_logo.svg.png
+    keywords:
+    - ingress
+    - nginx
+    kubeVersion: '>=1.20.0-0'
+    name: nginx-ingress
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/nginx-ingress-3.6.29/nginx-ingress-3.6.29.tgz
+    version: 3.6.29
+  - annotations:
+      artifacthub.io/changes: |
+        - Adding support for disabling liveness and readiness probes to the Helm chart
+        - add:(admission-webhooks) ability to set securityContext
+        - Updated Helm chart to use the fullname for the electionID if not specified
+        - Rename controller-wehbooks-networkpolicy.yaml
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    appVersion: 1.5.1
     created: "2023-01-30T10:33:55.80006681Z"
     description: Ingress controller for Kubernetes using NGINX as a reverse proxy
       and load balancer
