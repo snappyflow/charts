@@ -1,0 +1,60 @@
+# Default values for dataset-raw-controller.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: snappyflowml/dataset-raw-controller
+  pullPolicy: IfNotPresent
+  tag: '1'
+
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+schedules:
+  detect_raw_time_buckets: '0 * * * *'
+  process_raw_data: '0 1 * * *'
+  raw_version_compacted: '0 5 * * *'
+
+containerResources:
+  limits:
+    cpu: 50m
+    memory: 512Mi
+  requests:
+    cpu: 50m
+    memory: 512Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+serverPort: :5002
+
+service:
+  servicePort: 5002
+
+appParams:
+  # GB size of final segment
+  segmentSizeGB: 1.0
+  # Buffer percentage for segment size i.e., Segment size can go up by this much percent
+  segmentSizeBufferPCNT: 15
+  numORCInSegment: 4
+  # Number of days to look behind in time while detecting new partitions.
+  # This to handle situations where old data got ingested and needs to be processed
+  numBacktrackDaysToDetect: 5

@@ -1,5 +1,5 @@
 affinity: {}
-compactionImage: snappyflowml/spark-compact-orc:1
+compactionImage: snappyflowml/spark-compact-orc:4
 fullnameOverride: ''
 schedulerName: sf-scheduler
 jobserver:
@@ -13,7 +13,7 @@ jobserver:
   image:
     pullPolicy: IfNotPresent
     repository: snappyflowml/job-server
-    tag: '11'
+    tag: '15'
   serverPort: 5002
   service:
     servicePort: 5002
@@ -30,7 +30,7 @@ monitor:
   image:
     pullPolicy: IfNotPresent
     repository: snappyflowml/monitor
-    tag: '7'
+    tag: '8'
 nameOverride: ''
 nodeSelector: {}
 tolerations: []
