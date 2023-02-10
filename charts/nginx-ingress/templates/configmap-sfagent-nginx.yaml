@@ -22,7 +22,7 @@ data:
         enabled: true
         config:
           log_path: "/var/log/nginx/access-local.log"
-          geo_info: true
+          geo_info: false
           ua_parser: true
           url_normalizer: true
       - name: nginx-error
