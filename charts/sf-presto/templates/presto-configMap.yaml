@@ -22,6 +22,8 @@ data:
     hive.config.resources=/home/presto-server-0.277/etc/azure-site.xml
     # Metastore
     hive.metastore.uri=thrift://NODE_IP:NODE_PORT
+    hive.non-managed-table-writes-enabled=true
+    hive.time-zone=UTC
     hive.metastore-timeout=60s
     # Permissions
     hive.allow-drop-table=true

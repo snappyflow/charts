@@ -40,6 +40,7 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+      schedulerName: {{ .Values.schedulerName }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       affinity:
         podAntiAffinity:

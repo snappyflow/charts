@@ -26,6 +26,7 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9308"
     spec:
+      schedulerName: {{ .Values.schedulerName }}
       initContainers:
         - name: kafka-ready
           image: "snappyflowml/kafka-zk-check:alpha"

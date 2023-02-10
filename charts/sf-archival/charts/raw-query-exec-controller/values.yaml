@@ -1,9 +1,10 @@
 affinity: {}
 fullnameOverride: ''
+schedulerName: sf-scheduler
 image:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   repository: snappyflowml/raw-query-exec-controller
-  tag: 'dev-test'
+  tag: '2'
 imagePullSecrets: []
 nameOverride: ''
 nodeSelector: {}

@@ -12,6 +12,8 @@ servers: 3
 ## Minimum number of servers available to ensure the availability of zookeeper service
 ## minAvailable: 2
 
+schedulerName: sf-scheduler
+
 ## Images Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-zookeeper/
 image: confluentinc/cp-zookeeper
