@@ -45,7 +45,6 @@ heapOptions: -Xms250M -Xmx1300M -Xmns200M -Xmnx800M -XX:MaxDirectMemorySize=100M
   -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt
   -Xdump:system+heap+java
 schedulerName: sf-scheduler
-priorityClassName: sf-critical-pod
 image: snappyflowml/arch-kafka-connect
 imagePullPolicy: IfNotPresent
 imageTag: '18'

@@ -2,10 +2,14 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+global:
+  sfNodeManager:
+    enabled: false
+    priorityClassName: sf-critical-pod
+
 replicaCount: 1
 
 schedulerName: sf-scheduler
-priorityClassName: sf-critical-pod
 
 image:
   repository: k8s.gcr.io/autoscaling/cluster-autoscaler

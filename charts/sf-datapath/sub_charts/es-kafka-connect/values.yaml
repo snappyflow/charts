@@ -30,7 +30,6 @@ configurationOverrides:
   value.converter: org.apache.kafka.connect.json.JsonConverter
   value.converter.schemas.enable: 'false'
 schedulerName: sf-scheduler
-priorityClassName: sf-critical-pod
 containerResources:
   connector:
     limits:

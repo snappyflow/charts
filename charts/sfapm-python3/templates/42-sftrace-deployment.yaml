@@ -32,7 +32,9 @@ spec:
         {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
     spec:
       schedulerName: {{ .Values.schedulerName }}
-      priorityClassName: {{ .Values.priorityClassName }}
+      {{- if .Values.global.sfNodeManager.enabled -}}
+      priorityClassName: {{ .Values.global.sfNodeManager.priorityClassName }}
+      {{- end }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}

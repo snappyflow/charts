@@ -21,7 +21,9 @@ spec:
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'false'
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
-      priorityClassName: {{ .Values.priorityClassName }}
+      {{- if .Values.global.sfNodeManager.enabled -}}
+      priorityClassName: {{ .Values.global.sfNodeManager.priorityClassName }}
+      {{- end }}
       containers:
       - command:
         - /usr/local/bin/kube-scheduler

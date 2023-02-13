@@ -4,10 +4,14 @@
 
 # set to true to enable debug logs on
 # apm and vizbuilder
+global:
+  sfNodeManager:
+    enabled: false
+    priorityClassName: sf-critical-pod
+
 enableDebug: false
 
 schedulerName: sf-scheduler
-priorityClassName: sf-critical-pod
 
 nameOverride: ""
 fullnameOverride: ""

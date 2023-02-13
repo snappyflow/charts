@@ -4,7 +4,10 @@
 
 replicaCount: 1
 
-priorityClassName: sf-critical-pod
+global:
+  sfNodeManager:
+    enabled: false
+    priorityClassName: sf-critical-pod
 
 image:
   repository: snappyflowml/sf-kubescheduler

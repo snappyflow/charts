@@ -39,7 +39,9 @@ spec:
       {{- end }}
     spec:
       schedulerName: {{ .Values.schedulerName }}
-      priorityClassName: {{ .Values.priorityClassName }}
+      {{- if .Values.global.sfNodeManager.enabled -}}
+      priorityClassName: {{ .Values.global.sfNodeManager.priorityClassName }}
+      {{- end }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:

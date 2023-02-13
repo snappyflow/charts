@@ -1,10 +1,13 @@
 # Default values for sf-node-manager.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+global:
+  sfNodeManager:
+    enabled: false
+    priorityClassName: sf-critical-pod
 
 replicaCount: 1
 
-priorityClassName: sf-critical-pod
 schedulerName: sf-scheduler
 
 image:
