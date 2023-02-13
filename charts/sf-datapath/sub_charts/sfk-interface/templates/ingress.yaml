@@ -20,6 +20,12 @@ spec:
             name: {{ template "sfk-interface.fullname" . }}
             port: 
               number: 80
+      - path: /sfkinterface-janitor
+        backend:
+          service:
+            name: {{ template "sfk-interface.fullname" . }}
+            port: 
+              number: 80
         pathType: Prefix
       - path: /profile-quotas
         backend:
