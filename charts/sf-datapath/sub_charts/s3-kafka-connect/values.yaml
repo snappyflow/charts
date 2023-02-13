@@ -44,7 +44,6 @@ heapOptions: -Xms250M -Xmx1300M -Xmns200M -Xmnx800M -XX:MaxDirectMemorySize=100M
   -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,20,100 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp
   -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt
   -Xdump:system+heap+java
-schedulerName: sf-scheduler
 image: snappyflowml/arch-kafka-connect
 imagePullPolicy: IfNotPresent
 imageTag: '18'

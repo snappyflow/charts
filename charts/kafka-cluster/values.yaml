@@ -5,8 +5,8 @@ global:
   sfprojectname_key: snappyflow/projectname
 
   sfNodeManager:
-	  enabled: false 
-	  priorityClass: sf-critical-pod
+    enabled: false
+    priorityClass: sf-critical-pod
 
 prometheus:
   ## Prometheus Kafka Exporter: exposes complimentary metrics to JMX Exporter
