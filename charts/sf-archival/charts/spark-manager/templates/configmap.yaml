@@ -125,7 +125,7 @@ data:
               "spark.hadoop.fs.azure.account.key.{{ .Values.global.secrets.azure.STORAGE_ACCOUNT_NAME }}.blob.core.windows.net={{ .Values.global.secrets.azure.STORAGE_ACCOUNT_ACCESS_KEY }}",
               "--conf",
               "spark.hadoop.fs.azure=org.apache.hadoop.fs.azure.NativeAzureFileSystem",
-{{- else }}
+{{- else if and .Values.global.secrets.aws.enable (not .Values.global.secrets.aws.use_iam_role) }}
               "--conf",
               "spark.kubernetes.driver.secretKeyRef.AWS_ACCESS_KEY_ID={{ .Release.Name }}-aws-secret:key",
               "--conf",
