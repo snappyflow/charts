@@ -31,10 +31,10 @@ spec:
         {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
         {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
     spec:
-      {{- if .Values.global.sfScheduler.enabled -}}
+      {{- if .Values.global.sfScheduler.enabled }}
       schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
       {{- end }}
-      {{- if .Values.global.sfNodeManager.enabled -}}
+      {{- if .Values.global.sfNodeManager.enabled }}
       priorityClassName: {{ .Values.global.sfNodeManager.priorityClassName }}
       {{- end }}
       {{- with .Values.imagePullSecrets }}

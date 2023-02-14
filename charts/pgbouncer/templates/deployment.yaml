@@ -22,7 +22,7 @@ spec:
       labels:
         {{- include "pgbouncer.selectorLabels" . | nindent 8 }}
     spec:
-      {{- if .Values.global.sfScheduler.enabled -}}
+      {{- if .Values.global.sfScheduler.enabled }}
       schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
       {{- end }}
       {{- with .Values.imagePullSecrets }}

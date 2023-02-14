@@ -40,7 +40,7 @@ spec:
       {{- end }}
       {{- end }}
     spec:
-      {{- if .Values.global.sfScheduler.enabled -}}
+      {{- if .Values.global.sfScheduler.enabled }}
       schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
       {{- end }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}

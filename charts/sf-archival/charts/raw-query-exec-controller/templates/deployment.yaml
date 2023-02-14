@@ -20,7 +20,7 @@ spec:
         {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
         {{- include "raw-query-exec-controller.selectorLabels" . | nindent 8 }}
     spec:
-      {{- if .Values.global.sfScheduler.enabled -}}
+      {{- if .Values.global.sfScheduler.enabled }}
       schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
       {{- end }}
       priorityClassName: {{ .Release.Name }}-priority-class

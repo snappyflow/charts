@@ -25,7 +25,7 @@ spec:
         {{ $key }}: {{ $value | quote }}
       {{- end }}
     spec:
-      {{- if .Values.global.sfScheduler.enabled -}}
+      {{- if .Values.global.sfScheduler.enabled }}
       schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
       {{- end }}
       priorityClassName: {{ .Release.Name }}-priority-class

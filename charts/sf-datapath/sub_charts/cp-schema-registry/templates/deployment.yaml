@@ -38,7 +38,7 @@ spec:
         prometheus.io/scrape: "false"
       {{- end }}
     spec:
-      {{- if .Values.global.sfScheduler.enabled -}}
+      {{- if .Values.global.sfScheduler.enabled }}
       schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
       {{- end }}
       priorityClassName: {{ .Release.Name }}-priority-class

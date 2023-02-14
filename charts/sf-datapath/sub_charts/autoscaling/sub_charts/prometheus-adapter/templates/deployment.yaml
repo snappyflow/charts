@@ -36,7 +36,7 @@ spec:
         {{- toYaml . | trim | nindent 8 }}
         {{- end }}
     spec:
-      {{- if .Values.global.sfScheduler.enabled -}}
+      {{- if .Values.global.sfScheduler.enabled }}
       schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
       {{- end }}
       serviceAccountName: {{ template "k8s-prometheus-adapter.serviceAccountName" . }}
