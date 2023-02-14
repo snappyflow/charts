@@ -20,6 +20,7 @@ spec:
             name: {{ template "sfk-interface.fullname" . }}
             port: 
               number: 80
+        pathType: Prefix
       - path: /sfkinterface-janitor
         backend:
           service:
