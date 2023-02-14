@@ -15,7 +15,6 @@ external:
   externalTrafficPolicy: Cluster
   type: NodePort
 fullnameOverride: ''
-schedulerName: sf-scheduler
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/ingest-controller
@@ -29,6 +28,7 @@ minio:
     accessKey: gcpminio
 nameOverride: ''
 nodeSelector: {}
+schedulerName: sf-scheduler
 schedules:
   sink: '*/5 * * * *'
 serverPort: :5000
@@ -38,5 +38,5 @@ spark-manager:
   jobserver:
     service:
       servicePort: 5002
-tolerations: []
 timeBucketSizeMinutes: 15
+tolerations: []
