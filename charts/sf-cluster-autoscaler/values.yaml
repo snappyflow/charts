@@ -6,10 +6,12 @@ global:
   sfNodeManager:
     enabled: false
     priorityClassName: sf-critical-pod
+  
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
 
 replicaCount: 1
-
-schedulerName: sf-scheduler
 
 image:
   repository: k8s.gcr.io/autoscaling/cluster-autoscaler

@@ -41,7 +41,9 @@ spec:
       {{- end }}
       {{- end }}
     spec:
-      schedulerName: {{ .Values.schedulerName }}
+      {{- if .Values.global.sfScheduler.enabled -}}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       affinity:
         podAntiAffinity:

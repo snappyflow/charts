@@ -8,6 +8,10 @@ global:
     enabled: false
     priorityClass: sf-critical-pod
 
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
+    
 prometheus:
   ## Prometheus Kafka Exporter: exposes complimentary metrics to JMX Exporter
   kafka:

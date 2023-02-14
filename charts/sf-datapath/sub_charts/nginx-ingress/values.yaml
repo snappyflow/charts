@@ -16,7 +16,6 @@ global:
 commonLabels: {}
 # scmhash: abc123
 # myLabel: aakkmd
-schedulerName: sf-scheduler
 controller:
   name: controller
   image:

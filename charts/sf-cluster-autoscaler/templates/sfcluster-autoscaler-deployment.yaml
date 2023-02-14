@@ -18,7 +18,9 @@ spec:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'false'
     spec:
-      schedulerName: {{ .Values.schedulerName }}
+      {{- if .Values.global.sfScheduler.enabled -}}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
       {{- if .Values.global.sfNodeManager.enabled -}}
       priorityClassName: {{ .Values.global.sfNodeManager.priorityClassName }}
       {{- end }}

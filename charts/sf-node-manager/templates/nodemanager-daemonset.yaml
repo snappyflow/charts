@@ -17,7 +17,9 @@ spec:
       {{- if .Values.global.sfNodeManager.enabled -}}
       priorityClassName: {{ .Values.global.sfNodeManager.priorityClassName }}
       {{- end }}
-      schedulerName: {{ .Values.schedulerName }}
+      {{- if .Values.global.sfScheduler.enabled -}}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
       containers:
         - name: nodemanager
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

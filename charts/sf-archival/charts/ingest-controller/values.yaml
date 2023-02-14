@@ -15,7 +15,6 @@ external:
   externalTrafficPolicy: Cluster
   type: NodePort
 fullnameOverride: ''
-schedulerName: sf-scheduler
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/ingest-controller

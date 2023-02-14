@@ -8,10 +8,12 @@ global:
   sfNodeManager:
     enabled: false
     priorityClassName: sf-critical-pod
+  
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
 
 enableDebug: false
-
-schedulerName: sf-scheduler
 
 nameOverride: ""
 fullnameOverride: ""
