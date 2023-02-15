@@ -7,13 +7,13 @@ dependencies:
   version: 0.1.1
 - name: cp-kafka-rest
   repository: file://./sub_charts/cp-kafka-rest
-  version: 0.1.1
+  version: 0.1.2
 - name: s3-kafka-connect
   repository: file://./sub_charts/s3-kafka-connect
-  version: 0.1.1
+  version: 0.1.2
 - name: es-kafka-connect
   repository: file://./sub_charts/es-kafka-connect
-  version: 0.1.1
+  version: 0.1.2
 - name: autoscaling
   repository: file://./sub_charts/autoscaling
   version: 0.1.3
@@ -29,5 +29,5 @@ dependencies:
 - name: minio
   repository: file://./sub_charts/minio
   version: 8.0.11
-digest: sha256:d0bd4f8ce62e05c8cc388b5e30d22e7d8e796e12ff011eb1e63b6b5ef5c2ba33
-generated: "2023-01-29T14:59:21.682549474Z"
+digest: sha256:3ba6ed96fc070e9a775a07b40d50c2399fd9a4f8336655eb320930236a1ef0bb
+generated: "2023-02-07T07:16:49.464668856Z"

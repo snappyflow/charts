@@ -1,4 +1,8 @@
 global:
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
+    
   hive:
     internal:
       enabled: true

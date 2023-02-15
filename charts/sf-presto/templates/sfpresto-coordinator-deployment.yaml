@@ -25,7 +25,9 @@ spec:
         role: sfpresto-coordinator
         snappyflow/component: snappyflow-presto
     spec:
-      schedulerName: {{ .Values.schedulerName }}
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
       containers:
         - name: sfpresto-coordinator
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

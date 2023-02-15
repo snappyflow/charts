@@ -38,7 +38,9 @@ spec:
         prometheus.io/scrape: "false"
       {{- end }}
     spec:
-      schedulerName: {{ .Values.schedulerName }}
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
       priorityClassName: {{ .Release.Name }}-priority-class
       initContainers:
         - name: kafka-ready

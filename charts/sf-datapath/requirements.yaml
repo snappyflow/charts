@@ -6,14 +6,14 @@ dependencies:
   version: 0.1.1
   repository: file://./sub_charts/cp-schema-registry
 - name: cp-kafka-rest
-  version: 0.1.1
+  version: 0.1.2
   repository: file://./sub_charts/cp-kafka-rest
 - name: s3-kafka-connect
-  version: 0.1.1
+  version: 0.1.2
   repository: file://./sub_charts/s3-kafka-connect
   condition: global.archival.enabled
 - name: es-kafka-connect
-  version: 0.1.1
+  version: 0.1.2
   repository: file://./sub_charts/es-kafka-connect
 - name: autoscaling
   version: 0.1.3

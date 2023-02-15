@@ -4,7 +4,10 @@
 
 replicaCount: 1
 
-schedulerName: sf-scheduler
+global:
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
 
 image:
   repository: postgres

@@ -25,7 +25,12 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9308"
     spec:
-      schedulerName: {{ .Values.schedulerName }}
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
+      {{- if .Values.global.sfNodeManager.enabled }}
+      priorityClassName: {{ .Values.global.sfNodeManager.priorityClassName }}
+      {{- end }}
       initContainers:
         - name: kafka-ready
           image: "snappyflowml/kafka-zk-check:alpha"

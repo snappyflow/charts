@@ -36,7 +36,9 @@ spec:
 {{- if .Values.server.priorityClassName }}
       priorityClassName: "{{ .Values.server.priorityClassName }}"
 {{- end }}
-      schedulerName: {{ .Values.schedulerName }}
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
 {{- if semverCompare ">=1.13-0" .Capabilities.KubeVersion.GitVersion }}
       {{- if or (.Values.server.enableServiceLinks) (eq (.Values.server.enableServiceLinks | toString) "<nil>") }}
       enableServiceLinks: true

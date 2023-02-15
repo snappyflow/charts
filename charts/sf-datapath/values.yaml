@@ -1,5 +1,13 @@
 global:
 
+  sfNodeManager:
+    enabled: false
+    priorityClassName: sf-critical-pod
+  
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-schduler
+    
   quotasEnabled: true
 
   clusterQuotaGBperDay: 100

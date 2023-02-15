@@ -16,12 +16,14 @@ global:
       AWS_ACCESS_KEY_ID: XXXX
       AWS_SECRET_ACCESS_KEY: XXXX
       AWS_DEFAULT_REGION: us-west-2
-
+  
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
+    
 replicaCount: 1
 nameOverride: ""
 fullnameOverride: ""
-
-schedulerName: sf-scheduler
 
 rbac:
   create: true

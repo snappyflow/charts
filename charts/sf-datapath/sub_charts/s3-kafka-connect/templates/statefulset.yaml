@@ -41,7 +41,9 @@ spec:
       {{- end }}
       {{- end }}
     spec:
-      schedulerName: {{ .Values.schedulerName }}
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       affinity:
         podAntiAffinity:
@@ -64,7 +66,6 @@ spec:
                   operator: In
                   values:
                   - "s3-kafka-connect"
-      priorityClassName: {{ .Release.Name }}-priority-class
       initContainers:
         - name: kafka-ready
           image: "snappyflowml/kafka-zk-check:alpha"
