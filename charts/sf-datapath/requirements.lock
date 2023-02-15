@@ -1,27 +1,27 @@
 dependencies:
 - name: cp-schema-registry
   repository: file://./sub_charts/cp-schema-registry
-  version: 0.1.0
+  version: 0.1.1
 - name: cp-kafka-rest
   repository: file://./sub_charts/cp-kafka-rest
-  version: 0.1.0
-- name: archival-kafka-connect
-  repository: file://./sub_charts/archival-kafka-connect
-  version: 0.1.0
+  version: 0.1.2
+- name: s3-kafka-connect
+  repository: file://./sub_charts/s3-kafka-connect
+  version: 0.1.2
 - name: es-kafka-connect
   repository: file://./sub_charts/es-kafka-connect
-  version: 0.1.0
+  version: 0.1.2
 - name: authenticator
   repository: file://./sub_charts/authenticator
-  version: 0.1.0
+  version: 0.1.1
 - name: sfk-interface
   repository: file://./sub_charts/sfk-interface
-  version: 0.1.0
+  version: 0.1.1
 - name: signatures-and-kafka-apis
   repository: file://./sub_charts/signatures-and-kafka-apis
-  version: 0.1.0
+  version: 0.1.1
 - name: minio
   repository: file://./sub_charts/minio
-  version: 8.0.10
-digest: sha256:7b00fe072787211b3bc4b2c3936212b073d6212238bac93d10e978bd506cf4bc
-generated: "2023-01-25T00:14:19.555366765+05:30"
+  version: 8.0.11
+digest: sha256:7730bba182915b373949fb20eca9a55d105222ee230aa17c64847361487c363a
+generated: "2023-02-15T07:43:58.46442922Z"
