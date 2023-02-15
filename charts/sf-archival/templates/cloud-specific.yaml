@@ -10,12 +10,12 @@ metadata:
 data:
   {{- if .Values.global.secrets.aws.enable }}
   CLOUD_NAME: AWS
+  AWS_QUEUE_URL: {{ .Values.global.secrets.aws.AWS_QUEUE_URL }}
+  AWS_QUEUE_ARN: {{ .Values.global.secrets.aws.AWS_QUEUE_ARN }}
   {{- if not .Values.global.secrets.aws.use_iam_role }}
   AWS_ACCESS_KEY_ID: {{ .Values.global.secrets.aws.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: {{ .Values.global.secrets.aws.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: {{ .Values.global.secrets.aws.AWS_DEFAULT_REGION }}
-  AWS_QUEUE_URL: {{ .Values.global.secrets.aws.AWS_QUEUE_URL }}
-  AWS_QUEUE_ARN: {{ .Values.global.secrets.aws.AWS_QUEUE_ARN }}
   {{- end }}
   {{- else if .Values.global.secrets.gcs.enable }}
   CLOUD_NAME: GCP
