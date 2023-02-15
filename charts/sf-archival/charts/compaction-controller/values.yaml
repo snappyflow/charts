@@ -38,12 +38,13 @@ maxRunningHours: 3
 maxSimultaneousRun: 1
 nameOverride: ''
 nodeSelector: {}
+schedulerName: sf-scheduler
 schedules:
   create: '*/10 * * * *'
+  partitionStatusUpdate: '*/10 * * * *'
   processStuck: '*/10 * * * *'
   queue: '*/10 * * * *'
   start: '*/10 * * * *'
-  partitionStatusUpdate: '*/10 * * * *'
 serverPort: :5005
 service:
   servicePort: 5005

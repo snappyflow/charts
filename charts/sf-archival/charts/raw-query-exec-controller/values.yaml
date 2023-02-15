@@ -31,6 +31,7 @@ resources:
   requests:
     cpu: 50m
     memory: 256Mi
+schedulerName: sf-scheduler
 securityContext: {}
 service:
   port: 80

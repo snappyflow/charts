@@ -27,6 +27,7 @@ presto:
   schema: default
   user: ubuntu
 rawDataCleanupDays: 2
+schedulerName: sf-scheduler
 schedules:
   billing: 0 * * * *
   detect: '*/30 * * * *'

@@ -14,6 +14,13 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
   proxy-body-size: "13m"
+  client-body-buffer-size: 10m
+  access-log-path: /var/log/nginx/access-custom.log
+  error-log-path: /var/log/nginx/error-custom.log
+  log-format-upstream: $http_x_forwarded_for $remote_user [$time_local] "$request"
+    $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_referer" rt=$request_time
+    uct=$upstream_connect_time uht=$upstream_header_time urt=$upstream_response_time
+    rs=$request_length
   allow-snippet-annotations: "{{ .Values.controller.allowSnippetAnnotations }}"
 {{- if .Values.controller.addHeaders }}
   add-headers: {{ .Release.Namespace }}/{{ include "ingress-nginx.fullname" . }}-custom-add-headers

@@ -32,4 +32,5 @@ monitor:
     tag: '8'
 nameOverride: ''
 nodeSelector: {}
+schedulerName: sf-scheduler
 tolerations: []
