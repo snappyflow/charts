@@ -10,14 +10,19 @@ jobserver:
       cpu: 10m
       memory: 50Mi
   image:
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     repository: snappyflowml/job-server
-    tag: '15'
+    tag: 'dev-test'
   serverPort: 5002
   service:
     servicePort: 5002
   sparkProperties:
     logDirectory: sparkhs/spark-hs
+cbsparkevent:
+  image:
+    pullPolicy: IfNotPresent
+    repository: snappyflowml/cb-spark-event
+    tag: 'azurestage-1'
 monitor:
   containerResources:
     limits:
@@ -27,10 +32,9 @@ monitor:
       cpu: 10m
       memory: 10Mi
   image:
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     repository: snappyflowml/monitor
-    tag: '8'
+    tag: 'dev-test'
 nameOverride: ''
 nodeSelector: {}
-schedulerName: sf-scheduler
 tolerations: []

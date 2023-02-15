@@ -6,13 +6,16 @@ replicaCount: 1
 
 image:
   repository: snappyflowml/dataset-raw-controller
-  pullPolicy: IfNotPresent
-  tag: '1'
+  pullPolicy: Always
+  tag: 'dev-test'
 
 nameOverride: ""
 fullnameOverride: ""
 
-podAnnotations: {}
+podAnnotations:
+  prometheus.io/path: /metrics
+  prometheus.io/port: "9000"
+  prometheus.io/scrape: "true"
 
 podSecurityContext: {}
 
@@ -32,10 +35,13 @@ containerResources:
     memory: 512Mi
 
 autoscaling:
-  enabled: false
+  enabled: true
   minReplicas: 1
   maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
+  # targetCPUUtilizationPercentage: 80
+  eventQueueHandlerOccupancyPercentage: 80
+  scaleUpPeriod: 30
+  scaleDownPeriod: 60
   # targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
@@ -58,3 +64,9 @@ appParams:
   # Number of days to look behind in time while detecting new partitions.
   # This to handle situations where old data got ingested and needs to be processed
   numBacktrackDaysToDetect: 5
+  computeBucketBoundariesUsingPresto: false
+  eventQueueHandlerMonitorIntervalInSec: 2
+  orcInventoryBatchFetchSize: 20000
+  maxBufferedEvents: 10000
+  competingConsumers: 5
+  

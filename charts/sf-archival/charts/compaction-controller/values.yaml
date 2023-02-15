@@ -12,19 +12,12 @@ dataset-controller:
     servicePort: 5001
 fullnameOverride: ''
 image:
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   repository: snappyflowml/compaction-controller
-  tag: '16'
+  tag: 'dev-test'
 ingest-controller:
   service:
     servicePort: 5000
-ingress:
-  annotations: {}
-  enabled: false
-  hosts:
-  - host: chart-example.local
-    paths: []
-  tls: []
 kafka:
   schemaRegistry:
     host: 10.10.10.10
@@ -38,13 +31,12 @@ maxRunningHours: 3
 maxSimultaneousRun: 1
 nameOverride: ''
 nodeSelector: {}
-schedulerName: sf-scheduler
 schedules:
   create: '*/10 * * * *'
-  partitionStatusUpdate: '*/10 * * * *'
   processStuck: '*/10 * * * *'
   queue: '*/10 * * * *'
   start: '*/10 * * * *'
+  partitionStatusUpdate: '*/10 * * * *'
 serverPort: :5005
 service:
   servicePort: 5005

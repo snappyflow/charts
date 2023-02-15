@@ -16,6 +16,11 @@ global:
   snappyflowProjectName: "snappyflow-app"
   snappyflowAppName: "sf-data-path"
   subnets: ""
+
+  sfScheduler: 
+    enabled: false
+    schedulerName: sf-scheduler
+
 commonLabels: {}
 # scmhash: abc123
 # myLabel: aakkmd

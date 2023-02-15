@@ -1,3 +1,4 @@
+{{- if not .Values.global.development }}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -106,3 +107,4 @@ spec:
             imagePullPolicy: IfNotPresent
             command: ["/bin/sh","-c", "/app/drc-delete-raw-data-job -dataset-raw-controller-url http://{{ include "dataset-raw-controller.fullname" . }} -parallelism-factor 5"]
           restartPolicy: Never
+{{- end }}

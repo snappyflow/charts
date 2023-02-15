@@ -13,14 +13,16 @@ data:
       "billingURL": "{{ index .Values "billing-service" "scheme" }}://{{ index .Values "billing-service" "url" }}",
       "rawDataCleanupDays": {{ .Values.rawDataCleanupDays}},
       "maxPartitionsToAnalyzeConcurrently": {{ .Values.maxPartitionsToAnalyzeConcurrently }},
+      "bucketPartitonAnalyzeIntervalInMin": {{ .Values.bucketPartitonAnalyzeIntervalInMin }},
+      "bucketPartitonsToAnalyzeInParallelMax": {{ .Values.bucketPartitonsToAnalyzeInParallelMax }},
       "presto": {
         "user": "{{ .Values.presto.user }}",
         "catalog": "{{ .Values.presto.catalog }}",
         "schema": "{{ .Values.presto.schema }}"
       },
       "db": {
-        "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
-        "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
+        "name": "{{ .Values.global.postgresql.postgresqlDatabase }}",
+        "user": "{{ .Values.global.postgresql.postgresqlUsername }}",
         "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
         "host": "{{ template "dataset-controller.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }}

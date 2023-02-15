@@ -7,8 +7,8 @@ data:
   config.json: |-
     {
       "db": {
-        "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
-        "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
+        "name": "{{ .Values.global.postgresql.postgresqlDatabase }}",
+        "user": "{{ .Values.global.postgresql.postgresqlUsername }}",
         "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
         "host": "{{ template "dataset-raw-controller.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }}
@@ -18,5 +18,12 @@ data:
       "final_segment_size_buffer_pcnt": {{ .Values.appParams.segmentSizeBufferPCNT }},
       "num_orcs_in_segment": {{ .Values.appParams.numORCInSegment }},
       "num_backtrack_days": {{ .Values.appParams.numBacktrackDaysToDetect }},
-      "ingest_controller_url": "http://{{ template "dataset-raw-controller.ingest-controller.fullname" . }}"
+      "ingest_controller_url": "http://{{ template "dataset-raw-controller.ingest-controller.fullname" . }}",
+      "dataset_controller_url": "http://{{ template "dataset-raw-controller.dataset-controller.fullname" . }}",
+      "bucket_partition_duration_mins": {{ .Values.global.timeBucketSizeMinutes }},
+      "event_queue_handler_monitor_interval_in_sec": {{ .Values.appParams.eventQueueHandlerMonitorIntervalInSec }},
+      "compute_bucket_boundaries_using_presto": {{ .Values.appParams.computeBucketBoundariesUsingPresto }},
+      "orc_inventory_batch_fetch_size": {{ .Values.appParams.orcInventoryBatchFetchSize}},
+      "max_buffered_events": {{ .Values.appParams.maxBufferedEvents}},
+      "competingConsumers": {{ .Values.appParams.competingConsumers}}
     }

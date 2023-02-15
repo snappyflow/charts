@@ -54,3 +54,11 @@ release: {{ .Release.Name }}
 {{- define "raw-query-exec-controller.log-archival.fullname" -}}
 {{- printf "%s-%s" .Release.Name "log-archival" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{- define "raw-query-exec-controller.dataset-controller.fullname" -}}
+{{- printf "%s-%s" .Release.Name "dataset-controller" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "raw-query-exec-controller.ingest-controller.fullname" -}}
+{{- printf "%s-%s" .Release.Name "ingest-controller" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
