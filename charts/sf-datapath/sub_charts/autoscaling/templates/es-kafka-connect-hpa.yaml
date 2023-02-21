@@ -19,5 +19,5 @@ spec:
   - type: External
     external:
       metricName: kafka_bytesinpersec_oneminuterate
-      targetValue: {{ mul .Values.esKafkaConnect.ingestRateGBPerDayPerPod 11575 }}
+      targetAverageValue: {{ mul .Values.esKafkaConnect.ingestRateGBPerDayPerPod 11575 }}
 {{- end -}}
