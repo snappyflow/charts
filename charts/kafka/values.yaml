@@ -259,7 +259,7 @@ prometheus:
     enabled: true
 
     ## The image to use for the metrics collector
-    image: snappyflowml/kafka-lag-exporter 
+    image: snappyflowml/kafka-lag-exporter
 
     ## The image tag to use for the metrics collector
     imageTag: latest

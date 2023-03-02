@@ -337,3 +337,6 @@ etcd:
   corednsPathPrefix: ""
   clientCert: ""
   clientCertKey: ""
+
+autoscaling:
+  enabled: false

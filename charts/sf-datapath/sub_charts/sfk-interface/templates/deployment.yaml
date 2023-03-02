@@ -24,7 +24,6 @@ spec:
       {{- if .Values.global.sfScheduler.enabled }}
       schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
       {{- end }}
-      priorityClassName: {{ .Release.Name }}-priority-class
       {{- with .Values.global.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -57,8 +56,9 @@ spec:
             - name: {{ template "sfk-interface.fullname" . }}-config
               mountPath: "/etc/conf"
               readOnly: true
-          resources:
-{{- toYaml .Values.containerResources.interface | nindent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{- toYaml .Values.containerResources.interface | nindent 12 }}
+{{- end }}
       volumes:
         - name: {{ template "sfk-interface.fullname" . }}-config
           configMap:

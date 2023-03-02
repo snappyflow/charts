@@ -61,10 +61,3 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- printf "%s-%s" .Release.Name "dataset-controller" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "log-archival.authenticator.fullname" -}}
-{{- printf "%s-%s" .Values.global.snappyflowDatapath.releaseName "authenticator" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
-{{- define "log-archival.kafkaRest.fullname" -}}
-{{- printf "%s-%s" .Values.global.snappyflowDatapath.releaseName "cp-kafka-rest" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}

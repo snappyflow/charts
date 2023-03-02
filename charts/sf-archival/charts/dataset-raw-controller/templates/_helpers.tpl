@@ -47,6 +47,10 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- printf "%s-%s" .Release.Name "ingest-controller" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{- define "dataset-raw-controller.dataset-controller.fullname" -}}
+{{- printf "%s-%s" .Release.Name "dataset-controller" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
 {{- define "dataset-raw-controller.postgresql.fullname" -}}
 {{- if .Values.global.postgresql.host }} 
 {{- printf "%s" .Values.global.postgresql.host -}}

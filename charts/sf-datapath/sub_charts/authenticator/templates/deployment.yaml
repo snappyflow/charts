@@ -24,7 +24,9 @@ spec:
       {{- if .Values.global.sfScheduler.enabled }}
       schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
       {{- end }}
-      priorityClassName: {{ .Release.Name }}-priority-class
+      {{- if .Values.global.sfNodeManager.enabled }}
+      priorityClassName: {{ .Values.global.sfNodeManager.priorityClassName }}
+      {{- end }}
     {{- with .Values.global.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -44,8 +46,9 @@ spec:
           volumeMounts:
           - name: config-volume
             mountPath: /etc/conf
-          resources:
-{{- toYaml .Values.containerResources.authenticator | nindent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{- toYaml .Values.containerResources.authenticator | nindent 12 }}
+{{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

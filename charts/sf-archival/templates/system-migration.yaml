@@ -11,8 +11,8 @@ data:
   config.json: |-
     {
       "db": {
-        "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
-        "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
+        "name": "{{ .Values.global.postgresql.postgresqlDatabase }}",
+        "user": "{{ .Values.global.postgresql.postgresqlUsername }}",
         "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
         "host": "{{ template "ingest-controller.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }}
@@ -22,7 +22,10 @@ data:
         "host": "{{ template "ingest-controller.hive-server.host" . }}",
         "port": {{ template "ingest-controller.hive-server.port" . }},
         "auth": "{{ template "ingest-controller.hive-server.auth" . }}"
-      }
+      },
+      "compactPartitionColumnNames": {{ .Values.global.hivepartitioncolumns.compactPartitionColumnNames }},
+      "rawPartitionColumnNames": {{ .Values.global.hivepartitioncolumns.rawPartitionColumnNames }},
+      "datasetRawControllerURL": "http://{{ template "ingest-controller.dataset-raw-controller.fullname" . }}"
     }
 
 ---
@@ -52,14 +55,20 @@ spec:
         {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
     spec:
       restartPolicy: Never
+{{- if or (and .Values.global.secrets.aws.enable .Values.global.secrets.aws.use_iam_role) .Values.global.secrets.gcs.enable }}
+      serviceAccountName: {{ .Release.Name }}-service-account
+{{- end}}
       containers:
       - name: main
-        image: snappyflowml/archival-system-migration:1
-        imagePullPolicy: IfNotPresent
+        image: snappyflowml/archival-system-migration:dev-test
+        imagePullPolicy: Always
         volumeMounts:
           - name: {{ .Release.Name }}-system-migration-config
             mountPath: "/etc/conf"
             readOnly: true
+        envFrom:
+          - configMapRef:
+              name: {{ .Release.Name }}-cloud-env
       volumes:
         - name: {{ .Release.Name }}-system-migration-config
           configMap:

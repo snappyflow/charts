@@ -1,0 +1,17 @@
+{{- if .Values.global.sfagent.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "gateway.fullname" . }}-sfagent-plugin-configmap
+data:
+{{ include "gateway.proxy.sfagent.config" . | indent 2 }}
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "gateway.fullname" . }}-sfagent-normalization-nginx
+data:
+{{ include "gateway.proxy.sfagent.normalization.config" . | indent 2 }}
+{{- end }}
