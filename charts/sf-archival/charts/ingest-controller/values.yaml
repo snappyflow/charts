@@ -11,7 +11,6 @@ dataset-controller:
   service:
     servicePort: 5001
 fullnameOverride: ''
-schedulerName: sf-scheduler
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/ingest-controller
@@ -21,6 +20,7 @@ log-archival:
     servicePort: 5003
 nameOverride: ''
 nodeSelector: {}
+schedulerName: sf-scheduler
 schedules:
   sink: '*/5 * * * *'
 serverPort: :5000
@@ -35,3 +35,4 @@ signatureAndKafkaAPIsURL: http://sf-datapath-signatures-and-kafka-apis
 scehmeRegURL: http://sf-datapath-cp-schema-registry:8081
 archivalKafkaConnectURL: http://sf-datapath-archival-kafka-connect:8083
 minioEndpoint: "sf-datapath-minio:9000"
+timeBucketSizeMinutes: 15

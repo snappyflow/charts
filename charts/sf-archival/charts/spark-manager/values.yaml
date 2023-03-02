@@ -1,7 +1,11 @@
 affinity: {}
+cbsparkevent:
+  image:
+    pullPolicy: IfNotPresent
+    repository: snappyflowml/cb-spark-event
+    tag: '3'
 compactionImage: snappyflowml/spark-compact-orc:4
 fullnameOverride: ''
-schedulerName: sf-scheduler
 jobserver:
   containerResources:
     limits:
@@ -38,4 +42,5 @@ monitor:
     tag: '8'
 nameOverride: ''
 nodeSelector: {}
+schedulerName: sf-scheduler
 tolerations: []

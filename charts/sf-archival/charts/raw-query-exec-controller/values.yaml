@@ -1,6 +1,5 @@
 affinity: {}
 fullnameOverride: ''
-schedulerName: sf-scheduler
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/raw-query-exec-controller
@@ -22,6 +21,7 @@ resources:
   requests:
     cpu: 50m
     memory: 256Mi
+schedulerName: sf-scheduler
 securityContext: {}
 service:
   port: 80

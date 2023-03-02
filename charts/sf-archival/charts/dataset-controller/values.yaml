@@ -12,11 +12,10 @@ containerResources:
       cpu: 10m
       memory: 256Mi
 fullnameOverride: ''
-schedulerName: sf-scheduler
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/dataset-controller
-  tag: '11'
+  tag: '12'
 ingest-controller:
   service:
     servicePort: 5000
@@ -30,6 +29,7 @@ presto:
 rawDataCleanupDays: 2
 bucketPartitonAnalyzeIntervalInMin: 5
 bucketPartitonsToAnalyzeInParallelMax: 5
+schedulerName: sf-scheduler
 schedules:
   billing: 0 * * * *
   detect: '*/30 * * * *'
