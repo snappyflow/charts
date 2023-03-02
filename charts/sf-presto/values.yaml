@@ -29,9 +29,9 @@ coordinator:
   resources:
     requests:
       cpu: 1000m
-      memory: 6Gi
+      memory: 8Gi
   # Provide Value same as Pod memory in Mi
-  podmem: 6450
+  podmem: 8192
 
 worker:
   resources:
@@ -39,7 +39,7 @@ worker:
       cpu: 1000m
       memory: 3Gi
   # Provide Value same as Pod memory in Mi
-  podmem: 3221
+  podmem: 3072
 
 aws:
   enabled: false
@@ -71,7 +71,7 @@ podAnnotations:
 
 autoscaling:
   enabled: true
-  minReplicas: 1
+  minReplicas: 3
   maxReplicas: 5
   targetQueuedQueries: 5
   targetRunningDrivers: 50
@@ -84,4 +84,12 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 imagePullSecrets: []
+
+
+global:
+  snappyflowProjectLabel: snappyflow/projectname
+  snappyflowAppLabel: snappyflow/appname
+
+  snappyflowProjectName: "snappyflow-app"
+  snappyflowAppName: "sf-presto"
 
