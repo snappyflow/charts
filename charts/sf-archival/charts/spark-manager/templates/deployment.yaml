@@ -24,12 +24,11 @@ spec:
       {{- if .Values.global.sfScheduler.enabled }}
       schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
       {{- end }}
-      priorityClassName: {{ .Release.Name }}-priority-class
     {{- with .Values.global.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-    {{- if or (and (eq .Values.global.secrets.aws.enable true) (eq .Values.global.secrets.aws.use_iam_role true)) (and (eq .Values.global.secrets.gcs.enable true) (eq .Values.global.secrets.gcs.use_google_service_account true)) }}
+    {{- if or (and .Values.global.secrets.aws.enable .Values.global.secrets.aws.use_iam_role) .Values.global.secrets.gcs.enable .Values.global.secrets.azure.enable }}
       serviceAccountName: {{ .Release.Name }}-service-account
     {{- end}}
       initContainers:
@@ -44,8 +43,8 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
-          image: snappyflowml/cb-spark-event:1
-          imagePullPolicy: IfNotPresent
+          image: "{{ .Values.cbsparkevent.image.repository }}:{{ .Values.cbsparkevent.image.tag }}"
+          imagePullPolicy: {{ .Values.cbsparkevent.image.pullPolicy }}
           args:
             - {{ index .Values "jobserver" "sparkProperties" "logDirectory" }}
         - name: db-ready
@@ -56,21 +55,9 @@ spec:
             - -c
             - "until pg_isready -d postgresql://'{{ .Values.global.postgresql.postgresqlUsername }}':'{{ .Values.global.postgresql.postgresqlPassword }}'@'{{ template "spark-manager.postgresql.fullname" . }}':{{ .Values.global.postgresql.servicePort }}/'{{ .Values.global.postgresql.postgresqlDatabase }}'; do sleep 3; done"
         - name: compaction-infrastructure
-          env:
-          {{- if (eq .Values.global.secrets.gcs.enable true) }}
-          - name: GOOGLE_APPLICATION_CREDENTIALS
-            value: /var/secrets/google/key.json
-          {{- end }}
-          {{- if (eq .Values.global.secrets.aws.enable true) }}
-          {{- if (eq .Values.global.secrets.aws.use_iam_role false) }}
-          - name: AWS_ACCESS_KEY_ID
-            value: {{ .Values.global.secrets.aws.AWS_ACCESS_KEY_ID }}
-          - name: AWS_SECRET_ACCESS_KEY
-            value: {{ .Values.global.secrets.aws.AWS_SECRET_ACCESS_KEY }}
-          - name: AWS_REGION
-            value: {{ .Values.global.secrets.aws.AWS_DEFAULT_REGION }}
-          {{- end }}
-          {{- end }}
+          envFrom:
+          - configMapRef:
+              name: {{ .Release.Name }}-cloud-env
           image: snappyflowml/compaction-infra:3
           imagePullPolicy: IfNotPresent
           volumeMounts:
@@ -86,8 +73,9 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
-          resources:
-{{- toYaml .Values.monitor.containerResources | nindent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{- toYaml .Values.monitor.containerResources | nindent 12 }}
+{{- end }}
         - name: jobserver
           image: "{{ .Values.jobserver.image.repository }}:{{ .Values.jobserver.image.tag }}"
           imagePullPolicy: {{ .Values.jobserver.image.pullPolicy }}
@@ -97,8 +85,9 @@ spec:
           envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
-          resources:
-{{- toYaml .Values.jobserver.containerResources | nindent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{- toYaml .Values.jobserver.containerResources | nindent 12 }}
+{{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -121,4 +110,3 @@ spec:
         - name: config-volume-compaction
           configMap:
             name: {{ template "spark-manager.fullname" . }}-infrastructure
-

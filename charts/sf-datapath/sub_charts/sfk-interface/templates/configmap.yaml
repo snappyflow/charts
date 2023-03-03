@@ -15,8 +15,8 @@ data:
             "agent_ep": "{{ .Values.global.sfAgentInput.scheme }}://{{ .Values.global.sfAgentInput.host }}:{{ .Values.global.sfAgentInput.port }}",
             "signature_and_kafka_apis": "http://{{ template "sfk-interface.signatures-and-kafka-apis.fullname" . }}",
             "cluster_byte_rate_quota": {{ mul .Values.global.clusterQuotaGBperDay 11574.07 }},
-            "prometheus_endpoint": "http://{{ template "sfk-interface.prometheus.fullname" . }}",
-            "prometheus_auth": "snappyflow",
+            "prometheus_endpoint": {{ .Values.prometheus.url | quote }},
+            "prometheus_auth": {{ .Values.prometheus.auth | quote }},
             "sys_rsvd_cluster_byte_rate_quota_pcnt": {{ .Values.global.sysReservedclusterQuotaPCNT }},
             "db": {
                 "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
@@ -36,7 +36,7 @@ data:
             "errors.tolerance": "all",
             "drop.invalid.message": "true",
             "behavior.on.malformed.documents": "warn",
-            "behavior.on.null.values": "delete",
+            "behavior.on.null.values": "ignore",
             "max.buffered.records": "5000",
             "retry.backoff.ms": "3000",
             "max.retries": "3",
@@ -49,10 +49,10 @@ data:
             "schema.ignore": "true",
             "value.converter.schemas.enable": "false",
             "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-            "transforms": "filter,router,insertsignature",
+            "transforms": "filterandrouter,insertsignature",
             "transforms.throttle.type": "apm.kafka.connect.transforms.Throttle",
-            "transforms.filter.type": "apm.kafka.connect.transforms.APMFilter",
-            "transforms.router.type": "apm.kafka.connect.transforms.APMRouter",
+            "transforms.filterandrouter.type": "apm.kafka.connect.transforms.APMFilterAndRouter",
+            "transforms.filterandrouter.samplingPeriodSeconds": 300,
             "transforms.insertsignature.type": "com.signature.InsertSignature$Value",
             "transforms.insertsignature.connectorname.field": "elastic-search"
         }

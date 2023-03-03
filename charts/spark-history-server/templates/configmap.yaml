@@ -20,7 +20,7 @@ data:
   {{ $key }}: {{ $val | quote }}
   {{- end }}
   {{- else if .Values.global.secrets.gcs.enable }}
-  enableIAM: {{ .Values.global.secrets.gcs.use_google_service_account | quote }}
+  enableIAM: "true"
   {{- range $key, $val := .Values.gcs }}
   {{ $key }}: {{ $val | quote }}
   {{- end }}
@@ -31,6 +31,10 @@ data:
   {{- range $key, $val := .Values.s3 }}
   {{ $key }}: {{ $val | quote }}
   {{- end }}
+  {{- else if .Values.global.secrets.azure.enable }}
+  storageAccountName: {{ .Values.global.secrets.azure.STORAGE_ACCOUNT_NAME | quote }}
+  storageAccountKey: {{ .Values.global.secrets.azure.STORAGE_ACCOUNT_ACCESS_KEY | quote }}
+  containerName: {{ .Values.global.secrets.azure.SPARK_HS_CONTAINER_NAME | quote }}
   {{- else if .Values.wasbs.enableWASBS }}
   {{- range $key, $val := omit .Values.wasbs "enableWASBS" }}
   {{ $key }}: {{ $val | quote }}

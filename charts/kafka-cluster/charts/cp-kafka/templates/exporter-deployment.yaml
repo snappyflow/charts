@@ -1,3 +1,4 @@
+{{- if .Values.prometheus.kafka.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -40,17 +41,12 @@ spec:
             - ./kafka-init.sh
             - {{ .Release.Name }}-cp-kafka-headless:9092
       containers:
-      - image: "snappyflowml/kafka-lag-exporter:latest"
+      - image: "{{ .Values.prometheus.kafka.image }}:{{ .Values.prometheus.kafka.imageTag }}"
         name: kafka-exporter
         args:
           - --kafka.server={{ .Release.Name }}-cp-kafka-headless:9092
           - --web.listen-address=:9308
         ports:
           - containerPort: 9308
-        resources:
-          limits:
-            cpu: 200m
-            memory: 1Gi
-          requests:
-            cpu: 100m
-            memory: 256Mi
+        resources: {{- toYaml .Values.prometheus.kafka.resources | nindent 10 }}
+{{- end }}

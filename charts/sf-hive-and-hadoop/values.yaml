@@ -45,8 +45,6 @@ global:
   imagePullSecrets:
   - name: xxxx
 
-schedulerName: sf-scheduler
-
 image:
   namenode:
     repository: snappyflowml/hadoop-2.10.1

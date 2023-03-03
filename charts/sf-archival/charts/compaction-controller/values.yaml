@@ -18,13 +18,6 @@ image:
 ingest-controller:
   service:
     servicePort: 5000
-ingress:
-  annotations: {}
-  enabled: false
-  hosts:
-  - host: chart-example.local
-    paths: []
-  tls: []
 kafka:
   schemaRegistry:
     host: 10.10.10.10
