@@ -7,7 +7,9 @@ global:
   sfprojectname: scale-test
   sfappname_key: snappyflow/appname
   sfprojectname_key: snappyflow/projectname
-  
+
+schedulerName: sf-scheduler
+
 prometheus:
   jmx:
     enabled: true

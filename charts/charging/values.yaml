@@ -5,6 +5,8 @@ enableDebug: false
 
 replicaCount: 1
 
+schedulerName: sf-scheduler
+
 image:
   repository: snappyflowml/charging
   pullPolicy: Always

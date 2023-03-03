@@ -24,10 +24,10 @@ configurationOverrides:
 containerResources:
   connector:
     limits:
-      cpu: "1"
+      cpu: '1'
       memory: 3Gi
     requests:
-      cpu: "1"
+      cpu: '1'
       memory: 1536Mi
   jmx:
     limits:
@@ -46,7 +46,7 @@ heapOptions: -Xms250M -Xmx1300M -Xmns200M -Xmnx800M -XX:MaxDirectMemorySize=100M
   -Xdump:system+heap+java
 image: snappyflowml/arch-kafka-connect
 imagePullPolicy: IfNotPresent
-imageTag: '17'
+imageTag: '19'
 inByteRate: 1736111
 jmx:
   port: 5555
@@ -60,8 +60,9 @@ prometheus:
     imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
     port: 5556
 replicaCount: 1
-terminationGracePeriodSeconds: 200
+schedulerName: sf-scheduler
 servicePort: 8083
+terminationGracePeriodSeconds: 200
 tolerations: {}
 autoscaling:
   enabled: false

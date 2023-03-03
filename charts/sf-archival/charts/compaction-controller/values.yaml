@@ -12,9 +12,9 @@ dataset-controller:
     servicePort: 5001
 fullnameOverride: ''
 image:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   repository: snappyflowml/compaction-controller
-  tag: 'dev-test'
+  tag: '16'
 ingest-controller:
   service:
     servicePort: 5000
@@ -31,12 +31,13 @@ maxRunningHours: 3
 maxSimultaneousRun: 1
 nameOverride: ''
 nodeSelector: {}
+schedulerName: sf-scheduler
 schedules:
   create: '*/10 * * * *'
+  partitionStatusUpdate: '*/10 * * * *'
   processStuck: '*/10 * * * *'
   queue: '*/10 * * * *'
   start: '*/10 * * * *'
-  partitionStatusUpdate: '*/10 * * * *'
 serverPort: :5005
 service:
   servicePort: 5005

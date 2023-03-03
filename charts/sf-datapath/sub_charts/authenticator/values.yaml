@@ -18,6 +18,7 @@ image:
   tag: '7'
 nameOverride: ''
 nodeSelector: {}
+schedulerName: sf-scheduler
 serverPort: :5006
 service:
   servicePort: 5006

@@ -12,14 +12,15 @@ dataset-controller:
     servicePort: 5001
 fullnameOverride: ''
 image:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   repository: snappyflowml/log-archival
-  tag: 'dev-test'
+  tag: '7'
 ingest-controller:
   service:
     servicePort: 5000
 nameOverride: ''
 nodeSelector: {}
+schedulerName: sf-scheduler
 serverPort: :5003
 service:
   servicePort: 5003

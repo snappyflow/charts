@@ -38,6 +38,10 @@ datapath-and-archival-rest.conf: |-
       proxy_pass http://{{ .Values.global.datapathReleaseName }}-sfk-interface/sfkinterface;
     }
 
+    location /sfkinterface-janitor {
+      proxy_pass http://{{ .Values.global.datapathReleaseName }}-sfk-interface/sfkinterface;
+    }
+
     location /profile-quotas {
       proxy_pass http://{{ .Values.global.datapathReleaseName }}-sfk-interface/profile-quotas;
     }

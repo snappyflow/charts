@@ -22,6 +22,8 @@ replicaCount: 1
 nameOverride: ""
 fullnameOverride: ""
 
+schedulerName: sf-scheduler
+
 rbac:
   create: true
 
