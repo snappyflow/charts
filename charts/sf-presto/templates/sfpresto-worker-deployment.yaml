@@ -22,6 +22,8 @@ spec:
       labels:
         app: {{ include "sf-presto.name" . }}-worker
         release: {{ .Release.Name }}
+        {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+        {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
         role: sfpresto-worker
         snappyflow/component: snappyflow-presto
     spec:
