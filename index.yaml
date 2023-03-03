@@ -988,6 +988,16 @@ entries:
   hive-and-hadoop:
   - apiVersion: v2
     appVersion: 2.3.8-and-2.10.0
+    created: "2023-03-03T13:17:46.172662941Z"
+    description: A Helm chart for Kubernetes
+    digest: 4cbebbd81bf0cdce7de0899adb27366115f7b6bd674e96df3f5dd6bb8c2d105d
+    name: hive-and-hadoop
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/hive-and-hadoop-0.1.7/hive-and-hadoop-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
+    appVersion: 2.3.8-and-2.10.0
     created: "2023-01-30T08:51:30.631173155Z"
     description: A Helm chart for Kubernetes
     digest: 040a91a1294b6537ce0dc3be3245648e8f42c1348bb0831bf6f2f02f24e54bbe
@@ -6590,6 +6600,21 @@ entries:
     urls:
     - https://github.com/snappyflow/helm-charts/releases/download/sf-datapath-1.0.4/sf-datapath-1.0.4.tgz
     version: 1.0.4
+  sf-datapath-and-archival-gateway:
+  - apiVersion: v2
+    appVersion: 13.2.21
+    created: "2023-03-03T13:17:46.262902695Z"
+    dependencies:
+    - name: nginx
+      repository: https://charts.bitnami.com/bitnami
+      version: 13.2.21
+    description: A Helm chart for Kubernetes
+    digest: 212599c44b7cb211488a01e5151de44ea8a673610fb2ca0f7db9ac757f7e9753
+    name: sf-datapath-and-archival-gateway
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-datapath-and-archival-gateway-1.0.0/sf-datapath-and-archival-gateway-1.0.0.tgz
+    version: 1.0.0
   sf-presto:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -6730,6 +6755,24 @@ entries:
     type: application
     urls:
     - https://github.com/snappyflow/helm-charts/releases/download/sf-presto-1.0.0/sf-presto-1.0.0.tgz
+    version: 1.0.0
+  sf-saas-metrics:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-03-03T13:17:46.373173616Z"
+    dependencies:
+    - name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 19.3.1
+    - name: prometheus-adapter
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 4.0.0
+    description: A Helm chart for Kubernetes
+    digest: 9874d9198480f29eec1c95b4058094e01cd0ada8a215e08c18951bb632319222
+    name: sf-saas-metrics
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-saas-metrics-1.0.0/sf-saas-metrics-1.0.0.tgz
     version: 1.0.0
   sf-scheduler:
   - apiVersion: v2
@@ -15539,6 +15582,23 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sfnginxv1-0.1.2/sfnginxv1-0.1.2.tgz
     version: 0.1.2
   spark-history-server:
+  - apiVersion: v1
+    appVersion: 2.4.0
+    created: "2023-03-03T13:17:46.502109407Z"
+    deprecated: true
+    description: DEPRECATED - A Helm chart for Spark History Server
+    digest: f74e5bdbd11243d31bcd0700eeb60df4bb5c6c0568c354eb1b5ad4a8c1c09c76
+    home: https://spark.apache.org
+    keywords:
+    - spark
+    - history-server
+    name: spark-history-server
+    sources:
+    - https://github.com/apache/spark
+    - https://github.com/lightbend/spark-history-server-docker
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/spark-history-server-1.4.6/spark-history-server-1.4.6.tgz
+    version: 1.4.6
   - apiVersion: v1
     appVersion: 2.4.0
     created: "2023-01-30T08:35:36.257935354Z"
