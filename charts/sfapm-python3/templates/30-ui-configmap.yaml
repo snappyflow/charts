@@ -15,3 +15,5 @@ data:
     COMMANDSERVER_PORT: "{{ .Values.commands.service.port }}"
     ES_MANAGER_HOST: {{ include "sfapm.fullname" . }}-esmanager
     ES_MANAGER_PORT: "{{ .Values.esmanager.service.port }}"
+    USAGE_SYSTEM_HOST: localhost
+    USAGE_SYSTEM_PORT: 8000
