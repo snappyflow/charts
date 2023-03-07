@@ -31,4 +31,11 @@ spec:
       target:
         type: AverageValue
         averageValue: {{ .Values.autoscaling.targetQueuedQueries }}
+  - type: Pods
+    pods:
+      metric:
+        name: presto_running_drivers
+      target:
+        type: AverageValue
+        averageValue: {{ .Values.autoscaling.targetRunningDrivers }}
 {{- end }}
