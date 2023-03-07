@@ -6618,6 +6618,16 @@ entries:
   sf-presto:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2023-03-07T04:42:18.431128561Z"
+    description: A Helm chart for Kubernetes
+    digest: 399aacb17821e94f31052086196910ef57f161f057d8ac7528f8b6f89e0a9f4e
+    name: sf-presto
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-presto-1.0.18/sf-presto-1.0.18.tgz
+    version: 1.0.18
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2023-03-02T12:15:15.429861662Z"
     description: A Helm chart for Kubernetes
     digest: 55f62143d9748af388aa8d3250bdeb50a700d6ac181d2bc22309c3a707c6781e
