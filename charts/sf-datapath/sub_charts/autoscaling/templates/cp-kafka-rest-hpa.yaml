@@ -1,5 +1,5 @@
 {{- if .Values.cpKafkaRestProxy.enabled -}}
-apiVersion: autoscaling/v2beta1
+apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "autoscaling.cp-kafka-rest.fullname" . }}
@@ -14,10 +14,13 @@ spec:
   metrics:
   - type: Pods
     pods:
-      metricName: kafka_rest_heap_utilization_pcnt
-      targetAverageValue: {{ .Values.cpKafkaRestProxy.memory.targetPCNT | quote }}
+      metric:
+        name: kafka_rest_heap_utilization_pcnt
+      target:
+        averageValue: {{ .Values.cpKafkaRestProxy.memory.targetPCNT | quote }}
   - type: Resource
     resource:
       name: cpu
-      targetAverageValue: {{ .Values.cpKafkaRestProxy.cpu.targetAverageValue | quote }}
+      target:
+        averageValue: {{ .Values.cpKafkaRestProxy.cpu.targetAverageValue | quote }}
 {{- end -}}

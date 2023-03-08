@@ -1,5 +1,5 @@
 {{- if and .Values.s3KafkaConnect.enabled .Values.global.archival.enabled -}}
-apiVersion: autoscaling/v2beta1
+apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "autoscaling.s3-kafka-connect.fullname" . }}
@@ -15,9 +15,12 @@ spec:
   - type: Resource
     resource:
       name: cpu
-      targetAverageValue: {{ .Values.s3KafkaConnect.cpu.targetAverageValue | quote }}
+      target:
+        averageValue: {{ .Values.s3KafkaConnect.cpu.targetAverageValue | quote }}
   - type: External
     external:
-      metricName: kafka_bytesinpersec_oneminuterate_for_log_and_metric
-      targetAverageValue: {{ mul .Values.s3KafkaConnect.ingestRateGBPerDayPerPod 11575 }}
+      metric:
+        name: kafka_bytesinpersec_oneminuterate_for_log_and_metric
+      target:
+        averageValue: {{ mul .Values.s3KafkaConnect.ingestRateGBPerDayPerPod 11575 }}
 {{- end -}}

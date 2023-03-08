@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ template "dataset-raw-controller.fullname" . }}
@@ -17,5 +17,7 @@ spec:
       paths:
       - path: /datasets-raw-data
         backend:
-          serviceName: {{ template "dataset-raw-controller.fullname" . }} 
-          servicePort: 80
+          service:
+            name: {{ template "dataset-raw-controller.fullname" . }} 
+            port:
+              number: 80
