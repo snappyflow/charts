@@ -1,5 +1,5 @@
 {{ if and (and .Values.global.archival.enabled .Values.global.secrets.gcs.enable) .Values.s3KafkaConnect.enabled -}}
-apiVersion: autoscaling/v2beta1
+apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "autoscaling.minio.fullname" . }}
@@ -15,9 +15,11 @@ spec:
   - type: Resource
     resource:
       name: cpu
-      targetAverageValue: {{ .Values.minio.cpu.targetAverageValue }}
+      target:
+        averageValue: {{ .Values.minio.cpu.targetAverageValue }}
   - type: Resource
     resource:
       name: memory
-      targetAverageValue: {{ .Values.minio.memory.targetAverageValue }}
+      target:
+        averageValue: {{ .Values.minio.memory.targetAverageValue }}
 {{- end }}
