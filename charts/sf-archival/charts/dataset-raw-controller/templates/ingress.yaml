@@ -21,3 +21,4 @@ spec:
             name: {{ template "dataset-raw-controller.fullname" . }} 
             port:
               number: 80
+        pathType: Prefix
