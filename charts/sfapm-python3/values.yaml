@@ -679,6 +679,16 @@ usage_system:
   # tls true for HTTPS
   tls: False
 
+# Ingest Usage system
+ingest_usage_system:
+  # Usage system host IP/Domain
+  enabled: false
+  host: ""
+  # Port number for usage system server
+  port: 443
+  # tls true for HTTPS
+  tls: False
+
 # pprof-server config
 pprof:
   image:
