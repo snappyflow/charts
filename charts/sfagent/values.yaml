@@ -4,7 +4,7 @@ rbac:
   ## Ignored if create is true, REQUIRED if create is false
   serviceAccountName: default
 
-schedulerName: sf-scheduler
+schedulerName: default-scheduler
 
 imageCredentials:
   registry: https://index.docker.io/v1/
