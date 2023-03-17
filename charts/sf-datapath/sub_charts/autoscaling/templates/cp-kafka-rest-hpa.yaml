@@ -50,4 +50,5 @@ spec:
     resource:
       name: cpu
       targetAverageValue: {{ .Values.cpKafkaRestProxy.cpu.targetAverageValue | quote }}
+{{- end -}}
 {{- end }}
