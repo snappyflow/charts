@@ -16,10 +16,12 @@ spec:
     resource:
       name: cpu
       target:
+        type: AverageValue
         averageValue: {{ .Values.minio.cpu.targetAverageValue }}
   - type: Resource
     resource:
       name: memory
       target:
+        type: AverageValue
         averageValue: {{ .Values.minio.memory.targetAverageValue }}
 {{- end }}

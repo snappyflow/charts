@@ -16,11 +16,13 @@ spec:
     resource:
       name: cpu
       target:
+        type: AverageValue
         averageValue: {{ .Values.esKafkaConnect.cpu.targetAverageValue | quote }}
   - type: External
     external:
       metric:
         name: kafka_bytesinpersec_oneminuterate
       target:
+        type: AverageValue
         averageValue: {{ mul .Values.esKafkaConnect.ingestRateGBPerDayPerPod 11575 }}
 {{- end -}}

@@ -23,6 +23,7 @@ spec:
       resource:
         name: cpu
         target:
+          type: Utilization
           averageUtilization: {{ . }}
 {{- end }}
 {{- with .Values.defaultBackend.autoscaling.targetMemoryUtilizationPercentage }}
@@ -30,6 +31,7 @@ spec:
       resource:
         name: memory
         target:
+          type: Utilization
           averageUtilization: {{ . }}
 {{- end }}
 {{- end }}

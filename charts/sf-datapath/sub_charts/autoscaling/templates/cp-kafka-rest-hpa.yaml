@@ -17,10 +17,12 @@ spec:
       metric:
         name: kafka_rest_heap_utilization_pcnt
       target:
+        type: AverageValue
         averageValue: {{ .Values.cpKafkaRestProxy.memory.targetPCNT | quote }}
   - type: Resource
     resource:
       name: cpu
       target:
+        type: AverageValue
         averageValue: {{ .Values.cpKafkaRestProxy.cpu.targetAverageValue | quote }}
 {{- end -}}
