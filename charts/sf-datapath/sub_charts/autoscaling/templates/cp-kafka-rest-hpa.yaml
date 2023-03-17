@@ -14,7 +14,8 @@ spec:
   metrics:
   - type: Pods
     pods:
-      name: kafka_rest_heap_utilization_pcnt
+      metric:
+        name: kafka_rest_heap_utilization_pcnt
       target:
         type: AverageValue
         averageValue: {{ .Values.cpKafkaRestProxy.memory.targetPCNT | quote }}
