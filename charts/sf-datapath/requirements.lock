@@ -30,4 +30,4 @@ dependencies:
   repository: file://./sub_charts/minio
   version: 8.0.11
 digest: sha256:1f002cc9296280072ab76825ad9dcdd12aae346e828f52aea778dfbbc5d1eabc
-generated: "2023-03-17T14:42:48.828411182+05:30"
+generated: "2023-03-19T19:42:21.019171862+05:30"
