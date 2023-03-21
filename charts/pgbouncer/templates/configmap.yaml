@@ -1,7 +1,7 @@
 {{ define "pgbouncer.ini.1.0.0" }}
 [databases]
 {{- range $k, $v := .Values.databases }}
-{{ $k }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.dbname }}dbname={{ $v.dbname }}{{end}} {{ if $v.user }}user={{ $v.user }}{{end}} {{ if $v.password }}password={{ $v.password }}{{end}}
+{{ $k }} = host={{ $v.host }} port={{ $v.port }} {{ if $v.dbname }}dbname={{ $v.dbname }}{{end}} {{ if $v.user }}user={{ $v.user }}{{end}} {{ if $v.password }}password={{ $v.password }}{{end}} {{ if hasKey $.Values.connConfig $k }}{{ $val := get $.Values.connConfig $k }}{{ if $val.poolSize }}pool_size={{ $val.poolSize }}{{end}} {{ if $val.maxDBConnections }}max_db_connections={{ $val.maxDBConnections }}{{end}}{{end}}
 {{- end }}
 [pgbouncer]
 listen_addr = 0.0.0.0
@@ -11,9 +11,9 @@ auth_file = /etc/pgbouncer/userlist.txt
 {{- $users := (join "," (keys .Values.users | sortAlpha)) }}
 admin_users = {{ $users }}
 stats_users = {{ $users }},stats
-pool_mode = {{ .Values.connConfig.poolMode }}
-default_pool_size = {{ .Values.connConfig.defaultPoolSize }}
-max_db_connections = {{ .Values.connConfig.maxDBConnections }}
+pool_mode = {{ .Values.connConfig.default.poolMode }}
+default_pool_size = {{ .Values.connConfig.default.defaultPoolSize }}
+max_db_connections = {{ .Values.connConfig.default.maxDBConnections }}
 
 # extra config
 {{- range $k, $v := .Values.extraConfig }}
