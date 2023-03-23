@@ -96,12 +96,12 @@ connConfig:
   # default configurations go under the [pgbouncer] section as default values
   default:
     poolMode: transaction
-    defaultPoolSize: 20
-    maxDBConnections: 50
+    numOfConnections: 20
   # following db configurations go under the [databases] section as database-specific values
   # vizbuilder:
-  #   poolSize: 30
-  #   maxDBConnections: 40
+  #   numOfConnections: 40
+  # snappyflow:
+  #   numOfConnections: 30
 
 extraConfig:
   log_connections: 1
