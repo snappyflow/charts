@@ -28,7 +28,7 @@ schedules:
 
 containerResources:
   limits:
-    cpu: 50m
+    cpu: 250m
     memory: 512Mi
   requests:
     cpu: 50m
@@ -67,6 +67,6 @@ appParams:
   computeBucketBoundariesUsingPresto: false
   eventQueueHandlerMonitorIntervalInSec: 2
   orcInventoryBatchFetchSize: 20000
-  maxBufferedEvents: 10000
-  competingConsumers: 5
+  maxBufferedEvents: 60000
+  competingConsumers: 2
   
