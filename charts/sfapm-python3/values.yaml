@@ -435,7 +435,7 @@ esmanager:
 
   image:
     repository: snappyflowml/sfapm-esmanager
-    tag: 1.0.50
+    tag: 1.0.49
     pullPolicy: IfNotPresent
 
   resources:
