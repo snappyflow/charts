@@ -14,6 +14,7 @@ stats_users = {{ $users }},stats
 pool_mode = {{ .Values.connConfig.default.poolMode }}
 default_pool_size = {{ .Values.connConfig.default.numOfConnections }}
 max_db_connections = {{ .Values.connConfig.default.numOfConnections }}
+query_wait_timeout = {{ .Values.connConfig.default.queryWaitTimeout }}
 
 # extra config
 {{- range $k, $v := .Values.extraConfig }}
