@@ -40,5 +40,6 @@ serverPort: :5001
 service:
   servicePort: 5001
 tolerations: []
-max_open_connections: 2
-max_idle_connections: 1
+db:
+  max_open_connections: 2
+  max_idle_connections: 1

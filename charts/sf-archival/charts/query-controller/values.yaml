@@ -19,8 +19,9 @@ containerResources:
     requests:
       cpu: 50m
       memory: 512Mi
-    max_open_connections: 1
-    max_idle_connections: 0
+    db:
+      max_open_connections: 1
+      max_idle_connections: 0
   queryexecutioncontroller:
     limits:
       cpu: 100m
@@ -28,8 +29,9 @@ containerResources:
     requests:
       cpu: 50m
       memory: 512Mi
-    max_open_connections: 2
-    max_idle_connections: 1
+    db:
+      max_open_connections: 2
+      max_idle_connections: 1
 dataset-controller:
   service:
     servicePort: 5001

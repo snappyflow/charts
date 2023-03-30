@@ -26,8 +26,8 @@ data:
         "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
         "host": "{{ template "dataset-controller.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }},
-        "max_open_connections": {{ .Values.max_open_connections }},
-        "max_idle_connections": {{ .Values.max_idle_connections }}
+        "max_open_connections": {{ .Values.db.max_open_connections }},
+        "max_idle_connections": {{ .Values.db.max_idle_connections }}
       },
       "serverPort": "{{ .Values.serverPort }}"
     }

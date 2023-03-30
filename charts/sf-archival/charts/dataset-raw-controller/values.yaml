@@ -69,7 +69,7 @@ appParams:
   orcInventoryBatchFetchSize: 20000
   maxBufferedEvents: 60000
   competingConsumers: 2
-
-max_open_connections: 3
-max_idle_connections: 1
+db:
+  max_open_connections: 3
+  max_idle_connections: 1
   

@@ -35,5 +35,6 @@ signatureAndKafkaAPIsURL: http://sf-datapath-signatures-and-kafka-apis
 scehmeRegURL: http://sf-datapath-cp-schema-registry:8081
 archivalKafkaConnectURL: http://sf-datapath-archival-kafka-connect:8083
 minioEndpoint: "sf-datapath-minio:9000"
-max_open_connections: 3
-max_idle_connections: 1
+db:
+  max_open_connections: 3
+  max_idle_connections: 1
