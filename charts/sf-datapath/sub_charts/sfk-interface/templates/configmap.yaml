@@ -23,7 +23,9 @@ data:
                 "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
                 "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
                 "host": "{{ template "sfk-interface.postgresql.fullname" . }}",
-                "port": {{ .Values.global.postgresql.servicePort }}
+                "port": {{ .Values.global.postgresql.servicePort }},
+                "max_open_connections": {{ .Values.max_open_connections }},
+                "max_idle_connections": {{ .Values.max_idle_connections }}
             },
             "max_tasks_per_topic": {{ .Values.global.maxTasksPerTopic }},
             "topic_type_details": {{ toJson .Values.global.topicTypeDetails }},
