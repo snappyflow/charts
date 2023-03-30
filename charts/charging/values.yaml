@@ -7,6 +7,8 @@ replicaCount: 1
 
 schedulerName: sf-scheduler
 
+component: snappyflow-apm
+
 image:
   repository: snappyflowml/charging
   pullPolicy: Always
