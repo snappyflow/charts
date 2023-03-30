@@ -23,3 +23,6 @@ service:
   servicePort: 5006
 signingKey: mysecretkey
 tolerations: []
+db:
+  max_open_connections: 2
+  max_idle_connections: 1
