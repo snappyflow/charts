@@ -7,7 +7,6 @@ metadata:
     app: charging
     role: celery
     queue: default
-    snappyflow/component: {{ .Values.component }}
     {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
     {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
 spec:
@@ -18,7 +17,6 @@ spec:
       app: charging
       role: celery
       queue: default
-      snappyflow/component: {{ .Values.component }}
       {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
       {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
   template:
