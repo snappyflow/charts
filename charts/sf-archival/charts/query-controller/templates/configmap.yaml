@@ -13,8 +13,8 @@ data:
         "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
         "host": "{{ template "query-controller.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }},
-        "max_open_connections": {{ .Values.containerResources.querycontroller.db.max_open_connections }},
-        "max_idle_connections": {{ .Values.containerResources.querycontroller.db.max_idle_connections }}
+        "max_open_connections": {{ .Values.db.querycontroller.max_open_connections }},
+        "max_idle_connections": {{ .Values.db.querycontroller.max_idle_connections }}
       },
       "hive": {
         "userName": "{{ template "query-controller.hive-server.username" . }}",
@@ -45,8 +45,8 @@ data:
         "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
         "host": "{{ template "query-controller.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }},
-        "max_open_connections": {{ .Values.containerResources.queryexecutioncontroller.db.max_open_connections }},
-        "max_idle_connections": {{ .Values.containerResources.queryexecutioncontroller.db.max_idle_connections }}
+        "max_open_connections": {{ .Values.db.queryexecutioncontroller.max_open_connections }},
+        "max_idle_connections": {{ .Values.db.queryexecutioncontroller.max_idle_connections }}
       },
       "presto": {
         "user": "{{ .Values.presto.user }}",
