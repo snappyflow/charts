@@ -3,6 +3,24 @@ entries:
   charging:
   - apiVersion: v2
     appVersion: v1
+    created: "2023-03-31T05:25:15.997086787Z"
+    dependencies:
+    - name: redis
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.2.10
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.1.2
+    description: A Helm chart for sfapm charging and usage tracking system
+    digest: 55088813ce94f55e57d00ce366513eca676325a8276a0890d23e3e230e55f88a
+    name: charging
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/charging-0.4.25/charging-0.4.25.tgz
+    version: 0.4.25
+  - apiVersion: v2
+    appVersion: v1
     created: "2023-03-30T13:07:44.703635366Z"
     dependencies:
     - name: redis
