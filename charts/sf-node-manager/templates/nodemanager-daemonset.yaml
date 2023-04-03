@@ -11,7 +11,12 @@ spec:
   template:
     metadata:
       labels:
-        {{- include "sf-node-manager.selectorLabels" . | nindent 8 }}
+        app: {{ include "sf-node-manager.name" . }}
+        release: {{ .Release.Name }}
+        {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+        {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
+        role: sf-node-manager
+        snappyflow/component: snappyflow-node-manager
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
       {{- if .Values.global.sfNodeManager.enabled }}

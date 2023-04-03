@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "sf-cluster-autoscaler.fullname" . }}
-  namespace: kube-system
+  namespace: {{ .values.namespace}}
   labels:
     app: {{ include "sf-cluster-autoscaler.name" . }}
 spec:
@@ -15,6 +15,11 @@ spec:
     metadata:
       labels:
         app: {{ include "sf-cluster-autoscaler.name" . }}
+        release: {{ .Release.Name }}
+        {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+        {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
+        role: sf-cluster-autoscaler
+        snappyflow/component: snappyflow-cluster-autoscaler
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'false'
     spec:
