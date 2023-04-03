@@ -4,14 +4,6 @@
 
 replicaCount: 1
 
-global:
-  sfScheduler:
-    enabled: false
-    schedulerName: sf-scheduler
-  sfNodeManager:
-    enabled: false
-    priorityClassName: sf-critical-pod
-
 image:
   repository: postgres
   pullPolicy: IfNotPresent
@@ -123,3 +115,11 @@ global:
   sfappname_key: snappyflow/appname
   sfprojectname_key: snappyflow/projectname
   key: ""
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
+  sfNodeManager:
+    enabled: false
+    priorityClassName: sf-critical-pod
+  loggingCollector:
+    enabled: false
