@@ -90,9 +90,6 @@ global:
   imagePullSecrets:
   - name: xxxx
 
-# Pod priority class value
-priority: 100
-
 signatures-and-kafka-apis:
   useDefaultPatterns: false
 

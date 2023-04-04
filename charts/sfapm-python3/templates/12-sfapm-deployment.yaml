@@ -32,7 +32,9 @@ spec:
         {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
         {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
     spec:
-      schedulerName: {{ .Values.schedulerName }}
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -182,7 +184,7 @@ spec:
         - name: application-logger
           image:  "{{ .Values.sidecarLogger.image.repository }}:{{ .Values.sidecarLogger.image.tag }}"
           imagePullPolicy: {{ .Values.sidecarLogger.image.pullPolicy | quote }}
-          args: [/bin/sh, -c, 'tail -q -n+1 -F apm-performance.log archiver.log controller_client.log es_cleanup.log installer.log snappyflow.log']
+          args: [/bin/sh, -c, 'tail -q -n+1 -F /var/log/snappyflow/apm-performance.log /var/log/snappyflow/archiver.log /var/log/snappyflow/controller_client.log /var/log/snappyflow/es_cleanup.log /var/log/snappyflow/installer.log /var/log/snappyflow/snappyflow.log']
           resources:
             {{- toYaml .Values.sidecarLogger.resources | nindent 12 }}
           volumeMounts:
