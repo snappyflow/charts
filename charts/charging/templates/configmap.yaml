@@ -50,3 +50,8 @@ data:
     AWS_ACCESS_KEY : {{ .Values.aws_access_key | quote }}
     AWS_SECRET_KEY : {{ .Values.aws_secret_key | quote }}
     S3_BUCKET_NAME : {{ .Values.s3_bucket_name | quote }}
+
+    {{- if .Values.ingest_usage_system.enabled }}
+    USAGE_SYSTEM_HOST: "{{ .Values.ingest_usage_system.host }}"
+    USAGE_SYSTEM_PORT: "{{ .Values.ingest_usage_system.port }}"
+    {{- end }}

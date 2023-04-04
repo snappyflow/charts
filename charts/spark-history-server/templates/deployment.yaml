@@ -28,7 +28,6 @@ spec:
       {{- if .Values.global.sfScheduler.enabled }}
       schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
       {{- end }}
-      priorityClassName: {{ .Release.Name }}-priority-class
       serviceAccountName: {{ include "spark-history-server.serviceAccountName" . }}
       containers:
       - name: {{ .Chart.Name }}

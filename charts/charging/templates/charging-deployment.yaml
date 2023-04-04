@@ -7,7 +7,6 @@ metadata:
     service: charging
     app: charging
     role: server
-    snappyflow/component: charging
     {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
     {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
 spec:
@@ -20,7 +19,6 @@ spec:
       app: charging
       role: server
       service: charging
-      snappyflow/component: charging
       {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
       {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
   template:
@@ -34,7 +32,7 @@ spec:
         app: charging
         role: server
         service: charging
-        snappyflow/component: charging
+        snappyflow/component: {{ .Values.component }}
         {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
         {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
     spec:

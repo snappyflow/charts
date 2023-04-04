@@ -1,0 +1,51 @@
+{{ if and (and .Values.global.archival.enabled .Values.global.secrets.gcs.enable) .Values.s3KafkaConnect.enabled -}}
+{{- if .Capabilities.APIVersions.Has "autoscaling/v2beta2" }}
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "autoscaling.minio.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "autoscaling.minio.fullname" . }}
+  minReplicas: {{ .Values.minio.minReplicas }}
+  maxReplicas: {{ .Values.minio.maxReplicas }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: AverageValue
+        averageValue: {{ .Values.minio.cpu.targetAverageValue }}
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: AverageValue
+        averageValue: {{ .Values.minio.memory.targetAverageValue }}
+{{- else }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "autoscaling.minio.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "autoscaling.minio.fullname" . }}
+  minReplicas: {{ .Values.minio.minReplicas }}
+  maxReplicas: {{ .Values.minio.maxReplicas }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageValue: {{ .Values.minio.cpu.targetAverageValue }}
+  - type: Resource
+    resource:
+      name: memory
+      targetAverageValue: {{ .Values.minio.memory.targetAverageValue }}
+{{- end }}
+{{- end }}
