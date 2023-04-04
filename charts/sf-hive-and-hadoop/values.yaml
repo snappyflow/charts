@@ -3,7 +3,7 @@ global:
   sfScheduler:
     enabled: false
     schedulerName: sf-scheduler
-    
+  
   development: false
 
   postgresql:
