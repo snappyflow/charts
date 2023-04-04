@@ -38,8 +38,9 @@ spec:
         prometheus.io/scrape: "false"
       {{- end }}
     spec:
-      schedulerName: {{ .Values.schedulerName }}
-      priorityClassName: {{ .Release.Name }}-priority-class
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
       initContainers:
         - name: kafka-ready
           image: "snappyflowml/kafka-zk-check:alpha"

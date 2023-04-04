@@ -1,5 +1,9 @@
 global:
 
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
+    
   development: false
 
   postgresql:
@@ -40,8 +44,6 @@ global:
 
   imagePullSecrets:
   - name: xxxx
-
-schedulerName: sf-scheduler
 
 image:
   namenode:

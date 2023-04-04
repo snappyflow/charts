@@ -18,11 +18,13 @@ global:
       STORAGE_ACCOUNT_ACCESS_KEY: XXXX
       SPARK_HS_CONTAINER_NAME: sparkhs
 
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
+
 replicaCount: 1
 nameOverride: ""
 fullnameOverride: ""
-
-schedulerName: sf-scheduler
 
 rbac:
   create: true

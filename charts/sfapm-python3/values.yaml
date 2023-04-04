@@ -6,8 +6,6 @@
 # apm and vizbuilder
 enableDebug: false
 
-schedulerName: sf-scheduler
-
 nameOverride: ""
 fullnameOverride: ""
 imagePullSecrets: []
@@ -755,3 +753,10 @@ global:
   nginx_ua_parsing: true
   enable_sftrace: false
   key: ""
+
+  sfNodeManager:
+    enabled: false
+    priorityClassName: sf-critical-pod
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
