@@ -42,6 +42,8 @@ data:
       password: "{{ .Values.global.postgresql.postgresqlPassword }}"
       host: {{ .Values.global.postgresql.host }}
       port: {{ .Values.global.postgresql.servicePort }}
+      max_open_connection: {{ .Values.db.schemaGenerator.max_open_connection }}
+      max_idle_connection: {{ .Values.db.schemaGenerator.max_idle_connection }}
     targets:
 {{ toYaml .Values.schemaGenerator.targets | indent 4 }}
       url: "http://{{ template "cp-schema-registry.ingest-controller.fullname" . }}/ingest/schema-registry"

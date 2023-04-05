@@ -40,6 +40,9 @@ monitor:
     pullPolicy: IfNotPresent
     repository: snappyflowml/monitor
     tag: '8'
+  db:
+    max_open_connections: 1
+    max_idle_connections: 0
 nameOverride: ''
 nodeSelector: {}
 schedulerName: sf-scheduler
