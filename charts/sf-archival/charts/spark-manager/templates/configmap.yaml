@@ -11,7 +11,9 @@ data:
         "user": "{{ .Values.global.postgresql.postgresqlUsername }}",
         "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
         "host": "{{ template "spark-manager.postgresql.fullname" . }}",
-        "port": {{ .Values.global.postgresql.servicePort }}
+        "port": {{ .Values.global.postgresql.servicePort }},
+        "max_open_connections": {{ .Values.db.monitor.max_open_connections }},
+        "max_idle_connections": {{ .Values.db.monitor.max_idle_connections }}
       }
     }
 
@@ -31,8 +33,8 @@ data:
         "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
         "host": "{{ template "spark-manager.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }},
-        "max_open_connections": {{ .Values.jobserver.db.max_open_connections }},
-        "max_idle_connections": {{ .Values.jobserver.db.max_idle_connections }}
+        "max_open_connections": {{ .Values.db.jobserver.max_open_connections }},
+        "max_idle_connections": {{ .Values.db.jobserver.max_idle_connections }}
       },
       "serverPort": ":{{ .Values.jobserver.serverPort }}"
     }

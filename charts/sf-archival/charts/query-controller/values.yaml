@@ -27,6 +27,9 @@ containerResources:
       cpu: 50m
       memory: 512Mi
 db:
+  cleanup:
+      max_open_connections: 1
+      max_idle_connections: 0
   querycontroller:
       max_open_connections: 1
       max_idle_connections: 0
