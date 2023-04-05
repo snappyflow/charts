@@ -75,19 +75,3 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- define "compaction-controller.spark-history-server.fullname" -}}
 {{- printf "%s-%s" .Release.Name "spark-history-server" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
-
-{{- define "dataset-controller.service.servicePort" -}}
-{{- $port := index .Values "dataset-controller" "service" "servicePort" -}}
-{{- printf "%s" $port -}}
-{{- end -}}
-
-{{- define "spark-manager.service.servicePort" -}}
-{{- $port := index .Values "spark-manager" "jobserver" "service" "servicePort" -}}
-{{- printf "%s" $port -}}
-{{- end -}}
-
-{{- define "log-archival.service.servicePort" -}}
-{{- $port := index .Values "log-archival" "service" "servicePort" -}}
-{{- printf "%s" $port -}}
-{{- end -}}
-

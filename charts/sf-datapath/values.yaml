@@ -1,5 +1,13 @@
 global:
 
+  sfNodeManager:
+    enabled: false
+    priorityClassName: sf-critical-pod
+  
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-schduler
+    
   development: false
 
   quotasEnabled: true
@@ -91,9 +99,6 @@ global:
 
   imagePullSecrets:
   - name: xxxx
-
-# Pod priority class value
-priority: 100
 
 signatures-and-kafka-apis:
   useDefaultPatterns: false

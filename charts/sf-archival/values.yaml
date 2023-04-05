@@ -1,5 +1,8 @@
 global:
-
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
+    
   development: false
 
   hive:
@@ -65,9 +68,6 @@ global:
 
   maxTasksPerTopic: 3
   timeBucketSizeMinutes: 15
-
-# Pod priority class value
-priority: 100
 
 dataset-controller:
   maxPartitionsToAnalyzeConcurrently: 5

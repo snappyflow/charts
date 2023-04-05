@@ -20,7 +20,9 @@ spec:
         app.kubernetes.io/name: {{ include "nfs.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
-      schedulerName: {{ .Values.schedulerName }}
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
       containers:
       - name: {{ include "nfs.fullname" . }}
         image: k8s.gcr.io/volume-nfs:0.8

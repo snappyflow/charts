@@ -1,10 +1,13 @@
+global:
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
+
 rbac:
   ## If true, create & use RBAC resources
   create: true
   ## Ignored if create is true, REQUIRED if create is false
   serviceAccountName: default
-
-schedulerName: sf-scheduler
 
 imageCredentials:
   registry: https://index.docker.io/v1/

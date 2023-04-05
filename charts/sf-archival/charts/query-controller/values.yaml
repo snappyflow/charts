@@ -52,7 +52,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/query-controller
-  tag: '15'
+  tag: '16'
 ingest-controller:
   service:
     servicePort: 5000

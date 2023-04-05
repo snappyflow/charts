@@ -4,7 +4,10 @@
 
 replicaCount: 1
 
-schedulerName: sf-scheduler
+global:
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
 
 image:
   repository: edoburu/pgbouncer
@@ -90,9 +93,16 @@ connConfig:
   #   session      - after client disconnects (default)
   #   transaction  - after transaction finishes
   #   statement    - after statement finishes
-  poolMode: transaction
-  defaultPoolSize: 20
-  maxDBConnections: 50
+  # default configurations go under the [pgbouncer] section as default values
+  default:
+    poolMode: transaction
+    numOfConnections: 20
+    queryWaitTimeout: 45
+  # following db configurations go under the [databases] section as database-specific values
+  # vizbuilder:
+  #   numOfConnections: 40
+  # snappyflow:
+  #   numOfConnections: 30
 
 extraConfig:
   log_connections: 1

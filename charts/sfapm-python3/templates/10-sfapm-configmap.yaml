@@ -90,6 +90,11 @@ data:
     USAGE_SERVICE_TLS: "{{ .Values.usage_system.tls }}"
     {{- end }}
 
+    {{- if .Values.ingest_usage_system.enabled }}
+    USAGE_SYSTEM_HOST: "{{ .Values.ingest_usage_system.host }}"
+    USAGE_SYSTEM_PORT: "{{ .Values.ingest_usage_system.port }}"
+    {{- end }}
+
     PPROF_SERVER_HOST: "{{ include "sfapm.fullname" . }}-pprof-server"
     PPROF_SERVER_PORT: "{{ .Values.pprof.service.port }}"
 

@@ -16,6 +16,11 @@ global:
   snappyflowProjectName: "snappyflow-app"
   snappyflowAppName: "sf-data-path"
   subnets: ""
+
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
+
 commonLabels: {}
 # scmhash: abc123
 # myLabel: aakkmd
@@ -69,7 +74,13 @@ controller:
     https: 443
 
   # -- Will add custom configuration options to Nginx https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/
-  config: {}
+  config: 
+    access-log-path: /var/log/nginx/access-custom.log
+    error-log-path: /var/log/nginx/error-custom.log
+    log-format-upstream: $http_x_forwarded_for $remote_user [$time_local] "$request"
+     $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_referer" rt=$request_time
+     uct=$upstream_connect_time uht=$upstream_header_time urt=$upstream_response_time
+     rs=$request_length
 
   # -- Annotations to be added to the controller config configuration configmap.
   configAnnotations: {}

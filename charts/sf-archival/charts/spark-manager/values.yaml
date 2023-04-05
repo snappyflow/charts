@@ -41,7 +41,7 @@ monitor:
     repository: snappyflowml/monitor
     tag: '8'
 db:
-  monitor:  
+  monitor:
     max_open_connections: 1
     max_idle_connections: 0
   jobserver:

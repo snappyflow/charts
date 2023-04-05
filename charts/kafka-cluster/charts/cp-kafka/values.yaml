@@ -8,8 +8,6 @@ global:
   sfappname_key: snappyflow/appname
   sfprojectname_key: snappyflow/projectname
 
-schedulerName: sf-scheduler
-
 prometheus:
   jmx:
     enabled: true
@@ -24,7 +22,6 @@ prometheus:
     image: snappyflowml/kafka-lag-exporter
     imageTag: latest
     interval: 30s
-    port: 9308
     resources: {}
 
 ## ------------------------------------------------------

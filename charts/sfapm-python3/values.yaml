@@ -6,8 +6,6 @@
 # apm and vizbuilder
 enableDebug: false
 
-schedulerName: sf-scheduler
-
 nameOverride: ""
 fullnameOverride: ""
 imagePullSecrets: []
@@ -59,7 +57,7 @@ sfapmui:
 
   image:
     repository: snappyflowml/sfapm-ui
-    tag: 3.1.414
+    tag: 3.1.428
     pullPolicy: IfNotPresent
 
   resources:
@@ -149,7 +147,7 @@ sfapm:
 
   image:
     repository: snappyflowml/sfapm-server
-    tag: 4.0.375-python3
+    tag: 4.0.395-python3
     pullPolicy: IfNotPresent
 
   resources:
@@ -263,7 +261,7 @@ vizbuilder:
 
   image:
     repository: snappyflowml/sfapm-vizbuilder
-    tag: 4.0.206-python3
+    tag: 4.0.213-python3
     pullPolicy: IfNotPresent
 
   resources:
@@ -435,7 +433,7 @@ esmanager:
 
   image:
     repository: snappyflowml/sfapm-esmanager
-    tag: 1.0.44
+    tag: 1.0.51
     pullPolicy: IfNotPresent
 
   resources:
@@ -679,6 +677,16 @@ usage_system:
   # tls true for HTTPS
   tls: False
 
+# Ingest Usage system
+ingest_usage_system:
+  # Usage system host IP/Domain
+  enabled: false
+  host: ""
+  # Port number for usage system server
+  port: 443
+  # tls true for HTTPS
+  tls: False
+
 # pprof-server config
 pprof:
   image:
@@ -755,3 +763,10 @@ global:
   nginx_ua_parsing: true
   enable_sftrace: false
   key: ""
+
+  sfNodeManager:
+    enabled: false
+    priorityClassName: sf-critical-pod
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
