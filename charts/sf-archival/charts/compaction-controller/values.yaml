@@ -48,4 +48,4 @@ spark-manager:
 tolerations: []
 db:
   max_open_connections: 1
-  max_idle_connections: 0
+  max_idle_connections: 1
