@@ -6,11 +6,15 @@ metadata:
   namespace: {{ .values.namespace}}
   labels:
     app: {{ include "sf-cluster-autoscaler.name" . }}
+    release: {{ .Release.Name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    snappyflow/component:  sf-cluster-autoscaler
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: {{ include "sf-cluster-autoscaler.name" . }}
+      role: sf-cluster-autoscaler
   template:
     metadata:
       labels:

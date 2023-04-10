@@ -3,11 +3,15 @@ kind: DaemonSet
 metadata:
   name: {{ include "sf-node-manager.fullname" . }}
   labels:
-    {{- include "sf-node-manager.labels" . | nindent 4 }}
+    app: {{ include "sf-node-manager.name" . }}
+    release: {{ .Release.Name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    snappyflow/component: snappyflow-node-manager
 spec:
   selector:
     matchLabels:
-      {{- include "sf-node-manager.selectorLabels" . | nindent 6 }}
+      app: {{ include "sf-node-manager.name" . }}
+      role: sf-node-manager
   template:
     metadata:
       labels:
