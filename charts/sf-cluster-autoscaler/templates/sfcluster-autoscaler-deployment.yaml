@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "sf-cluster-autoscaler.fullname" . }}
-  namespace: {{ .values.namespace}}
+  namespace: {{ .Values.namespace}}
   labels:
     app: {{ include "sf-cluster-autoscaler.name" . }}
     release: {{ .Release.Name }}
