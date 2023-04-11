@@ -8,6 +8,11 @@ global:
   sfNodeManager:
     enabled: false
     priorityClassName: sf-critical-pod
+  snappyflowProjectLabel: snappyflow/projectname
+  snappyflowAppLabel: snappyflow/appname
+
+  snappyflowProjectName: "snappyflow-app"
+  snappyflowAppName: "sf-scheduler"
 
 image:
   repository: snappyflowml/sf-kubescheduler

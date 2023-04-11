@@ -22,9 +22,6 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         prometheus.io/scrape: "false"
     spec:
-      {{- if .Values.global.sfScheduler.enabled }}
-      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
-      {{- end }}
       containers:
       - name: cluster-agent
         image: "{{ .Values.cluster_agent.image.repository }}:{{ .Values.cluster_agent.image.tag }}"
