@@ -4,31 +4,13 @@ global:
   sfappname_key: snappyflow/appname
   sfprojectname_key: snappyflow/projectname
 
-prometheus:
-  ## Prometheus Kafka Exporter: exposes complimentary metrics to JMX Exporter
-  kafka:
-    enabled: true
+  sfNodeManager:
+    enabled: false
+    priorityClass: sf-critical-pod
 
-    ## The image to use for the metrics collector
-    image: snappyflowml/kafka-lag-exporter
-
-    ## The image tag to use for the metrics collector
-    imageTag: latest
-
-    ## Interval at which Prometheus scrapes metrics, note: only used by Prometheus Operator
-    interval: 10s
-
-    ## Port kafka-exporter exposes for Prometheus to scrape metrics
-    port: 9308
-
-    ## Resource limits
-    resources:
-      limits:
-        cpu: 100m
-        memory: 200Mi
-      requests:
-        cpu: 10m
-        memory: 50Mi
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
 
 cp-zookeeper:
   enabled: true
@@ -52,25 +34,25 @@ cp-zookeeper:
     ## Size for data log dir, which is a dedicated log device to be used, and helps avoid competition between logging and snaphots.
     dataLogDirSize: 10Gi
     # dataLogDirStorageClass: ""
-    
   # TODO: find correct security context for user in this zk-image  
   securityContext: 
     runAsUser: 0
   resources:
-    requests:
-      cpu: 10m
-      memory: 256Mi
     limits:
       cpu: 100m
       memory: 512Mi
-  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
-  ## and remove the curly braces after 'resources:'
-  #  limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  #  requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+    requests:
+      cpu: 10m
+      memory: 256Mi
+  prometheus:
+    jmx:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 256Mi
 
 cp-kafka:
   enabled: true
@@ -88,12 +70,28 @@ cp-kafka:
     size: 250Gi
     disksPerBroker: 1
   resources:
-    requests:
-      cpu: 300m
-      memory: 1500Mi
     limits:
       cpu: 500m
       memory: 2500Mi
-
+    requests:
+      cpu: 300m
+      memory: 1500Mi
   securityContext: 
     runAsUser: 0
+  prometheus:
+    jmx:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 256Mi
+    kafka:
+      resources:
+        limits:
+          cpu: 200m
+          memory: 1Gi
+        requests:
+          cpu: 100m
+          memory: 256Mi

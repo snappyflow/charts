@@ -5,16 +5,6 @@ image:
   repository: snappyflowml/raw-query-exec-controller
   tag: '2'
 imagePullSecrets: []
-ingress:
-  annotations: {}
-  className: ''
-  enabled: false
-  hosts:
-  - host: chart-example.local
-    paths:
-    - path: /
-      pathType: ImplementationSpecific
-  tls: []
 nameOverride: ''
 nodeSelector: {}
 podAnnotations: {}
@@ -37,3 +27,5 @@ service:
   port: 80
   type: ClusterIP
 tolerations: []
+maxGBToProcessDuringHistogramQuery: 1
+maxGBToProcessDuringLogQuery: 1

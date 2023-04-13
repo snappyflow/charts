@@ -21,8 +21,9 @@ spec:
         {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
         {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
     spec:
-      schedulerName: {{ .Values.schedulerName }}
-      priorityClassName: {{ .Release.Name }}-priority-class
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
       {{- with .Values.global.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -55,8 +56,9 @@ spec:
             - name: {{ template "sfk-interface.fullname" . }}-config
               mountPath: "/etc/conf"
               readOnly: true
-          resources:
-{{- toYaml .Values.containerResources.interface | nindent 12 }}
+{{- if not .Values.global.development }}
+          resources: {{- toYaml .Values.containerResources.interface | nindent 12 }}
+{{- end }}
       volumes:
         - name: {{ template "sfk-interface.fullname" . }}-config
           configMap:

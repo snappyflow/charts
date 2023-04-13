@@ -1,0 +1,37 @@
+# Default values for sf-node-manager.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+global:
+  sfNodeManager:
+    enabled: false
+    priorityClassName: sf-critical-pod
+  
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
+  
+  snappyflowProjectLabel: snappyflow/projectname
+  snappyflowAppLabel: snappyflow/appname
+
+  snappyflowProjectName: "snappyflow-app"
+  snappyflowAppName: "sf-node-manager"
+    
+replicaCount: 1
+
+image:
+  repository: snappyflowml/sf-nodemanager
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: latest
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  name: sf-node-manager
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 500Mi

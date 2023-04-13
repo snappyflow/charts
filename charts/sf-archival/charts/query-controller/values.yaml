@@ -26,6 +26,14 @@ containerResources:
     requests:
       cpu: 50m
       memory: 512Mi
+db:
+  querycontroller:
+      max_open_connections: 1
+      max_idle_connections: 0
+  queryexecutioncontroller:
+      max_open_connections: 2
+      max_idle_connections: 1
+
 dataset-controller:
   service:
     servicePort: 5001
@@ -45,13 +53,6 @@ image:
 ingest-controller:
   service:
     servicePort: 5000
-ingress:
-  annotations: {}
-  enabled: false
-  hosts:
-  - host: chart-example.local
-    paths: []
-  tls: []
 kafka:
   schemaRegistry:
     host: 10.10.10.10

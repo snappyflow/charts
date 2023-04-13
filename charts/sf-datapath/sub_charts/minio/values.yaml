@@ -9,7 +9,6 @@ fullnameOverride: ""
 ## set kubernetes cluster domain where minio is running
 ##
 clusterDomain: cluster.local
-schedulerName: sf-scheduler
 ## Set default image, imageTag, and imagePullPolicy. mode is used to indicate the
 ##
 image:
@@ -338,3 +337,6 @@ etcd:
   corednsPathPrefix: ""
   clientCert: ""
   clientCertKey: ""
+
+autoscaling:
+  enabled: false

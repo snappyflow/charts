@@ -28,7 +28,9 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: {{ .Values.nginx.metrics.port | quote }}
     spec:
-      schedulerName: {{ .Values.schedulerName }}
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
       containers:
       {{- if .Values.sfagent.enabled }}
       - name: sfagent

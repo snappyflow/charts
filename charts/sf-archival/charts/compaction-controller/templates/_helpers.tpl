@@ -75,7 +75,3 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- define "compaction-controller.spark-history-server.fullname" -}}
 {{- printf "%s-%s" .Release.Name "spark-history-server" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
-
-{{- define "compaction-controller.cp-schema-registry.fullname" -}}
-{{- printf "%s-%s" .Values.global.snappyflowDatapath.releaseName "cp-schema-registry" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}

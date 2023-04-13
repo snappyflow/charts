@@ -1,23 +1,17 @@
 dependencies:
-- name: nginx-ingress
-  version: 4.4.1
-  repository: file://./sub_charts/nginx-ingress
 - name: cp-schema-registry
   version: 0.1.1
   repository: file://./sub_charts/cp-schema-registry
 - name: cp-kafka-rest
-  version: 0.1.1
+  version: 0.1.2
   repository: file://./sub_charts/cp-kafka-rest
-- name: s3-kafka-connect
-  version: 0.1.1
-  repository: file://./sub_charts/s3-kafka-connect
+- name: archival-kafka-connect
+  version: 0.1.0
+  repository: file://./sub_charts/archival-kafka-connect
   condition: global.archival.enabled
 - name: es-kafka-connect
-  version: 0.1.1
+  version: 0.1.2
   repository: file://./sub_charts/es-kafka-connect
-- name: autoscaling
-  version: 0.1.4
-  repository: file://./sub_charts/autoscaling
 - name: authenticator
   version: 0.1.1
   repository: file://./sub_charts/authenticator

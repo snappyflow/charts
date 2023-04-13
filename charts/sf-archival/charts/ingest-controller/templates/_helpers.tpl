@@ -64,36 +64,16 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- printf "%s-%s" .Release.Name "dataset-controller" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{- define "ingest-controller.dataset-raw-controller.fullname" -}}
+{{- printf "%s-%s" .Release.Name "dataset-raw-controller" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
 {{- define "ingest-controller.query-controller.fullname" -}}
 {{- printf "%s-%s" .Release.Name "query-controller" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "ingest-controller.signatures-and-kafka-apis.fullname" -}}
-{{- printf "%s-%s" .Values.global.snappyflowDatapath.releaseName "signatures-and-kafka-apis" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
 {{- define "ingest-controller.spark-history-server.fullname" -}}
 {{- printf "%s-%s" .Release.Name "spark-history-server" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
-{{- define "ingest-controller.schemaRegistry.fullname" -}}
-{{- printf "%s-%s" .Values.global.snappyflowDatapath.releaseName "cp-schema-registry" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
-{{- define "ingest-controller.kafkaRest.fullname" -}}
-{{- printf "%s-%s" .Values.global.snappyflowDatapath.releaseName "cp-kafka-rest" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
-{{- define "ingest-controller.archivalKafkaConnect.fullname" -}}
-{{- printf "%s-%s" .Values.global.snappyflowDatapath.releaseName "s3-kafka-connect" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
-{{- define "ingest-controller.minio-svc.fullname" -}}
-{{- if .Values.global.secrets.gcs.enable }}
-{{- printf "%s-%s:%s" .Values.global.snappyflowDatapath.releaseName "minio" "9000" | trunc 63 | trimSuffix "-" -}}
-{{- else }}
-{{- printf "%s" "s3.amazonaws.com"}}
-{{- end }}
 {{- end -}}
 
 {{- define "ingest-controller.hive-server.username" -}}

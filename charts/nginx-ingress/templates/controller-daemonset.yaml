@@ -42,6 +42,9 @@ spec:
         {{- toYaml .Values.controller.podLabels | nindent 8 }}
       {{- end }}
     spec:
+    {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+    {{- end }}
     {{- if .Values.controller.dnsConfig }}
       dnsConfig: {{ toYaml .Values.controller.dnsConfig | nindent 8 }}
     {{- end }}

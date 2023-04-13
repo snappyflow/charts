@@ -7,8 +7,8 @@ data:
   config.json: |-
     {
       "db": {
-        "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
-        "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
+        "name": "{{ .Values.global.postgresql.postgresqlDatabase }}",
+        "user": "{{ .Values.global.postgresql.postgresqlUsername }}",
         "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
         "host": "{{ template "spark-manager.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }}
@@ -26,11 +26,13 @@ data:
   config.json: |-
     {
       "db": {
-        "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
-        "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
+        "name": "{{ .Values.global.postgresql.postgresqlDatabase }}",
+        "user": "{{ .Values.global.postgresql.postgresqlUsername }}",
         "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
         "host": "{{ template "spark-manager.postgresql.fullname" . }}",
-        "port": {{ .Values.global.postgresql.servicePort }}
+        "port": {{ .Values.global.postgresql.servicePort }},
+        "max_open_connections": {{ .Values.jobserver.db.max_open_connections }},
+        "max_idle_connections": {{ .Values.jobserver.db.max_idle_connections }}
       },
       "serverPort": ":{{ .Values.jobserver.serverPort }}"
     }
@@ -46,8 +48,8 @@ data:
   config.json: |-
     {
       "db": {
-        "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
-        "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
+        "name": "{{ .Values.global.postgresql.postgresqlDatabase }}",
+        "user": "{{ .Values.global.postgresql.postgresqlUsername }}",
         "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
         "host": "{{ template "spark-manager.postgresql.fullname" . }}",
         "port": {{ .Values.global.postgresql.servicePort }}
@@ -83,8 +85,10 @@ data:
               "--conf",
               "spark.eventLog.enabled=true",
               "--conf",
-{{- if eq .Values.global.secrets.aws.enable true }}
+{{- if .Values.global.secrets.aws.enable }}
               "spark.eventLog.dir=s3a://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}",
+{{- else if .Values.global.secrets.azure.enable }}
+              "spark.eventLog.dir=wasbs://{{ index .Values "jobserver" "sparkProperties" "azureLogContainer" }}@{{ .Values.global.secrets.azure.STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/{{ index .Values "jobserver" "sparkProperties" "azureLogDirectory" }}",
 {{- else }}
               "spark.eventLog.dir=gs://{{ index .Values "jobserver" "sparkProperties" "logDirectory" }}",
 {{- end }}
@@ -104,14 +108,26 @@ data:
               "spark.kubernetes.executor.label.release={{ .Release.Name }}",
               "--conf",
               "spark.kubernetes.container.image={{ .Values.compactionImage }}",
-{{- if or (and (eq .Values.global.secrets.aws.enable true) (eq .Values.global.secrets.aws.use_iam_role true)) (and (eq .Values.global.secrets.gcs.enable true) (eq .Values.global.secrets.gcs.use_google_service_account true)) }}
+              "--conf",
+{{- with (index .Values.global.imagePullSecrets 0) }}
+              "spark.kubernetes.container.image.pullSecrets={{ .name }}",
+{{- end }}
               "--conf",
               "spark.kubernetes.authenticate.driver.serviceAccountName={{ .Release.Name }}-service-account",
               "--conf",
               "spark.kubernetes.authenticate.executor.serviceAccountName={{ .Release.Name }}-service-account",
               "--conf",
               "spark.kubernetes.authenticate.serviceAccountName={{ .Release.Name }}-service-account",
-{{- else }}
+{{- if .Values.global.secrets.azure.enable }}
+              "--conf",
+              "spark.hadoop.fs.AbstractFileSystem.wasbs.Impl=org.apache.hadoop.fs.azure.wasbs",
+              "--conf",
+              "spark.hadoop.fs.wasbs.impl=org.apache.hadoop.fs.azure.NativeAzureFileSystem",
+              "--conf",
+              "spark.hadoop.fs.azure.account.key.{{ .Values.global.secrets.azure.STORAGE_ACCOUNT_NAME }}.blob.core.windows.net={{ .Values.global.secrets.azure.STORAGE_ACCOUNT_ACCESS_KEY }}",
+              "--conf",
+              "spark.hadoop.fs.azure=org.apache.hadoop.fs.azure.NativeAzureFileSystem",
+{{- else if and .Values.global.secrets.aws.enable (not .Values.global.secrets.aws.use_iam_role) }}
               "--conf",
               "spark.kubernetes.driver.secretKeyRef.AWS_ACCESS_KEY_ID={{ .Release.Name }}-aws-secret:key",
               "--conf",

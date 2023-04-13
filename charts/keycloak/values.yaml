@@ -1,10 +1,12 @@
 # Default values for keycloak.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+global:
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
 
 replicaCount: 3
-
-schedulerName: sf-scheduler
 
 image:
   #repository: quay.io/keycloak/keycloak
