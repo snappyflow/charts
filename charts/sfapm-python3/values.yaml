@@ -57,7 +57,7 @@ sfapmui:
 
   image:
     repository: snappyflowml/sfapm-ui
-    tag: 3.1.428
+    tag: 3.1.429
     pullPolicy: IfNotPresent
 
   resources:
@@ -147,7 +147,7 @@ sfapm:
 
   image:
     repository: snappyflowml/sfapm-server
-    tag: 4.0.395-python3
+    tag: 4.0.399-python3
     pullPolicy: IfNotPresent
 
   resources:
@@ -377,7 +377,7 @@ commands:
 
   image:
     repository: snappyflowml/sfapm-commands
-    tag: 1.0.22
+    tag: 1.0.23
     pullPolicy: IfNotPresent
 
   resources:
@@ -433,7 +433,7 @@ esmanager:
 
   image:
     repository: snappyflowml/sfapm-esmanager
-    tag: 1.0.51
+    tag: 1.0.52
     pullPolicy: IfNotPresent
 
   resources:
