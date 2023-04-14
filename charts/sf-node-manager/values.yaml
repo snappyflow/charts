@@ -9,6 +9,12 @@ global:
   sfScheduler:
     enabled: false
     schedulerName: sf-scheduler
+  
+  snappyflowProjectLabel: snappyflow/projectname
+  snappyflowAppLabel: snappyflow/appname
+
+  snappyflowProjectName: "snappyflow-app"
+  snappyflowAppName: "sf-node-manager"
     
 replicaCount: 1
 

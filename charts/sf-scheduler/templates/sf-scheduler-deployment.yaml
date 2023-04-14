@@ -17,6 +17,8 @@ spec:
         component: scheduler
         tier: control-plane
         version: second
+        {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+        {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'false'
     spec:
@@ -55,4 +57,4 @@ spec:
         - name: config-volume
           configMap:
             name: {{ include "sf-scheduler.fullname" . }}-configmap
-      
+ 

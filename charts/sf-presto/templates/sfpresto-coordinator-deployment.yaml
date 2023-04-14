@@ -6,7 +6,6 @@ metadata:
     app: {{ include "sf-presto.name" . }}-coordinator
     release: {{ .Release.Name }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    snappyflow/component: snappyflow-presto
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -25,7 +24,6 @@ spec:
         {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
         {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
         role: sfpresto-coordinator
-        snappyflow/component: snappyflow-presto
     spec:
       {{- if .Values.global.sfScheduler.enabled }}
       schedulerName: {{ .Values.global.sfScheduler.schedulerName }}

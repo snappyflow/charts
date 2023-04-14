@@ -5,6 +5,11 @@ global:
   sfScheduler: 
     enabled: false
     schedulerName: sf-scheduler
+  snappyflowProjectLabel: snappyflow/projectname
+  snappyflowAppLabel: snappyflow/appname
+
+  snappyflowProjectName: "snappyflow-app"
+  snappyflowAppName: "sf-presto"
     
 replicaCount: 1
 
