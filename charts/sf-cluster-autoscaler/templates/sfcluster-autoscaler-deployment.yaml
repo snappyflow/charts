@@ -23,7 +23,6 @@ spec:
         {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
         {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
         role: sf-cluster-autoscaler
-        snappyflow/component: snappyflow-cluster-autoscaler
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'false'
     spec:
