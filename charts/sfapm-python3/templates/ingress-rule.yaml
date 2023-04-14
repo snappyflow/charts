@@ -6,6 +6,11 @@ metadata:
   namespace: {{ .Release.Namespace}}
   annotations:
     kubernetes.io/ingress.class: snappyflow-apm
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location ~* "^/es-manager/internal" {
+          deny all;
+          return 403;
+        }
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
