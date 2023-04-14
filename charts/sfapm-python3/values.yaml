@@ -57,7 +57,7 @@ sfapmui:
 
   image:
     repository: snappyflowml/sfapm-ui
-    tag: 3.1.414
+    tag: 3.1.429
     pullPolicy: IfNotPresent
 
   resources:
@@ -147,7 +147,7 @@ sfapm:
 
   image:
     repository: snappyflowml/sfapm-server
-    tag: 4.0.375-python3
+    tag: 4.0.399-python3
     pullPolicy: IfNotPresent
 
   resources:
@@ -261,7 +261,7 @@ vizbuilder:
 
   image:
     repository: snappyflowml/sfapm-vizbuilder
-    tag: 4.0.206-python3
+    tag: 4.0.213-python3
     pullPolicy: IfNotPresent
 
   resources:
@@ -377,7 +377,7 @@ commands:
 
   image:
     repository: snappyflowml/sfapm-commands
-    tag: 1.0.22
+    tag: 1.0.23
     pullPolicy: IfNotPresent
 
   resources:
@@ -433,7 +433,7 @@ esmanager:
 
   image:
     repository: snappyflowml/sfapm-esmanager
-    tag: 1.0.44
+    tag: 1.0.52
     pullPolicy: IfNotPresent
 
   resources:
@@ -669,6 +669,16 @@ google_callback_url: "/portal/gauth"
 
 # Usage management system
 usage_system:
+  # Usage system host IP/Domain
+  enabled: false
+  host: ""
+  # Port number for usage system server
+  port: 443
+  # tls true for HTTPS
+  tls: False
+
+# Ingest Usage system
+ingest_usage_system:
   # Usage system host IP/Domain
   enabled: false
   host: ""

@@ -3,9 +3,13 @@ kind: ClusterRole
 metadata:
   name: {{ .Release.Name }}-list-eks-nodes
 rules:
-- apiGroups: [""]
-  resources: ["nodes"]
-  verbs: ["list"]
+- apiGroups:
+  - ""
+  resources:
+  - "nodes"
+  verbs:
+  - "list"
+{{- end }}
 
 ---
 

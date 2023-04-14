@@ -35,7 +35,7 @@ serviceAccount:
 
 image:
   repository: snappyflowml/spark-history-server
-  tag: azurestage-1
+  tag: 1
   pullPolicy: IfNotPresent
 
 service:
