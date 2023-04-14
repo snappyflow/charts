@@ -6,7 +6,6 @@ metadata:
     app: {{ include "sf-node-manager.name" . }}
     release: {{ .Release.Name }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    snappyflow/component: snappyflow-node-manager
 spec:
   selector:
     matchLabels:
@@ -20,7 +19,6 @@ spec:
         {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
         {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
         role: sf-node-manager
-        snappyflow/component: snappyflow-node-manager
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
       {{- if .Values.global.sfNodeManager.enabled }}
