@@ -3,6 +3,24 @@ entries:
   charging:
   - apiVersion: v2
     appVersion: v1
+    created: "2023-04-17T18:27:32.392119683Z"
+    dependencies:
+    - name: redis
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.2.10
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.1.2
+    description: A Helm chart for sfapm charging and usage tracking system
+    digest: 8e001bfc363cd00f59f9c220374d2a751240e1be2dfb40d9378a70873e0450f5
+    name: charging
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/charging-0.4.28/charging-0.4.28.tgz
+    version: 0.4.28
+  - apiVersion: v2
+    appVersion: v1
     created: "2023-03-31T08:04:23.602049877Z"
     dependencies:
     - name: redis
@@ -562,6 +580,16 @@ entries:
   db-sfpoller:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2023-04-17T18:27:32.488210979Z"
+    description: A Helm chart for Kubernetes
+    digest: 3cefdf013e9e7ee1480c467d6d157823f1d0f2f0665d3ac5ab2ae9d24aa61558
+    name: db-sfpoller
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/db-sfpoller-0.1.3/db-sfpoller-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2022-10-12T13:34:35.477883534Z"
     description: A Helm chart for Kubernetes
     digest: ae370374f4f4a3160120c7f0480998580886f97491c55fe5e9e694ce4091f493
@@ -591,6 +619,25 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/db-sfpoller-0.1.0/db-sfpoller-0.1.0.tgz
     version: 0.1.0
   elasticsearch:
+  - apiVersion: v1
+    created: "2023-04-17T18:27:32.591627329Z"
+    description: This Elasticsearch cluster supports 3 master nodes, 2 data nodes,
+      and 2 client nodes. Data nodes use Persistent volumes. Includes monitoring of
+      Pod metrics, Storage metrics, Elasticsearch cluster metrics, JVM metrics, and
+      logs
+    digest: d7afc34bce7d36175ab0e97f8efc9ed0ee0b6eb5abcf5f7b03b6c34f34650ffa
+    home: https://www.elastic.co/products/elasticsearch
+    icon: https://static-www.elastic.co/assets/blteb1c97719574938d/logo-elastic-elasticsearch-lt.svg
+    maintainers:
+    - email: matthew.titmus@gmail.com
+      name: Matt Titmus
+    name: elasticsearch
+    sources:
+    - https://www.elastic.co/products/elasticsearch
+    - https://github.com/pires/kubernetes-elasticsearch-cluster
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/elasticsearch-0.3.12/elasticsearch-0.3.12.tgz
+    version: 0.3.12
   - apiVersion: v1
     created: "2021-09-01T05:58:21.308065864Z"
     description: This Elasticsearch cluster supports 3 master nodes, 2 data nodes,
@@ -689,6 +736,17 @@ entries:
   elasticsearch-aws:
   - apiVersion: v1
     appVersion: 1.13.2
+    created: "2023-04-17T18:27:32.692981991Z"
+    description: Open Distro for Elasticsearch
+    digest: b1e3a2ca825db2858824d446c661640c498bb6a5b60025f5bb024d7bbba0665d
+    name: elasticsearch-aws
+    sources:
+    - hhttps://github.com/opendistro-for-elasticsearch/opendistro-build
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/elasticsearch-aws-1.13.4/elasticsearch-aws-1.13.4.tgz
+    version: 1.13.4
+  - apiVersion: v1
+    appVersion: 1.13.2
     created: "2021-10-21T10:43:43.254996718Z"
     description: Open Distro for Elasticsearch
     digest: 3e0ee338dd8d185085944773de7d826ce66b3dc0dfbf3198cd9478f2cf8b99f0
@@ -710,6 +768,22 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/elasticsearch-aws-1.13.2/elasticsearch-aws-1.13.2.tgz
     version: 1.13.2
   elasticsearchv1:
+  - apiVersion: v1
+    appVersion: 6.8.15
+    created: "2023-04-17T18:27:32.7870769Z"
+    description: Official Elastic helm chart for Elasticsearch
+    digest: c59f4f9a82c2293eddda8c1210c613d02a2a493ad731fba99ab5e728745a9c32
+    home: https://github.com/elastic/helm-charts
+    icon: https://helm.elastic.co/icons/elasticsearch.png
+    maintainers:
+    - email: helm-charts@elastic.co
+      name: Elastic
+    name: elasticsearchv1
+    sources:
+    - https://github.com/elastic/elasticsearch
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/elasticsearchv1-6.8.32/elasticsearchv1-6.8.32.tgz
+    version: 6.8.32
   - apiVersion: v1
     appVersion: 6.8.15
     created: "2021-10-21T11:01:12.796718898Z"
@@ -1007,6 +1081,18 @@ entries:
   expresscart:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2023-04-17T18:27:32.881540806Z"
+    description: A Helm chart to deploy expressCart nodejs application
+    digest: 396efa36707d21f07b8cabe4c6f7f9c540798fa2780b1bc17dd1de668e3ba3ad
+    icon: https://raw.githubusercontent.com/mrvautin/expressCart/master/public/images/logo.png
+    name: expresscart
+    sources:
+    - https://github.com/mrvautin/expressCart
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/expresscart-0.2.3/expresscart-0.2.3.tgz
+    version: 0.2.3
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2020-08-30T16:35:11.293411432Z"
     description: A Helm chart to deploy expressCart nodejs application
     digest: 0360d5ed8cb23c2098b3075206d61b1fe0e2a1ee937eef5420aefb4e2b0208c9
@@ -1018,6 +1104,28 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/expresscart-0.2.2/expresscart-0.2.2.tgz
     version: 0.2.2
   fluentd-elasticsearch:
+  - apiVersion: v1
+    appVersion: 2.3.2
+    created: "2023-04-17T18:27:32.980839381Z"
+    description: A Fluentd Helm chart for Kubernetes with Elasticsearch output
+    digest: c287a584fdc39447be27b78754ca9de58cae5ecf41493fc2c1239b68db9ab31f
+    home: https://www.fluentd.org/
+    icon: https://raw.githubusercontent.com/fluent/fluentd-docs/master/public/logo/Fluentd_square.png
+    keywords:
+    - fluentd
+    - elasticsearch
+    - multiline
+    - detect-exceptions
+    - logging
+    name: fluentd-elasticsearch
+    sources:
+    - https://github.com/kubernetes/charts/stable/fluentd-elasticsearch
+    - https://github.com/fluent/fluentd-kubernetes-daemonset
+    - https://github.com/GoogleCloudPlatform/fluent-plugin-detect-exceptions
+    - https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/fluentd-elasticsearch/fluentd-es-image
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/fluentd-elasticsearch-2.0.10/fluentd-elasticsearch-2.0.10.tgz
+    version: 2.0.10
   - apiVersion: v1
     appVersion: 2.3.2
     created: "2020-08-30T16:35:11.376211845Z"
@@ -1043,6 +1151,22 @@ entries:
   ha-proxy:
   - apiVersion: v1
     appVersion: 2.1.0.BUILD-SNAPSHOT
+    created: "2023-04-17T18:27:33.067285238Z"
+    description: Helm chart for deploying basic Spring applications
+    digest: 573ccf0877edf5693dd25f3ca3c3590ca8441189e89c7435f27e0c014309bd15
+    home: https://spring.io
+    icon: https://spring.io/img/homepage/icon-spring-boot.svg
+    keywords:
+    - spring
+    - petclinic
+    name: ha-proxy
+    sources:
+    - https://github.com/spring-projects/spring-petclinic
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/ha-proxy-0.3.5/ha-proxy-0.3.5.tgz
+    version: 0.3.5
+  - apiVersion: v1
+    appVersion: 2.1.0.BUILD-SNAPSHOT
     created: "2020-08-30T16:35:11.464447177Z"
     description: Helm chart for deploying basic Spring applications
     digest: fa746e87294cd06adf946b9b6638d9fcc1375627f349c39cc9f3d357fc26e2c0
@@ -1058,6 +1182,16 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/ha-proxy-0.3.4/ha-proxy-0.3.4.tgz
     version: 0.3.4
   hive-and-hadoop:
+  - apiVersion: v2
+    appVersion: 2.3.8-and-2.10.0
+    created: "2023-04-17T18:27:33.171296184Z"
+    description: A Helm chart for Kubernetes
+    digest: e08385fba147d98989023854119ded78dd1e7125c19fa29742c562f15f98e05a
+    name: hive-and-hadoop
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/hive-and-hadoop-0.1.8/hive-and-hadoop-0.1.8.tgz
+    version: 0.1.8
   - apiVersion: v2
     appVersion: 2.3.8-and-2.10.0
     created: "2023-03-03T13:17:46.172662941Z"
@@ -1143,6 +1277,28 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/ingress-nginx-azure-4.4.0/ingress-nginx-azure-4.4.0.tgz
     version: 4.4.0
   kafka:
+  - apiVersion: v1
+    appVersion: 5.3.1
+    created: "2023-04-17T18:27:33.264751996Z"
+    description: This topology includes 2 Kafka nodes and 2 Zookeepr nodes. Includes
+      monitoring of Pod metrics, Storage metrics, JVM metrics, Producer/Consumer Traffic,
+      Topic Metrics, and logs
+    digest: d87714d2c8eed7829673465dd1ff888d7776ed2441984afa0093af2c69376d96
+    home: https://kafka.apache.org/
+    icon: https://kafka.apache.org/images/logo.png
+    keywords:
+    - kafka
+    - zookeeper
+    - kafka statefulset
+    name: kafka
+    sources:
+    - https://github.com/kubernetes/charts/tree/master/incubator/zookeeper
+    - https://github.com/Yolean/kubernetes-kafka
+    - https://github.com/confluentinc/cp-docker-images
+    - https://github.com/apache/kafka
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/kafka-2.4.12/kafka-2.4.12.tgz
+    version: 2.4.12
   - apiVersion: v1
     appVersion: 5.3.1
     created: "2023-01-09T13:53:44.085464021Z"
@@ -1254,6 +1410,15 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/kafka-2.4.5/kafka-2.4.5.tgz
     version: 2.4.5
   kafka-cluster:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2023-04-17T18:27:33.366892554Z"
+    description: A Helm chart for kafka and zookeeper
+    digest: ce6ed4ad70c98985210e0e8aa0cd5a7b085c9f6314049532b8fcad03bd2c6fba
+    name: kafka-cluster
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/kafka-cluster-0.6.36/kafka-cluster-0.6.36.tgz
+    version: 0.6.36
   - apiVersion: v1
     appVersion: "1.0"
     created: "2023-01-30T10:33:55.279681673Z"
@@ -1509,6 +1674,28 @@ entries:
   kafka-sfagent:
   - apiVersion: v1
     appVersion: 5.3.1
+    created: "2023-04-17T18:27:33.474477077Z"
+    description: This topology includes 2 Kafka nodes and 2 Zookeepr nodes. Includes
+      monitoring of Pod metrics, Storage metrics, JVM metrics, Producer/Consumer Traffic,
+      Topic Metrics, and logs
+    digest: 30ba74314aae7299c202e4863df37841591f5fa141becd7b488e60a6e0823b67
+    home: https://kafka.apache.org/
+    icon: https://kafka.apache.org/images/logo.png
+    keywords:
+    - kafka
+    - zookeeper
+    - kafka statefulset
+    name: kafka-sfagent
+    sources:
+    - https://github.com/kubernetes/charts/tree/master/incubator/zookeeper
+    - https://github.com/Yolean/kubernetes-kafka
+    - https://github.com/confluentinc/cp-docker-images
+    - https://github.com/apache/kafka
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/kafka-sfagent-1.0.3/kafka-sfagent-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v1
+    appVersion: 5.3.1
     created: "2023-01-30T10:33:55.447199355Z"
     description: This topology includes 2 Kafka nodes and 2 Zookeepr nodes. Includes
       monitoring of Pod metrics, Storage metrics, JVM metrics, Producer/Consumer Traffic,
@@ -1552,6 +1739,21 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/kafka-sfagent-1.0.1/kafka-sfagent-1.0.1.tgz
     version: 1.0.1
   keycloak:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2023-04-17T18:27:33.584044088Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.1.2
+    description: A Helm chart for Kubernetes
+    digest: dd0584f7ed2068071f3f23e2e0563b6f55fbdd557e485ba86121e3ce1593706e
+    name: keycloak
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/keycloak-1.6.4/keycloak-1.6.4.tgz
+    version: 1.6.4
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2023-01-30T10:33:55.618190616Z"
@@ -1673,6 +1875,29 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/keycloak-1.0.0/keycloak-1.0.0.tgz
     version: 1.0.0
   nginx-ingress:
+  - annotations:
+      artifacthub.io/changes: |
+        - Adding support for disabling liveness and readiness probes to the Helm chart
+        - add:(admission-webhooks) ability to set securityContext
+        - Updated Helm chart to use the fullname for the electionID if not specified
+        - Rename controller-wehbooks-networkpolicy.yaml
+      artifacthub.io/prerelease: "false"
+    apiVersion: v2
+    appVersion: 1.5.1
+    created: "2023-04-17T18:27:33.685918648Z"
+    description: Ingress controller for Kubernetes using NGINX as a reverse proxy
+      and load balancer
+    digest: 5defa15345d4cbb40be0571873743a948fcd3d4be746a7a4470edf8099006189
+    home: https://github.com/kubernetes/ingress-nginx
+    icon: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Nginx_logo.svg/500px-Nginx_logo.svg.png
+    keywords:
+    - ingress
+    - nginx
+    kubeVersion: '>=1.20.0-0'
+    name: nginx-ingress
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/nginx-ingress-3.6.33/nginx-ingress-3.6.33.tgz
+    version: 3.6.33
   - annotations:
       artifacthub.io/changes: |
         - Adding support for disabling liveness and readiness probes to the Helm chart
@@ -2309,6 +2534,22 @@ entries:
   petclinic:
   - apiVersion: v1
     appVersion: 2.1.0.BUILD-SNAPSHOT
+    created: "2023-04-17T18:27:33.809225472Z"
+    description: Helm chart for deploying basic Spring applications
+    digest: fb97e9c5e2bdb226565927b15cb8b77595cdd47d650ba7f8ef899d115c0a6a98
+    home: https://spring.io
+    icon: https://spring.io/img/homepage/icon-spring-boot.svg
+    keywords:
+    - spring
+    - petclinic
+    name: petclinic
+    sources:
+    - https://github.com/spring-projects/spring-petclinic
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/petclinic-0.3.9/petclinic-0.3.9.tgz
+    version: 0.3.9
+  - apiVersion: v1
+    appVersion: 2.1.0.BUILD-SNAPSHOT
     created: "2021-10-21T11:05:45.598870934Z"
     description: Helm chart for deploying basic Spring applications
     digest: 23bc8788fd8e8b6ecc066206a5d28f02bc59ea03311b896e0724c5026902de42
@@ -2356,6 +2597,22 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/petclinic-0.3.5/petclinic-0.3.5.tgz
     version: 0.3.5
   petclinic-sfagent:
+  - apiVersion: v1
+    appVersion: 2.1.0.BUILD-SNAPSHOT
+    created: "2023-04-17T18:27:33.911250831Z"
+    description: Helm chart for spring applicaton, monitoring using sfagent
+    digest: 7fb21fd9c61e0eb86961843ee98db0d5dc0b62070fa87200e82e74d1d4fe8726
+    home: https://spring.io
+    icon: https://spring.io/img/homepage/icon-spring-boot.svg
+    keywords:
+    - spring
+    - petclinic
+    name: petclinic-sfagent
+    sources:
+    - https://github.com/spring-projects/spring-petclinic
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/petclinic-sfagent-0.1.10/petclinic-sfagent-0.1.10.tgz
+    version: 0.1.10
   - apiVersion: v1
     appVersion: 2.1.0.BUILD-SNAPSHOT
     created: "2021-11-01T09:02:45.243440403Z"
@@ -2487,6 +2744,23 @@ entries:
   petclinic-v3:
   - apiVersion: v1
     appVersion: 2.1.0.BUILD-SNAPSHOT
+    created: "2023-04-17T18:27:34.041292913Z"
+    description: Helm chart for deploying basic Spring applications
+    digest: b5671445ada9ffb5ddd9f971e5a6ed660b32bd236945b43be9006c924cc29d8b
+    home: https://spring.io
+    icon: https://spring.io/img/homepage/icon-spring-boot.svg
+    keywords:
+    - spring
+    - petclinic
+    - v3
+    name: petclinic-v3
+    sources:
+    - https://github.com/spring-projects/spring-petclinic
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/petclinic-v3-0.4.6/petclinic-v3-0.4.6.tgz
+    version: 0.4.6
+  - apiVersion: v1
+    appVersion: 2.1.0.BUILD-SNAPSHOT
     created: "2021-10-21T11:04:53.121247519Z"
     description: Helm chart for deploying basic Spring applications
     digest: ab175e7fe49b98596d0ea2374b621cf24ec36a9a3bbf32f68c7d43439fe0af51
@@ -2520,6 +2794,16 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/petclinic-v3-0.4.4/petclinic-v3-0.4.4.tgz
     version: 0.4.4
   pgbouncer:
+  - apiVersion: v2
+    appVersion: 1.14.1
+    created: "2023-04-17T18:27:34.142185978Z"
+    description: A Helm chart for PgBouncer, Lightweight connection pooler for PostgreSQL
+    digest: f8944e043855d633c47eea84985381a0dc7e165d9341bad39f9aff06a7dca4ef
+    name: pgbouncer
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/pgbouncer-0.1.10/pgbouncer-0.1.10.tgz
+    version: 0.1.10
   - apiVersion: v2
     appVersion: 1.14.1
     created: "2023-03-30T19:59:58.003481115Z"
@@ -2591,6 +2875,16 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/pgbouncer-0.1.1/pgbouncer-0.1.1.tgz
     version: 0.1.1
   postgresql:
+  - apiVersion: v2
+    appVersion: "9.6"
+    created: "2023-04-17T18:27:34.306080248Z"
+    description: A Helm chart for Postgresql server to use with sfapm
+    digest: 2c5537d018a65ee80f1aeb2cb9c160fb4ba34ee9737e8683df53cb0fdf4d5d3d
+    name: postgresql
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/postgresql-0.1.13/postgresql-0.1.13.tgz
+    version: 0.1.13
   - apiVersion: v2
     appVersion: "9.6"
     created: "2023-01-30T10:33:56.15063718Z"
@@ -2684,6 +2978,25 @@ entries:
   prometheus-elasticsearch-exporter:
   - apiVersion: v1
     appVersion: 1.5.0
+    created: "2023-04-17T18:27:34.412440579Z"
+    description: Elasticsearch stats exporter for Prometheus
+    digest: 1b35cbb588700a002271a8abcae2d3cc15743ebaf508ffbe09c0cf07b56292c9
+    keywords:
+    - metrics
+    - elasticsearch
+    - monitoring
+    kubeVersion: '>=1.10.0-0'
+    maintainers:
+    - email: sven.mueller@commercetools.com
+      name: svenmueller
+    - email: cedric@desaintmartin.fr
+      name: desaintmartin
+    name: prometheus-elasticsearch-exporter
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/prometheus-elasticsearch-exporter-4.15.1/prometheus-elasticsearch-exporter-4.15.1.tgz
+    version: 4.15.1
+  - apiVersion: v1
+    appVersion: 1.5.0
     created: "2022-12-16T08:35:50.31880625Z"
     description: Elasticsearch stats exporter for Prometheus
     digest: 1ab2c6a48126201ad1892ef7af46c4ba91db6b84441f146a2e527094337abacd
@@ -2702,6 +3015,16 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/prometheus-elasticsearch-exporter-4.15.0/prometheus-elasticsearch-exporter-4.15.0.tgz
     version: 4.15.0
   redis:
+  - apiVersion: v2
+    appVersion: "5"
+    created: "2023-04-17T18:27:34.509371169Z"
+    description: A Helm chart for Redis server for use with sfapm
+    digest: 9bf4f0b5e6f766a340031c3b42cc2e431988489cb66e483cb63d147018b07880
+    name: redis
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/redis-0.2.13/redis-0.2.13.tgz
+    version: 0.2.13
   - apiVersion: v2
     appVersion: "5"
     created: "2023-01-30T08:25:32.149813765Z"
@@ -2795,6 +3118,15 @@ entries:
   sample-petclinic:
   - apiVersion: v1
     appVersion: "1"
+    created: "2023-04-17T18:27:34.603294279Z"
+    description: Helm chart for deploying basic Spring applications
+    digest: 875c6aab516a7f3abdf2ab749ac5c9835ed4bbfdf9a8d19a2b634aa9f327c486
+    name: sample-petclinic
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sample-petclinic-1.1.3/sample-petclinic-1.1.3.tgz
+    version: 1.1.3
+  - apiVersion: v1
+    appVersion: "1"
     created: "2020-08-30T16:30:33.390930514Z"
     description: Helm chart for deploying basic Spring applications
     digest: c6676ace65ff4247d33a997b8a97f51b1bb7d56701b913584a6a5540d3c1605d
@@ -2803,6 +3135,15 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sample-petclinic-1.1.2/sample-petclinic-1.1.2.tgz
     version: 1.1.2
   sf-archival:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2023-04-17T18:27:34.708663816Z"
+    description: A Helm chart for Kubernetes
+    digest: 1bf620c17eb48eb2bee98ca8b6d57d6e70e8bdae5dad1b401c39c17333246e95
+    name: sf-archival
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-archival-2.0.77/sf-archival-2.0.77.tgz
+    version: 2.0.77
   - apiVersion: v1
     appVersion: "1.0"
     created: "2023-03-13T04:05:09.58528391Z"
@@ -4021,6 +4362,16 @@ entries:
   sf-cluster-autoscaler:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2023-04-17T18:27:34.81615254Z"
+    description: A Helm chart for Kubernetes
+    digest: 0bfb5339556bf836f182da7af6965cee4bf4583d53cda6d4f24fc1580ce4aa89
+    name: sf-cluster-autoscaler
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-cluster-autoscaler-1.0.13/sf-cluster-autoscaler-1.0.13.tgz
+    version: 1.0.13
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2023-01-30T10:33:56.488139229Z"
     description: A Helm chart for Kubernetes
     digest: 77a2f5a75c3d406c5b6fb70e52cf8c9e210f95ba8c327481d9cc3b53b195c7d9
@@ -4120,6 +4471,42 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sf-cluster-autoscaler-1.0.0/sf-cluster-autoscaler-1.0.0.tgz
     version: 1.0.0
   sf-datapath:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2023-04-17T18:27:34.921260379Z"
+    dependencies:
+    - name: cp-schema-registry
+      repository: file://./sub_charts/cp-schema-registry
+      version: 0.1.1
+    - name: cp-kafka-rest
+      repository: file://./sub_charts/cp-kafka-rest
+      version: 0.1.2
+    - condition: global.archival.enabled
+      name: archival-kafka-connect
+      repository: file://./sub_charts/archival-kafka-connect
+      version: 0.1.0
+    - name: es-kafka-connect
+      repository: file://./sub_charts/es-kafka-connect
+      version: 0.1.2
+    - name: authenticator
+      repository: file://./sub_charts/authenticator
+      version: 0.1.1
+    - name: sfk-interface
+      repository: file://./sub_charts/sfk-interface
+      version: 0.1.1
+    - name: signatures-and-kafka-apis
+      repository: file://./sub_charts/signatures-and-kafka-apis
+      version: 0.1.1
+    - condition: global.secrets.gcs.enable
+      name: minio
+      repository: file://./sub_charts/minio
+      version: 8.0.11
+    description: A Helm chart for Confluent Open Source
+    digest: ac0201d3e37a24ebc811650df51a259f79a00d5322dac550de4c05fde4780bfc
+    name: sf-datapath
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-datapath-2.0.81/sf-datapath-2.0.81.tgz
+    version: 2.0.81
   - apiVersion: v1
     appVersion: "1.0"
     created: "2023-03-19T14:16:24.774308077Z"
@@ -6829,6 +7216,20 @@ entries:
   sf-datapath-and-archival-gateway:
   - apiVersion: v2
     appVersion: 13.2.21
+    created: "2023-04-17T18:27:35.021656448Z"
+    dependencies:
+    - name: nginx
+      repository: https://charts.bitnami.com/bitnami
+      version: 13.2.21
+    description: A Helm chart for Kubernetes
+    digest: de48a353feb73d4814af111ff6c9deccb888136fa974f9f48cad8c60d0171686
+    name: sf-datapath-and-archival-gateway
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-datapath-and-archival-gateway-1.0.2/sf-datapath-and-archival-gateway-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 13.2.21
     created: "2023-04-04T14:41:01.440624163Z"
     dependencies:
     - name: nginx
@@ -6855,7 +7256,28 @@ entries:
     urls:
     - https://github.com/snappyflow/helm-charts/releases/download/sf-datapath-and-archival-gateway-1.0.0/sf-datapath-and-archival-gateway-1.0.0.tgz
     version: 1.0.0
+  sf-node-manager:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-04-17T18:27:35.116651551Z"
+    description: A Helm chart for Kubernetes
+    digest: 68b3b288422ac23a090a2d1cc87ee5a33e636ef95a6569fd741ee519143a145c
+    name: sf-node-manager
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-node-manager-0.1.1/sf-node-manager-0.1.1.tgz
+    version: 0.1.1
   sf-presto:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2023-04-17T18:27:35.224299774Z"
+    description: A Helm chart for Kubernetes
+    digest: 367dfdc22957f72363ac2757572254dfdfc83958a547ccc4659a1326c4fc31c7
+    name: sf-presto
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-presto-1.0.19/sf-presto-1.0.19.tgz
+    version: 1.0.19
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2023-03-07T04:42:18.431128561Z"
@@ -7009,6 +7431,23 @@ entries:
   sf-saas-metrics:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2023-04-17T18:27:35.324282945Z"
+    dependencies:
+    - name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 19.3.1
+    - name: prometheus-adapter
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 4.0.0
+    description: A Helm chart for Kubernetes
+    digest: 4fba8be4474a6f26f387235ddb16b9696d31b49cf505a6eeb16dec7e1d25832b
+    name: sf-saas-metrics
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-saas-metrics-1.0.1/sf-saas-metrics-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-03-03T13:17:46.373173616Z"
     dependencies:
     - name: prometheus
@@ -7025,6 +7464,16 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sf-saas-metrics-1.0.0/sf-saas-metrics-1.0.0.tgz
     version: 1.0.0
   sf-scheduler:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-04-17T18:27:35.403641346Z"
+    description: A Helm chart for Kubernetes
+    digest: 68290cb1605fb5fdb6fc871a42898a58b50ddd1b44dfe302d10166c97437ca07
+    name: sf-scheduler
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-scheduler-0.1.4/sf-scheduler-0.1.4.tgz
+    version: 0.1.4
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2023-01-30T10:33:57.043892151Z"
@@ -7046,6 +7495,25 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sf-scheduler-0.1.1/sf-scheduler-0.1.1.tgz
     version: 0.1.1
   sfagent:
+  - apiVersion: v1
+    appVersion: "2.1"
+    created: "2023-04-17T18:27:35.503494918Z"
+    description: Cluster and Application Monitoring and Logging system for Maplelabs'
+      snappyFlow APM.
+    digest: ecfe9041d4a9add4a2de1cfb6bde8ff68d8913d3dfcd71ff8ae5588d287e3848
+    home: http://www.snappyflow.io
+    keywords:
+    - monitoring
+    - alerting
+    - metric
+    - logging
+    maintainers:
+    - email: upendra.sahu@maplelabs.com
+      name: Upendra
+    name: sfagent
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfagent-3.1.35/sfagent-3.1.35.tgz
+    version: 3.1.35
   - apiVersion: v1
     appVersion: "2.1"
     created: "2023-03-16T12:14:24.994879381Z"
@@ -9309,6 +9777,25 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sfapm-2.1.3/sfapm-2.1.3.tgz
     version: 2.1.3
   sfapm-python3:
+  - apiVersion: v2
+    appVersion: "4"
+    created: "2023-04-17T18:27:35.600548208Z"
+    dependencies:
+    - name: redis
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.2.10
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.1.5
+    description: A Helm chart to deploy snappyflow on Kubernetes
+    digest: 2d99ee963809af249c2c165011c02a8498737706387dd0dd2d6287f911c22bc1
+    home: https://www.snappyflow.io
+    name: sfapm-python3
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.384/sfapm-python3-4.0.384.tgz
+    version: 4.0.384
   - apiVersion: v2
     appVersion: "4"
     created: "2023-04-13T10:12:29.303505039Z"
@@ -16019,6 +16506,15 @@ entries:
   sfnginx:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2023-04-17T18:27:35.703688459Z"
+    description: A Helm chart for Kubernetes
+    digest: c0e9a63eb4d65ba57ef517480f3faa2fe425e1667bf54c5f4ef4c99c3b62924d
+    name: sfnginx
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfnginx-0.1.3/sfnginx-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2020-08-31T04:10:55.195350551Z"
     description: A Helm chart for Kubernetes
     digest: 50fb3e3188b34ca0c232e50c7d35041a275ca5f419903d218b621cbe8dd6d337
@@ -16036,6 +16532,15 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sfnginx-0.1.1/sfnginx-0.1.1.tgz
     version: 0.1.1
   sfnginxv1:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2023-04-17T18:27:35.797946171Z"
+    description: A Helm chart for Kubernetes
+    digest: 71e96dede762aad97d99ed74c4a346b8af48a6615b4b8e504a3de4ec7cdc664e
+    name: sfnginxv1
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfnginxv1-0.2.6/sfnginxv1-0.2.6.tgz
+    version: 0.2.6
   - apiVersion: v1
     appVersion: "1.0"
     created: "2023-03-23T07:25:42.865133162Z"
@@ -16147,6 +16652,23 @@ entries:
   spark-history-server:
   - apiVersion: v1
     appVersion: 2.4.0
+    created: "2023-04-17T18:27:35.890468197Z"
+    deprecated: true
+    description: DEPRECATED - A Helm chart for Spark History Server
+    digest: bcc7f7f1f0e81a5f3a16d4f2910749d4097f1135c16475e0dbdfc05ac6e2380a
+    home: https://spark.apache.org
+    keywords:
+    - spark
+    - history-server
+    name: spark-history-server
+    sources:
+    - https://github.com/apache/spark
+    - https://github.com/lightbend/spark-history-server-docker
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/spark-history-server-1.4.7/spark-history-server-1.4.7.tgz
+    version: 1.4.7
+  - apiVersion: v1
+    appVersion: 2.4.0
     created: "2023-03-03T13:17:46.502109407Z"
     deprecated: true
     description: DEPRECATED - A Helm chart for Spark History Server
@@ -16216,6 +16738,26 @@ entries:
   tomcat:
   - apiVersion: v1
     appVersion: 9.0.36
+    created: "2023-04-17T18:27:35.985888305Z"
+    description: Chart for Apache Tomcat
+    digest: c1b954bb2704830b834bb68cec19db428c1f746731e251e3fd9bbcf23b10f20d
+    home: http://tomcat.apache.org
+    icon: https://bitnami.com/assets/stacks/tomcat/img/tomcat-stack-110x117.png
+    keywords:
+    - tomcat
+    - java
+    - http
+    - web
+    - application server
+    - jsp
+    maintainers:
+    - name: Deepanshu
+    name: tomcat
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/tomcat-0.1.2/tomcat-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v1
+    appVersion: 9.0.36
     created: "2020-08-30T16:35:12.201483313Z"
     description: Chart for Apache Tomcat
     digest: b6b86dd734b3f2c137fdb6ebdcc531bdc9ba0b7ec85e215e7f337e9e65270575
@@ -16251,6 +16793,22 @@ entries:
     urls:
     - https://github.com/snappyflow/helm-charts/releases/download/trace-server-8.0.0-SNAPSHOT/trace-server-8.0.0-SNAPSHOT.tgz
     version: 8.0.0-SNAPSHOT
+  - apiVersion: v1
+    appVersion: 8.0.0-SNAPSHOT
+    created: "2023-04-17T18:27:36.082908403Z"
+    description: Official Elastic helm chart for Elastic APM Server
+    digest: f93c43ea3e097a9a6206ca68e7e91e1c5474ff89a1427094280636e0d6f94292
+    home: https://github.com/elastic/helm-charts
+    icon: https://helm.elastic.co/icons/apm.png
+    maintainers:
+    - email: helm-charts@elastic.co
+      name: Elastic
+    name: trace-server
+    sources:
+    - https://github.com/elastic/apm
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/trace-server-1.0.3/trace-server-1.0.3.tgz
+    version: 1.0.3
   - apiVersion: v1
     appVersion: 8.0.0-SNAPSHOT
     created: "2020-11-09T14:07:22.700913444Z"
