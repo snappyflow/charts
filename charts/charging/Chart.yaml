@@ -2,15 +2,14 @@ apiVersion: v2
 name: charging
 description: A Helm chart for sfapm charging and usage tracking system
 type: application
-version: 0.4.28
+version: 0.4.29
 appVersion: v1
-
 
 dependencies:
 - name: redis
-  version: 0.2.10
+  version: 0.2.13
   repository: https://snappyflow.github.io/helm-charts/
 - name: postgresql
-  version: 0.1.2
+  version: 0.1.13
   repository: https://snappyflow.github.io/helm-charts/
   condition: postgresql.enabled

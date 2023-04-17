@@ -1,9 +1,9 @@
 dependencies:
 - name: redis
   repository: https://snappyflow.github.io/helm-charts/
-  version: 0.2.10
+  version: 0.2.13
 - name: postgresql
   repository: https://snappyflow.github.io/helm-charts/
-  version: 0.1.5
-digest: sha256:8734c7498c03a0452c357e492b64b3a6db455e0a59593d0f7d33f20d05575381
-generated: "2023-01-30T08:44:39.060331874Z"
+  version: 0.1.13
+digest: sha256:1e28b634a9def2955f9e45deb1338d298cc0ed8b7f1b5d7d9b22b8aeecbcca79
+generated: "2023-04-18T00:13:26.53256035+05:30"

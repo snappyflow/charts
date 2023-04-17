@@ -1,0 +1,6 @@
+dependencies:
+- name: postgresql
+  repository: https://snappyflow.github.io/helm-charts/
+  version: 0.1.13
+digest: sha256:2904281c89bf30e59d79a464b4d5b706f3050ee5fca0a7f978b126887cd4cbb1
+generated: "2023-04-18T00:13:11.426634722+05:30"
