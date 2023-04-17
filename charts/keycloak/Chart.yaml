@@ -10,6 +10,6 @@ appVersion: 1.0.0
 
 dependencies:
 - name: postgresql
-  version: 0.1.2
+  version: 0.1.13
   repository: https://snappyflow.github.io/helm-charts/
   condition: postgresql.enabled
