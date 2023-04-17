@@ -8,9 +8,9 @@ appVersion: v1
 
 dependencies:
 - name: redis
-  version: 0.2.13
+  version: 0.2.10
   repository: https://snappyflow.github.io/helm-charts/
 - name: postgresql
-  version: 0.1.13
+  version: 0.1.2
   repository: https://snappyflow.github.io/helm-charts/
   condition: postgresql.enabled
