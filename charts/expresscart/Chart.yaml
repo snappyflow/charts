@@ -5,4 +5,4 @@ name: expresscart
 icon: https://raw.githubusercontent.com/mrvautin/expressCart/master/public/images/logo.png
 sources:
 - https://github.com/mrvautin/expressCart
-version: 0.2.2
+version: 0.2.3
