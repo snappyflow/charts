@@ -10,4 +10,4 @@ home: https://spring.io
 icon: https://spring.io/img/homepage/icon-spring-boot.svg
 sources:
   - https://github.com/spring-projects/spring-petclinic
-version: 0.4.5
+version: 0.4.6
