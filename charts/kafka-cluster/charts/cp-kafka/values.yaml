@@ -8,44 +8,21 @@ global:
   sfappname_key: snappyflow/appname
   sfprojectname_key: snappyflow/projectname
 
-schedulerName: sf-scheduler
-
 prometheus:
-
   jmx:
     enabled: true
     image: solsson/kafka-prometheus-jmx-exporter@sha256
     imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
     imagePullPolicy: IfNotPresent
     port: 5556
-
-    ## Resources configuration for the JMX exporter container.
-    ## See the `resources` documentation above for details.
-    resources:
-      limits:
-        cpu: 500m
-        memory: 1Gi
-      requests:
-        cpu: 100m
-        memory: 256Mi
-  
-  ## Prometheus Kafka Exporter: exposes complimentary metrics to JMX Exporter
+    resources: {}
+  # Prometheus Kafka Exporter: exposes complimentary metrics to JMX Exporter
   kafka:
     enabled: true
     image: snappyflowml/kafka-lag-exporter
     imageTag: latest
     interval: 30s
-    port: 9308
-
-    ## Resources configuration for the JMX exporter container.
-    ## See the `resources` documentation above for details.
-    resources:
-      limits:
-        cpu: 500m
-        memory: 1Gi
-      requests:
-        cpu: 100m
-        memory: 256Mi
+    resources: {}
 
 ## ------------------------------------------------------
 ## Kafka

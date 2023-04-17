@@ -1,24 +1,36 @@
-{{- if .Values.autoscaler.enabled -}}
+{{- if .Values.autoscaler.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "sf-cluster-autoscaler.fullname" . }}
-  namespace: kube-system
+  namespace: {{ .Values.namespace}}
   labels:
     app: {{ include "sf-cluster-autoscaler.name" . }}
+    release: {{ .Release.Name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: {{ include "sf-cluster-autoscaler.name" . }}
+      role: sf-cluster-autoscaler
   template:
     metadata:
       labels:
         app: {{ include "sf-cluster-autoscaler.name" . }}
+        release: {{ .Release.Name }}
+        {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+        {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
+        role: sf-cluster-autoscaler
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'false'
     spec:
-      schedulerName: {{ .Values.schedulerName }}
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
+      {{- if .Values.global.sfNodeManager.enabled }}
+      priorityClassName: {{ .Values.global.sfNodeManager.priorityClassName }}
+      {{- end }}
       serviceAccountName: {{ .Values.autoscaler.serviceAccountName }}
       containers:
         - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

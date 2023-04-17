@@ -1,0 +1,167 @@
+{{- if and .Values.global.archival.enabled .Values.prometheus.jmx.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "archival-kafka-connect.fullname" . }}-jmx-configmap
+  labels:
+    app: {{ template "archival-kafka-connect.name" . }}
+    chart: {{ template "archival-kafka-connect.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  jmx-kafka-connect-prometheus.yml: |+
+    startDelaySeconds: 90
+    jmxUrl: service:jmx:rmi:///jndi/rmi://localhost:{{ .Values.jmx.port }}/jmxrmi
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+    ssl: false
+    whitelistObjectNames:
+    - "java.lang:*"
+    - "java.nio:*"
+    - "kafka.connect:type=connect-worker-metrics,*"
+    - "kafka.connect:type=connect-worker-rebalance-metrics,*"
+    - "kafka.connect:type=task-error-metrics,*"
+    - "kafka.connect:type=connector-task-metrics,*"
+    - "kafka.connect:type=source-task-metrics,*"
+    - "kafka.connect:type=sink-task-metrics,*"
+    - "kafka.connect:type=connect-metrics,*"
+    - "kafka.connect:type=connect-node-metrics,*"
+    - "kafka.connect:type=connect-coordinator-metrics,*"
+    - "kafka.producer:type=producer-metrics,*"
+    - "kafka.producer:type=producer-node-metrics,*"
+    - "kafka.producer:type=producer-topic-metrics,*"
+    - "kafka.consumer:type=consumer-metrics,*"
+    - "kafka.consumer:type=consumer-fetch-manager-metrics,*"
+    - "kafka.consumer:type=consumer-node-metrics,*"
+    - "kafka.consumer:type=consumer-coordinator-metrics,*"
+    rules:
+    - pattern: "kafka.producer<type=producer-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_producer_client_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.producer<type=producer-node-metrics, client-id=(.+), node-id=node-(\\d)><>(.+)\\:"
+      cache: true
+      name: kafka_producer_client_node_$3
+      labels:
+        clientID: "$1"
+        nodeID: "$2"
+        clientID_nodeID: "$1-$2"
+    - pattern: "kafka.producer<type=producer-topic-metrics, client-id=(.+), topic=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_producer_client_topic_$3
+      labels:
+        clientID: "$1"
+        topic: "$2"
+        clientID_topic: "$1-$2"
+    - pattern: "kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+), partition=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_topic_partn_$4
+      labels:
+        clientID: "$1"
+        topic: "$2"
+        partition: "$3"
+        clientID_topic_partition: "$1-$2-$3"
+    - pattern: "kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_topic_$3
+      labels:
+        clientID: "$1"
+        topic: "$2"
+        clientID_topic: "$1-$2"
+    - pattern: "kafka.consumer<type=consumer-fetch-manager-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.consumer<type=consumer-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.consumer<type=consumer-node-metrics, client-id=(.+), node-id=node-(\\d)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_node_$3
+      labels:
+        clientID: "$1"
+        nodeID: "$2"
+        clientID_nodeID: "$1-$2"
+    - pattern: "kafka.consumer<type=consumer-coordinator-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_coord_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.connect<type=connect-worker-metrics, connector=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_connect_worker_connector_$2
+      labels:
+        connector: "$1"
+    - pattern: "kafka.connect<type=connect-worker-metrics><>(.+)\\:"
+      cache: true
+      name: kafka_connect_worker_$1
+    - pattern: "kafka.connect<type=connect-worker-rebalance-metrics><>(.+)\\:"
+      cache: true
+      name: kafka_connect_worker_rebalance_$1
+    - pattern: "kafka.connect<type=task-error-metrics, connector=(.+), task=(\\d)+><>(.+)\\:"
+      cache: true
+      name: kafka_connect_task_error_$3
+      labels:
+        connector: "$1"
+        task: "$2"
+        connector_task: "$1_$2"
+    - pattern: "kafka.connect<type=connector-task-metrics, connector=(.+), task=(\\d)+><>(.+)\\:"
+      cache: true
+      name: kafka_connect_task_$3
+      labels:
+        connector: "$1"
+        task: "$2"
+        connector_task: "$1_$2"
+    - pattern: "kafka.connect<type=sink-task-metrics, connector=(.+), task=(\\d)+><>(.+)\\:"
+      cache: true
+      name: kafka_connect_sink_task_$3
+      labels:
+        connector: "$1"
+        task: "$2"
+        connector_task: "$1_$2"
+    - pattern: "kafka.connect<type=source-task-metrics, connector=(.+), task=(\\d)+><>(.+)\\:"
+      cache: true
+      name: kafka_connect_source_task_$3
+      labels:
+        connector: "$1"
+        task: "$2"
+        connector_task: "$1_$2"
+    - pattern: "kafka.connect<type=connect-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_connect_client_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.connect<type=connect-coordinator-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_connect_client_coord_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.connect<type=connect-node-metrics, client-id=(.+), node-id=node-(\\d)><>(.+)\\:"
+      cache: true
+      name: kafka_connect_client_node_$3
+      labels:
+        clientID: "$1"
+        nodeID: "$2"
+        clientID_nodeID: "$1-$2"
+    - pattern: java.lang<type=(.+), name=(.+)><(.+)>(\w+)
+      name: java_lang_$1_$4_$3_$2
+      cache: true
+    - pattern: java.lang<name=(.+), type=(.+)><(.+)>(\w+)
+      name: java_lang_$2_$4_$3_$1
+      cache: true
+    - pattern: java.lang<type=(.+), name=(.+)><>(\w+)
+      name: java_lang_$1_$3_$2
+      cache: true
+    - pattern: java.lang<name=(.+), type=(.+)><>(\w+)
+      name: java_lang_$2_$3_$1
+      cache: true
+    - pattern: java.lang<type=(.*)>
+      cache: true
+    - pattern: java.nio<type=(.+), name=(.+)><>(\w+)
+      name: java_nio_$1_$3_$2
+      cache: true
+{{- end }}

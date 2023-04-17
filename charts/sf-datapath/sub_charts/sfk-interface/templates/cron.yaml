@@ -1,3 +1,4 @@
+{{- if not .Values.global.development }}
 {{- if .Values.global.quotasEnabled }}
 apiVersion: batch/v1beta1
 kind: CronJob
@@ -59,7 +60,7 @@ spec:
         spec:
           containers:
           - name: main
-            image: snappyflowml/sink-monitor-consumer-groups:5
+            image: snappyflowml/sink-monitor-consumer-groups:7
             imagePullPolicy: IfNotPresent
             command: ["bash"]
             args: ["-c", "python app.py connect-es"]
@@ -71,3 +72,4 @@ spec:
             - name: {{ template "sfk-interface.fullname" . }}-config
               configMap:
                 name: {{ template "sfk-interface.fullname" . }}-config
+{{- end }}

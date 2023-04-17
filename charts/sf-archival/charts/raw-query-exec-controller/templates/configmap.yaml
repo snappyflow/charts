@@ -11,5 +11,9 @@ data:
         "catalog": "{{ .Values.presto.catalog }}",
         "schema": "{{ .Values.presto.schema }}"
       },
-      "logArchivalURL": "http://{{ template "raw-query-exec-controller.log-archival.fullname" . }}"
+      "logArchivalURL": "http://{{ template "raw-query-exec-controller.log-archival.fullname" . }}",
+      "datasetControllerURL": "http://{{ template "raw-query-exec-controller.dataset-controller.fullname" . }}",
+      "ingestControllerURL": "http://{{ template "raw-query-exec-controller.ingest-controller.fullname" . }}",
+      "maxGBToProcessDuringHistogramQuery": {{ .Values.maxGBToProcessDuringHistogramQuery }},
+      "maxGBToProcessDuringLogQuery": {{ .Values.maxGBToProcessDuringLogQuery }}
     }

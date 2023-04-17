@@ -26,7 +26,6 @@ nodeSelector: {}
 podAnnotations: {}
 podSecurityContext: {}
 replicaCount: 1
-schedulerName: sf-scheduler
 schedules:
   quotas: '*/30 * * * *'
   sink: '*/15 * * * *'
@@ -38,3 +37,9 @@ serviceAccount:
   create: false
   name: ''
 tolerations: []
+prometheus:
+  url: "http://pod-autoscaling-prometheus-server.default"
+  auth: "snappyflow"
+db:
+  max_open_connections: 2
+  max_idle_connections: 1

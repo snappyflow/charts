@@ -18,4 +18,26 @@ data:
             host: 127.0.0.1
             user: {{ .Values.rootUser }}
             password: {{ .Values.rootPassword }}
-            documentsTypes: []
+            documentsTypes:
+              - databaseDetails
+              - indexDetails
+              - queryDetails
+              - serverDetails
+              - tableDetails
+    {{- if .Values.global.loggingCollector.enabled }}
+    logging:
+        plugins:
+        - name: postgres-general
+          enabled: true
+          config:
+            log_level:
+              - error
+              - warning
+              - info
+              - log
+            log_path: /var/log/postgres/*.log
+        - name: postgres-slowquery
+          enabled: true
+          config:
+            log_path: /var/log/postgres/*.log
+    {{- end }}

@@ -10,10 +10,6 @@ containerResources:
 dataset-controller:
   service:
     servicePort: 5001
-external:
-  enabled: false
-  externalTrafficPolicy: Cluster
-  type: NodePort
 fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
@@ -22,10 +18,6 @@ image:
 log-archival:
   service:
     servicePort: 5003
-minio:
-  secrets:
-    accessId: gcpminio
-    accessKey: gcpminio
 nameOverride: ''
 nodeSelector: {}
 schedulerName: sf-scheduler
@@ -38,5 +30,11 @@ spark-manager:
   jobserver:
     service:
       servicePort: 5002
-timeBucketSizeMinutes: 15
 tolerations: []
+signatureAndKafkaAPIsURL: http://sf-datapath-signatures-and-kafka-apis
+scehmeRegURL: http://sf-datapath-cp-schema-registry:8081
+archivalKafkaConnectURL: http://sf-datapath-archival-kafka-connect:8083
+minioEndpoint: "sf-datapath-minio:9000"
+db:
+  max_open_connections: 3
+  max_idle_connections: 1
