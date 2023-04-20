@@ -377,7 +377,7 @@ commands:
 
   image:
     repository: snappyflowml/sfapm-commands
-    tag: 1.0.26
+    tag: 1.0.27
     pullPolicy: IfNotPresent
 
   resources:
