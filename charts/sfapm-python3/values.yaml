@@ -57,7 +57,7 @@ sfapmui:
 
   image:
     repository: snappyflowml/sfapm-ui
-    tag: 3.1.431
+    tag: 3.1.433
     pullPolicy: IfNotPresent
 
   resources:
@@ -147,7 +147,7 @@ sfapm:
 
   image:
     repository: snappyflowml/sfapm-server
-    tag: 4.0.406-python3
+    tag: 4.0.407-python3
     pullPolicy: IfNotPresent
 
   resources:
@@ -261,7 +261,7 @@ vizbuilder:
 
   image:
     repository: snappyflowml/sfapm-vizbuilder
-    tag: 4.0.214-python3
+    tag: 4.0.215-python3
     pullPolicy: IfNotPresent
 
   resources:
