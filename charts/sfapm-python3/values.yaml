@@ -5,7 +5,7 @@
 # set to true to enable debug logs on
 # apm and vizbuilder
 enableDebug: false
-
+archiverEnabled: true
 nameOverride: ""
 fullnameOverride: ""
 imagePullSecrets: []
