@@ -25,8 +25,12 @@ data:
     REDIS_HOST: {{ .Release.Name  }}-redis
     REDIS_PORT: "6379"
 
-    ARCHIVER_ENABLED: {{ .Values.archiverEnabled }}
-    
+    {{- if .Values.archiverEnabled }}
+    ARCHIVER_ENABLED: "True"
+    {{- else }}
+    ARCHIVER_ENABLED: ""
+    {{- end }}
+
     VIZBUILDER_HOST: {{ include "sfapm.fullname" . }}-vizbuilder
     VIZBUILDER_PORT: "{{ .Values.vizbuilder.service.port }}"
 
