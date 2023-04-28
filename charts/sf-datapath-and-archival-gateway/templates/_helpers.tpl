@@ -10,6 +10,9 @@
 Create the contents of Nginx Proxy Configuration so that it can be used in config-map as well as in pod-annotation
 */}}
 {{- define "gateway.proxy.blocks.config" -}}
+
+{{- if .Values.global.archivalEnabled -}}
+
 archival-grpc.conf: |-
   server {
     listen 0.0.0.0:8081 http2;
@@ -18,6 +21,9 @@ archival-grpc.conf: |-
       grpc_pass grpc://{{ .Values.global.archivalReleaseName }}-raw-query-exec-controller:8081;
     }
   }
+
+{{- end }}
+
 datapath-and-archival-rest.conf: |-
   server {
     listen 0.0.0.0:8080;
