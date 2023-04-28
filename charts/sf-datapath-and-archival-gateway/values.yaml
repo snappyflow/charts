@@ -5,6 +5,8 @@ global:
     projectName: snappyflow-app
     appName: sf-data-path
 
+  archivalEnabled: true
+
   archivalReleaseName: archival
   datapathReleaseName: sf-datapath
 

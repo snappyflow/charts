@@ -22,6 +22,8 @@ datapath-and-archival-rest.conf: |-
   server {
     listen 0.0.0.0:8080;
 
+{{- if .Values.global.archivalEnabled }}
+
     location /ingest {
       proxy_pass http://{{ .Values.global.archivalReleaseName }}-ingest-controller/ingest;
     }
@@ -33,6 +35,8 @@ datapath-and-archival-rest.conf: |-
     location /query {
       proxy_pass http://{{ .Values.global.archivalReleaseName }}-query-controller/query;
     }
+
+{{- end }}
 
     location /sfkinterface {
       proxy_pass http://{{ .Values.global.datapathReleaseName }}-sfk-interface/sfkinterface;
