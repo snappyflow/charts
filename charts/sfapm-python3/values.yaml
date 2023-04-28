@@ -753,6 +753,8 @@ cloud:
     service_account: "XXXX-compute@developer.gserviceaccount.com OR XXXX@XXXX.iam.gserviceaccount.com"
     region: us-west1
     zone: us-west1-c
+  datacenter:
+    enable: false
 
 global:
   sfappname: sf-portal-app

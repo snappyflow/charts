@@ -47,6 +47,8 @@ data:
     CLOUD_TYPE: "aws"
     {{- else if .Values.cloud.gcs.enable }}
     CLOUD_TYPE: "gcp"
+    {{- else if .Values.cloud.datacenter.enable }}
+    CLOUD_TYPE: "datacenter"
     {{- end }}
     
     WARM_RULE_PATH: "/etc/conf/warm_movement.yaml"
