@@ -12,7 +12,7 @@ appParams:
 autoscaling:
   enabled: true
   eventQueueHandlerOccupancyPercentage: 80
-  maxReplicas: 100
+  maxReplicas: 5
   minReplicas: 1
   scaleDownPeriod: 60
   scaleUpPeriod: 30
