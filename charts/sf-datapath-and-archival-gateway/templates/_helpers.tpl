@@ -15,8 +15,8 @@ archival-grpc.conf: |-
     listen 0.0.0.0:8081 http2;
 
     location /datasetrawquery.DatasetRawQuery {
-      set $upstream "grpc://archival-raw-query-exec-controller:8081";
-      grpc_pass $upstream;
+      set $grpcupstream "grpc://archival-raw-query-exec-controller:8081";
+      grpc_pass $grpcupstream;
     }
   }
 datapath-and-archival-rest.conf: |-
@@ -24,43 +24,43 @@ datapath-and-archival-rest.conf: |-
     listen 0.0.0.0:8080;
 
     location /ingest {
-      set $backend "http://{{ .Values.global.archivalReleaseName }}-ingest-controller$request_uri";
-      proxy_pass $backend;
+      set $ingestcontrollerbackend "http://{{ .Values.global.archivalReleaseName }}-ingest-controller$request_uri";
+      proxy_pass $ingestcontrollerbackend;
     }
 
     location /logarchival {
-      set $backend "http://{{ .Values.global.archivalReleaseName }}-log-archival$request_uri";
-      proxy_pass $backend;
+      set $logarchivalbackend "http://{{ .Values.global.archivalReleaseName }}-log-archival$request_uri";
+      proxy_pass $logarchivalbackend;
     }
 
     location /query {
-      set $backend "http://archival-query-controller$request_uri";
-      proxy_pass $backend;
+      set $querybackend "http://archival-query-controller$request_uri";
+      proxy_pass $querybackend;
     }
 
     location /sfkinterface {
-      set $backend "http://{{ .Values.global.datapathReleaseName }}-sfk-interface$request_uri";
-      proxy_pass $backend;
+      set $sfkinterfacebackend "http://{{ .Values.global.datapathReleaseName }}-sfk-interface$request_uri";
+      proxy_pass $sfkinterfacebackend;
     }
 
     location /sfkinterface-janitor {
-      set $backend "http://{{ .Values.global.datapathReleaseName }}-sfk-interface$request_uri";
-      proxy_pass $backend;
+      set $sfkinterfacejanitorbackend "http://{{ .Values.global.datapathReleaseName }}-sfk-interface$request_uri";
+      proxy_pass $sfkinterfacejanitorbackend;
     }
 
     location /profile-quotas {
-      set $backend "http://{{ .Values.global.datapathReleaseName }}-sfk-interface$request_uri";
-      proxy_pass $backend;
+      set $profilequotasbackend "http://{{ .Values.global.datapathReleaseName }}-sfk-interface$request_uri";
+      proxy_pass $profilequotasbackend;
     }
 
     location /signatures {
-      set $backend "http://{{ .Values.global.datapathReleaseName }}-signatures-and-kafka-apis$request_uri";
-      proxy_pass $backend;
+      set $signaturesbackend "http://{{ .Values.global.datapathReleaseName }}-signatures-and-kafka-apis$request_uri";
+      proxy_pass $signaturesbackend;
     }
 
     location /kafka-info {
-      set $backend "http://{{ .Values.global.datapathReleaseName }}-signatures-and-kafka-apis$request_uri";
-      proxy_pass $backend;
+      set $kafkainfobackend "http://{{ .Values.global.datapathReleaseName }}-signatures-and-kafka-apis$request_uri";
+      proxy_pass $kafkainfobackend;
     }
   }
 {{- end -}}
