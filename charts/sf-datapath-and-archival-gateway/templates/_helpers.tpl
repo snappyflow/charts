@@ -49,7 +49,7 @@ datapath-and-archival-rest.conf: |-
     }
 
     location /sfkinterface-janitor {
-      proxy_pass http://{{ .Values.global.datapathReleaseName }}-sfk-interface/sfkinterface;
+      proxy_pass http://{{ .Values.global.datapathReleaseName }}-sfk-interface/sfkinterface-janitor;
     }
 
     location /profile-quotas {
