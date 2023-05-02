@@ -64,7 +64,7 @@ nginx:
         - --listen
         - "127.0.0.1:53"
         - --default-resolver
-        - --append-search-domains
+        - --enable-search
     {{ if .Values.global.sfagent.enabled -}}
     - name: sfagent
       image: "snappyflowml/sfagent:latest"
