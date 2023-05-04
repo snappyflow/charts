@@ -7,10 +7,10 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
-  HIVE_SITE_CONF_javax_jdo_option_ConnectionURL: "jdbc:postgresql://{{ template "hive.postgresql.fullname" . }}:{{ .Values.global.postgresql.servicePort }}/hive_metastore?useSSL=false"
+  HIVE_SITE_CONF_javax_jdo_option_ConnectionURL: "jdbc:postgresql://{{ template "hive.postgresql.fullname" . }}:{{ template "hive.postgresql.servicePort" . }}/hive_metastore?useSSL=false"
   HIVE_SITE_CONF_javax_jdo_option_ConnectionDriverName: org.postgresql.Driver
-  HIVE_SITE_CONF_javax_jdo_option_ConnectionUserName: {{ .Values.global.postgresql.postgresqlUsername }}
-  HIVE_SITE_CONF_javax_jdo_option_ConnectionPassword: {{ .Values.global.postgresql.postgresqlPassword }}
+  HIVE_SITE_CONF_javax_jdo_option_ConnectionUserName: {{ template "hive.postgresql.username" . }}
+  HIVE_SITE_CONF_javax_jdo_option_ConnectionPassword: {{ template "hive.postgresql.password" . }}
   HIVE_SITE_CONF_datanucleus_autoCreateSchema: "false"
   HIVE_SITE_CONF_hive_metastore_uris: thrift://{{ template "hive.metastore.service" . }}:{{ .Values.service.hiveMetastore.port }}
   HDFS_CONF_dfs_namenode_datanode_registration_ip___hostname___check: "false"
