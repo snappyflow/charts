@@ -3,7 +3,7 @@ cleanIntervalInHour: 1
 cleanup:
   pullPolicy: IfNotPresent
   repository: snappyflowml/query-cleanup
-  tag: '11'
+  tag: 'master-2-0-85'
 containerResources:
   querycleanup:
     limits:
@@ -40,7 +40,7 @@ dataset-controller:
 executionControler:
   pullPolicy: IfNotPresent
   repository: snappyflowml/query-execution-controller
-  tag: '28'
+  tag: 'master-2-0-85'
 external:
   enabled: false
   externalTrafficPolicy: Cluster
@@ -49,7 +49,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/query-controller
-  tag: '16'
+  tag: 'master-2-0-85'
 ingest-controller:
   service:
     servicePort: 5000

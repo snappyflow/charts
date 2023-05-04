@@ -3,7 +3,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/raw-query-exec-controller
-  tag: '2'
+  tag: 'master-2-0-85'
 imagePullSecrets: []
 nameOverride: ''
 nodeSelector: {}

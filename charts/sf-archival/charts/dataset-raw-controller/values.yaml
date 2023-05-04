@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: snappyflowml/dataset-raw-controller
   pullPolicy: IfNotPresent
-  tag: '1'
+  tag: 'master-2-0-85'
 
 nameOverride: ""
 fullnameOverride: ""
