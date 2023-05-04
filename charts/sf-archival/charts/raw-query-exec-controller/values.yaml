@@ -5,6 +5,8 @@ image:
   repository: snappyflowml/raw-query-exec-controller
   tag: 'master-2-0-85'
 imagePullSecrets: []
+maxGBToProcessDuringHistogramQuery: 1
+maxGBToProcessDuringLogQuery: 1
 nameOverride: ''
 nodeSelector: {}
 podAnnotations: {}
@@ -27,5 +29,3 @@ service:
   port: 80
   type: ClusterIP
 tolerations: []
-maxGBToProcessDuringHistogramQuery: 1
-maxGBToProcessDuringLogQuery: 1

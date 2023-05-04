@@ -10,6 +10,9 @@
 Create the contents of Nginx Proxy Configuration so that it can be used in config-map as well as in pod-annotation
 */}}
 {{- define "gateway.proxy.blocks.config" -}}
+
+{{- if .Values.global.archivalEnabled -}}
+
 archival-grpc.conf: |-
   server {
     listen 0.0.0.0:8081 http2;
@@ -19,9 +22,14 @@ archival-grpc.conf: |-
       grpc_pass $grpcupstream;
     }
   }
+
+{{- end }}
+
 datapath-and-archival-rest.conf: |-
   server {
     listen 0.0.0.0:8080;
+
+{{- if .Values.global.archivalEnabled }}
 
     location /ingest {
       set $ingestcontrollerbackend "http://{{ .Values.global.archivalReleaseName }}-ingest-controller$request_uri";
@@ -37,6 +45,8 @@ datapath-and-archival-rest.conf: |-
       set $querybackend "http://archival-query-controller$request_uri";
       proxy_pass $querybackend;
     }
+
+{{- end }}
 
     location /sfkinterface {
       set $sfkinterfacebackend "http://{{ .Values.global.datapathReleaseName }}-sfk-interface$request_uri";
