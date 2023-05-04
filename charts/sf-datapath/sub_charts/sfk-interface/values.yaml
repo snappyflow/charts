@@ -12,6 +12,9 @@ containerResources:
     requests:
       cpu: 10m
       memory: 50Mi
+db:
+  max_idle_connections: 1
+  max_open_connections: 2
 external:
   enabled: false
   externalTrafficPolicy: Cluster
@@ -20,11 +23,14 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/sfk-interface
-  tag: '27'
+  tag: '28'
 nameOverride: ''
 nodeSelector: {}
 podAnnotations: {}
 podSecurityContext: {}
+prometheus:
+  auth: snappyflow
+  url: http://pod-autoscaling-prometheus-server.default
 replicaCount: 1
 schedules:
   quotas: '*/30 * * * *'
@@ -37,9 +43,3 @@ serviceAccount:
   create: false
   name: ''
 tolerations: []
-prometheus:
-  url: "http://pod-autoscaling-prometheus-server.default"
-  auth: "snappyflow"
-db:
-  max_open_connections: 2
-  max_idle_connections: 1

@@ -57,7 +57,7 @@ sfapmui:
 
   image:
     repository: snappyflowml/sfapm-ui
-    tag: 3.1.429
+    tag: 3.1.441
     pullPolicy: IfNotPresent
 
   resources:
@@ -147,7 +147,7 @@ sfapm:
 
   image:
     repository: snappyflowml/sfapm-server
-    tag: 4.0.399-python3
+    tag: 4.0.421-python3
     pullPolicy: IfNotPresent
 
   resources:
@@ -261,7 +261,7 @@ vizbuilder:
 
   image:
     repository: snappyflowml/sfapm-vizbuilder
-    tag: 4.0.213-python3
+    tag: 4.0.219-python3
     pullPolicy: IfNotPresent
 
   resources:
@@ -377,7 +377,7 @@ commands:
 
   image:
     repository: snappyflowml/sfapm-commands
-    tag: 1.0.23
+    tag: 1.0.29
     pullPolicy: IfNotPresent
 
   resources:
@@ -433,7 +433,7 @@ esmanager:
 
   image:
     repository: snappyflowml/sfapm-esmanager
-    tag: 1.0.52
+    tag: 1.0.55
     pullPolicy: IfNotPresent
 
   resources:
@@ -753,6 +753,8 @@ cloud:
     service_account: "XXXX-compute@developer.gserviceaccount.com OR XXXX@XXXX.iam.gserviceaccount.com"
     region: us-west1
     zone: us-west1-c
+  datacenter:
+    enable: false
 
 global:
   sfappname: sf-portal-app

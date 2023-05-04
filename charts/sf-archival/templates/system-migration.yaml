@@ -60,7 +60,7 @@ spec:
 {{- end}}
       containers:
       - name: main
-        image: snappyflowml/archival-system-migration:dev-test
+        image: snappyflowml/archival-system-migration:2
         imagePullPolicy: Always
         volumeMounts:
           - name: {{ .Release.Name }}-system-migration-config

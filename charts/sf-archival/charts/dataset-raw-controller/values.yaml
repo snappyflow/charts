@@ -2,30 +2,24 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
-
-image:
-  repository: snappyflowml/dataset-raw-controller
-  pullPolicy: IfNotPresent
-  tag: '1'
-
-nameOverride: ""
-fullnameOverride: ""
-
-podAnnotations:
-  prometheus.io/path: /metrics
-  prometheus.io/port: "9000"
-  prometheus.io/scrape: "true"
-
-podSecurityContext: {}
-
-securityContext: {}
-
-schedules:
-  detect_raw_time_buckets: '0 * * * *'
-  process_raw_data: '0 1 * * *'
-  raw_version_compacted: '0 5 * * *'
-
+affinity: {}
+appParams:
+  competingConsumers: 2
+  computeBucketBoundariesUsingPresto: false
+  eventQueueHandlerMonitorIntervalInSec: 2
+  maxBufferedEvents: 60000
+  numBacktrackDaysToDetect: 5
+  numORCInSegment: 4
+  orcInventoryBatchFetchSize: 20000
+  segmentSizeBufferPCNT: 15
+  segmentSizeGB: 1.0
+autoscaling:
+  enabled: true
+  eventQueueHandlerOccupancyPercentage: 80
+  maxReplicas: 5
+  minReplicas: 1
+  scaleDownPeriod: 60
+  scaleUpPeriod: 30
 containerResources:
   limits:
     cpu: 250m
@@ -33,43 +27,28 @@ containerResources:
   requests:
     cpu: 50m
     memory: 512Mi
-
-autoscaling:
-  enabled: true
-  minReplicas: 1
-  maxReplicas: 100
-  # targetCPUUtilizationPercentage: 80
-  eventQueueHandlerOccupancyPercentage: 80
-  scaleUpPeriod: 30
-  scaleDownPeriod: 60
-  # targetMemoryUtilizationPercentage: 80
-
+db:
+  max_idle_connections: 1
+  max_open_connections: 3
+fullnameOverride: ""
+image:
+  repository: snappyflowml/dataset-raw-controller
+  pullPolicy: IfNotPresent
+  tag: '2'
+nameOverride: ""
 nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
-
+podAnnotations:
+  prometheus.io/path: /metrics
+  prometheus.io/port: "9000"
+  prometheus.io/scrape: "true"
+podSecurityContext: {}
+replicaCount: 1
+schedules:
+  detect_raw_time_buckets: '0 * * * *'
+  process_raw_data: '0 1 * * *'
+  raw_version_compacted: '0 5 * * *'
+securityContext: {}
 serverPort: :5002
-
 service:
   servicePort: 5002
-
-appParams:
-  # GB size of final segment
-  segmentSizeGB: 1.0
-  # Buffer percentage for segment size i.e., Segment size can go up by this much percent
-  segmentSizeBufferPCNT: 15
-  numORCInSegment: 4
-  # Number of days to look behind in time while detecting new partitions.
-  # This to handle situations where old data got ingested and needs to be processed
-  numBacktrackDaysToDetect: 5
-  computeBucketBoundariesUsingPresto: false
-  eventQueueHandlerMonitorIntervalInSec: 2
-  orcInventoryBatchFetchSize: 20000
-  maxBufferedEvents: 60000
-  competingConsumers: 2
-db:
-  max_open_connections: 3
-  max_idle_connections: 1
-  
+tolerations: []

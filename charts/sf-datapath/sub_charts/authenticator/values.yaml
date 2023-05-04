@@ -11,11 +11,14 @@ containerResources:
     requests:
       cpu: 10m
       memory: 50Mi
+db:
+  max_idle_connections: 1
+  max_open_connections: 2
 fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/authenticator
-  tag: '7'
+  tag: '8'
 nameOverride: ''
 nodeSelector: {}
 serverPort: :5006
@@ -23,6 +26,3 @@ service:
   servicePort: 5006
 signingKey: mysecretkey
 tolerations: []
-db:
-  max_open_connections: 2
-  max_idle_connections: 1
