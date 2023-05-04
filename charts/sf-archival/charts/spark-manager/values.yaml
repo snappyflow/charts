@@ -4,7 +4,7 @@ cbsparkevent:
     pullPolicy: IfNotPresent
     repository: snappyflowml/cb-spark-event
     tag: '4'
-compactionImage: snappyflowml/spark-compact-orc:2
+compactionImage: snappyflowml/spark-compact-orc:4
 fullnameOverride: ''
 jobserver:
   containerResources:
