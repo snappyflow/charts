@@ -17,7 +17,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/compaction-controller
-  tag: '17'
+  tag: 'master-2-0-86'
 ingest-controller:
   service:
     servicePort: 5000
