@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "sfapm.labels" . | nindent 4 }}
     app: sftrace
-    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfdatapath_appname }}
     {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
 spec:
   type: {{ .Values.sftrace.service.type }}

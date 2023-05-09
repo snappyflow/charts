@@ -7,7 +7,7 @@ metadata:
     app: sftrace
     role: sftrace-server
     snappyflow/component: snappyflow-apm
-    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfdatapath_appname }}
     {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
 spec:
   replicas: {{ .Values.sftrace.replicaCount }}
@@ -28,7 +28,7 @@ spec:
         app: sftrace
         role: sftrace-server
         snappyflow/component: snappyflow-apm
-        {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+        {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfdatapath_appname }}
         {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
     spec:
       {{- if .Values.global.sfScheduler.enabled }}
