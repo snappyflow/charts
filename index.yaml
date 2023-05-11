@@ -2852,6 +2852,16 @@ entries:
   pgbouncer:
   - apiVersion: v2
     appVersion: 1.14.1
+    created: "2023-05-11T04:58:18.246671266Z"
+    description: A Helm chart for PgBouncer, Lightweight connection pooler for PostgreSQL
+    digest: d4bf910de0ea0d3fd65893a9b86076f98272853d235686b3493f2bf91918f3e7
+    name: pgbouncer
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/pgbouncer-0.1.11/pgbouncer-0.1.11.tgz
+    version: 0.1.11
+  - apiVersion: v2
+    appVersion: 1.14.1
     created: "2023-04-17T18:27:34.142185978Z"
     description: A Helm chart for PgBouncer, Lightweight connection pooler for PostgreSQL
     digest: f8944e043855d633c47eea84985381a0dc7e165d9341bad39f9aff06a7dca4ef
