@@ -543,7 +543,7 @@ sftrace:
       memory: 50Mi
     limits:
       cpu: 1
-      memory: 4Gi
+      memory: 2Gi
 
   service:
     type: NodePort
