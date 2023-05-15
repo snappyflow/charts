@@ -9923,6 +9923,25 @@ entries:
   sfapm-python3:
   - apiVersion: v2
     appVersion: "4"
+    created: "2023-05-15T05:02:56.542527011Z"
+    dependencies:
+    - name: redis
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.2.13
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.1.13
+    description: A Helm chart to deploy snappyflow on Kubernetes
+    digest: 38c4607dcb48da46a9a8762b3a7a477f55a90a87b9e5a9106263da562bfd29ac
+    home: https://www.snappyflow.io
+    name: sfapm-python3
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.400/sfapm-python3-4.0.400.tgz
+    version: 4.0.400
+  - apiVersion: v2
+    appVersion: "4"
     created: "2023-05-11T06:13:03.313022875Z"
     dependencies:
     - name: redis
