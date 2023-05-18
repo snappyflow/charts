@@ -758,6 +758,7 @@ cloud:
 
 global:
   sfappname: sf-portal-app
+  sfdatapath_appname: sf-data-path
   sfprojectname: snappyflow-app
   sfappname_key: snappyflow/appname
   sfprojectname_key: snappyflow/projectname
