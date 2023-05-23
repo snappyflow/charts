@@ -38,7 +38,7 @@ spec:
       target:
         type: AverageValue
         averageValue: {{ .Values.autoscaling.targetRunningDrivers }}
-  {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- if and (.Values.autoscaling.memoryMetricEnabled) (.Values.autoscaling.targetMemoryUtilizationPercentage) }}
   - type: Resource
     resource:
       name: memory

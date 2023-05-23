@@ -86,6 +86,7 @@ autoscaling:
   targetQueuedQueries: 5
   targetRunningDrivers: 50
   targetMemoryUtilizationPercentage: 90
+  memoryMetricEnabled: false
   scaleUpPeriod: 30
   scaleDownPeriod: 60
 
