@@ -102,7 +102,7 @@ spec:
         {{- end }}
         - name: connector
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
           ports:
             - name: arch-connect
               containerPort: {{ .Values.servicePort}}

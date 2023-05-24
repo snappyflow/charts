@@ -76,7 +76,7 @@ spec:
         {{- if .Values.schemaGenerator.enabled }}
         - name: schema-generator
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: "{{ .Values.schemaGenerator.imagePullPolicy }}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
 {{- if not .Values.global.development }}
           resources:
 {{ toYaml .Values.containerResources.schemaGenerator | nindent 12 }}
