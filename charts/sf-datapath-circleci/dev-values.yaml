@@ -1,0 +1,162 @@
+global:
+
+  development: true
+
+  quotasEnabled: true
+
+  clusterQuotaGBperDay: 100
+
+  # Percentate of cluster quota reserved for system managed profiles
+  sysReservedclusterQuotaPCNT: 0
+
+  # Percentage buffer to be used while applying quota
+  # If it is set to 40%, a quota request of 1000 Bytes/s will allocate 1000 * (1 + 0.4) Bytes/s
+  quotaBufferPCNT: 5
+
+  ingress:
+    enabled: false
+
+  postgresql:
+    host: "10.81.1.142"
+    postgresqlDatabase: archival
+    postgresqlUsername: snappyflow
+    postgresqlPassword: maplelabs
+    servicePort: 5432
+
+  kafka:
+    # Below parameter needs to use the PLAIN_TEXT port
+    bootstrapServers: "kafka-cp-kafka-headless:9092"
+    # Certain components which use SASL_PLAIN will use this port along with above kafka broker IPs
+    saslPort: "9093"
+    releaseName: kafka
+    releaseNamespace: "kafka"
+
+  secrets:
+    gcs:
+      enable: false
+    aws:
+      enable: true
+
+  archival:
+    enabled: true
+    releaseName: archival
+
+  sfAgentInput:
+    host: 127.0.0.1
+    port: 443
+    scheme: https
+
+  maxTasksPerTopic: 1
+
+  topicTypeDetails: [
+    {
+      "type": log,
+      "num_partitions": 1,
+      "replication_factor": 1,
+      "retention_ms": "86400000"
+    },
+    {
+      "type": metric,
+      "num_partitions": 1,
+      "replication_factor": 1,
+      "retention_ms": "86400000"
+    },
+    {
+      "type": control,
+      "num_partitions": 1,
+      "replication_factor": 1,
+      "retention_ms": "3600000"
+    },
+    {
+      "type": trace,
+      "num_partitions": 1,
+      "replication_factor": 1,
+      "retention_ms": "3600000"
+    },
+    {
+      "type": profile,
+      "num_partitions": 1,
+      "replication_factor": 1,
+      "retention_ms": "3600000"
+    }
+  ]
+
+  snappyflowProjectLabel: snappyflow/projectname
+  snappyflowAppLabel: snappyflow/appname
+
+  snappyflowProjectName: "snappyflow-app"
+  snappyflowAppName: "sf-datapath"
+
+  imagePullSecrets:
+  - name: xxxx
+
+signatures-and-kafka-apis:
+  useDefaultPatterns: false
+
+cp-kafka-rest:
+  autoscaling:
+    enabled: false
+
+minio:
+  autoscaling:
+    enabled: false
+
+es-kafka-connect:
+  autoscaling:
+    enabled: false
+  configurationOverrides:
+    config.storage.replication.factor: '1'
+    connect.protocol: apm_sessioned
+    connector.client.config.override.policy: All
+    consumer.fetch.max.bytes: '1048576'
+    consumer.max.partition.fetch.bytes: '1048576'
+    consumer.max.poll.records: '5000'
+    consumer.partition.assignment.strategy: org.apache.kafka.clients.consumer.RoundRobinAssignor
+    consumer.sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="snp-kconnect" password="snp-kconnect";
+    consumer.sasl.mechanism: PLAIN
+    consumer.security.protocol: SASL_PLAINTEXT
+    internal.key.converter: org.apache.kafka.connect.json.JsonConverter
+    internal.value.converter: org.apache.kafka.connect.json.JsonConverter
+    key.converter: org.apache.kafka.connect.json.JsonConverter
+    key.converter.schemas.enable: 'false'
+    offset.flush.interval.ms: '60000'
+    offset.flush.timeout.ms: '45000'
+    offset.storage.partitions: '1'
+    offset.storage.replication.factor: '1'
+    plugin.path: /usr/share/java,/etc/kafka-connect/custom_smt,/usr/share/confluent-hub-components
+    sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="snp-kconnect" password="snp-kconnect";
+    sasl.mechanism: PLAIN
+    scheduled.rebalance.max.delay.ms: '60000'
+    security.protocol: SASL_PLAINTEXT
+    status.storage.partitions: '1'
+    status.storage.replication.factor: '1'
+    task.shutdown.graceful.timeout.ms: '180000'
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter.schemas.enable: 'false'
+
+archival-kafka-connect:
+  autoscaling:
+    enabled: false
+  configurationOverrides:
+    config.storage.replication.factor: '1'
+    connect.protocol: apm_sessioned
+    connector.client.config.override.policy: All
+    consumer.fetch.max.bytes: '1048576'
+    consumer.max.partition.fetch.bytes: '1048576'
+    consumer.max.poll.records: '5000'
+    consumer.partition.assignment.strategy: org.apache.kafka.clients.consumer.RoundRobinAssignor
+    internal.key.converter: org.apache.kafka.connect.json.JsonConverter
+    internal.value.converter: org.apache.kafka.connect.json.JsonConverter
+    key.converter: org.apache.kafka.connect.json.JsonConverter
+    key.converter.schemas.enable: 'false'
+    offset.flush.interval.ms: '60000'
+    offset.flush.timeout.ms: '45000'
+    offset.storage.partitions: '1'
+    offset.storage.replication.factor: '1'
+    plugin.path: /usr/share/java,/etc/kafka-connect/custom_smt,/usr/share/confluent-hub-components
+    scheduled.rebalance.max.delay.ms: '60000'
+    status.storage.partitions: '1'
+    status.storage.replication.factor: '1'
+    task.shutdown.graceful.timeout.ms: '180000'
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter.schemas.enable: 'false'
