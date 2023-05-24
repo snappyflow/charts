@@ -1,0 +1,59 @@
+configurationOverrides:
+  kafkastore.init.timeout.ms: 300000
+containerResources:
+  jmx:
+    limits:
+      cpu: 10m
+      memory: 256Mi
+    requests:
+      cpu: 10m
+      memory: 50Mi
+  schemaGenerator:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 10m
+      memory: 256Mi
+  schemaregistry:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+customEnv: {}
+heapOptions: -Xms256M -Xmx512M -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:G1HeapRegionSize=1M
+  -XX:MaxMetaspaceSize=100M -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30
+  -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=30
+jmx:
+  port: 5555
+livenessProbe:
+  failureThreshold: 3
+  initialDelaySeconds: 300
+  path: /
+  periodSeconds: 60
+  port: 8081
+  scheme: HTTP
+  successThreshold: 1
+  timeoutSeconds: 10
+nodeSelector: {}
+podAnnotations: {}
+prometheus:
+  jmx:
+    enabled: false
+    imagePullPolicy: IfNotPresent
+    port: 5556
+replicaCount: 1
+schemaGenerator:
+  enabled: true
+  intervalInMin: 10
+  targets:
+  - enabled: true
+    name: schema-registry
+image:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/schema-generator
+  tag: '14'
+servicePort: 8081
+tolerations: {}

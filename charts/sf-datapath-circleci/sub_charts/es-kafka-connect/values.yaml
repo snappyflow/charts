@@ -1,0 +1,75 @@
+autoscaling:
+  enabled: false
+configurationOverrides:
+  config.storage.replication.factor: '3'
+  connect.protocol: apm_sessioned
+  connector.client.config.override.policy: All
+  consumer.fetch.max.bytes: '1048576'
+  consumer.max.partition.fetch.bytes: '1048576'
+  consumer.max.poll.records: '5000'
+  consumer.partition.assignment.strategy: org.apache.kafka.clients.consumer.RoundRobinAssignor
+  consumer.sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule
+    required username="snp-kconnect" password="snp-kconnect";
+  consumer.sasl.mechanism: PLAIN
+  consumer.security.protocol: SASL_PLAINTEXT
+  internal.key.converter: org.apache.kafka.connect.json.JsonConverter
+  internal.value.converter: org.apache.kafka.connect.json.JsonConverter
+  key.converter: org.apache.kafka.connect.json.JsonConverter
+  key.converter.schemas.enable: 'false'
+  offset.flush.interval.ms: '60000'
+  offset.flush.timeout.ms: '45000'
+  offset.storage.partitions: '3'
+  offset.storage.replication.factor: '3'
+  plugin.path: /usr/share/java,/etc/kafka-connect/custom_smt,/usr/share/confluent-hub-components
+  sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required
+    username="snp-kconnect" password="snp-kconnect";
+  sasl.mechanism: PLAIN
+  scheduled.rebalance.max.delay.ms: '60000'
+  security.protocol: SASL_PLAINTEXT
+  status.storage.partitions: '3'
+  status.storage.replication.factor: '3'
+  task.shutdown.graceful.timeout.ms: '180000'
+  value.converter: org.apache.kafka.connect.json.JsonConverter
+  value.converter.schemas.enable: 'false'
+containerResources:
+  connector:
+    limits:
+      cpu: '1'
+      memory: 4Gi
+    requests:
+      cpu: '1'
+      memory: 2560Mi
+  jmx:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+cp-schema-registry:
+  url: ''
+customEnv: {}
+heapOptions: -Xms450M -Xmx1800M -Xmns350M -Xmnx1400M -XX:MaxDirectMemorySize=200M
+  -Xcodecachetotal50M -Xmso128K -Xgc:concurrentScavenge -XX:-EnableCPUMonitor -Xtune:virtualized
+  -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,20,100 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp
+  -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt
+  -Xdump:system+heap+java
+image:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/apm-kafka-connect
+  tag: '20'
+inByteRate: 1736111
+jmx:
+  port: 5555
+nodeSelector: {}
+podAnnotations: {}
+prometheus:
+  jmx:
+    enabled: true
+    port: 5556
+    resources: {}
+replicaCount: 1
+resources: {}
+servicePort: 8083
+terminationGracePeriodSeconds: 200
+tolerations: {}

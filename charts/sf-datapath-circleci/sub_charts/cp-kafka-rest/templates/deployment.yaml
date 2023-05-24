@@ -1,0 +1,206 @@
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
+apiVersion: apps/v1
+{{- else }}
+apiVersion: apps/v1beta2
+{{- end }}
+kind: Deployment
+metadata:
+  name: {{ template "cp-kafka-rest.fullname" . }}
+  labels:
+    app: {{ template "cp-kafka-rest.name" . }}
+    chart: {{ template "cp-kafka-rest.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "cp-kafka-rest.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "cp-kafka-rest.name" . }}
+        release: {{ .Release.Name }}
+        snappyflow/projectname: {{ .Values.global.snappyflowProjectName }}
+        snappyflow/appname: {{ .Values.global.snappyflowAppName }}
+        snappyflow/component: kafka
+      {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/jmx-config: {{ include (print $.Template.BasePath "/jmx-configmap.yaml") . | sha256sum }}
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      {{- if .Values.prometheus.jmx.enabled }}
+        prometheus.io/scrape: "true"
+        prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
+      {{- end }}
+      {{- end }}
+    spec:
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
+      {{- if .Values.global.sfNodeManager.enabled }}
+      priorityClassName: {{ .Values.global.sfNodeManager.priorityClassName }}
+      {{- end }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - "{{ template "cp-kafka-rest.name" . }}"
+      initContainers:
+        - name: kafka-ready
+          image: "snappyflowml/kafka-zk-check:alpha"
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/bash
+            - ./kafka-init.sh
+            - {{ .Values.global.kafka.bootstrapServers }}
+      containers:
+        {{- if .Values.prometheus.jmx.enabled }}
+        - name: exporter
+          image: "solsson/kafka-prometheus-jmx-exporter@sha256:6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143"
+          imagePullPolicy: "{{ .Values.prometheus.jmx.imagePullPolicy }}"
+          command:
+          - java
+          - -XX:+UnlockExperimentalVMOptions
+          - -XX:+UseCGroupMemoryLimitForHeap
+          - -XX:MaxRAMFraction=1
+          - -XshowSettings:vm
+          - -jar
+          - jmx_prometheus_httpserver.jar
+          - {{ .Values.prometheus.jmx.port | quote }}
+          - /etc/jmx-kafka-rest/jmx-kafka-rest-prometheus.yml
+          ports:
+          - containerPort: {{ .Values.prometheus.jmx.port }}
+{{- if not .Values.global.development }}
+          resources: {{ toYaml .Values.containerResources.jmx | nindent 12 }}
+{{- end }}
+          volumeMounts:
+          - name: jmx-config
+            mountPath: /etc/jmx-kafka-rest
+          - name: memory-util-logs
+            mountPath: /memory-util-logs
+        {{- end }}
+        - name: server
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+          ports:
+            - name: rest-proxy
+              containerPort: {{ .Values.servicePort}}
+              protocol: TCP
+            {{- if .Values.prometheus.jmx.enabled }}
+            - containerPort: {{ .Values.jmx.port }}
+              name: jmx
+            {{- end }}
+          startupProbe:
+            tcpSocket:
+              port: {{ .Values.livenessProbe.port }}
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 20
+            timeoutSeconds: 4
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.path }}
+              port: {{ .Values.livenessProbe.port }}
+              scheme: {{ .Values.livenessProbe.scheme }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+{{- if not .Values.global.development }}
+          resources: {{ toYaml .Values.containerResources.restserver | nindent 12 }}
+{{- end }}
+          {{- if .Values.https.enabled }}
+          envFrom:
+          - configMapRef:
+              name: {{ .Release.Name }}-rest-tls-config
+          {{- end }}
+          env:
+          {{- if .Values.https.enabled }}
+          - name: KAFKA_REST_SSL_KEYSTORE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-rest-tls-secret
+                key: keystorePassword
+          - name: KAFKA_REST_SSL_TRUSTSTORE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-rest-tls-secret
+                key: truststorePassword
+          - name: KAFKA_REST_SSL_KEY_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-rest-tls-secret
+                key: keyPassword
+          {{- end }}
+          - name: LOGARCH_AUTHENTICATOR_URL
+            value: "http://{{ template "cp-kafka-rest.authenticator.fullname" . }}"
+          - name: KAFKAREST_LOG4J_OPTS
+            value: -Dlog4j.configuration=file:///etc/customlog4j/connect-log4j.properties
+          - name: KAFKA_REST_HOST_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: KAFKA_REST_BOOTSTRAP_SERVERS
+            value: {{ template "cp-kafka-rest.cp-kafka.service-name" . }}
+          - name: KAFKA_REST_SCHEMA_REGISTRY_URL
+            value: {{ template "cp-kafka-rest.cp-schema-registry.service-name" . }}
+          - name: KAFKAREST_HEAP_OPTS
+            value: "{{ .Values.heapOptions }}"
+          {{- range $key, $value := .Values.configurationOverrides }}
+          - name: {{ printf "KAFKA_REST_%s" $key | replace "." "_" | upper | quote }}
+            value: {{ $value | quote }}
+          {{- end }}
+          {{- if .Values.jmx.port }}
+          - name: KAFKAREST_JMX_PORT
+            value: "{{ .Values.jmx.port }}"
+          {{- end }}
+          volumeMounts:
+          - name: connect-log4j-properties
+            mountPath: /etc/customlog4j
+          - name: memory-util-logs
+            mountPath: /memory-util-logs
+          {{- if .Values.https.enabled }}
+          - name: tls
+            mountPath: "/tmp"
+          {{- end }}
+      {{- if .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.global.imagePullSecrets | indent 8 }}
+      {{- end }}
+      volumes:
+      {{- if .Values.https.enabled }}
+      - name: tls
+        secret:
+          secretName: {{ .Release.Name }}-rest-tls-secret
+      {{- end }}
+      {{- if .Values.prometheus.jmx.enabled }}
+      - name: jmx-config
+        configMap:
+          name: {{ template "cp-kafka-rest.fullname" . }}-jmx-configmap
+      {{- end }}
+      - name: connect-log4j-properties
+        configMap:
+          name: {{ template "cp-kafka-rest.fullname" . }}-kafka-log
+      - name: memory-util-logs
+        emptyDir: {}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+      {{- end }}
