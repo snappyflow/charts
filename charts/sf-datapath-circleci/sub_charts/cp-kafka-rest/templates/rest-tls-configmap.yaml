@@ -1,0 +1,11 @@
+{{- if .Values.https.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-rest-tls-config
+  namespace: {{ .Release.Namespace }}
+data:
+  KAFKA_REST_SSL_TRUSTSTORE_LOCATION: "/tmp/{{ .Values.https.truststoreFile }}"
+  KAFKA_REST_SSL_CLIENT_AUTH: "{{ .Values.https.clientAuthRequired }}"
+  KAFKA_REST_SSL_KEYSTORE_LOCATION: "/tmp/{{ .Values.https.keystoreFile }}"
+{{- end }}

@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "signatures-and-kafka-apis.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "signatures-and-kafka-apis.labels" . | indent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "signatures-and-kafka-apis.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      labels:
+        app.kubernetes.io/name: {{ include "signatures-and-kafka-apis.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        release: {{ .Release.Name }}
+        {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+        {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
+    spec:
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
+    {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      initContainers:
+        - name: db-ready
+          image: "bitnami/postgresql:11.5.0-debian-9-r34"
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -c
+            - "until pg_isready -d postgresql://'{{ .Values.global.postgresql.postgresqlUsername }}':'{{ .Values.global.postgresql.postgresqlPassword }}'@'{{ template "signatures-and-kafka-apis.postgresql.fullname" . }}':{{ .Values.global.postgresql.servicePort }}/'{{ .Values.global.postgresql.postgresqlDatabase }}'; do sleep 3; done"
+      containers:
+        - name: signatures-and-kafka-apis
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: archival
+            value: "{{ .Values.global.archival.enabled }}"
+          - name: BOOTSTRAP_SERVERS
+            value: "{{ .Values.global.kafka.bootstrapServers }}"
+          # TODO: This should be dynamically detected in order to apply quotas
+          - name: NUM_BOOTSTRAP_SERVERS
+            value: "3"
+          - name: QUOTA_BUFFER_PCNT
+            value: "{{ .Values.global.quotaBufferPCNT }}"
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/conf
+          readinessProbe:
+            httpGet:
+              path: "/signatures/check"
+              port: 8888
+            timeoutSeconds: 10
+            initialDelaySeconds: 180
+            periodSeconds: 30
+            failureThreshold: 3
+{{- if not .Values.global.development }}
+          resources: {{- toYaml .Values.containerResources.signatures | nindent 12 }}
+{{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ template "signatures-and-kafka-apis.fullname" . }}

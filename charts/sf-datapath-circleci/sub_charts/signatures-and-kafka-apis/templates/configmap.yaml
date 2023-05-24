@@ -1,0 +1,24 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ template "signatures-and-kafka-apis.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+data:
+  config.json: |-
+    {
+      "db": {
+        "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
+        "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
+        "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
+        "host": "{{ template "signatures-and-kafka-apis.postgresql.fullname" . }}",
+        "port": {{ .Values.global.postgresql.servicePort }}
+      },
+      "default-patterns": "upstream timed out,upstream server temporarily disabled while reading response header from upstream,upstream server temporarily disabled while connecting to upstream,upstream prematurely closed connection while reading response header from upstream,session opened for user,session closed for user,possible break,invalid user,dhcprequest,dhcpack",
+      "set-default-patterns": {{ .Values.useDefaultPatterns }},
+      "registered-urls": [
+      {{- if (eq .Values.global.archival.enabled true) -}}
+        "http://{{ template "signatures-and-kafka-apis.ingest-controller.fullname" . }}/ingest/datasets/updatepatterns",
+      {{- end -}}
+        "http://{{ template "signatures-and-kafka-apis.sfk-interface.fullname" . }}/signpatterns"
+      ]
+    }

@@ -1,0 +1,21 @@
+{{- if .Values.global.archival.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "archival-kafka-connect.fullname" . }}
+  labels:
+    app: {{ template "archival-kafka-connect.name" . }}
+    chart: {{ template "archival-kafka-connect.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  ports:
+    - name: arch-connect
+      port: {{ .Values.servicePort }}
+    - port: 5556
+      name: jmx-exporter
+  selector:
+    app: {{ template "archival-kafka-connect.name" . }}
+    release: {{ .Release.Name }}
+{{- end }}
+

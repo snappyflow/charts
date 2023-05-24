@@ -1,0 +1,25 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ template "authenticator.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+data:
+  config.json: |-
+    {
+      "admin": {
+        "profileKey": "{{ .Values.admin.profileKey }}",
+        "userName": "{{ .Values.admin.userName }}",
+        "password": "{{ .Values.admin.password }}"
+      },
+      "db": {
+        "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
+        "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
+        "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
+        "host": "{{ template "authenticator.postgresql.fullname" . }}",
+        "port": {{ .Values.global.postgresql.servicePort }},
+        "max_open_connections": {{ .Values.db.max_open_connections }},
+        "max_idle_connections": {{ .Values.db.max_idle_connections }}
+      },
+      "signingKey": "{{ .Values.signingKey }}",
+      "serverPort": "{{ .Values.serverPort }}"
+    }
