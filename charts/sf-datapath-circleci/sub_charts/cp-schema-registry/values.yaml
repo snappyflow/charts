@@ -26,9 +26,6 @@ customEnv: {}
 heapOptions: -Xms256M -Xmx512M -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:G1HeapRegionSize=1M
   -XX:MaxMetaspaceSize=100M -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30
   -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=30
-image: confluentinc/cp-schema-registry
-imagePullPolicy: IfNotPresent
-imageTag: 6.0.1
 jmx:
   port: 5555
 livenessProbe:
@@ -45,19 +42,18 @@ podAnnotations: {}
 prometheus:
   jmx:
     enabled: false
-    image: solsson/kafka-prometheus-jmx-exporter@sha256
     imagePullPolicy: IfNotPresent
-    imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
     port: 5556
 replicaCount: 1
 schemaGenerator:
   enabled: true
-  image: snappyflowml/schema-generator
-  imagePullPolicy: IfNotPresent
-  imageTag: '14'
   intervalInMin: 10
   targets:
   - enabled: true
     name: schema-registry
+image:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/schema-generator
+  tag: '14'
 servicePort: 8081
 tolerations: {}

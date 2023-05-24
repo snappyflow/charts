@@ -46,9 +46,10 @@ heapOptions: -Xms250M -Xmx1300M -Xmns200M -Xmnx800M -XX:MaxDirectMemorySize=100M
   -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,20,100 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp
   -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt
   -Xdump:system+heap+java
-image: snappyflowml/arch-kafka-connect
-imagePullPolicy: IfNotPresent
-imageTag: '20'
+image:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/arch-kafka-connect
+  tag: '20'
 inByteRate: 1736111
 jmx:
   port: 5555
@@ -57,9 +58,7 @@ podAnnotations: {}
 prometheus:
   jmx:
     enabled: true
-    image: solsson/kafka-prometheus-jmx-exporter@sha256
     imagePullPolicy: IfNotPresent
-    imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
     port: 5556
 replicaCount: 1
 servicePort: 8083
