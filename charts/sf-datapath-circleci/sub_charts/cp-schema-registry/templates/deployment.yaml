@@ -1,0 +1,174 @@
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
+apiVersion: apps/v1
+{{- else }}
+apiVersion: apps/v1beta2
+{{- end }}
+kind: Deployment
+metadata:
+  name: {{ template "cp-schema-registry.fullname" . }}
+  labels:
+    app: {{ template "cp-schema-registry.name" . }}
+    chart: {{ template "cp-schema-registry.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "cp-schema-registry.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "cp-schema-registry.name" . }}
+        release: {{ .Release.Name }}
+        snappyflow/projectname: {{ .Values.global.snappyflowProjectName }}
+        snappyflow/appname: {{ .Values.global.snappyflowAppName }}
+        snappyflow/component: kafka
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/jmx-config: {{ include (print $.Template.BasePath "/jmx-configmap.yaml") . | sha256sum }}
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      {{- if .Values.prometheus.jmx.enabled }}
+        prometheus.io/scrape: "true"
+        prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
+      {{- else }}
+        prometheus.io/scrape: "false"
+      {{- end }}
+    spec:
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
+      initContainers:
+        - name: kafka-ready
+          image: "snappyflowml/kafka-zk-check:alpha"
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/bash
+            - ./kafka-init.sh
+            - {{ .Values.global.kafka.bootstrapServers }}
+      containers:
+        {{- if .Values.prometheus.jmx.enabled }}
+        - name: exporter
+          image: "solsson/kafka-prometheus-jmx-exporter@sha256:6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143"
+          imagePullPolicy: "{{ .Values.prometheus.jmx.imagePullPolicy }}"
+          command:
+          - java
+          - -XX:+UnlockExperimentalVMOptions
+          - -XX:+UseCGroupMemoryLimitForHeap
+          - -XX:MaxRAMFraction=1
+          - -XshowSettings:vm
+          - -jar
+          - jmx_prometheus_httpserver.jar
+          - {{ .Values.prometheus.jmx.port | quote }}
+          - /etc/jmx-schema-registry/jmx-schema-registry-prometheus.yml
+          ports:
+          - containerPort: {{ .Values.prometheus.jmx.port }}
+{{- if not .Values.global.development }}
+          resources: {{ toYaml .Values.containerResources.jmx | nindent 12 }}
+{{- end }}
+          volumeMounts:
+          - name: jmx-config
+            mountPath: /etc/jmx-schema-registry
+        {{- end }}
+        {{- if .Values.schemaGenerator.enabled }}
+        - name: schema-generator
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: "{{ .Values.schemaGenerator.imagePullPolicy }}"
+{{- if not .Values.global.development }}
+          resources:
+{{ toYaml .Values.containerResources.schemaGenerator | nindent 12 }}
+{{- end }}
+          volumeMounts:
+          - name: schema-generator-config
+            mountPath: /opt
+        {{- end }}
+        - name: server
+          image: "confluentinc/cp-schema-registry:6.0.1"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: schema-registry
+              containerPort: {{ .Values.servicePort }}
+              protocol: TCP
+            {{- if .Values.prometheus.jmx.enabled }}
+            - containerPort: {{ .Values.jmx.port }}
+              name: jmx
+            {{- end }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.path }}
+              port: {{ .Values.livenessProbe.port }}
+              scheme: {{ .Values.livenessProbe.scheme }} 
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+{{- if not .Values.global.development }}
+          resources:
+{{ toYaml .Values.containerResources.schemaregistry | nindent 12 }}
+{{- end }}
+          env:
+          - name: SCHEMA_REGISTRY_LOG4J_OPTS
+            value: -Dlog4j.configuration=file:///etc/customlog4j/connect-log4j.properties
+          - name: SCHEMA_REGISTRY_HOST_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: SCHEMA_REGISTRY_LISTENERS
+            value: http://0.0.0.0:{{ .Values.servicePort }}
+          - name: SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS
+            value: {{ template "cp-schema-registry.kafka.bootstrapServers" . }}
+          - name: SCHEMA_REGISTRY_KAFKASTORE_GROUP_ID
+            value: {{ template "cp-schema-registry.groupId" . }}
+          - name: SCHEMA_REGISTRY_MASTER_ELIGIBILITY
+            value: "true"
+          - name: SCHEMA_REGISTRY_HEAP_OPTS
+            value: "{{ .Values.heapOptions }}"
+          {{ range $configName, $configValue := .Values.configurationOverrides }}
+          - name: SCHEMA_REGISTRY_{{ $configName | replace "." "_" | upper }}
+            value: {{ $configValue | quote }}
+          {{ end }}
+          {{- range $key, $value := .Values.customEnv }}
+          - name: {{ $key | quote }}
+            value: {{ $value | quote }}
+          {{- end }}
+          {{- if .Values.schemaRegistryOpts }}
+          - name: SCHEMA_REGISTRY_OPTS
+            value: "{{ .Values.schemaRegistryOpts }}"
+          {{- end }}
+          {{- if .Values.jmx.port }}
+          - name: JMX_PORT
+            value: "{{ .Values.jmx.port }}"
+          {{- end }}
+          volumeMounts:
+          - name: connect-log4j-properties
+            mountPath: /etc/customlog4j
+      {{- if .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.global.imagePullSecrets | indent 8 }}
+      {{- end }}
+      volumes:
+      {{- if .Values.prometheus.jmx.enabled }}
+      - name: jmx-config
+        configMap:
+          name: {{ template "cp-schema-registry.fullname" . }}-jmx-configmap
+      {{- end }}
+      {{- if .Values.schemaGenerator.enabled }}
+      - name: schema-generator-config
+        configMap:
+          name: {{ template "cp-schema-registry.fullname" . }}-schema-generator-configmap
+      {{- end }}
+      - name: connect-log4j-properties
+        configMap:
+          name: {{ template "cp-schema-registry.fullname" . }}-kafka-log
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+      {{- end }}

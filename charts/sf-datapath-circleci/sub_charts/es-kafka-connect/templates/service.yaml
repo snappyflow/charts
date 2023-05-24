@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "es-kafka-connect.fullname" . }}
+  labels:
+    app: {{ template "es-kafka-connect.name" . }}
+    chart: {{ template "es-kafka-connect.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  ports:
+    - name: es-connect
+      port: {{ .Values.servicePort }}
+    - port: 5556
+      name: jmx-exporter
+  selector:
+    app: {{ template "es-kafka-connect.name" . }}
+    release: {{ .Release.Name }}
