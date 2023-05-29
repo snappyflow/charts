@@ -11,8 +11,8 @@ global:
 prometheus:
   jmx:
     enabled: true
-    image: solsson/kafka-prometheus-jmx-exporter@sha256
-    imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
+    image: snappyflowml/jmx-expoter@sha256
+    imageTag: 5fc6fa9d8c4e6d60a4aedd56a48755884eba8a0613b04bc571afcf3c5f801495
     imagePullPolicy: IfNotPresent
     port: 5556
     resources: {}
