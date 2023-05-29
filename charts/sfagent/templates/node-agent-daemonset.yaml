@@ -34,7 +34,7 @@ spec:
         image: "{{ .Values.node_agent.image.repository }}:{{ .Values.node_agent.image.tag }}"
         imagePullPolicy: {{ .Values.node_agent.image.pullPolicy }}
         command: ["/bin/sh","-c"]
-        args: ["/app/kube-node -nodename $NODE_NAME -remote-socket-service-ip $SOCKET_SERVICE -basic_parsing {{ .Values.node_agent.basic_parsing }} -kubelet-for-metadata {{ .Values.node_agent.kubelet_for_metadata }}"]
+        args: ["/app/kube-node -nodename $NODE_NAME -remote-socket-service-ip $SOCKET_SERVICE -basic-parsing {{ .Values.node_agent.basic_parsing }} -kubelet-for-metadata {{ .Values.node_agent.kubelet_for_metadata }}"]
         resources:
 {{ toYaml .Values.node_agent.resources | indent 12 }}
         env:
