@@ -56,7 +56,6 @@ spec:
       - name: main
         image: "{{ .Values.systemmigration.image.repository }}:{{ .Values.systemmigration.image.tag }}"
         imagePullPolicy: "{{ .Values.systemmigration.image.pullPolicy }}"
-        imagePullPolicy: IfNotPresent
         volumeMounts:
           - name: {{ .Release.Name }}-system-migration-config
             mountPath: "/etc/conf"

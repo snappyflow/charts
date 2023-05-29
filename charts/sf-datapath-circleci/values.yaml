@@ -137,5 +137,5 @@ minio:
 systemmigration:
   image:
     pullPolicy: IfNotPresent
-    repository: circlecitest/datapath-system-migration
+    repository: snappyflowml/datapath-system-migration
     tag: 'v1-3-89'
