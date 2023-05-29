@@ -83,7 +83,7 @@ spec:
         - -XX:MaxRAMFraction=1
         - -XshowSettings:vm
         - -jar
-        - jmx_prometheus_httpserver.jar
+        - jmx_prometheus_httpserver-0.17.3-SNAPSHOT.jar
         - {{ .Values.prometheus.jmx.port | quote }}
         - /etc/jmx-kafka/jmx-kafka-prometheus.yml
         ports:
