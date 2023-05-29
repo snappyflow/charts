@@ -147,7 +147,7 @@ sfapm:
 
   image:
     repository: snappyflowml/sfapm-server
-    tag: 4.0.426-python3
+    tag: 4.0.428-python3
     pullPolicy: IfNotPresent
 
   resources:
