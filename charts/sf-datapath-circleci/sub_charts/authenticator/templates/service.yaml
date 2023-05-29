@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "authenticator.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels: {{- include "authenticator.labels" . | nindent 4 }}
+spec:
+  ports:
+  - port: 80
+    targetPort: {{ .Values.service.servicePort }}
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ include "authenticator.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+
+

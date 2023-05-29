@@ -1,0 +1,69 @@
+autoscaling:
+  enabled: false
+configurationOverrides:
+  kafka.rest.resource.extension.class: com.maplelabs.kafka.rest.auth.CustomAuthSecurityRestExtension
+  listeners: https://0.0.0.0:8081,http://0.0.0.0:8082
+  max.request.size: '10485760'
+  producer.retries: '5'
+containerResources:
+  jmx:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  restserver:
+    limits:
+      cpu: 500m
+      memory: 896Mi
+    requests:
+      cpu: 50m
+      memory: 600Mi
+cp-schema-registry:
+  url: ''
+external:
+  enabled: true
+  externalTrafficPolicy: Cluster
+  httpsNodePort: 32003
+  nodePort: 32002
+  type: NodePort
+heapOptions: -Xms210M -Xmx600M -XX:-EnableCPUMonitor -Xtune:virtualized -XX:+UseContainerSupport
+  -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,5,20 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp
+  -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt
+  -Xdump:system+heap+java
+https:
+  clientAuthRequired: false
+  enabled: false
+  keyPassword: test1234
+  keystoreFile: rest.https.keystore.jks
+  keystorePassword: test1234
+  truststoreFile: rest.https.truststore.jks
+  truststorePassword: test1234
+httpsServicePort: 8081
+image:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/sf-kafka-rest
+  tag: '6'
+jmx:
+  port: 5555
+livenessProbe:
+  authHeader: ''
+  failureThreshold: 3
+  initialDelaySeconds: 300
+  path: /
+  periodSeconds: 60
+  port: 8082
+  scheme: HTTP
+  successThreshold: 1
+  timeoutSeconds: 30
+nodeSelector: {}
+podAnnotations: {}
+prometheus:
+  jmx:
+    enabled: true
+    imagePullPolicy: IfNotPresent
+    port: 5556
+replicaCount: 1
+servicePort: 8082
+tolerations: {}
