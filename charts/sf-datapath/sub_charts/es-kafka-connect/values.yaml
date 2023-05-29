@@ -70,7 +70,6 @@ prometheus:
     resources: {}
 replicaCount: 1
 resources: {}
-schedulerName: sf-scheduler
 servicePort: 8083
 terminationGracePeriodSeconds: 200
 tolerations: {}

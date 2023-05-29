@@ -5,7 +5,12 @@ enableDebug: false
 
 replicaCount: 1
 
-schedulerName: sf-scheduler
+global:
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-scheduler
+
+component: snappyflow-apm
 
 image:
   repository: snappyflowml/charging
@@ -187,6 +192,11 @@ postgresql:
   multidbUser: snappyflow
   multidbUserPassord: maplelabs
 
+ingest_usage_system:
+  enabled: false
+  host: ""
+  port: 443
+  use_tls: False
 
 global:
   sfappname: apm-billing

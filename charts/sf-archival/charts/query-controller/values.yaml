@@ -26,6 +26,17 @@ containerResources:
     requests:
       cpu: 50m
       memory: 512Mi
+db:
+  cleanup:
+      max_open_connections: 1
+      max_idle_connections: 1
+  querycontroller:
+      max_open_connections: 1
+      max_idle_connections: 1
+  queryexecutioncontroller:
+      max_open_connections: 2
+      max_idle_connections: 1
+
 dataset-controller:
   service:
     servicePort: 5001
@@ -41,7 +52,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/query-controller
-  tag: '15'
+  tag: '16'
 ingest-controller:
   service:
     servicePort: 5000

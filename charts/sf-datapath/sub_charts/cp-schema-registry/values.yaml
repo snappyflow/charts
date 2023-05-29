@@ -22,6 +22,11 @@ containerResources:
     requests:
       cpu: 500m
       memory: 512Mi
+db:
+  schemaGenerator:
+    max_open_connections: 1
+    max_idle_connections: 1
+
 customEnv: {}
 heapOptions: -Xms256M -Xmx512M -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:G1HeapRegionSize=1M
   -XX:MaxMetaspaceSize=100M -XX:MinMetaspaceFreeRatio=10 -XX:MaxMetaspaceFreeRatio=30
@@ -50,7 +55,6 @@ prometheus:
     imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
     port: 5556
 replicaCount: 1
-schedulerName: sf-scheduler
 schemaGenerator:
   enabled: true
   image: snappyflowml/schema-generator

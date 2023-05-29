@@ -1,4 +1,4 @@
-{{- if .Values.overProvisioning.enabled -}}
+{{- if .Values.overProvisioning.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,7 +13,9 @@ spec:
       labels:
         app: {{ include "sf-cluster-autoscaler.name" . }}-overprovisioner
     spec:
-      schedulerName: {{ .Values.schedulerName }}
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
       containers:
       - name: overprovisioner
         image: nginx:1.14.2

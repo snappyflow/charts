@@ -20,8 +20,9 @@ spec:
         {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
         {{- include "raw-query-exec-controller.selectorLabels" . | nindent 8 }}
     spec:
-      schedulerName: {{ .Values.schedulerName }}
-      priorityClassName: {{ .Release.Name }}-priority-class
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}

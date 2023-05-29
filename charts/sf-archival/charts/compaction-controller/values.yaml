@@ -46,3 +46,6 @@ spark-manager:
     service:
       servicePort: 5002
 tolerations: []
+db:
+  max_open_connections: 1
+  max_idle_connections: 1

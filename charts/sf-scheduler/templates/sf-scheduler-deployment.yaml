@@ -17,10 +17,15 @@ spec:
         component: scheduler
         tier: control-plane
         version: second
+        {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+        {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'false'
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
+      {{- if .Values.global.sfNodeManager.enabled }}
+      priorityClassName: {{ .Values.global.sfNodeManager.priorityClassName }}
+      {{- end }}
       containers:
       - command:
         - /usr/local/bin/kube-scheduler
@@ -52,4 +57,4 @@ spec:
         - name: config-volume
           configMap:
             name: {{ include "sf-scheduler.fullname" . }}-configmap
-      
+ 

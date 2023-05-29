@@ -1,10 +1,17 @@
 # Default values for sf-presto.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+global:
+  sfScheduler: 
+    enabled: false
+    schedulerName: sf-scheduler
+  snappyflowProjectLabel: snappyflow/projectname
+  snappyflowAppLabel: snappyflow/appname
 
+  snappyflowProjectName: "snappyflow-app"
+  snappyflowAppName: "sf-presto"
+    
 replicaCount: 1
-
-schedulerName: sf-scheduler
 
 imagePullSecrets: []
 
@@ -29,17 +36,20 @@ coordinator:
   resources:
     requests:
       cpu: 1000m
-      memory: 6Gi
+      memory: 8Gi
   # Provide Value same as Pod memory in Mi
-  podmem: 6450
+  podmem: 8192
 
 worker:
   resources:
+    limits:
+      cpu: "2"
+      memory: 4Gi
     requests:
-      cpu: 1000m
-      memory: 3Gi
+      cpu: "1"
+      memory: 4Gi
   # Provide Value same as Pod memory in Mi
-  podmem: 3221
+  podmem: 4096
 
 aws:
   enabled: false
@@ -71,7 +81,7 @@ podAnnotations:
 
 autoscaling:
   enabled: true
-  minReplicas: 1
+  minReplicas: 3
   maxReplicas: 5
   targetQueuedQueries: 5
   targetRunningDrivers: 50
@@ -84,4 +94,12 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 imagePullSecrets: []
+
+
+global:
+  snappyflowProjectLabel: snappyflow/projectname
+  snappyflowAppLabel: snappyflow/appname
+
+  snappyflowProjectName: "snappyflow-app"
+  snappyflowAppName: "sf-presto"
 

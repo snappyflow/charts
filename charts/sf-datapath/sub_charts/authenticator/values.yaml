@@ -18,9 +18,11 @@ image:
   tag: '7'
 nameOverride: ''
 nodeSelector: {}
-schedulerName: sf-scheduler
 serverPort: :5006
 service:
   servicePort: 5006
 signingKey: mysecretkey
 tolerations: []
+db:
+  max_open_connections: 2
+  max_idle_connections: 1

@@ -25,8 +25,9 @@ spec:
         {{ $key }}: {{ $value | quote }}
       {{- end }}
     spec:
-      schedulerName: {{ .Values.schedulerName }}
-      priorityClassName: {{ .Release.Name }}-priority-class
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
       serviceAccountName: {{ include "spark-history-server.serviceAccountName" . }}
       containers:
       - name: {{ .Chart.Name }}
