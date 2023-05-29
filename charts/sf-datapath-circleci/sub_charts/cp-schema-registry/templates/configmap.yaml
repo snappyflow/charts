@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "cp-schema-registry.fullname" . }}-kafka-log
+  labels:
+    app: {{ template "cp-schema-registry.name" . }}
+    chart: {{ template "cp-schema-registry.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  connect-log4j.properties: |+
+    log4j.rootLogger=INFO, console
+    log4j.appender.console=org.apache.log4j.ConsoleAppender
+    log4j.appender.console.Target=System.out
+    log4j.appender.console.immediateFlush=true
+    log4j.appender.console.encoding=UTF-8
+    log4j.appender.console.layout=org.apache.log4j.PatternLayout
+    log4j.appender.console.layout.conversionPattern=[%d] %p %m (%c)%n
+    log4j.appender.console.Threshold=DEBUG
+    log4j.logger.org.apache.zookeeper=ERROR
+    log4j.logger.org.I0Itec.zkclient=ERROR
+    log4j.logger.org.reflections=ERROR
+
+---
+
+{{- if and .Values.schemaGenerator.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "cp-schema-registry.fullname" . }}-schema-generator-configmap
+  labels:
+    app: {{ template "cp-schema-registry.name" . }}
+    chart: {{ template "cp-schema-registry.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  config.yaml: |+
+    intervalInMin: {{ .Values.schemaGenerator.intervalInMin }}
+    db:
+      name:  "{{ .Values.global.postgresql.postgresqlDatabase }}"
+      user:  "{{ .Values.global.postgresql.postgresqlUsername }}"
+      password: "{{ .Values.global.postgresql.postgresqlPassword }}"
+      host: {{ .Values.global.postgresql.host }}
+      port: {{ .Values.global.postgresql.servicePort }}
+    targets:
+{{ toYaml .Values.schemaGenerator.targets | indent 4 }}
+      url: "http://{{ template "cp-schema-registry.ingest-controller.fullname" . }}/ingest/schema-registry"
+{{- end }}

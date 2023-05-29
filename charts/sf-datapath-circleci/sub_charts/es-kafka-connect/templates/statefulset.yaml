@@ -1,0 +1,196 @@
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
+apiVersion: apps/v1
+{{- else }}
+apiVersion: apps/v1beta2
+{{- end }}
+kind: StatefulSet
+metadata:
+  name: {{ template "es-kafka-connect.fullname" . }}
+  labels:
+    app: {{ template "es-kafka-connect.name" . }}
+    chart: {{ template "es-kafka-connect.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "es-kafka-connect.name" . }}
+      release: {{ .Release.Name }}
+  serviceName: {{ template "es-kafka-connect.fullname" . }}
+  podManagementPolicy: Parallel
+  template:
+    metadata:
+      labels:
+        app: {{ template "es-kafka-connect.name" . }}
+        release: {{ .Release.Name }}
+        snappyflow/projectname: {{ .Values.global.snappyflowProjectName }}
+        snappyflow/appname: {{ .Values.global.snappyflowAppName }}
+        snappyflow/component: kafka
+      {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/jmx-config: {{ include (print $.Template.BasePath "/jmx-configmap.yaml") . | sha256sum }}
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      {{- if .Values.prometheus.jmx.enabled }}
+        prometheus.io/scrape: "true"
+        prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
+      {{- end }}
+      {{- end }}
+    spec:
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - "archival-kafka-connect"
+          - weight: 2
+            podAffinityTerm:
+              topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - "es-kafka-connect"
+      initContainers:
+        - name: kafka-ready
+          image: "snappyflowml/kafka-zk-check:alpha"
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/bash
+            - ./kafka-init.sh
+            - {{ .Values.global.kafka.bootstrapServers }}
+      containers:
+        {{- if .Values.prometheus.jmx.enabled }}
+        - name: exporter
+          image: "solsson/kafka-prometheus-jmx-exporter@sha256:6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143"
+          imagePullPolicy: IfNotPresent
+          command:
+          - java
+          - -XX:+UnlockExperimentalVMOptions
+          - -XX:+UseCGroupMemoryLimitForHeap
+          - -XX:MaxRAMFraction=1
+          - -XshowSettings:vm
+          - -jar
+          - jmx_prometheus_httpserver.jar
+          - {{ .Values.prometheus.jmx.port | quote }}
+          - /etc/jmx-kafka-connect/jmx-kafka-connect-prometheus.yml
+          ports:
+          - containerPort: {{ .Values.prometheus.jmx.port }}
+{{- if not .Values.global.development }}
+          resources: {{ toYaml .Values.containerResources.jmx | nindent 12 }}
+{{- end }}
+          volumeMounts:
+          - name: jmx-config
+            mountPath: /etc/jmx-kafka-connect
+          - name: memory-util-logs
+            mountPath: /memory-util-logs
+        {{- end }}
+        - name: connector
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+          ports:
+            - name: es-connect
+              containerPort: {{ .Values.servicePort}}
+              protocol: TCP
+            {{- if .Values.prometheus.jmx.enabled }}
+            - containerPort: {{ .Values.jmx.port }}
+              name: jmx
+            {{- end }}
+          startupProbe:
+            tcpSocket:
+              port: {{ .Values.servicePort}}
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 20
+            timeoutSeconds: 9
+          livenessProbe:
+            httpGet:
+              path: /connectors
+              port: {{ .Values.servicePort}}
+              scheme: HTTP
+            initialDelaySeconds: 300
+            periodSeconds: 60
+            timeoutSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+{{- if not .Values.global.development }}
+          resources: {{ toYaml .Values.containerResources.connector | nindent 12 }}
+{{- end }}
+          env:
+            - name: CONNECT_REST_ADVERTISED_HOST_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: KAFKA_LOG4J_OPTS
+              value: -Dlog4j.configuration=file:///etc/customlog4j/connect-log4j.properties
+            - name: CONNECT_BOOTSTRAP_SERVERS
+              value: {{ template "es-kafka-connect.kafka.bootstrapServers" . }}
+            - name: CONNECT_GROUP_ID
+              value: {{ template "es-kafka-connect.group.id" . }}
+            - name: CONNECT_CONFIG_STORAGE_TOPIC
+              value: {{ template "es-kafka-connect.config.storage.topic" . }}
+            - name: CONNECT_OFFSET_STORAGE_TOPIC
+              value: {{ template "es-kafka-connect.offset.storage.topic" . }}
+            - name: CONNECT_STATUS_STORAGE_TOPIC
+              value: {{ template "es-kafka-connect.status.storage.topic" . }}
+            - name: CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL
+              value: {{ template "es-kafka-connect.cp-schema-registry.service-name" .}}
+            - name: CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL
+              value: {{ template "es-kafka-connect.cp-schema-registry.service-name" .}}
+            - name: KAFKA_HEAP_OPTS
+              value: "{{ .Values.heapOptions }}"
+            {{- range $key, $value := .Values.configurationOverrides }}
+            - name: {{ printf "CONNECT_%s" $key | replace "." "_" | upper | quote }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- range $key, $value := .Values.customEnv }}
+            - name: {{ $key | quote }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- if .Values.jmx.port }}
+            - name: KAFKA_JMX_PORT
+              value: "{{ .Values.jmx.port }}"
+            {{- end }}
+          volumeMounts:
+          - name: connect-log4j-properties
+            mountPath: /etc/customlog4j
+          - name: memory-util-logs
+            mountPath: /memory-util-logs
+      {{- if .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.global.imagePullSecrets | indent 8 }}
+      {{- end }}
+      volumes:
+      {{- if .Values.prometheus.jmx.enabled }}
+      - name: jmx-config
+        configMap:
+          name: {{ template "es-kafka-connect.fullname" . }}-jmx-configmap
+      {{- end }}
+      - name: connect-log4j-properties
+        configMap:
+          name: {{ template "es-kafka-connect.fullname" . }}-kafka-log
+      - name: memory-util-logs
+        emptyDir: {}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+      {{- end }}

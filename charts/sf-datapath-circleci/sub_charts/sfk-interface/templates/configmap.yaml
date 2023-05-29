@@ -1,0 +1,60 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+    name: {{ template "sfk-interface.fullname" . }}-config
+    namespace: {{ .Release.Namespace }}
+data:
+    config.json: |-
+        {
+            "kafka": {
+                "brokers": "{{ .Values.global.kafka.bootstrapServers }}",
+                "rest_proxy": "http://{{ template "sfk-interface.kafkaRest.fullname" . }}:8082",
+                "rest_auth": "http://{{ template "sfk-interface.authenticator.fullname" . }}",
+                "connect": "http://{{ template "sfk-interface.apmConnect.fullname" . }}:8083"
+            },
+            "agent_ep": "{{ .Values.global.sfAgentInput.scheme }}://{{ .Values.global.sfAgentInput.host }}:{{ .Values.global.sfAgentInput.port }}",
+            "signature_and_kafka_apis": "http://{{ template "sfk-interface.signatures-and-kafka-apis.fullname" . }}",
+            "cluster_byte_rate_quota": {{ mul .Values.global.clusterQuotaGBperDay 11574.07 }},
+            "prometheus_endpoint": {{ .Values.prometheus.url | quote }},
+            "prometheus_auth": {{ .Values.prometheus.auth | quote }},
+            "sys_rsvd_cluster_byte_rate_quota_pcnt": {{ .Values.global.sysReservedclusterQuotaPCNT }},
+            "db": {
+                "name":  "{{ .Values.global.postgresql.postgresqlDatabase }}",
+                "user":  "{{ .Values.global.postgresql.postgresqlUsername }}",
+                "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
+                "host": "{{ template "sfk-interface.postgresql.fullname" . }}",
+                "port": {{ .Values.global.postgresql.servicePort }},
+                "max_open_connections": {{ .Values.db.max_open_connections }},
+                "max_idle_connections": {{ .Values.db.max_idle_connections }}
+            },
+            "max_tasks_per_topic": {{ .Values.global.maxTasksPerTopic }},
+            "topic_type_details": {{ toJson .Values.global.topicTypeDetails }},
+            "quotas_enabled": {{ .Values.global.quotasEnabled }}
+        }
+    es_sink_defaults.json: |-
+        {
+            "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
+            "auto.create.indices.at.start": "false",
+            "errors.tolerance": "all",
+            "drop.invalid.message": "true",
+            "behavior.on.malformed.documents": "warn",
+            "behavior.on.null.values": "ignore",
+            "max.buffered.records": "5000",
+            "retry.backoff.ms": "3000",
+            "max.retries": "3",
+            "connection.timeout.ms": "5000",
+            "read.timeout.ms": "30000",
+            "flush.timeout.ms": "150000",
+            "batch.size": "5000",
+            "max.in.flight.requests": "1",
+            "linger.ms": "1000",
+            "schema.ignore": "true",
+            "value.converter.schemas.enable": "false",
+            "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+            "transforms": "filterandrouter,insertsignature",
+            "transforms.throttle.type": "apm.kafka.connect.transforms.Throttle",
+            "transforms.filterandrouter.type": "apm.kafka.connect.transforms.APMFilterAndRouter",
+            "transforms.filterandrouter.samplingPeriodSeconds": 300,
+            "transforms.insertsignature.type": "com.signature.InsertSignature$Value",
+            "transforms.insertsignature.connectorname.field": "elastic-search"
+        }

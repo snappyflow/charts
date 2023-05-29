@@ -1,0 +1,141 @@
+global:
+
+  sfNodeManager:
+    enabled: false
+    priorityClassName: sf-critical-pod
+  
+  sfScheduler:
+    enabled: false
+    schedulerName: sf-schduler
+    
+  development: false
+
+  quotasEnabled: true
+
+  clusterQuotaGBperDay: 100
+
+  # Percentate of cluster quota reserved for system managed profiles
+  sysReservedclusterQuotaPCNT: 0
+
+  # Percentage buffer to be used while applying quota
+  # If it is set to 40%, a quota request of 1000 Bytes/s will allocate 1000 * (1 + 0.4) Bytes/s
+  quotaBufferPCNT: 5
+
+  ingress:
+    enabled: false
+
+  postgresql:
+    host: ""
+    postgresqlDatabase: archival
+    postgresqlUsername: archive
+    postgresqlPassword: archive123
+    servicePort: 5432
+
+  kafka:
+    # Below parameter needs to use the PLAIN_TEXT port
+    bootstrapServers: "localhost:9092,localhost1:9092"
+    # Certain components which use SASL_PLAIN will use this port along with above kafka broker IPs
+    saslPort: "9093"
+    releaseName: kafka
+    releaseNamespace: "kafka"
+
+  secrets:
+    gcs:
+      enable: false
+    aws:
+      enable: true
+    azure:
+      enable: false
+
+  archival:
+    enabled: true
+    releaseName: archival
+
+  sfAgentInput:
+    host: 127.0.0.1
+    port: 443
+    scheme: https
+
+  maxTasksPerTopic: 3
+
+  topicTypeDetails: [
+    {
+      "type": log,
+      "num_partitions": 3,
+      "replication_factor": 2,
+      "retention_ms": "86400000"
+    },
+    {
+      "type": metric,
+      "num_partitions": 3,
+      "replication_factor": 2,
+      "retention_ms": "86400000"
+    },
+    {
+      "type": control,
+      "num_partitions": 3,
+      "replication_factor": 2,
+      "retention_ms": "3600000"
+    },
+    {
+      "type": trace,
+      "num_partitions": 3,
+      "replication_factor": 2,
+      "retention_ms": "3600000"
+    },
+    {
+      "type": profile,
+      "num_partitions": 3,
+      "replication_factor": 2,
+      "retention_ms": "3600000"
+    }
+  ]
+
+  snappyflowProjectLabel: snappyflow/projectname
+  snappyflowAppLabel: snappyflow/appname
+
+  snappyflowProjectName: "snappyflow-app"
+  snappyflowAppName: "sf-data-path"
+
+  imagePullSecrets:
+  - name: xxxx
+
+signatures-and-kafka-apis:
+  useDefaultPatterns: false
+
+sfk-interface:
+  prometheus:
+    url: "http://pod-autoscaling-prometheus-server.default"
+    auth: "snappyflow"
+
+archival-kafka-connect:
+  autoscaling:
+    enabled: true
+    ingestRateGBPerDayPerPod: 200
+    minReplicas: 2
+    maxReplicas: 10
+
+es-kafka-connect:
+  autoscaling:
+    enabled: true
+    ingestRateGBPerDayPerPod: 200
+    minReplicas: 2
+    maxReplicas: 10
+
+cp-kafka-rest:
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 10
+
+minio:
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 10
+
+systemmigration:
+  image:
+    pullPolicy: IfNotPresent
+    repository: snappyflowml/datapath-system-migration
+    tag: 'v1-3-89'
