@@ -24,49 +24,94 @@ data:
     - kafka.log:*
     - kafka.cluster:*
     rules:
-    - pattern: java.lang<type=MemoryPool, name=(.+)><Usage>used
-      name: java_lang_MemoryPool_used__usage_$1
-    - pattern : java.lang<type=Memory><(HeapMemoryUsage|NonHeapMemoryUsage)>(used|init|committed|max)
-    - pattern : java.lang<type=Threading><>ThreadCount
-    - pattern : java.lang<type=ClassLoading><>(UnloadedClassCount|TotalLoadedClassCount)
-    - pattern: java.lang<name=(.+), type=(GarbageCollector)><>(\w+)
-      name: java_lang_$2_$3_$1
-      cache: true
-    - pattern: java.lang<name=(.+), type=(.+)><(Usage)>(\w+)
-      name: java_lang_$2_$4_$3_$1
-      cache: true  
-    - pattern: kafka.server<type=([^,]+), name=([^,]+)><>(FiveMinuteRate)
-      name: kafka_server_$1_total_$2_$3      
-    - pattern: kafka.server<type=([^,]+), name=([^,]+), topic=([^,]+)><>(FiveMinuteRate)
+    - pattern: kafka.controller<type=(ControllerChannelManager), name=(QueueSize), broker-id=(\d+)><>(Value)
+      name: kafka_controller_$1_$2_$4
+      labels:
+        broker_id: "$3"
+    - pattern: kafka.controller<type=(ControllerChannelManager), name=(TotalQueueSize)><>(Value)
+      name: kafka_controller_$1_$2_$3
+    - pattern: kafka.controller<type=(KafkaController), name=(.+)><>(Value)
+      name: kafka_controller_$1_$2_$3
+    - pattern: kafka.controller<type=(ControllerStats), name=(.+)><>(Count|OneMinuteRate|FiveMinuteRate)
+      name: kafka_controller_$1_$2_$3
+    - pattern: kafka.server<type=(ReplicaFetcherManager), name=(.+), clientId=(.+)><>(Value)
       name: kafka_server_$1_$2_$4
       labels:
-        topic: $3  
-    - pattern : kafka.server<type=(Fetch|Produce)><>(queue-size|byte-rate)
-    - pattern : kafka.server<type=(Fetch|Produce|Request)><>(throttle-time)
-    - pattern : kafka.server<type=(Request)><>(request_time)
-    - pattern : kafka.controller<type=KafkaController, name=(.+)><>Value
-    - pattern : kafka.server<type=KafkaRequestHandlerPool, name=RequestHandlerAvgIdlePercent><>FiveMinuteRate
-      name : kafka_server_KafkaRequestHandlerPool_total_RequestHandlerAvgIdlePercent_FiveMinuteRate
-    - pattern : kafka.log<type=Log, name=(.+), topic=(.+), partition=(.+)><>Value
-      name: kafka_log_log_$1
+        client_id: "$3"
+    - pattern: kafka.server<type=([^,]+), name=([^,]+), topic=([^,]+), partition=([^,]+)><>(Count|OneMinuteRate|MeanRate|FifteenMinuteRate|FiveMinuteRate)
+      name: kafka_server_$1_$2_$5
       labels:
-        topic: "$2"
-        partition: "$3"
-        topic_partition: "$2_$3"
-    - pattern : kafka.network<type=RequestMetrics, name=ResponseSendTimeMs, request=(FetchConsumer|FetchFollower|Produce)><>(Mean|Count)
-      name: kafka_network_RequestMetrics_ResponseSendTimeMs_$2
+        topic: $3
+        partition: $4
+        topic_partition: $3_$4
+    - pattern: kafka.server<type=([^,]+), name=([^,]+), topic=([^,]+)><>(Count|OneMinuteRate|MeanRate|FifteenMinuteRate|FiveMinuteRate)
+      name: kafka_server_$1_$2_$4
       labels:
-        request: "$1"  
-    - pattern : kafka.server<type=ReplicaManager, name=(IsrShrinksPerSec|IsrExpandsPerSec)><>FiveMinuteRate
-      name: kafka_server_ReplicaManager_total_$1_FiveMinuteRate
-    - pattern : kafka.server<type=ReplicaManager, name=(PartitionCount|UnderReplicatedPartitions)><>Value
-      name: kafka_server_ReplicaManager_total_$1_Value
-    - pattern : kafka.server<type=KafkaServer, name=BrokerState><>Value
-      name: kafka_server_KafkaServer_total_BrokerState_Value
-    - pattern : kafka.controller<type=ControllerStats, name=UncleanLeaderElectionsPerSec><>Count
-    - pattern : kafka.log<type=LogManager,name=OfflineLogDirectory><>Count
-    - pattern : kafka.network<type=(RequestMetrics), name=(TotalTimeMs|RequestsPerSec), request=([^,]+).*><>(Mean|FiveMinuteRate)
+        topic: $3
+    - pattern: kafka.server<type=([^,]+), name=([^,]+), fetcherType=([^,]+)><>(Count|OneMinuteRate|MeanRate|FifteenMinuteRate|FiveMinuteRate)
+      name: kafka_server_$1_$2_$4
+      labels:
+        fetcherType: $3
+    - pattern: kafka.server<type=([^,]+), name=([^,]+)><>(Count|OneMinuteRate|MeanRate|FifteenMinuteRate|FiveMinuteRate|Value)
+      name: kafka_server_$1_total_$2_$3
+    - pattern: kafka.server<type=([^,]+), user=([^,]+), client-id=([^,]+)><>(throttle-time|byte-rate|request-time)
+      name: kafka_server_$1_$4
+      labels:
+        user: $2
+        client-id: $3
+        client-id_user: $3_$2
+    - pattern: kafka.server<type=([^,]+), client-id=([^,]+)><>(throttle-time|byte-rate|request-time)
+      name: kafka_server_$1_$3
+      labels:
+        user: "none"
+        client-id: $2
+        client-id_user: $2_none
+    - pattern: kafka.server<type=([^,]+), user=([^,]+)><>(throttle-time|byte-rate|request-time)
+      name: kafka_server_$1_$3
+      labels:
+        user: $2
+        client-id: "none"
+        client-id_user: none_$2
+    - pattern: kafka.server<type=(.+)><>(queue-size)
+      name: kafka_server_$1_$2
+    - pattern: kafka.server<type=(DelayedOperationPurgatory), name=(.+), delayedOperation=(.+)><>(Value)
+      name: kafka_server_$1_$2_$3_$4
+    - pattern : kafka.network<type=(Processor), name=(IdlePercent), networkProcessor=(.+)><>(Value)
+      name: kafka_network_$1_$2_$4
+      labels:
+        network_processor: $3
+    - pattern : kafka.network<type=(RequestMetrics), name=(.+), request=([^,]+).*><>(Count|OneMinuteRate|Mean|FiveMinuteRate)
       name: kafka_network_$1_$2_$4
       labels:
         request: $3
+    - pattern: kafka.cluster<type=([^,]+), name=([^,]+), topic=([^,]+), partition=([^,]+)><>Value
+      name: kafka_cluster_$1_$2
+      labels:
+        topic: $3
+        partition: $4
+    - pattern: kafka.log<type=(.+), name=(.+), topic=(.+), partition=(.+)><>Value
+      name: kafka_log_$1_$2
+      labels:
+        topic: $3
+        partition: $4
+        topic_partition: $3_$4
+    - pattern: kafka.log<type=(.+), name=(.+)><>Value
+      name: kafka_log_$1_$2
+    - pattern: java.lang<type=(.+), name=(.+)><(.+)>(\w+)
+      name: java_lang_$1_$4_$3_$2
+      cache: true
+    - pattern: java.lang<name=(.+), type=(.+)><(.+)>(\w+)
+      name: java_lang_$2_$4_$3_$1
+      cache: true
+    - pattern: java.lang<type=(.+), name=(.+)><>(\w+)
+      name: java_lang_$1_$3_$2
+      cache: true
+    - pattern: java.lang<name=(.+), type=(.+)><>(\w+)
+      name: java_lang_$2_$3_$1
+      cache: true
+    - pattern: java.lang<type=(.*)>
+      cache: true
+    - pattern: java.nio<type=(.+), name=(.+)><>(\w+)
+      name: java_nio_$1_$3_$2
+      cache: true
 {{- end }}
