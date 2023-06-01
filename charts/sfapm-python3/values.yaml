@@ -225,7 +225,7 @@ sfapm_celery:
         cpu: 10m
         memory: 100Mi
     replicaCount: 1
-    command: "celery -A snappyflow worker -l $LOG_LEVEL -Q sftrace -c10 $CELERY_OPTS"
+    command: "celery -A snappyflow worker -l $LOG_LEVEL -Q sftrace -c15 $CELERY_OPTS"
 
   provision:
     resources:
