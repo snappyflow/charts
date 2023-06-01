@@ -24,6 +24,12 @@ data:
     - kafka.log:*
     - kafka.cluster:*
     rules:
+    - pattern: kafka.server<type=([^,]+), name=([^,]+)><>(FiveMinuteRate|OneMinuteRate|FifteenMinuteRate|Count)
+      name: kafka_server_$1_total_$2_$3    
+    - pattern: kafka.server<type=([^,]+), name=([^,]+), topic=([^,]+)><>(FiveMinuteRate|OneMinuteRate|FifteenMinuteRate|Count)
+      name: kafka_server_$1_$2_$4
+      labels:
+        topic: $3 
     - pattern: java.lang<type=MemoryPool, name=(.+)><Usage>used
       name: java_lang_MemoryPool_used__usage_$1
     - pattern : java.lang<type=Memory><(HeapMemoryUsage|NonHeapMemoryUsage)>(used|init|committed|max)
@@ -35,16 +41,11 @@ data:
     - pattern: java.lang<name=(.+), type=(.+)><(Usage)>(\w+)
       name: java_lang_$2_$4_$3_$1
       cache: true  
-    - pattern: kafka.server<type=([^,]+), name=([^,]+)><>(FiveMinuteRate)
-      name: kafka_server_$1_total_$2_$3      
-    - pattern: kafka.server<type=([^,]+), name=([^,]+), topic=([^,]+)><>(FiveMinuteRate)
-      name: kafka_server_$1_$2_$4
-      labels:
-        topic: $3  
     - pattern : kafka.server<type=(Fetch|Produce)><>(queue-size|byte-rate)
     - pattern : kafka.server<type=(Fetch|Produce|Request)><>(throttle-time)
     - pattern : kafka.server<type=(Request)><>(request_time)
     - pattern : kafka.controller<type=KafkaController, name=(.+)><>Value
+      name : kafka_controller_kafkacontroller_$1_value
     - pattern : kafka.server<type=KafkaRequestHandlerPool, name=RequestHandlerAvgIdlePercent><>FiveMinuteRate
       name : kafka_server_KafkaRequestHandlerPool_total_RequestHandlerAvgIdlePercent_FiveMinuteRate
     - pattern : kafka.log<type=Log, name=(.+), topic=(.+), partition=(.+)><>Value
