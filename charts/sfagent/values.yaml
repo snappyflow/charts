@@ -151,6 +151,12 @@ node_agent:
 
   kubelet_for_metadata: "Off"
 
+  # Fluentbit Memory Buffer Limit
+  mem_buf_limit_mb: 100
+  # Fluentbit Chunk Retry Limit for outgoing document
+  fluent_chunk_retry_limit: "5"
+  # Log level of node agent
+  debug: false
   nodeSelector: {}
 
 forwardmetric:
