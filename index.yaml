@@ -7354,6 +7354,20 @@ entries:
   sf-datapath-and-archival-gateway:
   - apiVersion: v2
     appVersion: 13.2.21
+    created: "2023-06-06T12:05:28.759066411Z"
+    dependencies:
+    - name: nginx
+      repository: https://charts.bitnami.com/bitnami
+      version: 13.2.21
+    description: A Helm chart for Kubernetes
+    digest: 8c48378269514d27c32710d4809a09fa628239064c03147ac1f7ab963214757f
+    name: sf-datapath-and-archival-gateway
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-datapath-and-archival-gateway-1.0.6/sf-datapath-and-archival-gateway-1.0.6.tgz
+    version: 1.0.6
+  - apiVersion: v2
+    appVersion: 13.2.21
     created: "2023-05-02T17:20:36.589107239Z"
     dependencies:
     - name: nginx
