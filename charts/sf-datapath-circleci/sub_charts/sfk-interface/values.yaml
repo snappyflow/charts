@@ -23,7 +23,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/sfk-interface
-  tag: 'master-2-0-163'
+  tag: 'master-2-0-164'
 nameOverride: ''
 nodeSelector: {}
 podAnnotations: {}
