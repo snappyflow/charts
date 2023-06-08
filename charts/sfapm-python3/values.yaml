@@ -93,7 +93,7 @@ sfapm:
     es_host: ""
     es_pass: ""
     es_port: ""
-    es_operating_mode: ""
+    es_operating_mode: "hot"
     kafka_api: ""
     arhiver_url: ""
     kafka_user: ""
