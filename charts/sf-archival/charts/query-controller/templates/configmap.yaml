@@ -59,7 +59,8 @@ data:
       "interval": {{ .Values.monitorInterval }},
       "intervalUnit": {{ .Values.monitorIntervalUnit | quote }},
       "internal_hive": {{ .Values.global.hive.internal.enabled }},
-      "maxAllowedQueriesPerJob": {{ .Values.parallelQuery.queryExecutionController.maxAllowedQueriesPerJob }}
+      "maxAllowedQueriesPerJob": {{ .Values.parallelQuery.queryExecutionController.maxAllowedQueriesPerJob }},
+      "maxQueriesPerCluster": {{ .Values.parallelQuery.queryExecutionController.maxQueriesPerCluster }}
     }
 
 ---

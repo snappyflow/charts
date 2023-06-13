@@ -42,6 +42,7 @@ parallelQuery:
     steppedParallelism: false
   queryExecutionController:
     maxAllowedQueriesPerJob: 5
+    maxQueriesPerCluster: 15
 executionControler:
   pullPolicy: IfNotPresent
   repository: snappyflowml/query-execution-controller
