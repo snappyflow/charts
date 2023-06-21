@@ -66,6 +66,13 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
+postgresqlOverrides:
+  host: ""
+  postgresqlDatabase: ""
+  postgresqlUsername: ""
+  postgresqlPassword: ""
+  servicePort: 5432
+
 podAnnotations:
   prometheus.io/scrape: "false"
 
