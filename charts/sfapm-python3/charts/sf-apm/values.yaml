@@ -1,0 +1,24 @@
+---
+enableDebug: false
+archiverEnabled: true
+nameOverride: ""
+fullnameOverride: ""
+podSecurityContext: {}
+sfapm:
+  image:
+    repository: snappyflowml/sfapm-server
+    tag: 'python3-0-0-2'
+    pullPolicy: IfNotPresent
+sfapmaffinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: role
+                operator: In
+                values:
+                  - server
+          topologyKey: kubernetes.io/hostname
+disable_server_side_cursors: false

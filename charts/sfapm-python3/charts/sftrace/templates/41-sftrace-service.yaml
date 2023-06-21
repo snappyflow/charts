@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sfapm.fullname" . }}-sftrace
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+    app: sftrace
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    role: sftrace-server
+spec:
+  type: {{ .Values.global.sftrace.service.type }}
+  ports:
+    - port: {{ .Values.global.sftrace.service.port }}
+      targetPort: http
+      protocol: TCP
+      nodePort: 32200
+      name: http
+  selector:
+    {{- include "sfapm.selectorLabels" . | nindent 4 }}
+    app: sftrace
+    role: sftrace-server

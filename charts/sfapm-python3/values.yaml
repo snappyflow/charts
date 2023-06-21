@@ -1,764 +1,5 @@
-# Default values for sfapm.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-# set to true to enable debug logs on
-# apm and vizbuilder
-enableDebug: false
-archiverEnabled: true
-nameOverride: ""
-fullnameOverride: ""
-imagePullSecrets: []
-
-sidecarLogger:
-  enabled: true
-
-  image:
-    repository: busybox
-    tag: latest
-    pullPolicy: Always
-
-  resources:
-    requests:
-      cpu: 10m
-      memory: 10Mi
-    limits:
-      cpu: 50m
-      memory: 50Mi
-
-mappingUpdator:
-  enabled: true
-
-  image:
-    repository: snappyflowml/plugin-mapping-updator
-    tag: 0.1.1
-    pullPolicy: Always
-
-  resources:
-    requests:
-      cpu: 10m
-      memory: 10Mi
-    limits:
-      cpu: 50m
-      memory: 50Mi
-
-sfapmui:
-  replicaCount: 1
-
-  autoscaling:
-    enabled: true
-    minReplicas: 1
-    maxReplicas: 2
-    # Below values are based on requests.
-    # Hence value > 100 needs to be calculated based on set limits
-    # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
-    targetCPUUtilizationPercentage: 1600
-    targetMemoryUtilizationPercentage: 160
-
-  image:
-    repository: snappyflowml/sfapm-ui
-    tag: 3.1.441
-    pullPolicy: IfNotPresent
-
-  resources:
-    limits:
-      cpu: 200m
-      memory: 200Mi
-    requests:
-      cpu: 10m
-      memory: 100Mi
-
-  service:
-    type: NodePort # this is the entrypoint change to Loadbalancer
-    nodePort: 30080
-
-  env: {}
-
-  tls:
-    enabled: true
-    # change these please provide base64 encode certificate and its keys
-    # use command base64 -w 0 <filename>
-    cert: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURrekNDQW51Z0F3SUJBZ0lVZG40T25CcnNKVEVyUWNmaFVGcDBZeVFOckt3d0RRWUpLb1pJaHZjTkFRRUwKQlFBd1dURUxNQWtHQTFVRUJoTUNRVlV4RXpBUkJnTlZCQWdNQ2xOdmJXVXRVM1JoZEdVeElUQWZCZ05WQkFvTQpHRWx1ZEdWeWJtVjBJRmRwWkdkcGRITWdVSFI1SUV4MFpERVNNQkFHQTFVRUF3d0piRzlqWVd4b2IzTjBNQjRYCkRUSXdNRFl3TlRFeE1UVXhORm9YRFRJeE1EWXdOVEV4TVRVeE5Gb3dXVEVMTUFrR0ExVUVCaE1DUVZVeEV6QVIKQmdOVkJBZ01DbE52YldVdFUzUmhkR1V4SVRBZkJnTlZCQW9NR0VsdWRHVnlibVYwSUZkcFpHZHBkSE1nVUhSNQpJRXgwWkRFU01CQUdBMVVFQXd3SmJHOWpZV3hvYjNOME1JSUJJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBUThBCk1JSUJDZ0tDQVFFQXY4N2RmZmZGOGdJcnhpYm5lVVRPZ2FnTXllMXc2RjVvZFI3MUcwRFZ4Q1NVdkhKS1Z5ODkKNUozZVBJd2NSbkJmQ25ONXJNaURkVmZuNWswMVUyUmhLYmswbDF2LzFSMmJJWTFldG1oS3NpbmlvbU5VbzAycApNNW1iTEhTWG9RRWdwT0ZtNUxNcVFVSkwrMkxWdFB2cU5JTzV1THEzYytTY1NVNnZhOFBaU2R3OUVVYnhyYk1qCm9LMHJSTnZJSUlhaVFpOEZJeFJ6VUZRbkYvSGlLSm80NHhsRnhDaGFvZTRHTUN2UVdGVUpOQVNteVZuR2hQYnEKVmFmK1FndEhndG5VNnF5RjIvc0NOQjlhVi94L0w0V0RTMzZUSmZsZlBxalJEMWkybzI5bGZDckVqeXBMaDNyeAoxc0ZudlBiQ1E0TFdvQmxQQkNVdlpSTWNMVVRKZFFjY0h3SURBUUFCbzFNd1VUQWRCZ05WSFE0RUZnUVVMWkxnCjE2RVNla1M1YXFleTMrTG03V1g0V1Jnd0h3WURWUjBqQkJnd0ZvQVVMWkxnMTZFU2VrUzVhcWV5MytMbTdXWDQKV1Jnd0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBTkJna3Foa2lHOXcwQkFRc0ZBQU9DQVFFQUF4bmFRMmpqWHR6eAozNlNmT0hCSzVFQ25Qb3I0dXp2NkVhQnR2Rlgwby9Pajh6SVVwbDFSVllUbXFJcEVIZUc5SVZocndFdi8vOUFRCnRZTncwaWpmUk1tQ0g2L0ZmQTZsWTdFcW5lN0hzVElHU0UxVllOcWwyVTkyN21BemROMUdqRzlpak1uZmpUSVUKeENBL2kyTE1JQ3R2RG5ESUtxdmJ3ZnBSeDFGNHRRL3BZVnp5UnFZRUxZcnZKSXpDTGpQNEs0VjFhdUcwMDh5VApNcHgrcDlWOEpTekhiVTlZdHVvRGJKWlBRVmlXSUNrbkMvWEdYc2VQMGJGQkc1L2Q1Y2xMdnpxM1dJOGRKWDRiClpFMUo2VU9EOWF5N3dJMkF6UUJ4dDNuUzE2cjgwSTBJQ2I4eHVMVVdFM1FVdEs0d256ZnhuZnZCSkVpYk4yQXEKRVpmOEY4MThyUT09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0KCg==
-    key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktjd2dnU2pBZ0VBQW9JQkFRQy96dDE5OThYeUFpdkcKSnVkNVJNNkJxQXpKN1hEb1htaDFIdlViUU5YRUpKUzhja3BYTHoza25kNDhqQnhHY0Y4S2MzbXN5SU4xVitmbQpUVFZUWkdFcHVUU1hXLy9WSFpzaGpWNjJhRXF5S2VLaVkxU2pUYWt6bVpzc2RKZWhBU0NrNFdia3N5cEJRa3Y3Cll0VzArK28wZzdtNHVyZHo1SnhKVHE5cnc5bEozRDBSUnZHdHN5T2dyU3RFMjhnZ2hxSkNMd1VqRkhOUVZDY1gKOGVJb21qampHVVhFS0ZxaDdnWXdLOUJZVlFrMEJLYkpXY2FFOXVwVnAvNUNDMGVDMmRUcXJJWGIrd0kwSDFwWAovSDh2aFlOTGZwTWwrVjgrcU5FUFdMYWpiMlY4S3NTUEtrdUhldkhXd1dlODlzSkRndGFnR1U4RUpTOWxFeHd0ClJNbDFCeHdmQWdNQkFBRUNnZ0VCQUt0ZTdqSXdBQ0Zib3pTbGFjYkZuU1BtdTVabW1LeGtQVHYzYnRMc3VKRkkKaGNOZzhkNjNqTHNIK1psckxaQVpzakNxUDVvS2hMbUEwdWJITU0vVExhU1RudE5sRlV5WjZSS3ZObUlQQ0QzcQpnbHpJRnNUWkRFWFlCZlpRTFhGaWlvSUdDV0pvV1daNUQxNEpUaHNud0hjdkFlNTBsSmZ0TjEyZitjZDA4bHl6CjV5Q1g1ODJsMnAwUUVDUlRQc0lVRGlHck9uYVpsY2k2bEhLZWIwbVdaR0Z0dEZGbytIZGdqcHIyTytreFN3SVMKY1p5MDk3RFJyODgwMzkzbVdUaDVnODFFeGpheVQwUUlQSGNlSUFORkRmUW9WSnhQMXAraEtNTjdnMTJIWTBpMQowOXoyU3czR1ZhNXFlV2NTdUkzOTg3aUtDNTRQeHBYK3M3UlQ4aWRIaUtFQ2dZRUE2alZvdDlRU3B3ZlQ3VzVzCnBDSFNIcTV2NDUvVFFLNlovRWR0c3RQaE04aFhzZ2ZYbThhbE9kYXZJbVY2d2IxMHZsRnoxemg4cEh6RCtZdEwKSXJ1clBRL3lDR0VjeS9vZmtLcmF3UGxrUjE1YkVuYVlBWTIxelVObGRsVFZCOUlNVFcxYjRWaEpXQ0RQTnZWMApIMlVsM0xYWngxM2VaZklZT2IrMXJLT0t4VmtDZ1lFQTBhZUZoa0g0cVNUaHdNVUNpTm9aVXNsVlFkY2NMSGw4ClJZZjR3dHhZTnV1VTRPZm1JVE1XZWVtaEdENTNVQjBoVnp1dkc1UmgveDhQRDQyWm5NY3JpQk9oNEx4MGVGSksKMkR6czVjNmwyOVVlRS9laGJmNFNxR3NieEhwUHNDRWU4WnRTYUFoems2Z1R5VG13bEVOTmJqZTYrQnRCM0hXeApuRXZLZmMxWHBqY0NnWUJCNjVKejJ6Nzh3RmxJQk1LVFYrbWFOU0xOQUprbkpYMjE0aXpnSG43T1lsODhmclNTCjVkQnZmUnVDSk9udVNmTG45bWtTZEpXd2ZtVnlnV0ErZ0cvc0dlYlhzTzI0QThpS29XdzgwSFVIR1dtc3dyQjYKRDNiU05Wd0RlRkVWaUd0cUI1UEswMXloYjJxalgyYTF4M1Jtc05DQktzeUVDU1lFYXc4cGJrYUswUUtCZ0RIYworUG5raU9LWnZnT2VGNnM2ekJrUGYzS0lXZEFPR010a3VucUY4NGtrWUtWWklqZTFNZHhPLzV5SGh0TU1DcGozCnZmNytQSXh6ODU0TVhJT1lMemRQREFvcWFEMFJ2WEZPbEQxWDk4U2dIR1k5V0N5VDZCWWNXMTlRZzlGdEh6SHgKY2hrQ0laTDF2N2IxUEpVV3FMelZEbWZoKzdrV1dPYkdjK09WeWduakFvR0FLajRnYzFOMFkxQXlEQzczZEZxTQo2ZUJ2QjIzTmNxNmx6M0cxVHl5b0RCWDJOeDFmQ2l1aVNzSTdJbkZnYTBWQ0w5RE5CVjNaYjlKdGIrdlhZcmlRCmhpQU9BR2xSSGlOTXJ6MXo2aUhGd1FtYmRMU1JzUEFocC8xeE1jd0dEVWpuYmVoN1ZjRFZjbE1EUUlXRUNibnEKc1B3T2dwZ05HY1FqejhlcjFzLzNnNms9Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0KCg==
-
-sfapm:
-  replicaCount: 2
-
-  cloud: ""
-
-  ingress:
-    enabled: false
-    es_user: ""
-    es_http: "http"
-    es_host: ""
-    es_pass: ""
-    es_port: ""
-    es_operating_mode: "hot"
-    kafka_api: ""
-    arhiver_url: ""
-    kafka_user: ""
-    kafka_pwd: ""
-  azure:
-    storage_account_name: ""
-    storage_account_key: ""
-
-
-  quotasEnabled: false
-  rollover:
-    custom_config: false
-    metric:
-      rollover_max_age: 10d
-      rollover_max_docs: "None"
-      rollover_max_size: 30gb
-    log:
-      rollover_max_age: 10d
-      rollover_max_docs: "None"
-      rollover_max_size: 30gb
-    trace:
-      rollover_max_age: 1d
-      rollover_max_docs: "None"
-      rollover_max_size: 30gb
-    rum:
-      rollover_max_age: 1d
-      rollover_max_docs: "None"
-      rollover_max_size: 30gb
-    profile:
-      rollover_max_age: 1d
-      rollover_max_docs: "None"
-      rollover_max_size: 30gb
-    control:
-      rollover_max_age: 1d
-      rollover_max_docs: "None"
-      rollover_max_size: 30gb
-
-  serverid: ""
-
-  switchOffPrestoCoord: "true"
-
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-    maxReplicas: 3
-    # Below values are based on requests.
-    # Hence value > 100 needs to be calculated based on set limits
-    # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
-    targetCPUUtilizationPercentage: 1600
-    targetMemoryUtilizationPercentage: 120
-
-  image:
-    repository: snappyflowml/sfapm-server
-    tag: 4.0.421-python3
-    pullPolicy: IfNotPresent
-
-  resources:
-    limits:
-      cpu: 1000m
-      memory: 768Mi
-    requests:
-      cpu: 50m
-      memory: 512Mi
-
-  service:
-    type: ClusterIP
-    port: 8000
-
-sfapm_celery:
-  env:
-    C_FORCE_ROOT: true
-    CELERY_OPTS: "-O fair --max-tasks-per-child 20 -P gevent"
-
-  beat:
-    resources:
-      limits:
-        cpu: 500m
-        memory: 512Mi
-      requests:
-        cpu: 10m
-        memory: 100Mi
-    command: "celery -A snappyflow beat -l $LOG_LEVEL"
-
-  default:
-    resources:
-      limits:
-        cpu: 500m
-        memory: 512Mi
-      requests:
-        cpu: 10m
-        memory: 100Mi
-    replicaCount: 1
-    command: "celery -A snappyflow worker -l $LOG_LEVEL -Q default -c10 $CELERY_OPTS"
-
-  notify:
-    resources:
-      limits:
-        cpu: 500m
-        memory: 512Mi
-      requests:
-        cpu: 10m
-        memory: 100Mi
-    replicaCount: 1
-    command: "celery -A snappyflow worker -l $LOG_LEVEL -Q notify -c20 $CELERY_OPTS"
-
-  periodic:
-    resources:
-      limits:
-        cpu: 1000m
-        memory: 512Mi
-      requests:
-        cpu: 10m
-        memory: 100Mi
-    replicaCount: 3
-    autoscaling:
-      enabled: true
-      minReplicas: 3
-      maxReplicas: 6
-      targetCPUUtilizationPercentage: 8000
-      targetMemoryUtilizationPercentage: 410
-    command: "celery -A snappyflow worker -l $LOG_LEVEL -Q periodic -c5 $CELERY_OPTS"
-
-  sftrace:
-    resources:
-      limits:
-        cpu: 1000m
-        memory: 768Mi
-      requests:
-        cpu: 10m
-        memory: 100Mi
-    replicaCount: 1
-    command: "celery -A snappyflow worker -l $LOG_LEVEL -Q sftrace -c10 $CELERY_OPTS"
-
-  provision:
-    resources:
-      limits:
-        cpu: 500m
-        memory: 512Mi
-      requests:
-        cpu: 10m
-        memory: 100Mi
-    replicaCount: 1
-    command: "celery -A snappyflow worker -l $LOG_LEVEL -Q provision -c1 $CELERY_OPTS"
-
-vizbuilder:
-
-  pgBouncer:
-    enabled: false
-    dbHost: ""
-    dbPort: ""
-    dbUser: ""
-    dbPassword: ""
-
-  replicaCount: 2
-
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-    maxReplicas: 3
-    # Below values are based on requests.
-    # Hence value > 100 needs to be calculated based on set limits
-    # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
-    targetCPUUtilizationPercentage: 8000
-    targetMemoryUtilizationPercentage: 240
-
-  image:
-    repository: snappyflowml/sfapm-vizbuilder
-    tag: 4.0.219-python3
-    pullPolicy: IfNotPresent
-
-  resources:
-    limits:
-      cpu: 1000m
-      memory: 768Mi
-    requests:
-      cpu: 10m
-      memory: 256Mi
-
-  service:
-    type: ClusterIP
-    port: 8000
-
-vizbuilder_celery:
-  env:
-    C_FORCE_ROOT: true
-    CELERY_OPTS: "-O fair --max-tasks-per-child 20 -P gevent"
-    MAXIMUM_RUNNING_TASKS: 10
-
-
-  beat:
-    resources:
-      limits:
-        cpu: 500m
-        memory: 512Mi
-      requests:
-        cpu: 10m
-        memory: 100Mi
-    command: "celery -A vizbuilder beat -l $LOG_LEVEL"
-
-  alert:
-    resources:
-      limits:
-        cpu: 1000m
-        memory: 768Mi
-      requests:
-        cpu: 10m
-        memory: 100Mi
-    replicaCount: 3
-    command: "celery -A vizbuilder worker -l $LOG_LEVEL -Q alert -c $MAXIMUM_RUNNING_TASKS $CELERY_OPTS & celery -A vizbuilder flower --address=localhost --port=5566"
-
-    autoscaling:
-      enabled: true
-      minReplicas: 3
-      maxReplicas: 5
-      scaleUpPeriod: 30
-      scaleDownPeriod: 60
-    
-    podAnnotations:
-      prometheus.io/path: /metrics
-      prometheus.io/port: "2112"
-      prometheus.io/scrape: "true"
-    
-    terminationGracePeriodSeconds: 300
-    
-    celeryAlertPrometheusExporter:
-      image:
-        repository: snappyflowml/celery-alert-prometheus-exporter
-        tag: latest
-        pullPolicy: Always
-      metricsInterval: 3
-      resources:
-        requests:
-          cpu: 100m
-          memory: 200Mi
-
-  logops:
-    resources:
-      limits:
-        cpu: 500m
-        memory: 512Mi
-      requests:
-        cpu: 10m
-        memory: 100Mi
-    replicaCount: 1
-    command: "celery -A vizbuilder worker -l $LOG_LEVEL -Q logops -c10 $CELERY_OPTS"
-
-  signature:
-    resources:
-      limits:
-        cpu: 500m
-        memory: 512Mi
-      requests:
-        cpu: 10m
-        memory: 100Mi
-    replicaCount: 1
-    command: "celery -A vizbuilder worker -l $LOG_LEVEL -Q signature -c10 $CELERY_OPTS"
-
-  provisiontemplate:
-    resources:
-      limits:
-        cpu: 500m
-        memory: 512Mi
-      requests:
-        cpu: 10m
-        memory: 100Mi
-    replicaCount: 1
-    command: "celery -A vizbuilder worker -l $LOG_LEVEL -Q provisiontemplate -c1 $CELERY_OPTS"
-
-commands:
-  replicaCount: 2
-
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-    maxReplicas: 3
-    # Below values are based on requests.
-    # Hence value > 100 needs to be calculated based on set limits
-    # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
-    targetCPUUtilizationPercentage: 8000
-    targetMemoryUtilizationPercentage: 240
-
-  image:
-    repository: snappyflowml/sfapm-commands
-    tag: 1.0.29
-    pullPolicy: IfNotPresent
-
-  resources:
-    limits:
-      cpu: 1000m
-      memory: 768Mi
-    requests:
-      cpu: 100m
-      memory: 256Mi
-
-  service:
-    type: ClusterIP
-    port: 8000
-
-commands_celery:
-  env:
-    C_FORCE_ROOT: true
-    CELERY_OPTS: "-O fair --max-tasks-per-child 20 -P gevent"
-
-  beat:
-    resources:
-      limits:
-        cpu: 500m
-        memory: 512Mi
-      requests:
-        cpu: 100m
-        memory: 100Mi
-    command: "celery -A command_server beat --scheduler django -l $LOG_LEVEL"
-
-  default:
-    resources:
-      limits:
-        cpu: 1000m
-        memory: 768Mi
-      requests:
-        cpu: 100m
-        memory: 100Mi
-    replicaCount: 1
-    command: "celery -A command_server worker -l $LOG_LEVEL -Q default -c10 $CELERY_OPTS"
-
-esmanager:
-  replicaCount: 2
-
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-    maxReplicas: 3
-    # Below values are based on requests.
-    # Hence value > 100 needs to be calculated based on set limits
-    # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
-    targetCPUUtilizationPercentage: 8000
-    targetMemoryUtilizationPercentage: 240
-
-  image:
-    repository: snappyflowml/sfapm-esmanager
-    tag: 1.0.55
-    pullPolicy: IfNotPresent
-
-  resources:
-    limits:
-      cpu: 1000m
-      memory: 768Mi
-    requests:
-      cpu: 100m
-      memory: 256Mi
-
-  service:
-    type: ClusterIP
-    port: 8000
-
-  # Movement to warm node happens based on below threshold & pre-requisites
-  warm_movement_rules:
-    # Add all the threshold to trigger the warm movement in this section
-    # Add the rule name and condition under the rule as dict
-    # In the below, example, rule is "warm_disk_percentage" and the in-built supported conditions are:
-    # gt (greater than), lt (less than), eq (equals to), neq (not equals to) and bool (boolean)
-    # All accepts string and number input
-    # There is a logical OR between all the threshold rules
-    # i.e threshold is met if any one of the rule satisfies
-    thresholds:
-      - hot_disk_percentage:
-          gt: 80
-      - hot_store_to_heap:
-          gt: 45
-    # Add all the prereqs rules under this section
-    # These rules are considered for eligibility check for the warm movement
-    # Rules are check only after any one of the threshold is met
-    # There is a logical AND among all the pre-req rules in one group
-    # i.e all rules should meet under one group to pass
-    # Custom configurations to decide the parameters related to hot-warm / hot-optimized cluster jobs
-    # e.g., maximum indices to backup, merge etc
-    prerequisties:
-      {}
-
-  # hot-warm / hot-optimized related variables
-  warm_allocated_freedisk_percent: 80
-  min_warm_nodes: 2
-  max_relocating_index: 2
-  max_shrink_job: 2
-  max_forcemerge_job: 2
-
-  # snapshot/restore related variables
-  max_ongoing_backups: 3
-  max_ongoing_restores: 3
-
-esmanager_celery:
-  env:
-    C_FORCE_ROOT: true
-    CELERY_OPTS: "-O fair --max-tasks-per-child 200 -P solo"
-  beat:
-    resources:
-      limits:
-        cpu: 500m
-        memory: 512Mi
-      requests:
-        cpu: 100m
-        memory: 100Mi
-    command: "celery -A elasticsearch_manager beat --scheduler django -l $LOG_LEVEL"
-
-  default:
-    resources:
-      limits:
-        cpu: 1000m
-        memory: 768Mi
-      requests:
-        cpu: 100m
-        memory: 100Mi
-    replicaCount: 2
-    command: "celery -A elasticsearch_manager worker -l $LOG_LEVEL -Q es_mng_default  $CELERY_OPTS"
-
-sftrace:
-  replicaCount: 2
-
-  terminationGracePeriodSeconds: 30
-
-  maximumQueueEvents: 40000
-
-  # Helm values for sftrace-server-prometheus-exporter container
-  sftraceServerPrometheusExporter:
-    metricsInterval: 3
-    image:
-      repository: snappyflowml/sftrace-server-prometheus-exporter
-      tag: latest
-      pullPolicy: Always
-    resources:
-      requests:
-        cpu: 100m
-        memory: 200Mi
-
-  podAnnotations:
-    prometheus.io/path: /metrics
-    prometheus.io/port: "2112"
-    prometheus.io/scrape: "true"
-
-  image:
-    repository: snappyflowml/sftrace-server
-    tag: latest
-    pullPolicy: Always
-  
-  resources:
-    requests:
-      cpu: 10m
-      memory: 50Mi
-    limits:
-      cpu: 1
-      memory: 2Gi
-
-  service:
-    type: NodePort
-    port: 8200
-    jaegerport: 14268
-
-  output:
-    # Enable either Kafka or Kafkarest as output plugin for trace server
-    kafka:
-      enabled: true
-      # List of Kafka brokers
-      hosts: ["kafka-cp-kafka-headless.kafka:9092"]
-    kafkarest:
-      enabled: false
-      host: "sf-datapath-cp-kafka-rest-external.kafka"
-      port: 8082
-      token: " "
-
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-    maxReplicas: 5
-    # This value is calculated as 50 % of max events trace queue can buffer 
-    scaleUpPeriod: 5
-    scaleDownPeriod: 120
-
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
-  # The names of the image pull secrets to be attached to this service account
-  imagePullSecrets: []
-  # disable mounting sa token inside pods
-  automountServiceAccountToken: false
-
-podAnnotations:
-  prometheus.io/scrape: "false"
-
-podSecurityContext:
-  {}
-  # fsGroup: 2000
-
-securityContext:
-  {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
-
-sfapmaffinity:
-  podAntiAffinity:
-    preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 1
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-              - key: "role"
-                operator: In
-                values:
-                  - server
-          topologyKey: "kubernetes.io/hostname"
-
-redis:
-  image:
-    repository: redis
-    pullPolicy: IfNotPresent
-    tag: "5.0"
-
-  persistence:
-    enabled: true
-    storageClass: ""
-    size: 4Gi
-
-  resources:
-    limits:
-      cpu: 1000m
-      memory: 500Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi
-
-  config:
-    redis.conf: |-
-      appendonly yes
-      maxmemory 300mb
-      maxmemory-policy allkeys-lru
-
-  podAnnotations:
-    prometheus.io/scrape: "false"
-
-# User Management and Identity management system
-keycloak:
-  # enabled true for keycloak server
-  # false for django internal db for user management
-  enabled: false
-  serverIP: "" # eg: https://IP:port/auth/
-  user: "" # admin user email ID
-  password: "" # admin user password
-  realm: ""
-  clientid: ""
-  clientkey: "" # keycloak admin client key
-  publickey: "" # keycloak public key
-  supportemail: "" # support emailid where upgrade request sent
-  websiteurl: "" # websiteURL
-  defaultprofile: "demo-profile" # default profile for demo apps
-
-# Google client configuration
-google_client_id: ""
-google_client_secret: ""
-google_callback_url: "/portal/gauth"
-
-# Usage management system
-usage_system:
-  # Usage system host IP/Domain
-  enabled: false
-  host: ""
-  # Port number for usage system server
-  port: 443
-  # tls true for HTTPS
-  tls: False
-
-# Ingest Usage system
-ingest_usage_system:
-  # Usage system host IP/Domain
-  enabled: false
-  host: ""
-  # Port number for usage system server
-  port: 443
-  # tls true for HTTPS
-  tls: False
-
-# pprof-server config
-pprof:
-  image:
-    repository: snappyflowml/pprof-server
-    pullPolicy: IfNotPresent
-    tag: latest
-
-  replicaCount: 1
-
-  resources:
-    requests:
-      cpu: 50m
-      memory: 100Mi
-    limits:
-      cpu: 1
-      memory: 512Mi
-
-  service:
-    type: ClusterIP
-    port: 8090
-
-# set this to true/True if using pg bouncer
-disable_server_side_cursors: false
-
-postgresql:
-  # enabled true deploys postgresql as statefull set on the same cluster
-  enabled: true
-
-  # if enabled false, chart will connect to external database
-  # create two data bases with names snappyflow and vizbuilder
-  # create a user and grant access to database snappyflow and vizbuilder
-  # provide external section if enabled is false
-
-  external:
-    dbHost: ""
-    dbPort: ""
-    dbUser: ""
-    dbPassword: ""
-
-  image:
-    repository: postgres
-    pullPolicy: IfNotPresent
-    tag: "9.6"
-
-  persistence:
-    enabled: true
-    storageClass: ""
-    size: 8Gi
-
-  # when local postgresql is enabled below values are used to configure database
-  rootPassword: postgres
-  rootUser: postgres
-  multidb: snappyflow;vizbuilder;commands;elasticsearch_manager
-  multidbUser: snappyflow
-  multidbUserPassord: maplelabs
-
-cloud:
-  aws:
-    enable: true
-  gcs:
-    enable: false
-    # Set all of the below entities when Google-Service-Account is being used. Recommended approach unless K8s is running outside GCP (K8s outside GCP flow which will use JSON service-account-keys is not yet implemented)
-    use_google_service_account: true
-    service_account: "XXXX-compute@developer.gserviceaccount.com OR XXXX@XXXX.iam.gserviceaccount.com"
-    region: us-west1
-    zone: us-west1-c
-  datacenter:
-    enable: false
-
 global:
   sfappname: sf-portal-app
-  sfdatapath_appname: sf-data-path
   sfprojectname: snappyflow-app
   sfappname_key: snappyflow/appname
   sfprojectname_key: snappyflow/projectname
@@ -766,10 +7,562 @@ global:
   nginx_ua_parsing: true
   enable_sftrace: false
   key: ""
-
   sfNodeManager:
     enabled: false
     priorityClassName: sf-critical-pod
   sfScheduler:
     enabled: false
     schedulerName: sf-scheduler
+
+  imagePullSecrets:
+  - name: xxx
+
+  archiverEnabled: true
+
+  vizbuilder:
+    pgBouncer:
+      enabled: false
+      dbHost: ""
+      dbPort: ""
+      dbUser: ""
+      dbPassword: ""
+    replicaCount: 2
+    autoscaling:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 3
+      targetCPUUtilizationPercentage: 8000
+      targetMemoryUtilizationPercentage: 240
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 768Mi
+      requests:
+        cpu: 10m
+        memory: 256Mi
+    service:
+      type: ClusterIP
+      port: 8000
+
+  vizbuilder_celery:
+    env:
+      C_FORCE_ROOT: true
+      CELERY_OPTS: -O fair --max-tasks-per-child 20 -P gevent
+      MAXIMUM_RUNNING_TASKS: 10
+    beat:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 10m
+          memory: 100Mi
+      command: celery -A vizbuilder beat -l $LOG_LEVEL
+    alert:
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 768Mi
+        requests:
+          cpu: 10m
+          memory: 100Mi
+      replicaCount: 3
+      command: celery -A vizbuilder worker -l $LOG_LEVEL -Q alert -c
+        $MAXIMUM_RUNNING_TASKS $CELERY_OPTS & celery -A vizbuilder flower
+        --address=localhost --port=5566
+      autoscaling:
+        enabled: true
+        minReplicas: 3
+        maxReplicas: 5
+        scaleUpPeriod: 30
+        scaleDownPeriod: 60
+      podAnnotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "2112"
+        prometheus.io/scrape: "true"
+      terminationGracePeriodSeconds: 300
+      celeryAlertPrometheusExporter:
+        metricsInterval: 3
+        resources:
+          requests:
+            cpu: 100m
+            memory: 200Mi
+    logops:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 10m
+          memory: 100Mi
+      replicaCount: 1
+      command: celery -A vizbuilder worker -l $LOG_LEVEL -Q logops -c10 $CELERY_OPTS
+    signature:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 10m
+          memory: 100Mi
+      replicaCount: 1
+      command: celery -A vizbuilder worker -l $LOG_LEVEL -Q signature -c10 $CELERY_OPTS
+    provisiontemplate:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 10m
+          memory: 100Mi
+      replicaCount: 1
+      command: celery -A vizbuilder worker -l $LOG_LEVEL -Q provisiontemplate -c1
+        $CELERY_OPTS
+
+  sidecarLogger:
+    enabled: true
+    image:
+      pullPolicy: Always
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+      limits:
+        cpu: 50m
+        memory: 50Mi
+
+  postgresql:
+    enabled: true
+    external:
+      dbHost: ""
+      dbPort: ""
+      dbUser: ""
+      dbPassword: ""
+    image:
+      pullPolicy: IfNotPresent
+    persistence:
+      enabled: true
+      storageClass: ""
+      size: 8Gi
+    rootPassword: postgres
+    rootUser: postgres
+    multidb: snappyflow;vizbuilder;commands;elasticsearch_manager
+    multidbUser: snappyflow
+    multidbUserPassord: maplelabs
+
+  redis:
+    image:
+      pullPolicy: IfNotPresent
+
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ""
+    imagePullSecrets: []
+    automountServiceAccountToken: false
+
+  podAnnotations:
+    prometheus.io/scrape: "false"
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  cloud:
+    aws:
+      enable: true
+    gcs:
+      enable: false
+      use_google_service_account: true
+      service_account: XXXX-compute@developer.gserviceaccount.com OR
+        XXXX@XXXX.iam.gserviceaccount.com
+      region: us-west1
+      zone: us-west1-c
+    datacenter:
+      enable: false
+
+  securityContext: {}
+
+  sfapmui:
+    replicaCount: 1
+
+    autoscaling:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 2
+      # Below values are based on requests.
+      # Hence value > 100 needs to be calculated based on set limits
+      # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
+      targetCPUUtilizationPercentage: 1600
+      targetMemoryUtilizationPercentage: 160
+
+    resources:
+      limits:
+        cpu: 200m
+        memory: 200Mi
+      requests:
+        cpu: 10m
+        memory: 100Mi
+
+    service:
+      type: NodePort # this is the entrypoint change to Loadbalancer
+      nodePort: 30080
+      
+    env: {}
+
+    tls:
+      enabled: true
+      # change these please provide base64 encode certificate and its keys
+      # use command base64 -w 0 <filename>
+      cert: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURrekNDQW51Z0F3SUJBZ0lVZG40T25CcnNKVEVyUWNmaFVGcDBZeVFOckt3d0RRWUpLb1pJaHZjTkFRRUwKQlFBd1dURUxNQWtHQTFVRUJoTUNRVlV4RXpBUkJnTlZCQWdNQ2xOdmJXVXRVM1JoZEdVeElUQWZCZ05WQkFvTQpHRWx1ZEdWeWJtVjBJRmRwWkdkcGRITWdVSFI1SUV4MFpERVNNQkFHQTFVRUF3d0piRzlqWVd4b2IzTjBNQjRYCkRUSXdNRFl3TlRFeE1UVXhORm9YRFRJeE1EWXdOVEV4TVRVeE5Gb3dXVEVMTUFrR0ExVUVCaE1DUVZVeEV6QVIKQmdOVkJBZ01DbE52YldVdFUzUmhkR1V4SVRBZkJnTlZCQW9NR0VsdWRHVnlibVYwSUZkcFpHZHBkSE1nVUhSNQpJRXgwWkRFU01CQUdBMVVFQXd3SmJHOWpZV3hvYjNOME1JSUJJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBUThBCk1JSUJDZ0tDQVFFQXY4N2RmZmZGOGdJcnhpYm5lVVRPZ2FnTXllMXc2RjVvZFI3MUcwRFZ4Q1NVdkhKS1Z5ODkKNUozZVBJd2NSbkJmQ25ONXJNaURkVmZuNWswMVUyUmhLYmswbDF2LzFSMmJJWTFldG1oS3NpbmlvbU5VbzAycApNNW1iTEhTWG9RRWdwT0ZtNUxNcVFVSkwrMkxWdFB2cU5JTzV1THEzYytTY1NVNnZhOFBaU2R3OUVVYnhyYk1qCm9LMHJSTnZJSUlhaVFpOEZJeFJ6VUZRbkYvSGlLSm80NHhsRnhDaGFvZTRHTUN2UVdGVUpOQVNteVZuR2hQYnEKVmFmK1FndEhndG5VNnF5RjIvc0NOQjlhVi94L0w0V0RTMzZUSmZsZlBxalJEMWkybzI5bGZDckVqeXBMaDNyeAoxc0ZudlBiQ1E0TFdvQmxQQkNVdlpSTWNMVVRKZFFjY0h3SURBUUFCbzFNd1VUQWRCZ05WSFE0RUZnUVVMWkxnCjE2RVNla1M1YXFleTMrTG03V1g0V1Jnd0h3WURWUjBqQkJnd0ZvQVVMWkxnMTZFU2VrUzVhcWV5MytMbTdXWDQKV1Jnd0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBTkJna3Foa2lHOXcwQkFRc0ZBQU9DQVFFQUF4bmFRMmpqWHR6eAozNlNmT0hCSzVFQ25Qb3I0dXp2NkVhQnR2Rlgwby9Pajh6SVVwbDFSVllUbXFJcEVIZUc5SVZocndFdi8vOUFRCnRZTncwaWpmUk1tQ0g2L0ZmQTZsWTdFcW5lN0hzVElHU0UxVllOcWwyVTkyN21BemROMUdqRzlpak1uZmpUSVUKeENBL2kyTE1JQ3R2RG5ESUtxdmJ3ZnBSeDFGNHRRL3BZVnp5UnFZRUxZcnZKSXpDTGpQNEs0VjFhdUcwMDh5VApNcHgrcDlWOEpTekhiVTlZdHVvRGJKWlBRVmlXSUNrbkMvWEdYc2VQMGJGQkc1L2Q1Y2xMdnpxM1dJOGRKWDRiClpFMUo2VU9EOWF5N3dJMkF6UUJ4dDNuUzE2cjgwSTBJQ2I4eHVMVVdFM1FVdEs0d256ZnhuZnZCSkVpYk4yQXEKRVpmOEY4MThyUT09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0KCg==
+      key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktjd2dnU2pBZ0VBQW9JQkFRQy96dDE5OThYeUFpdkcKSnVkNVJNNkJxQXpKN1hEb1htaDFIdlViUU5YRUpKUzhja3BYTHoza25kNDhqQnhHY0Y4S2MzbXN5SU4xVitmbQpUVFZUWkdFcHVUU1hXLy9WSFpzaGpWNjJhRXF5S2VLaVkxU2pUYWt6bVpzc2RKZWhBU0NrNFdia3N5cEJRa3Y3Cll0VzArK28wZzdtNHVyZHo1SnhKVHE5cnc5bEozRDBSUnZHdHN5T2dyU3RFMjhnZ2hxSkNMd1VqRkhOUVZDY1gKOGVJb21qampHVVhFS0ZxaDdnWXdLOUJZVlFrMEJLYkpXY2FFOXVwVnAvNUNDMGVDMmRUcXJJWGIrd0kwSDFwWAovSDh2aFlOTGZwTWwrVjgrcU5FUFdMYWpiMlY4S3NTUEtrdUhldkhXd1dlODlzSkRndGFnR1U4RUpTOWxFeHd0ClJNbDFCeHdmQWdNQkFBRUNnZ0VCQUt0ZTdqSXdBQ0Zib3pTbGFjYkZuU1BtdTVabW1LeGtQVHYzYnRMc3VKRkkKaGNOZzhkNjNqTHNIK1psckxaQVpzakNxUDVvS2hMbUEwdWJITU0vVExhU1RudE5sRlV5WjZSS3ZObUlQQ0QzcQpnbHpJRnNUWkRFWFlCZlpRTFhGaWlvSUdDV0pvV1daNUQxNEpUaHNud0hjdkFlNTBsSmZ0TjEyZitjZDA4bHl6CjV5Q1g1ODJsMnAwUUVDUlRQc0lVRGlHck9uYVpsY2k2bEhLZWIwbVdaR0Z0dEZGbytIZGdqcHIyTytreFN3SVMKY1p5MDk3RFJyODgwMzkzbVdUaDVnODFFeGpheVQwUUlQSGNlSUFORkRmUW9WSnhQMXAraEtNTjdnMTJIWTBpMQowOXoyU3czR1ZhNXFlV2NTdUkzOTg3aUtDNTRQeHBYK3M3UlQ4aWRIaUtFQ2dZRUE2alZvdDlRU3B3ZlQ3VzVzCnBDSFNIcTV2NDUvVFFLNlovRWR0c3RQaE04aFhzZ2ZYbThhbE9kYXZJbVY2d2IxMHZsRnoxemg4cEh6RCtZdEwKSXJ1clBRL3lDR0VjeS9vZmtLcmF3UGxrUjE1YkVuYVlBWTIxelVObGRsVFZCOUlNVFcxYjRWaEpXQ0RQTnZWMApIMlVsM0xYWngxM2VaZklZT2IrMXJLT0t4VmtDZ1lFQTBhZUZoa0g0cVNUaHdNVUNpTm9aVXNsVlFkY2NMSGw4ClJZZjR3dHhZTnV1VTRPZm1JVE1XZWVtaEdENTNVQjBoVnp1dkc1UmgveDhQRDQyWm5NY3JpQk9oNEx4MGVGSksKMkR6czVjNmwyOVVlRS9laGJmNFNxR3NieEhwUHNDRWU4WnRTYUFoems2Z1R5VG13bEVOTmJqZTYrQnRCM0hXeApuRXZLZmMxWHBqY0NnWUJCNjVKejJ6Nzh3RmxJQk1LVFYrbWFOU0xOQUprbkpYMjE0aXpnSG43T1lsODhmclNTCjVkQnZmUnVDSk9udVNmTG45bWtTZEpXd2ZtVnlnV0ErZ0cvc0dlYlhzTzI0QThpS29XdzgwSFVIR1dtc3dyQjYKRDNiU05Wd0RlRkVWaUd0cUI1UEswMXloYjJxalgyYTF4M1Jtc05DQktzeUVDU1lFYXc4cGJrYUswUUtCZ0RIYworUG5raU9LWnZnT2VGNnM2ekJrUGYzS0lXZEFPR010a3VucUY4NGtrWUtWWklqZTFNZHhPLzV5SGh0TU1DcGozCnZmNytQSXh6ODU0TVhJT1lMemRQREFvcWFEMFJ2WEZPbEQxWDk4U2dIR1k5V0N5VDZCWWNXMTlRZzlGdEh6SHgKY2hrQ0laTDF2N2IxUEpVV3FMelZEbWZoKzdrV1dPYkdjK09WeWduakFvR0FLajRnYzFOMFkxQXlEQzczZEZxTQo2ZUJ2QjIzTmNxNmx6M0cxVHl5b0RCWDJOeDFmQ2l1aVNzSTdJbkZnYTBWQ0w5RE5CVjNaYjlKdGIrdlhZcmlRCmhpQU9BR2xSSGlOTXJ6MXo2aUhGd1FtYmRMU1JzUEFocC8xeE1jd0dEVWpuYmVoN1ZjRFZjbE1EUUlXRUNibnEKc1B3T2dwZ05HY1FqejhlcjFzLzNnNms9Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0KCg==
+
+  pprof:
+    replicaCount: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 100Mi
+      limits:
+        cpu: 1
+        memory: 512Mi
+    service:
+      type: ClusterIP
+      port: 8090
+
+  commands:
+    replicaCount: 2
+    autoscaling:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 3
+      # Below values are based on requests.
+      # Hence value > 100 needs to be calculated based on set limits
+      # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
+      targetCPUUtilizationPercentage: 8000
+      targetMemoryUtilizationPercentage: 240
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 768Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+    service:
+      type: ClusterIP
+      port: 8000
+
+  commands_celery:
+    env:
+      C_FORCE_ROOT: true
+      CELERY_OPTS: "-O fair --max-tasks-per-child 20 -P gevent"
+    beat:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 100Mi
+      command: "celery -A command_server beat --scheduler django -l $LOG_LEVEL"
+
+    default:
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 768Mi
+        requests:
+          cpu: 100m
+          memory: 100Mi
+      replicaCount: 1
+      command: "celery -A command_server worker -l $LOG_LEVEL -Q default -c10 $CELERY_OPTS"
+
+  sfapm:
+    replicaCount: 2
+    cloud: ""
+    ingress:
+      enabled: false
+      es_user: ""
+      es_http: http
+      es_host: ""
+      es_pass: ""
+      es_port: ""
+      es_operating_mode: ""
+      kafka_api: ""
+      arhiver_url: ""
+      kafka_user: ""
+      kafka_pwd: ""
+    azure:
+      storage_account_name: ""
+      storage_account_key: ""
+    quotasEnabled: false
+    rollover:
+      custom_config: false
+      metric:
+        rollover_max_age: 10d
+        rollover_max_docs: None
+        rollover_max_size: 30gb
+      log:
+        rollover_max_age: 10d
+        rollover_max_docs: None
+        rollover_max_size: 30gb
+      trace:
+        rollover_max_age: 1d
+        rollover_max_docs: None
+        rollover_max_size: 30gb
+      rum:
+        rollover_max_age: 1d
+        rollover_max_docs: None
+        rollover_max_size: 30gb
+      profile:
+        rollover_max_age: 1d
+        rollover_max_docs: None
+        rollover_max_size: 30gb
+      control:
+        rollover_max_age: 1d
+        rollover_max_docs: None
+        rollover_max_size: 30gb
+    serverid: ""
+    switchOffPrestoCoord: "true"
+    autoscaling:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 3
+      targetCPUUtilizationPercentage: 1600
+      targetMemoryUtilizationPercentage: 120
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 768Mi
+      requests:
+        cpu: 50m
+        memory: 512Mi
+    service:
+      type: ClusterIP
+      port: 8000
+
+  sfapm_celery:
+    env:
+      C_FORCE_ROOT: true
+      CELERY_OPTS: -O fair --max-tasks-per-child 20 -P gevent
+    beat:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 10m
+          memory: 100Mi
+      command: celery -A snappyflow beat -l $LOG_LEVEL
+    default:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 10m
+          memory: 100Mi
+      replicaCount: 1
+      command: celery -A snappyflow worker -l $LOG_LEVEL -Q default -c10 $CELERY_OPTS
+    notify:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 10m
+          memory: 100Mi
+      replicaCount: 1
+      command: celery -A snappyflow worker -l $LOG_LEVEL -Q notify -c20 $CELERY_OPTS
+    periodic:
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 512Mi
+        requests:
+          cpu: 10m
+          memory: 100Mi
+      replicaCount: 3
+      autoscaling:
+        enabled: true
+        minReplicas: 3
+        maxReplicas: 6
+        targetCPUUtilizationPercentage: 8000
+        targetMemoryUtilizationPercentage: 410
+      command: celery -A snappyflow worker -l $LOG_LEVEL -Q periodic -c5 $CELERY_OPTS
+    provision:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 10m
+          memory: 100Mi
+      replicaCount: 1
+      command: celery -A snappyflow worker -l $LOG_LEVEL -Q provision -c1 $CELERY_OPTS
+    sftrace:
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 768Mi
+        requests:
+          cpu: 10m
+          memory: 100Mi
+      replicaCount: 1
+      command: "celery -A snappyflow worker -l $LOG_LEVEL -Q sftrace -c10 $CELERY_OPTS"
+
+  esmanager:
+    replicaCount: 2
+    autoscaling:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 3
+      targetCPUUtilizationPercentage: 8000
+      targetMemoryUtilizationPercentage: 240
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 768Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+    service:
+      type: ClusterIP
+      port: 8000
+    warm_movement_rules:
+      thresholds:
+        - hot_disk_percentage:
+            gt: 80
+        - hot_store_to_heap:
+            gt: 45
+      prerequisties: {}
+    warm_allocated_freedisk_percent: 80
+    min_warm_nodes: 2
+    max_relocating_index: 2
+    max_shrink_job: 2
+    max_forcemerge_job: 2
+    max_ongoing_backups: 3
+    max_ongoing_restores: 3
+
+  esmanager_celery:
+    env:
+      C_FORCE_ROOT: true
+      CELERY_OPTS: -O fair --max-tasks-per-child 200 -P solo
+    beat:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 100Mi
+      command: celery -A elasticsearch_manager beat --scheduler django -l $LOG_LEVEL
+    default:
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 768Mi
+        requests:
+          cpu: 100m
+          memory: 100Mi
+      replicaCount: 2
+      command: celery -A elasticsearch_manager worker -l $LOG_LEVEL -Q
+        es_mng_default  $CELERY_OPTS
+
+  mappingUpdator:
+    enabled: true
+    image:
+      pullPolicy: Always
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+      limits:
+        cpu: 50m
+        memory: 50Mi
+
+  keycloak:
+    enabled: false
+    serverIP: ""
+    user: ""
+    password: ""
+    realm: ""
+    clientid: ""
+    clientkey: ""
+    publickey: ""
+    supportemail: ""
+    websiteurl: ""
+    defaultprofile: demo-profile
+
+  google_client_id: ""
+  google_client_secret: ""
+  google_callback_url: /portal/gauth
+
+  usage_system:
+    enabled: false
+    host: ""
+    port: 443
+    tls: false
+
+  ingest_usage_system:
+    enabled: false
+    host: ""
+    port: 443
+    tls: false
+
+  sftrace:
+    replicaCount: 2
+
+    terminationGracePeriodSeconds: 30
+
+    maximumQueueEvents: 40000
+
+    # Helm values for sftrace-server-prometheus-exporter container
+    sftraceServerPrometheusExporter:
+      metricsInterval: 3
+      image:
+        pullPolicy: Always
+      resources:
+        requests:
+          cpu: 100m
+          memory: 200Mi
+
+    podAnnotations:
+      prometheus.io/path: /metrics
+      prometheus.io/port: "2112"
+      prometheus.io/scrape: "true"
+
+    image:
+      pullPolicy: Always
+    
+    resources:
+      requests:
+        cpu: 10m
+        memory: 50Mi
+      limits:
+        cpu: 1
+        memory: 2Gi
+
+    service:
+      type: NodePort
+      port: 8200
+      jaegerport: 14268
+
+    output:
+      # Enable either Kafka or Kafkarest as output plugin for trace server
+      kafka:
+        enabled: true
+        # List of Kafka brokers
+        hosts: ["kafka-cp-kafka-headless.kafka:9092"]
+      kafkarest:
+        enabled: false
+        host: "sf-datapath-cp-kafka-rest-external.kafka"
+        port: 8082
+        token: " "
+
+    autoscaling:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 5
+      # This value is calculated as 50 % of max events trace queue can buffer 
+      scaleUpPeriod: 5
+      scaleDownPeriod: 120

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sfapm.fullname" . }}-ui
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+    app: sfapm
+    role: ui
+data:
+    APM_HOST: {{ include "sfapm.fullname" . }}-apm
+    APM_PORT: "{{ .Values.global.sfapm.service.port }}"
+    VIZBUILDER_HOST: {{ include "sfapm.fullname" . }}-vizbuilder
+    VIZBUILDER_PORT: "{{ .Values.global.vizbuilder.service.port }}"
+    COMMANDSERVER_HOST: {{ include "sfapm.fullname" . }}-commands
+    COMMANDSERVER_PORT: "{{ .Values.global.commands.service.port }}"
+    ES_MANAGER_HOST: {{ include "sfapm.fullname" . }}-esmanager
+    ES_MANAGER_PORT: "{{ .Values.global.esmanager.service.port }}"
