@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sfapm.fullname" . }}-vizbuilder
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+    app: sfapm
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    role: vizbuilder
+spec:
+  type: {{ .Values.global.vizbuilder.service.type }}
+  ports:
+    - port: {{ .Values.global.vizbuilder.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "sfapm.selectorLabels" . | nindent 4 }}
+    app: sfapm
+    role: vizbuilder
