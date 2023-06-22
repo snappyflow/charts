@@ -34,7 +34,7 @@ global:
       GCP_DEFAULT_REGION: us-west1
       GCP_DEFAULT_ZONE: us-west1-c
     aws:
-      enable: true
+      enable: false
       use_iam_role: false # Set this to true and AWS_IAM_ROLE_ARN to appropriate IAM ARN in case of IAM role usage
       AWS_IAM_ROLE_ARN: arn:aws:iam::XXXX:role/XXXX
       # Set all of the below entities when IAM role isn't being used. This is not recommended unless K8s is running outside AWS
@@ -50,6 +50,12 @@ global:
       AZURE_SERVICEBUS_QUEUE_NAME: XXXX
       AZURE_SERVICEBUS_CONNECTION_STR: XXXX
       SPARK_HS_CONTAINER_NAME: sparkhs
+    minio:
+      enable: true
+      AWS_ACCESS_KEY_ID: sonikaaccess
+      AWS_SECRET_ACCESS_KEY: sonikasecret
+      AWS_DEFAULT_REGION: default
+      MINIO_ENDPOINT: http://minio.minio:9000
 
   # Below parameter needs to use the PLAIN_TEXT port
   kafkaBrokers: "localhost:9092,localhost1:9092"
