@@ -51,11 +51,11 @@ global:
       AZURE_SERVICEBUS_CONNECTION_STR: XXXX
       SPARK_HS_CONTAINER_NAME: sparkhs
     minio:
-      enable: true
-      AWS_ACCESS_KEY_ID: sonikaaccess
-      AWS_SECRET_ACCESS_KEY: sonikasecret
+      enable: false
+      AWS_ACCESS_KEY_ID: XXXX
+      AWS_SECRET_ACCESS_KEY: XXXX
       AWS_DEFAULT_REGION: default
-      MINIO_ENDPOINT: http://minio.minio:9000
+      MINIO_ENDPOINT: XXXX
 
   # Below parameter needs to use the PLAIN_TEXT port
   kafkaBrokers: "localhost:9092,localhost1:9092"
