@@ -34,7 +34,7 @@ global:
       GCP_DEFAULT_REGION: us-west1
       GCP_DEFAULT_ZONE: us-west1-c
     aws:
-      enable: false
+      enable: true
       use_iam_role: false # Set this to true and AWS_IAM_ROLE_ARN to appropriate IAM ARN in case of IAM role usage
       AWS_IAM_ROLE_ARN: arn:aws:iam::XXXX:role/XXXX
       # Set all of the below entities when IAM role isn't being used. This is not recommended unless K8s is running outside AWS
