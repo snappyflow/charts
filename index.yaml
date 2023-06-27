@@ -3213,6 +3213,15 @@ entries:
   sf-archival:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2023-06-27T12:57:52.164876307Z"
+    description: A Helm chart for Kubernetes
+    digest: 0e9dcdd7f2ade2ce9cddc390a2dcfd1db754905fb51e682c1b4ac38ff9287042
+    name: sf-archival
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-archival-2.0.86/sf-archival-2.0.86.tgz
+    version: 2.0.86
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2023-06-22T05:44:05.636447814Z"
     description: A Helm chart for Kubernetes
     digest: a76a8f6544ee7b98c8ed22fd1c5e5a90c3aa93ba9e29cfd50b99cf015d4323f3
@@ -4601,6 +4610,42 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sf-cluster-autoscaler-1.0.0/sf-cluster-autoscaler-1.0.0.tgz
     version: 1.0.0
   sf-datapath:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2023-06-27T12:57:52.311707984Z"
+    dependencies:
+    - name: cp-schema-registry
+      repository: file://./sub_charts/cp-schema-registry
+      version: 0.1.1
+    - name: cp-kafka-rest
+      repository: file://./sub_charts/cp-kafka-rest
+      version: 0.1.2
+    - condition: global.archival.enabled
+      name: archival-kafka-connect
+      repository: file://./sub_charts/archival-kafka-connect
+      version: 0.1.0
+    - name: es-kafka-connect
+      repository: file://./sub_charts/es-kafka-connect
+      version: 0.1.2
+    - name: authenticator
+      repository: file://./sub_charts/authenticator
+      version: 0.1.1
+    - name: sfk-interface
+      repository: file://./sub_charts/sfk-interface
+      version: 0.1.1
+    - name: signatures-and-kafka-apis
+      repository: file://./sub_charts/signatures-and-kafka-apis
+      version: 0.1.1
+    - condition: global.secrets.gcs.enable
+      name: minio
+      repository: file://./sub_charts/minio
+      version: 8.0.11
+    description: A Helm chart for Confluent Open Source
+    digest: ead8ab29cf73ac825602f988d166955cce5bcb05f0c3c234a6ca5824f7b75c4d
+    name: sf-datapath
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-datapath-2.0.83/sf-datapath-2.0.83.tgz
+    version: 2.0.83
   - apiVersion: v1
     appVersion: "1.0"
     created: "2023-05-25T08:28:53.210227731Z"
