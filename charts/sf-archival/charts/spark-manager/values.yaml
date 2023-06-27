@@ -20,7 +20,7 @@ jobserver:
   image:
     pullPolicy: IfNotPresent
     repository: snappyflowml/job-server
-    tag: '17'
+    tag: '18'
   serverPort: 5002
   service:
     servicePort: 5002
@@ -37,7 +37,7 @@ monitor:
   image:
     pullPolicy: IfNotPresent
     repository: snappyflowml/monitor
-    tag: '10'
+    tag: '11'
 nameOverride: ''
 nodeSelector: {}
 schedulerName: sf-scheduler
