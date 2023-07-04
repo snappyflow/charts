@@ -1,0 +1,18 @@
+---
+enableDebug: false
+nameOverride: ""
+fullnameOverride: ""
+
+vizbuilder:
+  image:
+    repository: snappyflowml/sfapm-vizbuilder
+    tag: '4.0.222-python3'
+    pullPolicy: IfNotPresent
+
+vizbuilder_celery:
+  alert:
+    celeryAlertPrometheusExporter:
+      image:
+        repository: snappyflowml/celery-alert-prometheus-exporter
+        tag: 'latest'
+        pullPolicy: Always

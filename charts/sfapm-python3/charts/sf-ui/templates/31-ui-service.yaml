@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sfapm.fullname" . }}-ui
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+    app: sfapm
+    role: ui
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+spec:
+  type: {{ .Values.global.sfapmui.service.type }}
+  externalTrafficPolicy: Local
+  ports:
+    {{- if .Values.global.sfapmui.tls.enabled }}
+    - targetPort: https
+      protocol: TCP
+      name: https
+      nodePort: {{ .Values.global.sfapmui.service.nodePort }}
+      port: 443
+    {{- end }}
+    - targetPort: http
+      protocol: TCP
+      name: http
+      port: 80
+  selector:
+    {{- include "sfapm.selectorLabels" . | nindent 4 }}
+    app: sfapm
+    role: ui

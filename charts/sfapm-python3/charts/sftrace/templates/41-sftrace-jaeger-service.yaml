@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sfapm.fullname" . }}-jaegersftrace
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+    app: sftrace
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+spec:
+  type: {{ .Values.global.sftrace.service.type }}
+  ports:
+    - port: {{ .Values.global.sftrace.service.jaegerport }}
+      targetPort: 14268
+      protocol: TCP
+      nodePort: 32268
+      name: http
+  selector:
+    app: sftrace
