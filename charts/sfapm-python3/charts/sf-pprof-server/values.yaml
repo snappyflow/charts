@@ -7,5 +7,5 @@ pprof:
   image:
     repository: snappyflowml/pprof-server
     pullPolicy: IfNotPresent
-    tag: 'latest'
+    tag: 'master-0-4-3'
 podSecurityContext: {}
