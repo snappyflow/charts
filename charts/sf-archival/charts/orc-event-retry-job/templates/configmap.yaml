@@ -1,0 +1,15 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+    name: {{ template "orc-event-retry-job.fullname" . }}-config
+    namespace: {{ .Release.Namespace }}
+data:
+    config.json: |-
+        {
+          "client_address" : {{ .Values.global.clientAddress }},
+          "kafka_broker" : {{ .Values.global.kafkaBroker }},
+          "kafka_topic" : {{ .Values.global.kafkaTopic }},
+          "reattempt_send_to_kafka" : {{ .Values.global.reattemptSendToKafka }},
+          "sorted_set_key": {{ .Values.global.sortedSetKey }},
+          "hash_set_key": {{ .Values.global.hashSetKey }}
+        }
