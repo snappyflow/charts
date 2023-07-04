@@ -30,7 +30,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/dataset-raw-controller
-  tag: '3'
+  tag: '2-0-86'
 nameOverride: ''
 nodeSelector: {}
 podAnnotations:
