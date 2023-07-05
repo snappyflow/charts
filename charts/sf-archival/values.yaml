@@ -28,6 +28,8 @@ global:
     rawPartitionColumnNames: '["year", "month", "day", "timebucket"]'
 
   secrets:
+    minio:
+      enable: false
     gcs:
       enable: false
       GCP_SERVICE_ACCOUNT_EMAIL: "XXXX-compute@developer.gserviceaccount.com OR XXXX@XXXX.iam.gserviceaccount.com"
