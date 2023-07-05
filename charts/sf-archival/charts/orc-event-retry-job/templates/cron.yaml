@@ -8,7 +8,7 @@ metadata:
 spec:
   concurrencyPolicy: Forbid
   schedule: {{ .Values.schedule | quote }}
-  successfulJobsHistoryLimit: 0
+  successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   startingDeadlineSeconds: 200
   jobTemplate:
