@@ -183,3 +183,11 @@ dataset-raw-controller:
     redisSortedSet: "orcSortedSet"
     kafkaConsumedMsgsCount: 100
     kafkaConsumeTimeout: 2
+
+redis:
+  image:
+    repository: redis
+    pullPolicy: IfNotPresent
+    tag: "6.0"
+  persistence:
+    size: 2Gi
