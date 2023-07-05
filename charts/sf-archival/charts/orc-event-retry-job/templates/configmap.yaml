@@ -1,3 +1,4 @@
+{{- if .Values.global.secrets.minio.enable }}
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -6,10 +7,11 @@ metadata:
 data:
     config.json: |-
         {
-          "client_address": "{{ .Values.global.clientAddress }}",
-          "kafka_broker": "{{ .Values.global.kafkaBroker }}",
-          "kafka_topic": "{{ .Values.global.kafkaTopic }}",
-          "reattempt_send_to_kafka": {{ .Values.global.reattemptSendToKafka }},
-          "sorted_set_key": "{{ .Values.global.sortedSetKey }}",
-          "hash_set_key": "{{ .Values.global.hashSetKey }}"
+          "client_address": "{{ .Values.redisServer }}",
+          "kafka_broker": "{{ .Values.kafkaBroker }}",
+          "kafka_topic": "{{ .Values.kafkaTopic }}",
+          "reattempt_send_to_kafka": {{ .Values.reattemptSendToKafka }},
+          "sorted_set_key": "{{ .Values.sortedSetKey }}",
+          "hash_set_key": "{{ .Values.hashSetKey }}"
         }
+{{- end }}

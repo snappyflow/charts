@@ -1,13 +1,13 @@
 # Default values for orc-event-retry-job.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-global:
-  clientAddress: "localhost:6379"
-  kafkaBroker: "localhost:9092"
-  kafkaTopic: "orc-event-retry"
-  reattemptSendToKafka: 5
-  sortedSetKey: "my_sorted_set"
-  hashSetKey: "my_hash_set"
+
+redisServer: "localhost:6379"
+kafkaBroker: "localhost:9092"
+kafkaTopic: "orc-event-retry"
+reattemptSendToKafka: 5
+sortedSetKey: "my_sorted_set"
+hashSetKey: "my_hash_set"
 
 replicaCount: 1
 

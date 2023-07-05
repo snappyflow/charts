@@ -163,3 +163,11 @@ query-controller:
 raw-query-exec-controller:
   maxGBToProcessDuringHistogramQuery: 0.2
   maxGBToProcessDuringLogQuery: 0.05
+
+orc-event-retry-job:
+  redisServer: "localhost:6379"
+  kafkaBroker: "localhost:9092"
+  kafkaTopic: "orc-event-retry"
+  reattemptSendToKafka: 5
+  sortedSetKey: "my_sorted_set"
+  hashSetKey: "my_hash_set"

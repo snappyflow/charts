@@ -1,3 +1,4 @@
+{{- if .Values.global.secrets.minio.enable }}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -31,3 +32,4 @@ spec:
             - name: {{ template "orc-event-retry-job.fullname" . }}-config
               configMap:
                 name: {{ template "orc-event-retry-job.fullname" . }}-config
+{{- end }}
