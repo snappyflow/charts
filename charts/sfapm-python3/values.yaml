@@ -153,6 +153,11 @@ global:
   redis:
     image:
       pullPolicy: IfNotPresent
+    config:
+      redis.conf: |-
+        appendonly yes
+        maxmemory 300mb
+        maxmemory-policy allkeys-lru
 
   serviceAccount:
     create: true
