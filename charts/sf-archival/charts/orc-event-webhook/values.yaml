@@ -24,10 +24,11 @@ api_token: "A34DFGGGRTYU"
 service:
   servicePort: 6003
 tolerations: []
-minReplicas: 1
-maxReplicas: 3
-# Below values are based on requests.
-# Hence value > 100 needs to be calculated based on set limits
-# Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
-targetCPUUtilizationPercentage: 400
-targetMemoryUtilizationPercentage: 400
+autoscaling:
+  minReplicas: 1
+  maxReplicas: 3
+  # Below values are based on requests.
+  # Hence value > 100 needs to be calculated based on set limits
+  # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
+  targetCPUUtilizationPercentage: 400
+  targetMemoryUtilizationPercentage: 400
