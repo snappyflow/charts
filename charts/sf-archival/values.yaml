@@ -169,3 +169,17 @@ query-controller:
 raw-query-exec-controller:
   maxGBToProcessDuringHistogramQuery: 0.2
   maxGBToProcessDuringLogQuery: 0.05
+
+dataset-raw-controller:
+  orcEventController:
+    urlPath: 'localhost:34567'
+    serverPort: ":18080"
+    kafkaBrokers: "localhost:9092"
+    redisServer: "localhost:6379"
+    consumerGroup: "my-consumer"
+    producerClient: "my-producer"
+    kafkaTopic: "sonika"
+    redisHash: "orcHash"
+    redisSortedSet: "orcSortedSet"
+    kafkaConsumedMsgsCount: 100
+    kafkaConsumeTimeout: 2
