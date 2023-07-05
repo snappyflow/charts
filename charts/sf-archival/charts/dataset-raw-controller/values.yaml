@@ -60,7 +60,7 @@ orcEventController:
     requests:
       cpu: 100m
       memory: 256Mi
-  urlPath: 'localhost:18080'
+  urlPath: 'localhost:18080/orc-event-controller/v1/orcevents'
   serverPort: ":18080"
   kafkaBrokers: "localhost:9092"
   redisServer: "localhost:6379"

@@ -172,13 +172,13 @@ raw-query-exec-controller:
 
 dataset-raw-controller:
   orcEventController:
-    urlPath: 'localhost:34567'
+    urlPath: 'localhost:18080/orc-event-controller/v1/orcevents'
     serverPort: ":18080"
     kafkaBrokers: "localhost:9092"
     redisServer: "localhost:6379"
     consumerGroup: "my-consumer"
     producerClient: "my-producer"
-    kafkaTopic: "sonika"
+    kafkaTopic: "my-topic"
     redisHash: "orcHash"
     redisSortedSet: "orcSortedSet"
     kafkaConsumedMsgsCount: 100
