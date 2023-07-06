@@ -50,6 +50,12 @@ global:
       AZURE_SERVICEBUS_QUEUE_NAME: XXXX
       AZURE_SERVICEBUS_CONNECTION_STR: XXXX
       SPARK_HS_CONTAINER_NAME: sparkhs
+    minio:
+      enable: false
+      AWS_ACCESS_KEY_ID: XXXX
+      AWS_SECRET_ACCESS_KEY: XXXX
+      AWS_DEFAULT_REGION: default
+      MINIO_ENDPOINT: XXXX
 
   # Below parameter needs to use the PLAIN_TEXT port
   kafkaBrokers: "localhost:9092,localhost1:9092"
@@ -171,3 +177,34 @@ orc-event-retry-job:
   reattemptSendToKafka: 5
   sortedSetKey: "my_sorted_set"
   hashSetKey: "my_hash_set"
+
+dataset-raw-controller:
+  orcEventController:
+    urlPath: 'localhost:18080/orc-event-controller/v1/orcevents'
+    serverPort: ":18080"
+    kafkaBrokers: "localhost:9092"
+    redisServer: "localhost:6379"
+    consumerGroup: "my-consumer"
+    producerClient: "my-producer"
+    kafkaTopic: "my-topic"
+    redisHash: "orcHash"
+    redisSortedSet: "orcSortedSet"
+    kafkaConsumedMsgsCount: 100
+    kafkaConsumeTimeout: 2
+
+redis:
+  image:
+    repository: redis
+    pullPolicy: IfNotPresent
+    tag: "6.0"
+  persistence:
+    size: 2Gi
+
+# use these values if you want to override the db values for hive and hadoop chart
+# hive-and-hadoop:
+#   postgresqlOverrides:
+#     host: postgres-postgresql.apm
+#     postgresqlDatabase: archival
+#     postgresqlUsername: snappyflow
+#     postgresqlPassword: maplelabs
+#     servicePort: 5432
