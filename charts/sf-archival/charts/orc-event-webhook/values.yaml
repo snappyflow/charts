@@ -11,19 +11,27 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/orc-event-webhook
-  tag: '2-0-86'
+  tag: '0.1.0'
 nameOverride: ''
 nodeSelector: {}
 schedulerName: sf-scheduler
 serverPort: :6003
+
+# topic details
+topic_name: "sf-orcevents"
 num_partitions: 3
 replication_factor: 2
 retention_ms: "86400000"
 type": "log"
+
+# api token
 api_token: "A34DFGGGRTYU"
+
 service:
   servicePort: 6003
 tolerations: []
+
+# autoscaling details
 autoscaling:
   minReplicas: 1
   maxReplicas: 3

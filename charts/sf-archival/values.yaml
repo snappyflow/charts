@@ -191,3 +191,11 @@ redis:
     tag: "6.0"
   persistence:
     size: 2Gi
+# use these values if you want to override the db values for hive and hadoop chart
+# hive-and-hadoop:
+#   postgresqlOverrides:
+#     host: postgres-postgresql.apm
+#     postgresqlDatabase: archival
+#     postgresqlUsername: snappyflow
+#     postgresqlPassword: maplelabs
+#     servicePort: 5432
