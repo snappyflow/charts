@@ -9,6 +9,10 @@ dependencies:
   name: spark-history-server
   repository: https://snappyflow.github.io/helm-charts
   version: 1.4.7
+- condition: global.secrets.minio.enable
+  name: redis
+  version: 0.2.13
+  repository: https://snappyflow.github.io/helm-charts/
 - name: orc-event-webhook
   repository: file://charts/orc-event-webhook
   version: 0.1.0
