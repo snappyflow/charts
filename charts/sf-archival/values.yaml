@@ -56,6 +56,7 @@ global:
       AWS_SECRET_ACCESS_KEY: XXXX
       AWS_DEFAULT_REGION: default
       MINIO_ENDPOINT: XXXX
+      MINIO_QUEUE_ARN: XXXX
 
   # Below parameter needs to use the PLAIN_TEXT port
   kafkaBrokers: "localhost:9092,localhost1:9092"
