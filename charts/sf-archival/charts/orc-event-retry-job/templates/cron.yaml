@@ -1,0 +1,35 @@
+{{- if .Values.global.secrets.minio.enable }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-orc-event-retry-job
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "orc-event-retry-job.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: {{ .Values.schedule | quote }}
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  startingDeadlineSeconds: 200
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+        spec:
+          containers:
+          - name: main
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            volumeMounts:
+              - name: {{ template "orc-event-retry-job.fullname" . }}-config
+                mountPath: "/etc/conf"
+          restartPolicy: Never
+          volumes:
+            - name: {{ template "orc-event-retry-job.fullname" . }}-config
+              configMap:
+                name: {{ template "orc-event-retry-job.fullname" . }}-config
+{{- end }}
