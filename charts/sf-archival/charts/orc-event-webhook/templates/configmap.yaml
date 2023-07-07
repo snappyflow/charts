@@ -7,7 +7,7 @@ data:
   config.json: |-
     {
       "serverPort": "{{ .Values.serverPort }}",
-      "APT_TOKEN": "{{ .Values.api_token }}",
+      "API_TOKEN": "{{ .Values.api_token }}",
       "kafkaBrokers": "{{ .Values.global.kafkaBrokers }}",
       "topic_type_details": {
             "topic_name": "{{ .Values.topic_name }}",

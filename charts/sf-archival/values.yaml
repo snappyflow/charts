@@ -174,22 +174,37 @@ raw-query-exec-controller:
 orc-event-retry-job:
   redisServer: "localhost:6379"
   kafkaBroker: "localhost:9092"
-  kafkaTopic: "orc-event-retry"
+  kafkaTopic: "sf-orcevents"
   reattemptSendToKafka: 5
-  sortedSetKey: "my_sorted_set"
-  hashSetKey: "my_hash_set"
+  sortedSetKey: "sf_orc_sortedset"
+  hashSetKey: "sf_orc_hashset"
+
+orc-event-webhook:
+  api_token: "A34DFGGGRTYU"
+  topic_name: "sf-orcevents"
+  num_partitions: 3
+  replication_factor: 2
+  retention_ms: "86400000"
+  type": "log"
+  service:
+    servicePort: 6003
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 400
+    targetMemoryUtilizationPercentage: 400
 
 dataset-raw-controller:
   orcEventController:
-    urlPath: 'localhost:18080/orc-event-controller/v1/orcevents'
+    urlPath: 'http://localhost:18080/orc-event-controller/v1/orcevents'
     serverPort: ":18080"
     kafkaBrokers: "localhost:9092"
     redisServer: "localhost:6379"
-    consumerGroup: "my-consumer"
-    producerClient: "my-producer"
-    kafkaTopic: "my-topic"
-    redisHash: "orcHash"
-    redisSortedSet: "orcSortedSet"
+    consumerGroup: "sf-consumer"
+    producerClient: "sf-producer"
+    kafkaTopic: "sf-orcevents"
+    redisHash: "sf_orc_hashset"
+    redisSortedSet: "sf_orc_sortedset"
     kafkaConsumedMsgsCount: 100
     kafkaConsumeTimeout: 2
 
