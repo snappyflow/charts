@@ -148,7 +148,7 @@ data:
               "--conf",
               "spark.hadoop.fs.s3a.connection.ssl.enabled=false",
               "--conf",
-              "spark.hadoop.fs.s3a.path.style.access=true"
+              "spark.hadoop.fs.s3a.path.style.access=true",
 {{- end }}
               "--conf",
               "spark.kubernetes.namespace={{ .Release.Namespace }}",

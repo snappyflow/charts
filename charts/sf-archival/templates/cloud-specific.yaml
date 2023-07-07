@@ -22,6 +22,7 @@ data:
   AWS_ACCESS_KEY_ID: {{ .Values.global.secrets.minio.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: {{ .Values.global.secrets.minio.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: {{ .Values.global.secrets.minio.AWS_DEFAULT_REGION }}
+  AWS_DEFAULT_REGION: {{ .Values.global.secrets.minio.AWS_DEFAULT_REGION }}
   MINIO_ENDPOINT: {{ .Values.global.secrets.minio.MINIO_ENDPOINT }}
   MINIO_QUEUE_ARN: {{ .Values.global.secrets.minio.MINIO_QUEUE_ARN }}
   {{- else if .Values.global.secrets.gcs.enable }}
