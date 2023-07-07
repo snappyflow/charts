@@ -2,11 +2,11 @@ affinity: {}
 containerResources:
   webhook:
     limits:
-      cpu: 50m
-      memory: 50Mi
+      cpu: 200m
+      memory: 250Mi
     requests:
-      cpu: 10m
-      memory: 10Mi
+      cpu: 100m
+      memory: 150Mi
 fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
