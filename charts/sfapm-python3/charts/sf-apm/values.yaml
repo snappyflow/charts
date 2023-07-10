@@ -7,7 +7,7 @@ podSecurityContext: {}
 sfapm:
   image:
     repository: snappyflowml/sfapm-server
-    tag: '4-0-433'
+    tag: '4-0-434'
     pullPolicy: IfNotPresent
 sfapmaffinity:
   podAntiAffinity:
