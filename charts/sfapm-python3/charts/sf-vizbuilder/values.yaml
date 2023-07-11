@@ -6,7 +6,7 @@ fullnameOverride: ""
 vizbuilder:
   image:
     repository: snappyflowml/sfapm-vizbuilder
-    tag: 'python3-4-0-223'
+    tag: 'python3-4-0-224'
     pullPolicy: IfNotPresent
 
 vizbuilder_celery:
@@ -14,5 +14,5 @@ vizbuilder_celery:
     celeryAlertPrometheusExporter:
       image:
         repository: snappyflowml/celery-alert-prometheus-exporter
-        tag: 'python3-4-0-223'
+        tag: 'python3-4-0-224'
         pullPolicy: Always
