@@ -2,6 +2,7 @@
 enableDebug: false
 nameOverride: ""
 fullnameOverride: ""
+disable_server_side_cursors: false
 
 vizbuilder:
   image:
