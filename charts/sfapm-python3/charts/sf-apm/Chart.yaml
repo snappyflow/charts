@@ -1,5 +1,5 @@
 apiVersion: v2
-name: sfapm-python3
+name: sf-apm
 description: A Helm chart to deploy apm on Kubernetes
 home: https://www.snappyflow.io
 type: application
