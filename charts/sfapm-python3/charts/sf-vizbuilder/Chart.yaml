@@ -1,5 +1,6 @@
 apiVersion: v2
 name: sf-vizbuilder
+name1: sfapm-python3
 description: A Helm chart to deploy snappyflow on Kubernetes
 home: https://www.snappyflow.io
 type: application
