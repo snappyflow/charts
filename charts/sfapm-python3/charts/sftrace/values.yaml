@@ -1,7 +1,7 @@
 enableDebug: false
 archiverEnabled: true
-nameOverride: ""
-fullnameOverride: ""
+nameOverride: sfapm-python3
+fullnameOverride: apm-sfapm-python3
 
 image:
   pullPolicy: IfNotPresent
