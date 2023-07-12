@@ -1,6 +1,6 @@
 ---
 enableDebug: false
-nameOverride: ""
+nameOverride: sfapm-python3
 fullnameOverride: ""
 disable_server_side_cursors: false
 

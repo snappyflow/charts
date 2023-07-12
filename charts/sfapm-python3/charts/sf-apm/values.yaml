@@ -1,7 +1,7 @@
 ---
 enableDebug: false
 archiverEnabled: true
-nameOverride: ""
+nameOverride: sfapm-python3
 fullnameOverride: ""
 podSecurityContext: {}
 sfapm:
