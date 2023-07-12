@@ -2,7 +2,7 @@
 enableDebug: false
 archiverEnabled: true
 nameOverride: sfapm-python3
-fullnameOverride: apm-sfapm-python3
+fullnameOverride: ""
 pprof:
   image:
     repository: snappyflowml/pprof-server
