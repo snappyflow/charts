@@ -1,6 +1,5 @@
 apiVersion: v2
 name: sf-pprof-server
-name1: sfapm-python3
 description: A Helm chart to deploy pprof-server on Kubernetes
 home: https://www.snappyflow.io
 type: application
