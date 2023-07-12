@@ -1,5 +1,4 @@
 global:
-  chartname: sfapm-python3
   sfappname: sf-portal-app
   sfprojectname: snappyflow-app
   sfappname_key: snappyflow/appname
