@@ -2,6 +2,9 @@
 enableDebug: false
 nameOverride: ""
 fullnameOverride: ""
+nameOverride: sfapm-python3
+fullnameOverride: apm-sfapm-python3
+disable_server_side_cursors: false
 
 vizbuilder:
   image:
