@@ -1,7 +1,7 @@
 ---
 enableDebug: false
 nameOverride: sfapm-python3
-fullnameOverride: apm-sfapm-python3
+fullnameOverride: ""
 disable_server_side_cursors: false
 
 vizbuilder:
