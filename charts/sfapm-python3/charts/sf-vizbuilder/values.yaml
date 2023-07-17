@@ -9,7 +9,7 @@ disable_server_side_cursors: false
 vizbuilder:
   image:
     repository: snappyflowml/sfapm-vizbuilder
-    tag: '4.0.219-python3'
+    tag: '4.0.213-python3'
     pullPolicy: IfNotPresent
 
 vizbuilder_celery:
