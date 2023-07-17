@@ -54,8 +54,8 @@ spec:
       restartPolicy: Never
       containers:
       - name: main
-        image: "{{ .Values.systemmigration.image.repository }}:{{ .Values.systemmigration.image.tag }}"
-        imagePullPolicy: "{{ .Values.systemmigration.image.pullPolicy }}"
+        image: snappyflowml/datapath-system-migration:12
+        imagePullPolicy: IfNotPresent
         volumeMounts:
           - name: {{ .Release.Name }}-system-migration-config
             mountPath: "/etc/conf"
