@@ -1,5 +1,16 @@
 apiVersion: v1
 entries:
+  ArgoCD:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-07-17T11:25:29.765275124Z"
+    description: A Helm chart for Kubernetes
+    digest: cfc4c8961e8cc0db60983f6b4b570788d5d303659931fdfc9ec9f1f46a381f05
+    name: ArgoCD
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/ArgoCD-0.1.1/ArgoCD-0.1.1.tgz
+    version: 0.1.1
   charging:
   - apiVersion: v2
     appVersion: v1
