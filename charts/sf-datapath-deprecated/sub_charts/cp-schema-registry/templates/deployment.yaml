@@ -52,7 +52,7 @@ spec:
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: exporter
-          image: "solsson/kafka-prometheus-jmx-exporter@sha256:6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143"
+          image: "{{ .Values.prometheus.jmx.image }}:{{ .Values.prometheus.jmx.imageTag }}"
           imagePullPolicy: "{{ .Values.prometheus.jmx.imagePullPolicy }}"
           command:
           - java
@@ -75,7 +75,7 @@ spec:
         {{- end }}
         {{- if .Values.schemaGenerator.enabled }}
         - name: schema-generator
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.schemaGenerator.image }}:{{ .Values.schemaGenerator.imageTag }}"
           imagePullPolicy: "{{ .Values.schemaGenerator.imagePullPolicy }}"
 {{- if not .Values.global.development }}
           resources:
@@ -86,8 +86,8 @@ spec:
             mountPath: /opt
         {{- end }}
         - name: server
-          image: "confluentinc/cp-schema-registry:6.0.1"
-          imagePullPolicy: IfNotPresent
+          image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+          imagePullPolicy: "{{ .Values.imagePullPolicy }}"
           ports:
             - name: schema-registry
               containerPort: {{ .Values.servicePort }}
