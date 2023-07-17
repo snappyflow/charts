@@ -1,0 +1,98 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: apm
+spec:
+  destination:
+    name: ''
+    namespace: apm
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: charts/sfapm-python3
+    repoURL: 'https://github.com/snappyflow/helm-charts.git'
+    targetRevision: development
+    helm:
+      valueFiles:
+        - values.yaml
+      values: |-
+        archiverEnabled: true
+        global:
+          enable_sftrace: false
+          nginx_geo_info_collection: true
+          nginx_ua_parsing: true
+          sfNodeManager:
+            enabled: false
+            priorityClassName: sf-critical-pod
+          sfScheduler:
+            enabled: false
+            schedulerName: sf-scheduler
+          sfappname: sf-portal-app
+          sfappname_key: snappyflow/appname
+          sfprojectname: snappyflow-app
+          sfprojectname_key: snappyflow/projectname
+        imagePullSecrets:
+        - name: snappyflowdockersecret
+        ingest_usage_system:
+          enabled: true
+          host: stage-usage-sf-saas-usage-server.apm
+          port: 8000
+          tls: false
+        keycloak:
+          clientid: admin-cli
+          clientkey: a09d6758-eb7b-4d8e-8ed6-c15066b7f953
+          defaultprofile: demo-profile
+          enabled: true
+          password: admin
+          publickey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5RGTQWCo9yr623mwJUxX+UontvtCYz4sLjgW0U+SZKWrii/TS/cuDNw/h1AP4JDRlgQaxnrkQYgySFe7bwI5wTCUUUzk4tYjS69Dv9sBAcGu+vvg/fjSt1dTqIZZ9eg2Da19FznxicacGNYfxf/lrLZmJZk50j33BFopmLmmOPN5Zv+Z+5zInHZ1wGLcEVQB1elqkv2vUxiIi4HhoaZuLNoh/8efYYFYap72NcbJkcYgTjiVPfK605dnXkv9jSnNiMJPvqGvcIwdXcE9kW+Hfo7zgDPovaGUtZDJFE4qoMCw4FzqUbJ0I+4IFqeVoX8U88lBn43XyVWD4pfaRg2RmQIDAQAB
+          realm: master
+          serverIP: https://keycloak.apm:8443/auth/
+          supportemail: ""
+          user: admin1@snappyflow.io
+          websiteurl: https://stage-accounts.snappyflow.io
+        postgresql:
+          enabled: false
+          external:
+            dbHost: pg-bouncer-pgbouncer.apm
+            dbPassword: maplelabs
+            dbPort: 6432
+            dbUser: snappyflow
+        sfapm:
+          autoscaling:
+            enabled: true
+            maxReplicas: 2
+            minReplicas: 2
+          ingress:
+            arhiver_url: 172.31.81.108:8080
+            enabled: true
+            es_host: esnginx-sfnginxv1.default
+            es_pass: apmpass
+            es_port: 9200
+            es_user: apmuser
+            kafka_api: https://sf-datapath-nginx-ingress-controller.kafka:443
+            kafka_pwd: admin321
+            kafka_user: control
+          quotasEnabled: true
+          serverid: ""
+        sfapmui:
+          tls:
+            enabled: false
+        sftrace:
+          output:
+            kafka:
+              enabled: true
+              hosts:
+              - kafka-cp-kafka-headless.kafka:9092
+        usage_system:
+          enabled: true
+          host: stage-charging.apm
+          port: 8000
+          tls: false
+  sources: []
+  project: default
+  syncPolicy:
+    retry:
+      limit: 2
+      backoff:
+        duration: 5s
+        maxDuration: 3m0s
+        factor: 2

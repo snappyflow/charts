@@ -1,0 +1,107 @@
+USER-SUPPLIED VALUES:
+compaction-controller:
+  maxAttempts: 2
+  maxPendingHours: 1
+  maxRunningHours: 3
+  maxSimultaneousRun: 10
+  schedules:
+    create: '*/10 * * * *'
+    processStuck: '*/10 * * * *'
+    queue: '*/10 * * * *'
+    start: '*/10 * * * *'
+dataset-controller:
+  billing-service:
+    enabled: true
+    scheme: https
+    url: saas-prod-charging.apm:8000/api/v1/records/
+  schedules:
+    billing: 0 * * * *
+    detect: '*/30 * * * *'
+    expired: 1 0 * * *
+    raw_version_compacted: 5 2 * * *
+    refresh_size: 5 1 * * *
+global:
+  hive:
+    external:
+      auth: NONE
+      enabled: true
+      host: 172.31.117.133
+      port: 10000
+      userName: ubuntu
+    internal:
+      enabled: false
+  imagePullSecrets:
+  - name: snappyflowdockersecret
+  kafkaBrokers: kafka-cp-kafka-headless:9092
+  postgresql:
+    host: saas-prod-snappyflow-rds.cridaizg5ql0.us-west-2.rds.amazonaws.com
+    postgresqlDatabase: archival
+    postgresqlPassword: postgres123$
+    postgresqlUsername: postgres
+    servicePort: 5432
+  secrets:
+    aws:
+      AWS_ACCESS_KEY_ID: ' '
+      AWS_DEFAULT_REGION: us-west-2
+      AWS_IAM_ROLE_ARN: arn:aws:iam::106947364898:role/production-EKS-EKS-Worker-Node-Role
+      AWS_SECRET_ACCESS_KEY: ' '
+      enable: true
+      use_iam_role: true
+    gcs:
+      GCP_DEFAULT_REGION: us-west1
+      GCP_DEFAULT_ZONE: us-west1-c
+      GCP_SERVICE_ACCOUNT_EMAIL: XXXX-compute@developer.gserviceaccount.com OR XXXX@XXXX.iam.gserviceaccount.com
+      enable: false
+      use_google_service_account: true
+  snappyflowAppLabel: snappyflow/appname
+  snappyflowAppName: archival
+  snappyflowDatapath:
+    enabled: true
+    releaseName: sf-datapath
+  snappyflowProjectLabel: snappyflow/projectname
+  snappyflowProjectName: production-snappyflow
+ingest-controller:
+  schedules:
+    sink: '*/30 * * * *'
+priority: 100
+query-controller:
+  maxGBToProcessDuringSplitQuery: 0.5
+  monitorInterval: 250
+  monitorIntervalUnit: ms
+spark-history-server:
+  enabled: false
+  gcs:
+    logDirectory: prod-archival-spark-hs/production
+  s3:
+    logDirectory: prod-archival-spark-hs/production
+spark-manager:
+  infrastructure:
+    EcsFargate:
+      cluster: sf-archival-compaction-production
+      compactionSecretArn: arn:aws:secretsmanager:us-west-2:106947364898:secret:snappyflow-docker-xEp9P8
+      enabled: true
+      iamRole: arn:aws:iam::106947364898:role/production-EKS-EKS-Worker-Node-Role
+      jobResources:
+        cpu: 2048
+        memory: 8192
+      numExecutors: 2
+      preference: 1
+      taskSecurityGroup: sg-03b40bcd16db694a5
+      taskSubnet: subnet-0b765d1f3292ce186
+    Kubernetes:
+      jobResources:
+        cpu:
+          limits:
+            driver: 0.5
+            executor: 0.4
+          requests:
+            driver: 0.2
+            executor: 0.2
+        memory:
+          driver: 1024m
+          executor: 1024m
+      numExecutors: 5
+      preference: 10
+  jobserver:
+    sparkProperties:
+      logDirectory: prod-archival-spark-hs/production
