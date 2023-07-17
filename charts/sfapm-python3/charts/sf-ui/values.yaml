@@ -1,0 +1,14 @@
+enableDebug: false
+archiverEnabled: true
+nameOverride: sfapm-python3
+fullnameOverride: ""
+
+podSecurityContext:
+  {}
+
+sfapmui:
+  image:
+    repository: snappyflowml/sfapm-ui
+    tag: '3.1.429'
+    pullPolicy: IfNotPresent
+

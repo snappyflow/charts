@@ -1,0 +1,167 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sfapm.fullname" . }}-ui
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+    app: sfapm
+    role: ui
+    snappyflow/component: nginx
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+spec:
+  replicas: {{ .Values.global.sfapmui.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "sfapm.selectorLabels" . | nindent 6 }}
+      app: sfapm
+      role: ui
+  template:
+    metadata:
+    {{- with .Values.global.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "sfapm.selectorLabels" . | nindent 8 }}
+        app: sfapm
+        role: ui
+        snappyflow/component: nginx
+        {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+        {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    spec:
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "sfapm.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+      {{- if .Values.global.key }}
+        - name: ui-sfagent
+          image: snappyflowml/sfagent:latest
+          imagePullPolicy: Always
+          command:
+          - /app/sfagent
+          - -config-file
+          - /opt/sfagent/config.yaml
+          - -enable-console-log
+          env:
+          - name: APP_NAME 
+            value: {{ .Values.global.sfappname }}
+          - name: PROJECT_NAME
+            value: {{ .Values.global.sfprojectname }}
+          volumeMounts:
+          - name: nginx-log
+            mountPath: /var/log/nginx/
+          - name: sfagent
+            mountPath: /opt/sfagent/config.yaml
+            subPath: config.yaml
+          - name: normalization-config
+            mountPath: /opt/sfagent/normalization/config.yaml
+            subPath: config.yaml
+          resources:
+            {{- toYaml .Values.global.sfapmui.resources | nindent 12 }}
+      {{- end }}
+        - name: ui
+          securityContext:
+            {{- toYaml .Values.global.securityContext | nindent 12 }}
+          image: "{{ .Values.sfapmui.image.repository }}:{{ .Values.sfapmui.image.tag }}"
+          imagePullPolicy: {{ .Values.sfapmui.image.pullPolicy }}
+          env:
+          {{- range .Values.global.sfapmui.env }}
+            - name: {{ .name }}
+              value: {{ .value }}
+          {{- end }}
+          {{- if .Values.global.sfapmui.tls.enabled }}
+            - name: SSL
+              value: "true"
+            - name: SSL_CERT_PATH
+              value: "/etc/ssl/nginx/tls.crt"
+            - name: SSL_KEY_PATH
+              value: "/etc/ssl/nginx/tls.key"
+          {{- else }}
+            - name: SSL
+              value: "false"
+          {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "sfapm.fullname" . }}-ui
+          ports:
+          {{- if .Values.global.sfapmui.tls.enabled }}
+            - name: https
+              containerPort: 443
+              protocol: TCP
+          {{- end }}
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            httpGet:
+              path: /status
+              {{- if .Values.global.sfapmui.tls.enabled }}
+              port: https
+              scheme: HTTPS
+              {{- else }}
+              port: http
+              scheme: HTTP
+              {{- end }}
+          readinessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            httpGet:
+              path: /status
+              {{- if .Values.global.sfapmui.tls.enabled }}
+              port: https
+              scheme: HTTPS
+              {{- else }}
+              port: http
+              scheme: HTTP
+              {{- end }}
+          resources:
+            {{- toYaml .Values.global.sfapmui.resources | nindent 12 }}
+          volumeMounts:
+            {{- if .Values.global.sfapmui.tls.enabled }}
+            - name: tls
+              mountPath: /etc/ssl/nginx
+            {{- end }}
+            {{- if .Values.global.key }}
+            - name: nginx-log
+              mountPath: /var/log/nginx
+            {{- end }}
+      {{- with .Values.global.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.global.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.global.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        {{- if .Values.global.sfapmui.tls.enabled }}
+        - name: tls
+          secret:
+            secretName: {{ include "sfapm.fullname" . }}-ui-tls
+        {{- end }}
+        {{- if .Values.global.key }}
+        - name: sfagent
+          configMap:
+            name: {{ include "sfapm.fullname" . }}-ui-sfagent
+        - name: normalization-config
+          configMap:
+            name: {{ include "sfapm.fullname" . }}-sfagent-normalization-nginx
+        - name: nginx-log
+          emptyDir: {}
+        {{- end }}

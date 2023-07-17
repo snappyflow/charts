@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sfapm.fullname" . }}-sftrace
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+    app: sfapm
+    role: sftrace
+data:
+  apm-server.yml: |-
+    apm-server:
+      host: "0.0.0.0:8200"
+      rum.enabled: true
+      jaeger:
+        http:
+          enabled: true
+          host: 0.0.0.0:14268
+    queue:
+      mem:
+        events: {{ .Values.global.sftrace.maximumQueueEvents }}
+        flush.min_events: 0
+        flush.timeout: 0s
+    {{- if .Values.global.sftrace.output.kafka.enabled }}
+    output.kafka:
+      enabled: true
+      hosts: {{ .Values.global.sftrace.output.kafka.hosts | toJson }}
+      topic: beats
+      worker: 8
+      timeout: 5
+      channel_buffer_size: 5000
+      bulk_max_size: 5000
+      compression: "snappy"
+      partition.random:
+        group_events: 1000
+        reachable_only: true
+      bulk_flush_frequency: 0
+      keep_alive: 300s
+      max_message_bytes: 10000000
+      required_acks: 1
+    {{- else }}
+    output.kafkarest:
+      enabled: true
+      hosts: ["{{ .Values.global.sftrace.output.kafkarest.host }}:{{ .Values.global.sftrace.output.kafkarest.port }}"]
+      topic: beats
+      token: "{{ .Values.global.sftrace.output.kafkarest.token }}"
+      bulk_max_size: 1024
+      worker: 8
+    {{- end }}
+    setup.template.enabled: false
+    logging.metrics.enabled: true
+    logging.to_stderr: true
+    logging.json: true
+    http.enabled: true
+    http.host: localhost
+    http.port: 5066
+

@@ -1,0 +1,219 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sfapm.fullname" . }}-esmanager
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+    app: elasticsearch_manager
+    role: server
+    snappyflow/component: snappyflow-apm
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+spec:
+{{- if not .Values.global.esmanager.autoscaling.enabled }}
+  replicas: {{ .Values.global.esmanager.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "sfapm.selectorLabels" . | nindent 6 }}
+      app: elasticsearch_manager
+      role: server
+  template:
+    metadata:
+    {{- with .Values.global.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "sfapm.selectorLabels" . | nindent 8 }}
+        app: elasticsearch_manager
+        role: server
+        snappyflow/component: snappyflow-apm
+        {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+        {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    spec:
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "sfapm.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: db-ready
+          image: "postgres:9.6"
+          imagePullPolicy: {{ .Values.global.postgresql.image.pullPolicy }}
+          command:
+            - sh 
+            - -c 
+            - "until pg_isready -d postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}; do sleep 3; done"
+          {{- if .Values.global.postgresql.enabled }}
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-postgresql
+                  key: multidbUserPassord
+          {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "sfapm.fullname" . }}-esmanager
+        - name: redis-ready
+          image: "redis:5.0"
+          imagePullPolicy: {{ .Values.global.redis.image.pullPolicy }}
+          command:
+            - sh 
+            - -c 
+            - "until redis-cli -h ${REDIS_HOST} -p ${REDIS_PORT} ping ; do sleep 3; done"
+          envFrom:
+            - configMapRef:
+                name: {{ include "sfapm.fullname" . }}-esmanager
+        - name: migration
+          image: "{{ .Values.esmanager.image.repository }}:{{ .Values.esmanager.image.tag }}"
+          imagePullPolicy: {{ .Values.esmanager.image.pullPolicy }}
+          command: ["bash"]
+          # args: ["-c", "python manage.py makemigrations && python manage.py migrate"]
+          args: ["-c", "python manage.py migrate"]
+          env:
+          {{- if .Values.global.postgresql.enabled }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-postgresql
+                  key: multidbUserPassord
+          {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "sfapm.fullname" . }}-esmanager
+      containers:
+        - name: elasticsearch-manager
+          securityContext:
+            {{- toYaml .Values.global.securityContext | nindent 12 }}
+          image: "{{ .Values.esmanager.image.repository }}:{{ .Values.esmanager.image.tag }}"
+          imagePullPolicy: {{ .Values.esmanager.image.pullPolicy }}
+          env:
+          {{- if .Values.global.enable_sftrace }}
+            - name: SFTRACE_PROFILE_KEY
+              value: "{{ .Values.global.key }}"
+            - name: SFTRACE_PROJECT_NAME
+              value: "{{ .Values.global.sfprojectname }}"
+            - name: SFTRACE_APP_NAME
+              value: "{{ .Values.global.sfappname }}"
+            - name: ENABLE_SFTRACE
+              value: "{{ .Values.global.enable_sftrace }}"
+            - name: ELASTIC_APM_SERVICE_NAME
+              value: "sf-elasticsearch-manager"
+          {{- end }}
+          {{- if .Values.global.postgresql.enabled }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-postgresql
+                  key: multidbUserPassord
+          {{- end }}
+          {{- if .Values.enableDebug }}
+            - name: DEBUG
+              value: "True"
+          {{- end }}
+          {{- if .Values.enableDebug }}
+            - name: LOG_LEVEL
+              value: debug
+          {{- else }}
+            - name: LOG_LEVEL
+              value: info
+          {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "sfapm.fullname" . }}-esmanager
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+#           livenessProbe:
+#             initialDelaySeconds: 60
+#             periodSeconds: 300
+#             timeoutSeconds: 65
+#             httpGet:
+#               path: /es-manager/health/
+#               port: http
+#           readinessProbe:
+#             initialDelaySeconds: 60
+#             periodSeconds: 300
+#             timeoutSeconds: 65
+#             httpGet:
+#               path: /es-manager/health/
+#               port: http
+          resources:
+            {{- toYaml .Values.global.esmanager.resources | nindent 12 }}
+          volumeMounts:
+            - name: warm-movement-rules
+              mountPath: /etc/conf
+            - name: log
+              mountPath: /var/log/snappyflow/elasticsearch_manager
+            {{- if .Values.global.enable_sftrace }}
+            - mountPath: /sfagent
+              name: python-agent
+            {{- end }}
+        {{- if .Values.global.sidecarLogger.enabled }}
+        - name: audit-logger
+          image:  "busybox:latest"
+          imagePullPolicy: {{ .Values.global.sidecarLogger.image.pullPolicy | quote }}
+          args: [/bin/sh, -c, 'tail -n+1 -F /var/log/snappyflow/elasticsearch_manager/audit.log']
+          resources:
+            {{- toYaml .Values.global.sidecarLogger.resources | nindent 12 }}
+          volumeMounts:
+          - name: log
+            mountPath: /var/log/snappyflow/elasticsearch_manager
+        - name: es-cleanup-logger
+          image:  "busybox:latest"
+          imagePullPolicy: {{ .Values.global.sidecarLogger.image.pullPolicy | quote }}
+          args: [/bin/sh, -c, 'tail -n+1 -F /var/log/snappyflow/elasticsearch_manager/es_cleanup.log']
+          resources:
+            {{- toYaml .Values.global.sidecarLogger.resources | nindent 12 }}
+          volumeMounts:
+          - name: log
+            mountPath: /var/log/snappyflow/elasticsearch_manager
+        - name: application-logger
+          image:  "busybox:latest"
+          imagePullPolicy: {{ .Values.global.sidecarLogger.image.pullPolicy | quote }}
+          args: [/bin/sh, -c, 'tail -n+1 -F -q /var/log/snappyflow/elasticsearch_manager/elasticsearch_manager.log /var/log/snappyflow/elasticsearch_manager/django.log /var/log/snappyflow/elasticsearch_manager/cloud.log']
+          resources:
+            {{- toYaml .Values.global.sidecarLogger.resources | nindent 12 }}
+          volumeMounts:
+          - name: log
+            mountPath: /var/log/snappyflow/elasticsearch_manager
+        - name: cache-logger
+          image:  "busybox:latest"
+          imagePullPolicy: {{ .Values.global.sidecarLogger.image.pullPolicy | quote }}
+          args: [/bin/sh, -c, 'tail -n+1 -F /var/log/snappyflow/elasticsearch_manager/cache.log']
+          resources:
+            {{- toYaml .Values.global.sidecarLogger.resources | nindent 12 }}
+          volumeMounts:
+          - name: log
+            mountPath: /var/log/snappyflow/elasticsearch_manager
+        {{- end }}
+      {{- with .Values.global.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.global.sfapmaffinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.global.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: log
+          emptyDir: {}
+        {{- if .Values.global.enable_sftrace }}
+        - name: python-agent
+          emptyDir: {}
+        {{- end }}
+        - name: warm-movement-rules
+          configMap:
+            name: {{ template "sfapm.fullname" . }}-esmanager-warm-movement
