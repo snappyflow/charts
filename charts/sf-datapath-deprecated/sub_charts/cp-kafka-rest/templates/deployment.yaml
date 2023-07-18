@@ -3,26 +3,24 @@ apiVersion: apps/v1
 {{- else }}
 apiVersion: apps/v1beta2
 {{- end }}
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: {{ template "es-kafka-connect.fullname" . }}
+  name: {{ template "cp-kafka-rest.fullname" . }}
   labels:
-    app: {{ template "es-kafka-connect.name" . }}
-    chart: {{ template "es-kafka-connect.chart" . }}
+    app: {{ template "cp-kafka-rest.name" . }}
+    chart: {{ template "cp-kafka-rest.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "es-kafka-connect.name" . }}
+      app: {{ template "cp-kafka-rest.name" . }}
       release: {{ .Release.Name }}
-  serviceName: {{ template "es-kafka-connect.fullname" . }}
-  podManagementPolicy: Parallel
   template:
     metadata:
       labels:
-        app: {{ template "es-kafka-connect.name" . }}
+        app: {{ template "cp-kafka-rest.name" . }}
         release: {{ .Release.Name }}
         snappyflow/projectname: {{ .Values.global.snappyflowProjectName }}
         snappyflow/appname: {{ .Values.global.snappyflowAppName }}
@@ -43,7 +41,9 @@ spec:
       {{- if .Values.global.sfScheduler.enabled }}
       schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
       {{- end }}
-      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- if .Values.global.sfNodeManager.enabled }}
+      priorityClassName: {{ .Values.global.sfNodeManager.priorityClassName }}
+      {{- end }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -55,16 +55,7 @@ spec:
                 - key: app
                   operator: In
                   values:
-                  - "archival-kafka-connect"
-          - weight: 2
-            podAffinityTerm:
-              topologyKey: "kubernetes.io/hostname"
-              labelSelector:
-                matchExpressions:
-                - key: app
-                  operator: In
-                  values:
-                  - "es-kafka-connect"
+                  - "{{ template "cp-kafka-rest.name" . }}"
       initContainers:
         - name: kafka-ready
           image: "snappyflowml/kafka-zk-check:alpha"
@@ -76,8 +67,8 @@ spec:
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: exporter
-          image: "solsson/kafka-prometheus-jmx-exporter@sha256:6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143"
-          imagePullPolicy: IfNotPresent
+          image: "{{ .Values.prometheus.jmx.image }}:{{ .Values.prometheus.jmx.imageTag }}"
+          imagePullPolicy: "{{ .Values.prometheus.jmx.imagePullPolicy }}"
           command:
           - java
           - -XX:+UnlockExperimentalVMOptions
@@ -87,7 +78,7 @@ spec:
           - -jar
           - jmx_prometheus_httpserver.jar
           - {{ .Values.prometheus.jmx.port | quote }}
-          - /etc/jmx-kafka-connect/jmx-kafka-connect-prometheus.yml
+          - /etc/jmx-kafka-rest/jmx-kafka-rest-prometheus.yml
           ports:
           - containerPort: {{ .Values.prometheus.jmx.port }}
 {{- if not .Values.global.development }}
@@ -95,15 +86,15 @@ spec:
 {{- end }}
           volumeMounts:
           - name: jmx-config
-            mountPath: /etc/jmx-kafka-connect
+            mountPath: /etc/jmx-kafka-rest
           - name: memory-util-logs
             mountPath: /memory-util-logs
         {{- end }}
-        - name: connector
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        - name: server
+          image: "{{ .Values.image }}:{{ .Values.imageTag }}"
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
           ports:
-            - name: es-connect
+            - name: rest-proxy
               containerPort: {{ .Values.servicePort}}
               protocol: TCP
             {{- if .Values.prometheus.jmx.enabled }}
@@ -112,78 +103,97 @@ spec:
             {{- end }}
           startupProbe:
             tcpSocket:
-              port: {{ .Values.servicePort}}
-            initialDelaySeconds: 120
-            periodSeconds: 10
+              port: {{ .Values.livenessProbe.port }}
+            initialDelaySeconds: 60
+            periodSeconds: 5
             successThreshold: 1
             failureThreshold: 20
-            timeoutSeconds: 9
+            timeoutSeconds: 4
           livenessProbe:
             httpGet:
-              path: /connectors
-              port: {{ .Values.servicePort}}
-              scheme: HTTP
-            initialDelaySeconds: 300
-            periodSeconds: 60
-            timeoutSeconds: 10
-            successThreshold: 1
-            failureThreshold: 3
+              path: {{ .Values.livenessProbe.path }}
+              port: {{ .Values.livenessProbe.port }}
+              scheme: {{ .Values.livenessProbe.scheme }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
 {{- if not .Values.global.development }}
-          resources: {{ toYaml .Values.containerResources.connector | nindent 12 }}
+          resources: {{ toYaml .Values.containerResources.restserver | nindent 12 }}
 {{- end }}
+          {{- if .Values.https.enabled }}
+          envFrom:
+          - configMapRef:
+              name: {{ .Release.Name }}-rest-tls-config
+          {{- end }}
           env:
-            - name: CONNECT_REST_ADVERTISED_HOST_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
-            - name: KAFKA_LOG4J_OPTS
-              value: -Dlog4j.configuration=file:///etc/customlog4j/connect-log4j.properties
-            - name: CONNECT_BOOTSTRAP_SERVERS
-              value: {{ template "es-kafka-connect.kafka.bootstrapServers" . }}
-            - name: CONNECT_GROUP_ID
-              value: {{ template "es-kafka-connect.group.id" . }}
-            - name: CONNECT_CONFIG_STORAGE_TOPIC
-              value: {{ template "es-kafka-connect.config.storage.topic" . }}
-            - name: CONNECT_OFFSET_STORAGE_TOPIC
-              value: {{ template "es-kafka-connect.offset.storage.topic" . }}
-            - name: CONNECT_STATUS_STORAGE_TOPIC
-              value: {{ template "es-kafka-connect.status.storage.topic" . }}
-            - name: CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL
-              value: {{ template "es-kafka-connect.cp-schema-registry.service-name" .}}
-            - name: CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL
-              value: {{ template "es-kafka-connect.cp-schema-registry.service-name" .}}
-            - name: KAFKA_HEAP_OPTS
-              value: "{{ .Values.heapOptions }}"
-            {{- range $key, $value := .Values.configurationOverrides }}
-            - name: {{ printf "CONNECT_%s" $key | replace "." "_" | upper | quote }}
-              value: {{ $value | quote }}
-            {{- end }}
-            {{- range $key, $value := .Values.customEnv }}
-            - name: {{ $key | quote }}
-              value: {{ $value | quote }}
-            {{- end }}
-            {{- if .Values.jmx.port }}
-            - name: KAFKA_JMX_PORT
-              value: "{{ .Values.jmx.port }}"
-            {{- end }}
+          {{- if .Values.https.enabled }}
+          - name: KAFKA_REST_SSL_KEYSTORE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-rest-tls-secret
+                key: keystorePassword
+          - name: KAFKA_REST_SSL_TRUSTSTORE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-rest-tls-secret
+                key: truststorePassword
+          - name: KAFKA_REST_SSL_KEY_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-rest-tls-secret
+                key: keyPassword
+          {{- end }}
+          - name: LOGARCH_AUTHENTICATOR_URL
+            value: "http://{{ template "cp-kafka-rest.authenticator.fullname" . }}"
+          - name: KAFKAREST_LOG4J_OPTS
+            value: -Dlog4j.configuration=file:///etc/customlog4j/connect-log4j.properties
+          - name: KAFKA_REST_HOST_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: KAFKA_REST_BOOTSTRAP_SERVERS
+            value: {{ template "cp-kafka-rest.cp-kafka.service-name" . }}
+          - name: KAFKA_REST_SCHEMA_REGISTRY_URL
+            value: {{ template "cp-kafka-rest.cp-schema-registry.service-name" . }}
+          - name: KAFKAREST_HEAP_OPTS
+            value: "{{ .Values.heapOptions }}"
+          {{- range $key, $value := .Values.configurationOverrides }}
+          - name: {{ printf "KAFKA_REST_%s" $key | replace "." "_" | upper | quote }}
+            value: {{ $value | quote }}
+          {{- end }}
+          {{- if .Values.jmx.port }}
+          - name: KAFKAREST_JMX_PORT
+            value: "{{ .Values.jmx.port }}"
+          {{- end }}
           volumeMounts:
           - name: connect-log4j-properties
             mountPath: /etc/customlog4j
           - name: memory-util-logs
             mountPath: /memory-util-logs
+          {{- if .Values.https.enabled }}
+          - name: tls
+            mountPath: "/tmp"
+          {{- end }}
       {{- if .Values.global.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.global.imagePullSecrets | indent 8 }}
       {{- end }}
       volumes:
+      {{- if .Values.https.enabled }}
+      - name: tls
+        secret:
+          secretName: {{ .Release.Name }}-rest-tls-secret
+      {{- end }}
       {{- if .Values.prometheus.jmx.enabled }}
       - name: jmx-config
         configMap:
-          name: {{ template "es-kafka-connect.fullname" . }}-jmx-configmap
+          name: {{ template "cp-kafka-rest.fullname" . }}-jmx-configmap
       {{- end }}
       - name: connect-log4j-properties
         configMap:
-          name: {{ template "es-kafka-connect.fullname" . }}-kafka-log
+          name: {{ template "cp-kafka-rest.fullname" . }}-kafka-log
       - name: memory-util-logs
         emptyDir: {}
       {{- if .Values.nodeSelector }}
