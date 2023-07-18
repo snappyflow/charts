@@ -21,6 +21,7 @@ export PATH=/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/aws/bin:/home
   argocdpassword=$(cat test | awk NR==1)
 
   ###Interactive session for ArgoCD login CLI
+  echo "Interactive session for ArgoCD login CLI"
   /usr/bin/expect <(cat << EOF
 spawn argocd login $argocdserver
 expect "WARNING:*"
@@ -35,6 +36,7 @@ EOF
 )
 
   ###Interactive session for updating ArgoCD password
+  echo "Interactive session for updating ArgoCD password"
   /usr/bin/expect <(cat << EOF
 spawn argocd account update-password
 expect "*(admin):"
