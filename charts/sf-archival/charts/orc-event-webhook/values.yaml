@@ -2,11 +2,11 @@ affinity: {}
 containerResources:
   webhook:
     limits:
-      cpu: 50m
-      memory: 50Mi
+      cpu: 200m
+      memory: 250Mi
     requests:
-      cpu: 10m
-      memory: 10Mi
+      cpu: 100m
+      memory: 150Mi
 fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
@@ -38,5 +38,5 @@ autoscaling:
   # Below values are based on requests.
   # Hence value > 100 needs to be calculated based on set limits
   # Below values are calculated such that (limit / request) * 80 -> for 80% target utilization
-  targetCPUUtilizationPercentage: 400
-  targetMemoryUtilizationPercentage: 400
+  targetCPUUtilizationPercentage: 250
+  targetMemoryUtilizationPercentage: 468
