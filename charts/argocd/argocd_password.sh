@@ -3,7 +3,7 @@ export PATH=/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/aws/bin:/home
 
   ###Update ArgoCD service with LoadBalancer
   kubectl patch svc argocd-server -n argocd -p '{"spec":{"type":"LoadBalancer"}}'
-#  sleep 180 
+  sleep 180 
 
   ###Package required for interactive session for argocd login
   sudo apt-get install expect -y || sudo yum install expect -y
