@@ -6,7 +6,7 @@ export PATH=/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/aws/bin:/home
   sleep 180 
 
   ###Package required for interactive session for argocd login
-  sudo apt-get install expect -y || sudo yum install expect -y --disablerepo=docker-ce-stable
+  sudo yum install expect -y --disablerepo=docker-ce-stable  || sudo apt-get install expect -y
   
   ###Installation of ArgoCD cli
   curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
