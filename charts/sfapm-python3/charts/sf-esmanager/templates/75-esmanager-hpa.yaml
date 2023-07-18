@@ -13,16 +13,16 @@ spec:
   minReplicas: {{ .Values.global.esmanager.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.global.esmanager.autoscaling.maxReplicas }}
   metrics:
-  {{- if .Values.global.esmanager.autoscaling.targetCPUUtilizationPercentage }}
-    - type: Resource
-      resource:
-        name: cpu
-        targetAverageUtilization: {{ .Values.global.esmanager.autoscaling.targetCPUUtilizationPercentage }}
-  {{- end }}
   {{- if .Values.global.esmanager.autoscaling.targetMemoryUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
         targetAverageUtilization: {{ .Values.global.esmanager.autoscaling.targetMemoryUtilizationPercentage }}
-  {{- end }}
+  {{- end }
+  {{- if .Values.global.esmanager.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.global.esmanager.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}}
 {{- end }}

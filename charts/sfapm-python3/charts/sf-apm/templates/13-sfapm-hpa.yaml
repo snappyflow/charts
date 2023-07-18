@@ -13,16 +13,16 @@ spec:
   minReplicas: {{ .Values.global.sfapm.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.global.sfapm.autoscaling.maxReplicas }}
   metrics:
-  {{- if .Values.global.sfapm.autoscaling.targetCPUUtilizationPercentage }}
-    - type: Resource
-      resource:
-        name: cpu
-        targetAverageUtilization: {{ .Values.global.sfapm.autoscaling.targetCPUUtilizationPercentage }}
-  {{- end }}
   {{- if .Values.global.sfapm.autoscaling.targetMemoryUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
         targetAverageUtilization: {{ .Values.global.sfapm.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.global.sfapm.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.global.sfapm.autoscaling.targetCPUUtilizationPercentage }}
   {{- end }}
 {{- end }}
