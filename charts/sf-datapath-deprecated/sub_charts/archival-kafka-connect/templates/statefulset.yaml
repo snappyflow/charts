@@ -1,3 +1,4 @@
+{{- if .Values.global.archival.enabled }}
 {{- if .Capabilities.APIVersions.Has "apps/v1" }}
 apiVersion: apps/v1
 {{- else }}
@@ -5,24 +6,24 @@ apiVersion: apps/v1beta2
 {{- end }}
 kind: StatefulSet
 metadata:
-  name: {{ template "es-kafka-connect.fullname" . }}
+  name: {{ template "archival-kafka-connect.fullname" . }}
   labels:
-    app: {{ template "es-kafka-connect.name" . }}
-    chart: {{ template "es-kafka-connect.chart" . }}
+    app: {{ template "archival-kafka-connect.name" . }}
+    chart: {{ template "archival-kafka-connect.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "es-kafka-connect.name" . }}
+      app: {{ template "archival-kafka-connect.name" . }}
       release: {{ .Release.Name }}
-  serviceName: {{ template "es-kafka-connect.fullname" . }}
+  serviceName: {{ template "archival-kafka-connect.fullname" . }}
   podManagementPolicy: Parallel
   template:
     metadata:
       labels:
-        app: {{ template "es-kafka-connect.name" . }}
+        app: {{ template "archival-kafka-connect.name" . }}
         release: {{ .Release.Name }}
         snappyflow/projectname: {{ .Values.global.snappyflowProjectName }}
         snappyflow/appname: {{ .Values.global.snappyflowAppName }}
@@ -55,7 +56,7 @@ spec:
                 - key: app
                   operator: In
                   values:
-                  - "archival-kafka-connect"
+                  - "es-kafka-connect"
           - weight: 2
             podAffinityTerm:
               topologyKey: "kubernetes.io/hostname"
@@ -64,7 +65,7 @@ spec:
                 - key: app
                   operator: In
                   values:
-                  - "es-kafka-connect"
+                  - "archival-kafka-connect"
       initContainers:
         - name: kafka-ready
           image: "snappyflowml/kafka-zk-check:alpha"
@@ -76,8 +77,8 @@ spec:
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: exporter
-          image: "solsson/kafka-prometheus-jmx-exporter@sha256:6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143"
-          imagePullPolicy: IfNotPresent
+          image: "{{ .Values.prometheus.jmx.image }}:{{ .Values.prometheus.jmx.imageTag }}"
+          imagePullPolicy: "{{ .Values.prometheus.jmx.imagePullPolicy }}"
           command:
           - java
           - -XX:+UnlockExperimentalVMOptions
@@ -100,10 +101,10 @@ spec:
             mountPath: /memory-util-logs
         {{- end }}
         - name: connector
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+          imagePullPolicy: "{{ .Values.imagePullPolicy }}"
           ports:
-            - name: es-connect
+            - name: arch-connect
               containerPort: {{ .Values.servicePort}}
               protocol: TCP
             {{- if .Values.prometheus.jmx.enabled }}
@@ -139,19 +140,19 @@ spec:
             - name: KAFKA_LOG4J_OPTS
               value: -Dlog4j.configuration=file:///etc/customlog4j/connect-log4j.properties
             - name: CONNECT_BOOTSTRAP_SERVERS
-              value: {{ template "es-kafka-connect.kafka.bootstrapServers" . }}
+              value: {{ template "archival-kafka-connect.kafka.bootstrapServers" . }}
             - name: CONNECT_GROUP_ID
-              value: {{ template "es-kafka-connect.group.id" . }}
+              value: {{ template "archival-kafka-connect.group.id" . }}
             - name: CONNECT_CONFIG_STORAGE_TOPIC
-              value: {{ template "es-kafka-connect.config.storage.topic" . }}
+              value: {{ template "archival-kafka-connect.config.storage.topic" . }}
             - name: CONNECT_OFFSET_STORAGE_TOPIC
-              value: {{ template "es-kafka-connect.offset.storage.topic" . }}
+              value: {{ template "archival-kafka-connect.offset.storage.topic" . }}
             - name: CONNECT_STATUS_STORAGE_TOPIC
-              value: {{ template "es-kafka-connect.status.storage.topic" . }}
+              value: {{ template "archival-kafka-connect.status.storage.topic" . }}
             - name: CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL
-              value: {{ template "es-kafka-connect.cp-schema-registry.service-name" .}}
+              value: {{ template "archival-kafka-connect.cp-schema-registry.service-name" .}}
             - name: CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL
-              value: {{ template "es-kafka-connect.cp-schema-registry.service-name" .}}
+              value: {{ template "archival-kafka-connect.cp-schema-registry.service-name" .}}
             - name: KAFKA_HEAP_OPTS
               value: "{{ .Values.heapOptions }}"
             {{- range $key, $value := .Values.configurationOverrides }}
@@ -179,11 +180,11 @@ spec:
       {{- if .Values.prometheus.jmx.enabled }}
       - name: jmx-config
         configMap:
-          name: {{ template "es-kafka-connect.fullname" . }}-jmx-configmap
+          name: {{ template "archival-kafka-connect.fullname" . }}-jmx-configmap
       {{- end }}
       - name: connect-log4j-properties
         configMap:
-          name: {{ template "es-kafka-connect.fullname" . }}-kafka-log
+          name: {{ template "archival-kafka-connect.fullname" . }}-kafka-log
       - name: memory-util-logs
         emptyDir: {}
       {{- if .Values.nodeSelector }}
@@ -194,3 +195,4 @@ spec:
       tolerations:
 {{ toYaml .Values.tolerations | indent 8 }}
       {{- end }}
+{{- end }}
