@@ -13,16 +13,16 @@ spec:
   minReplicas: {{ .Values.global.vizbuilder.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.global.vizbuilder.autoscaling.maxReplicas }}
   metrics:
-  {{- if .Values.global.vizbuilder.autoscaling.targetCPUUtilizationPercentage }}
-    - type: Resource
-      resource:
-        name: cpu
-        targetAverageUtilization: {{ .Values.global.vizbuilder.autoscaling.targetCPUUtilizationPercentage }}
-  {{- end }}
   {{- if .Values.global.vizbuilder.autoscaling.targetMemoryUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
         targetAverageUtilization: {{ .Values.global.vizbuilder.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.global.vizbuilder.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.global.vizbuilder.autoscaling.targetCPUUtilizationPercentage }}
   {{- end }}
 {{- end }}

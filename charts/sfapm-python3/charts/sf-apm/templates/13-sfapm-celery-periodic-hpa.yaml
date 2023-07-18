@@ -13,16 +13,16 @@ spec:
   minReplicas: {{ .Values.global.sfapm_celery.periodic.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.global.sfapm_celery.periodic.autoscaling.maxReplicas }}
   metrics:
-  {{- if .Values.global.sfapm_celery.periodic.autoscaling.targetCPUUtilizationPercentage }}
-    - type: Resource
-      resource:
-        name: cpu
-        targetAverageUtilization: {{ .Values.global.sfapm_celery.periodic.autoscaling.targetCPUUtilizationPercentage }}
-  {{- end }}
   {{- if .Values.global.sfapm_celery.periodic.autoscaling.targetMemoryUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
         targetAverageUtilization: {{ .Values.global.sfapm_celery.periodic.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.global.sfapm_celery.periodic.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.global.sfapm_celery.periodic.autoscaling.targetCPUUtilizationPercentage }}
   {{- end }}
 {{- end }}
