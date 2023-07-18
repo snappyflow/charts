@@ -18,11 +18,11 @@ spec:
       resource:
         name: memory
         targetAverageUtilization: {{ .Values.global.esmanager.autoscaling.targetMemoryUtilizationPercentage }}
-  {{- end }
+  {{- end }}
   {{- if .Values.global.esmanager.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
       resource:
         name: cpu
         targetAverageUtilization: {{ .Values.global.esmanager.autoscaling.targetCPUUtilizationPercentage }}
-  {{- end }}}
+  {{- end }}
 {{- end }}
