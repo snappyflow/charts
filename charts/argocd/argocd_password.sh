@@ -29,7 +29,7 @@ send "y\r"
 expect "Username:"
 send "admin\r"
 expect "Password:"
-send "$argocdpassword\r"
+send -- "$argocdpassword\r"
 expect "*successfully"
 interact
 EOF
@@ -40,7 +40,7 @@ EOF
   /usr/bin/expect <(cat << EOF
 spawn argocd account update-password
 expect "*(admin):"
-send "$argocdpassword\r"
+send -- "$argocdpassword\r"
 expect "*user admin:"
 send "admin@123\r"
 expect "*user admin:"
@@ -49,3 +49,21 @@ expect "Password updated"
 interact
 EOF
 )
+
+  ###Interactive session for ArgoCD login CLI
+  echo "Interactive session for ArgoCD login CLI"
+  /usr/bin/expect <(cat << EOF
+spawn argocd login $argocdserver
+expect "WARNING:*"
+send "y\r"
+expect "Username:"
+send "admin\r"
+expect "Password:"
+send "admin@123\r"
+expect "*successfully"
+interact
+EOF
+)
+
+  rm -rf test
+  sleep 10
