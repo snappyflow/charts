@@ -54,10 +54,8 @@ heapOptions: -Xms450M -Xmx1800M -Xmns350M -Xmnx1400M -XX:MaxDirectMemorySize=200
   -XX:+CompactStrings -Xverbosegclog:/memory-util-logs/gc-logs/%seq.xml,20,100 -Xdump:system:defaults:file=/memory-util-logs/system-dumps/%seq.dmp
   -Xdump:heap:defaults:file=/memory-util-logs/heap-dumps/%seq.phd -Xdump:java:defaults:file=/memory-util-logs/java-dumps/%seq.txt
   -Xdump:system+heap+java
-image:
-  pullPolicy: IfNotPresent
-  repository: snappyflowml/apm-kafka-connect
-  tag: '2-0-88'
+image: snappyflowml/apm-kafka-connect
+imageTag: '21'
 inByteRate: 1736111
 jmx:
   port: 5555
