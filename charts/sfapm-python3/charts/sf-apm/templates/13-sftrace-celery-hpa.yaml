@@ -1,0 +1,23 @@
+{{- if .Values.global.sfapm_celery.sftrace.clusterRoleBindingName }}
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "sfapm.fullname" . }}-apm-celery-sftrace
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "sfapm.fullname" . }}-apm-celery-sftrace
+  minReplicas: {{ .Values.global.sfapm_celery.sftrace.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.global.sfapm_celery.sftrace.autoscaling.maxReplicas }}
+  metrics:
+    - type: Pods
+      pods:
+        metric:
+          name: sftrace_queue_count
+        target:
+          type: AverageValue
+          averageValue: {{ .Values.global.sfapm_celery.sftrace.autoscaling.averageValue }}
+{{- end }}
