@@ -391,7 +391,7 @@ prometheus-adapter:
           pod:
             resource: pod
       seriesQuery: '{__name__="num_executing_tasks"}'
-    - metricsQuery: <<.Series>>{pod=~".*celery-metrics-collector.*"}
+    - metricsQuery: <<.Series>>{pod=~".*python3-apm-celery-sftrace.*"}
       name:
         as: sftrace_queue_count
         matches: ""
