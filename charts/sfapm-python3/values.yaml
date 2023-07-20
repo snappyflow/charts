@@ -400,6 +400,16 @@ global:
       replicaCount: 1
       command: celery -A snappyflow worker -l $LOG_LEVEL -Q provision -c1 $CELERY_OPTS
     sftrace:
+      clusterRoleName: sftrace-metric-collector-role
+      clusterRoleBindingName: sftrace-metric-collector-role-binding
+      serviceAccountName: sftrace-metric-collector
+      autoscaling:
+        enabled: true
+        minReplicas: 1
+        maxReplicas: 5
+        scaleUpPeriod: 5
+        scaleDownPeriod: 120
+        averageValue: 900
       resources:
         limits:
           cpu: 1000m
