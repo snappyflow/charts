@@ -20,7 +20,7 @@ spec:
       queue: sftrace
   template:
     metadata:
-    {{- with .Values.global.podAnnotations }}
+    {{- with .Values.global.sftrace.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
