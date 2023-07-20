@@ -8124,6 +8124,23 @@ entries:
   sf-saas-metrics:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2023-07-20T09:00:33.632746119Z"
+    dependencies:
+    - name: prometheus
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 19.3.1
+    - name: prometheus-adapter
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 4.0.0
+    description: A Helm chart for Kubernetes
+    digest: 8df15157008e8f39986bc995bbdbf3eb23b98437a080a1953bdb9fda4ba0457a
+    name: sf-saas-metrics
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-saas-metrics-1.0.2/sf-saas-metrics-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-04-17T18:27:35.324282945Z"
     dependencies:
     - name: prometheus
@@ -10546,6 +10563,25 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sfapm-2.1.3/sfapm-2.1.3.tgz
     version: 2.1.3
   sfapm-python3:
+  - apiVersion: v2
+    appVersion: "4"
+    created: "2023-07-20T09:00:33.75713852Z"
+    dependencies:
+    - name: redis
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.2.13
+    - condition: global.postgresql.enabled
+      name: postgresql
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.1.13
+    description: A Helm chart to deploy snappyflow on Kubernetes
+    digest: 92e8770f7fa83f01651954acf1b40249aa71a17641d7951a5cff1e35e6c4a635
+    home: https://www.snappyflow.io
+    name: sfapm-python3
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sfapm-python3-4.0.425/sfapm-python3-4.0.425.tgz
+    version: 4.0.425
   - apiVersion: v2
     appVersion: "4"
     created: "2023-07-20T07:38:42.813619868Z"
