@@ -40,7 +40,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "sfapm.serviceAccountName" . }}
+      serviceAccountName: {{ .Values.global.sfapm_celery.sftrace.serviceAccountName }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
@@ -133,6 +133,17 @@ spec:
             - mountPath: /sfagent
               name: sftrace-agent
             {{- end }}
+        - name: sfapm-celery-metrics-collector
+          command: [/go/metrics]
+          image: snappyflowml/sftrace-celery-metrics-collector:latest
+          env:
+            - name: DEPLOYMENT_NAME
+              value: {{ include "sfapm.fullname" . }}-apm-celery-sftrace
+          envFrom:
+            - configMapRef:
+                name: {{ include "sfapm.fullname" . }}-apm
+          resources:
+          {{- toYaml .Values.global.sftrace.sftraceServerPrometheusExporter.resources | nindent 12 }}
       {{- with .Values.global.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
