@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sfapm.fullname" . }}-esmanager
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+    app: elasticsearch_manager
+    role: server
+data:
+    DISABLE_SERVER_SIDE_CURSORS: {{ .Values.disable_server_side_cursors | quote }}
+
+    {{- if .Values.global.postgresql.enabled }}
+    DB_HOST: {{ .Release.Name }}-postgresql
+    DB_PORT: "5432"
+    DB_NAME: "elasticsearch_manager"
+    DB_USER: {{ .Values.global.postgresql.multidbUser }}
+    {{- else }}
+    DB_HOST: {{ .Values.global.postgresql.external.dbHost }}
+    DB_PORT: {{ .Values.global.postgresql.external.dbPort | default "5432"  | quote }}
+    DB_NAME: "elasticsearch_manager"
+    DB_USER: {{ .Values.global.postgresql.external.dbUser }}
+    DB_PASSWORD: {{ .Values.global.postgresql.external.dbPassword }}
+    {{- end }}
+
+    {{- if eq "azure" .Values.global.sfapm.cloud }}
+    STORAGE_ACCOUNT_NAME: "{{ .Values.global.sfapm.azure.storage_account_name }}"
+    STORAGE_ACCOUNT_KEY: "{{ .Values.global.sfapm.azure.storage_account_key }}"
+    {{- end }}
+    
+    REDIS_HOST: {{ .Release.Name  }}-redis
+    REDIS_PORT: "6379"
+
+    VIZBUILDER_HOST: {{ include "sfapm.fullname" . }}-vizbuilder
+    VIZBUILDER_PORT: "{{ .Values.global.vizbuilder.service.port }}"
+
+    APM_HOST: {{ include "sfapm.fullname" . }}-apm
+    APM_PORT: "{{ .Values.global.sfapm.service.port }}"
+
+    ES_USER: "{{ .Values.global.sfapm.ingress.es_user }}"
+    ES_PROTOCOL: "{{ .Values.global.sfapm.ingress.es_http }}"
+    ES_HOST: "{{ .Values.global.sfapm.ingress.es_host }}"
+    ES_PASS: "{{ .Values.global.sfapm.ingress.es_pass }}"
+    ES_PORT: "{{ .Values.global.sfapm.ingress.es_port }}"
+    ES_OPERATING_MODE: "{{ .Values.global.sfapm.ingress.es_operating_mode }}"
+
+    {{- if .Values.global.cloud.aws.enable }}
+    CLOUD_TYPE: "aws"
+    {{- else if .Values.global.cloud.gcs.enable }}
+    CLOUD_TYPE: "gcp"
+    {{- else if .Values.global.cloud.datacenter.enable }}
+    CLOUD_TYPE: "vcenter"
+    {{- end }}
+    
+    WARM_RULE_PATH: "/etc/conf/warm_movement.yaml"
+
+    WARM_ALLOCATED_FREEDISK_PERCENT: "{{ .Values.global.esmanager.warm_allocated_freedisk_percent }}"
+    MIN_WARM_NODES: "{{ .Values.global.esmanager.min_warm_nodes }}"
+    MAX_RELOCATING_INDEX: "{{ .Values.global.esmanager.max_relocating_index }}"
+    MAX_SHRINK_JOB: "{{ .Values.global.esmanager.max_shrink_job }}"
+    MAX_FORCEMERGE_JOB: "{{ .Values.global.esmanager.max_forcemerge_job }}"
+
+    MAX_ONGOING_BACKUPS: "{{ .Values.global.esmanager.max_ongoing_backups }}"
+    MAX_ONGOING_RESTORES: "{{ .Values.global.esmanager.max_ongoing_restores }}"
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sfapm.fullname" . }}-esmanager-warm-movement
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+    app: elasticsearch_manager
+    role: server
+data:
+  warm_movement.yaml: |-
+    {{- toYaml .Values.global.esmanager.warm_movement_rules | nindent 4 }}

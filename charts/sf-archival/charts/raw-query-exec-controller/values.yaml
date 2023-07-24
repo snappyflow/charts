@@ -3,8 +3,10 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/raw-query-exec-controller
-  tag: '2'
+  tag: 'master-2-0-92'
 imagePullSecrets: []
+maxGBToProcessDuringHistogramQuery: 1
+maxGBToProcessDuringLogQuery: 1
 nameOverride: ''
 nodeSelector: {}
 podAnnotations: {}
@@ -27,5 +29,3 @@ service:
   port: 80
   type: ClusterIP
 tolerations: []
-maxGBToProcessDuringHistogramQuery: 1
-maxGBToProcessDuringLogQuery: 1

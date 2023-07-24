@@ -1,3 +1,5 @@
+autoscaling:
+  enabled: false
 configurationOverrides:
   kafka.rest.resource.extension.class: com.maplelabs.kafka.rest.auth.CustomAuthSecurityRestExtension
   listeners: https://0.0.0.0:8081,http://0.0.0.0:8082
@@ -39,9 +41,10 @@ https:
   truststoreFile: rest.https.truststore.jks
   truststorePassword: test1234
 httpsServicePort: 8081
-image: snappyflowml/sf-kafka-rest
-imagePullPolicy: IfNotPresent
-imageTag: '6'
+image:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/sf-kafka-rest
+  tag: 'master-2-0-167'
 jmx:
   port: 5555
 livenessProbe:
@@ -59,12 +62,8 @@ podAnnotations: {}
 prometheus:
   jmx:
     enabled: true
-    image: solsson/kafka-prometheus-jmx-exporter@sha256
     imagePullPolicy: IfNotPresent
-    imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
     port: 5556
 replicaCount: 1
 servicePort: 8082
 tolerations: {}
-autoscaling:
-  enabled: false

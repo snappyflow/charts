@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sfk-interface.fullname" . }}
+  labels:
+    {{- include "sfk-interface.labels" . | nindent 4 }}
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: {{ .Values.service.port }}
+  selector:
+    {{- include "sfk-interface.selectorLabels" . | nindent 4 }}

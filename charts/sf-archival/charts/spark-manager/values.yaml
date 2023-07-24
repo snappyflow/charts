@@ -3,7 +3,7 @@ cbsparkevent:
   image:
     pullPolicy: IfNotPresent
     repository: snappyflowml/cb-spark-event
-    tag: '3'
+    tag: 'master-2-0-92'
 compactionImage: snappyflowml/spark-compact-orc:4
 fullnameOverride: ''
 jobserver:
@@ -15,22 +15,17 @@ jobserver:
       cpu: 10m
       memory: 50Mi
   db:
-    max_open_connections: 1
     max_idle_connections: 0
+    max_open_connections: 1
   image:
     pullPolicy: IfNotPresent
     repository: snappyflowml/job-server
-    tag: '15'
+    tag: 'master-2-0-92'
   serverPort: 5002
   service:
     servicePort: 5002
   sparkProperties:
     logDirectory: sparkhs/spark-hs
-cbsparkevent:
-  image:
-    pullPolicy: IfNotPresent
-    repository: snappyflowml/cb-spark-event
-    tag: 'azurestage-1'
 monitor:
   containerResources:
     limits:
@@ -42,7 +37,7 @@ monitor:
   image:
     pullPolicy: IfNotPresent
     repository: snappyflowml/monitor
-    tag: '8'
+    tag: 'master-2-0-92'
 nameOverride: ''
 nodeSelector: {}
 schedulerName: sf-scheduler

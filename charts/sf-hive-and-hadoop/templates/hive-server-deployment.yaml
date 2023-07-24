@@ -41,7 +41,7 @@ spec:
           command:
             - sh
             - -c
-            - "until pg_isready -d postgresql://'{{ .Values.global.postgresql.postgresqlUsername }}':'{{ .Values.global.postgresql.postgresqlPassword }}'@'{{ template "hive.postgresql.fullname" . }}':{{ .Values.global.postgresql.servicePort }}/'hive_metastore'; do sleep 3; done"
+            - "until pg_isready -d postgresql://'{{ template "hive.postgresql.username" . }}':'{{ template "hive.postgresql.password" . }}'@'{{ template "hive.postgresql.fullname" . }}':{{ template "hive.postgresql.servicePort" . }}/'hive_metastore'; do sleep 3; done"
         - name: namenode-ready
           image: busybox:1.28
           command:
