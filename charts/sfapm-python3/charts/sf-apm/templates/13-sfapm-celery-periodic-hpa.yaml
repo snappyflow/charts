@@ -1,0 +1,28 @@
+{{- if .Values.global.sfapm_celery.periodic.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "sfapm.fullname" . }}-apm-celery-periodic
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "sfapm.fullname" . }}-apm-celery-periodic
+  minReplicas: {{ .Values.global.sfapm_celery.periodic.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.global.sfapm_celery.periodic.autoscaling.maxReplicas }}
+  metrics:
+  {{- if .Values.global.sfapm_celery.periodic.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.global.sfapm_celery.periodic.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+  {{- if .Values.global.sfapm_celery.periodic.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.global.sfapm_celery.periodic.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}
+{{- end }}

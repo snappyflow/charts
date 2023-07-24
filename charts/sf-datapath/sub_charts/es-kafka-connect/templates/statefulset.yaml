@@ -76,8 +76,8 @@ spec:
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: exporter
-          image: "{{ .Values.prometheus.jmx.image }}:{{ .Values.prometheus.jmx.imageTag }}"
-          imagePullPolicy: "{{ .Values.prometheus.jmx.imagePullPolicy }}"
+          image: "solsson/kafka-prometheus-jmx-exporter@sha256:6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143"
+          imagePullPolicy: IfNotPresent
           command:
           - java
           - -XX:+UnlockExperimentalVMOptions
@@ -100,8 +100,8 @@ spec:
             mountPath: /memory-util-logs
         {{- end }}
         - name: connector
-          image: "{{ .Values.image }}:{{ .Values.imageTag }}"
-          imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
           ports:
             - name: es-connect
               containerPort: {{ .Values.servicePort}}

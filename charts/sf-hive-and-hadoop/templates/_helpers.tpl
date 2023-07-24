@@ -94,10 +94,36 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{- define "hive.postgresql.fullname" -}}
-{{- if .Values.global.postgresql.host }}
+{{- if .Values.postgresqlOverrides.host }}
+{{- printf "%s" .Values.postgresqlOverrides.host -}}
+{{- else if .Values.global.postgresql.host }}
 {{- printf "%s" .Values.global.postgresql.host -}}
 {{- else }}
 {{- printf "%s-%s" .Release.Name "postgresql" | trunc 63 | trimSuffix "-" -}}
+{{- end }}
+{{- end -}}
+
+{{- define "hive.postgresql.servicePort" -}}
+{{- if .Values.postgresqlOverrides.servicePort }}
+{{- printf "%v" .Values.postgresqlOverrides.servicePort -}}
+{{- else }}
+{{- printf "%v" .Values.global.postgresql.servicePort }}
+{{- end }}
+{{- end -}}
+
+{{- define "hive.postgresql.username" -}}
+{{- if .Values.postgresqlOverrides.postgresqlUsername }}
+{{- printf "%s" .Values.postgresqlOverrides.postgresqlUsername -}}
+{{- else }}
+{{- printf "%s" .Values.global.postgresql.postgresqlUsername }}
+{{- end }}
+{{- end -}}
+
+{{- define "hive.postgresql.password" -}}
+{{- if .Values.postgresqlOverrides.postgresqlPassword }}
+{{- printf "%s" .Values.postgresqlOverrides.postgresqlPassword -}}
+{{- else }}
+{{- printf "%s" .Values.global.postgresql.postgresqlPassword }}
 {{- end }}
 {{- end -}}
 

@@ -1,0 +1,155 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sfapm.fullname" . }}-vizbuilder-celery-signature
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+    app: vizbuilder
+    role: celery
+    queue: signature
+    snappyflow/component: snappyflow-apm
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+spec:
+  replicas: {{ .Values.global.vizbuilder_celery.signature.replicaCount }}
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      {{- include "sfapm.selectorLabels" . | nindent 6 }}
+      app: vizbuilder
+      role: celery
+      queue: signature
+  template:
+    metadata:
+    {{- with .Values.global.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "sfapm.selectorLabels" . | nindent 8 }}
+        app: vizbuilder
+        role: celery
+        queue: signature
+        snappyflow/component: snappyflow-apm
+        {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+        {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    spec:
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "sfapm.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: db-ready
+          image: "postgres:9.6"
+          imagePullPolicy: {{ .Values.global.postgresql.image.pullPolicy }}
+          command:
+            - sh
+            - -c
+            - "until pg_isready -d postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}; do sleep 3; done"
+          {{- if .Values.global.postgresql.enabled }}
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-postgresql
+                  key: multidbUserPassord
+          {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "sfapm.fullname" . }}-vizbuilder
+        - name: redis-ready
+          image: "redis:5.0"
+          imagePullPolicy: {{ .Values.global.redis.image.pullPolicy }}
+          command:
+            - sh
+            - -c
+            - "until redis-cli -h ${REDIS_HOST} -p ${REDIS_PORT} ping ; do sleep 3; done"
+          envFrom:
+            - configMapRef:
+                name: {{ include "sfapm.fullname" . }}-vizbuilder
+      containers:
+        - name: celery
+          securityContext:
+            {{- toYaml .Values.global.securityContext | nindent 12 }}
+          image: "{{ .Values.vizbuilder.image.repository }}:{{ .Values.vizbuilder.image.tag }}"
+          imagePullPolicy: {{ .Values.vizbuilder.image.pullPolicy }}
+          command: ["bash", "-c"]
+          args: [{{ .Values.global.vizbuilder_celery.signature.command }}]
+          env:
+          {{- range $key, $value := .Values.global.vizbuilder_celery.env }}
+            - name: {{ $key }}
+              value: "{{ $value }}"
+          {{- end }}
+          {{- if .Values.global.enable_sftrace }}
+            - name: SFTRACE_PROFILE_KEY
+              value: "{{ .Values.global.key }}"
+            - name: SFTRACE_PROJECT_NAME
+              value: "{{ .Values.global.sfprojectname }}"
+            - name: SFTRACE_APP_NAME
+              value: "{{ .Values.global.sfappname }}"
+            - name: ENABLE_SFTRACE
+              value: "{{ .Values.global.enable_sftrace }}"
+            - name: ELASTIC_APM_SERVICE_NAME
+              value: "vizbuilder-celery-signature"
+          {{- end }}
+          {{- if .Values.global.postgresql.enabled }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-postgresql
+                  key: multidbUserPassord
+          {{- end }}
+          {{- if .Values.enableDebug }}
+            - name: DEBUG
+              value: "True"
+          {{- end }}
+          {{- if .Values.enableDebug }}
+            - name: LOG_LEVEL
+              value: debug
+          {{- else }}
+            - name: LOG_LEVEL
+              value: info
+          {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "sfapm.fullname" . }}-vizbuilder
+          resources:
+            {{- toYaml .Values.global.vizbuilder_celery.signature.resources | nindent 12 }}
+          livenessProbe:
+            initialDelaySeconds: 300
+            periodSeconds: 180
+            timeoutSeconds: 10
+            exec:
+              command: ["python", "check.py"]
+          volumeMounts:
+            - mountPath: /data/snappyflow
+              name: data
+            {{- if .Values.global.enable_sftrace }}
+            - mountPath: /sfagent
+              name: sftrace-agent
+            {{- end }}
+      {{- with .Values.global.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.global.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.global.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: data
+          emptyDir: {}
+        {{- if .Values.global.enable_sftrace }}
+        - name: sftrace-agent
+          emptyDir: {}
+        {{- end }}

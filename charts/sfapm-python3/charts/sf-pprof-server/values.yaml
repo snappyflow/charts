@@ -1,0 +1,11 @@
+---
+enableDebug: false
+archiverEnabled: true
+nameOverride: sfapm-python3
+fullnameOverride: ""
+pprof:
+  image:
+    repository: snappyflowml/pprof-server
+    pullPolicy: IfNotPresent
+    tag: 'master-0-4-3'
+podSecurityContext: {}

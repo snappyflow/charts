@@ -132,7 +132,31 @@ node_agent:
     - key: CriticalAddonsOnly
       operator: Exists
 
+  #
+  # Features Supported with basic_parsing flag enabled
+  # => SingleLine Parsing with snappyflow supported parser plugins
+  # => No UI based labelling feature
+  # => GeoIP and UaParser Plugin Disabled
 
+  basic_parsing: "Off"
+
+  #
+  # Flag name: kubelet-for-metadata
+  # Default Value: Off
+
+  # If enabled, in fluentbit, instead of using apiserver, kubelet will be used to enrich the metadata of incoming logs
+
+  # ApiServer rate-limiting is main motive of this feature,
+  # However, it will be set to Off in helm, since we would like to be confident on kubelet's metadata info validity or any related issues in various k8s deployment
+
+  kubelet_for_metadata: "Off"
+
+  # Fluentbit Memory Buffer Limit
+  mem_buf_limit_mb: 100
+  # Fluentbit Chunk Retry Limit for outgoing document
+  fluent_chunk_retry_limit: "5"
+  # Log level of node agent
+  debug: false
   nodeSelector: {}
 
 forwardmetric:

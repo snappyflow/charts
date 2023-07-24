@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sfapm.fullname" . }}-vizbuilder
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+    app: sfapm
+    role: vizbuilder
+data:
+    {{- if .Values.global.vizbuilder.pgBouncer.enabled }}
+    DISABLE_SERVER_SIDE_CURSORS: "true"
+    DB_HOST: {{ .Values.global.vizbuilder.pgBouncer.dbHost }}
+    DB_PORT: {{ .Values.global.vizbuilder.pgBouncer.dbPort | default "6432" | quote }}
+    DB_NAME: "vizbuilder"
+    DB_USER: {{ .Values.global.vizbuilder.pgBouncer.dbUser }}
+    DB_PASSWORD: {{ .Values.global.vizbuilder.pgBouncer.dbPassword }}
+    {{- else if .Values.global.postgresql.enabled }}
+    DISABLE_SERVER_SIDE_CURSORS: {{ .Values.disable_server_side_cursors | quote }}
+    DB_HOST: {{ .Release.Name }}-postgresql
+    DB_PORT: "5432"
+    DB_NAME: "vizbuilder"
+    DB_USER: {{ .Values.global.postgresql.multidbUser }}
+    {{- else }}
+    DISABLE_SERVER_SIDE_CURSORS: {{ .Values.disable_server_side_cursors | quote }}
+    DB_HOST: {{ .Values.global.postgresql.external.dbHost }}
+    DB_PORT: {{ .Values.global.postgresql.external.dbPort | default "5432" | quote }}
+    DB_NAME: "vizbuilder"
+    DB_USER: {{ .Values.global.postgresql.external.dbUser }}
+    DB_PASSWORD: {{ .Values.global.postgresql.external.dbPassword }}
+    {{- end }}
+
+    REDIS_HOST: {{ .Release.Name  }}-redis
+    REDIS_PORT: "6379"
+
+    APM_HOST: {{ include "sfapm.fullname" . }}-apm
+    APM_PORT: "{{ .Values.global.sfapm.service.port }}"
+
+    PPROF_SERVER_HOST: "{{ include "sfapm.fullname" . }}-pprof-server"
+    PPROF_SERVER_PORT: "{{ .Values.global.pprof.service.port }}"
+
+    ES_MANAGER_HOST: {{ include "sfapm.fullname" . }}-esmanager
+    ES_MANAGER_PORT: "{{ .Values.global.esmanager.service.port }}"
