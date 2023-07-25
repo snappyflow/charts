@@ -18,7 +18,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/dataset-controller
-  tag: 'master-2-0-94'
+  tag: 'master-2-0-95'
 ingest-controller:
   service:
     servicePort: 5000
