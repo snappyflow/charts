@@ -70,7 +70,7 @@ global:
   timeBucketSizeMinutes: 15
 
 dataset-controller:
-  maxPartitionsToAnalyzeConcurrently: 5
+  maxGiBToAnalyzeConcurrently: 1
   billing-service:
     enabled: false
     url: 127.0.0.1:8000/api/v1/records/
