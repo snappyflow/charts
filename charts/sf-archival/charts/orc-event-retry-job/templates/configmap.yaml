@@ -12,6 +12,7 @@ data:
           "kafka_topic": "{{ .Values.kafkaTopic }}",
           "reattempt_send_to_kafka": {{ .Values.reattemptSendToKafka }},
           "sorted_set_key": "{{ .Values.sortedSetKey }}",
-          "hash_set_key": "{{ .Values.hashSetKey }}"
+          "hash_set_key": "{{ .Values.hashSetKey }}",
+          "retry_bucket": "{{ .Values.retryBucket }}"
         }
 {{- end }}

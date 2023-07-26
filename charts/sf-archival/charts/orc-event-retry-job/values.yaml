@@ -8,6 +8,7 @@ kafkaTopic: "orc-event-retry"
 reattemptSendToKafka: 5
 sortedSetKey: "my_sorted_set"
 hashSetKey: "my_hash_set"
+retryBucket: 15
 
 replicaCount: 1
 

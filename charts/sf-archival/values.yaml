@@ -178,6 +178,7 @@ orc-event-retry-job:
   reattemptSendToKafka: 5
   sortedSetKey: "sf_orc_sortedset"
   hashSetKey: "sf_orc_hashset"
+  retryBucket: 15
 
 orc-event-webhook:
   api_token: "A34DFGGGRTYU"
