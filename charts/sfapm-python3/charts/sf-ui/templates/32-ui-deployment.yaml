@@ -70,7 +70,7 @@ spec:
         - name: ui
           securityContext:
             {{- toYaml .Values.global.securityContext | nindent 12 }}
-          image: "{{ .Values.sfapmui.image.repository }}:{{ .Values.sfapmui.image.tag }}"
+          image: "{{ .Values.sfapmui.image.repository }}:{{ .Values.sfapmui.image.tag }}{{ .Values.sfapmui.image.brand }}"
           imagePullPolicy: {{ .Values.sfapmui.image.pullPolicy }}
           env:
           {{- range .Values.global.sfapmui.env }}
