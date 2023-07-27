@@ -133,3 +133,9 @@ minio:
     enabled: true
     minReplicas: 2
     maxReplicas: 10
+
+systemmigration:
+  image:
+    pullPolicy: IfNotPresent
+    repository: snappyflowml/datapath-system-migration
+    tag: '2-0-89'

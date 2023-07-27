@@ -1,0 +1,7 @@
+apiVersion: v2
+name: sf-esmanager
+description: A Helm chart to deploy esmanager on Kubernetes
+home: https://www.snappyflow.io
+type: application
+version: 4.0.3
+appVersion: 4.0

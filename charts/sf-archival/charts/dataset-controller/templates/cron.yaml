@@ -78,7 +78,7 @@ spec:
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}-analyze-partitions
+  name: {{ .Release.Name }}-analyze-segments
   namespace: {{ .Release.Namespace }}
   labels:
 {{ include "dataset-controller.labels" . | indent 4 }}

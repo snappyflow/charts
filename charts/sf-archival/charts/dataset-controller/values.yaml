@@ -3,8 +3,6 @@ billing-service:
   enabled: false
   scheme: https
   url: 127.0.0.1:8000/api/v1/records/
-bucketPartitonAnalyzeIntervalInMin: 5
-bucketPartitonsToAnalyzeInParallelMax: 5
 containerResources:
   datasetcontroller:
     limits:
@@ -20,11 +18,11 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/dataset-controller
-  tag: '2-0-86'
+  tag: '2-0-89'
 ingest-controller:
   service:
     servicePort: 5000
-maxPartitionsToAnalyzeConcurrently: 5
+maxGiBToAnalyzeConcurrently: 1
 nameOverride: ''
 nodeSelector: {}
 presto:

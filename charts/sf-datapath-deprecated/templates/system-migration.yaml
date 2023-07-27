@@ -1,0 +1,66 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-system-migration-config
+  namespace: {{ .Release.Namespace }}
+data:
+  config.json: |-
+    {
+      "db": {
+        "name": "{{ .Values.global.postgresql.postgresqlDatabase }}",
+        "user": "{{ .Values.global.postgresql.postgresqlUsername }}",
+        "password": "{{ .Values.global.postgresql.postgresqlPassword }}",
+        "host": "{{ .Values.global.postgresql.host }}",
+        "port": {{ .Values.global.postgresql.servicePort }}
+      },
+      "kafka_brokers": "{{ .Values.global.kafka.bootstrapServers }}",
+      "es_kafka_connect_url": "http://{{ .Release.Name }}-es-kafka-connect:8083",
+      "archival_kafka_connect_url": "http://{{ .Release.Name }}-archival-kafka-connect:8083",
+      "signature_and_kafka_apis": "http://{{ .Release.Name }}-signatures-and-kafka-apis",
+      "kafka_rest_auth_url": "http://{{ .Release.Name }}-authenticator",
+      "cluster_byte_rate_quota": {{ mul .Values.global.clusterQuotaGBperDay 11574.07 }},
+      "sys_rsvd_cluster_byte_rate_quota_pcnt": {{ .Values.global.sysReservedclusterQuotaPCNT }},
+      "max_tasks_per_topic": {{ .Values.global.maxTasksPerTopic }},
+      "topic_type_details": {{ toJson .Values.global.topicTypeDetails }},
+      "quotas_enabled": {{ .Values.global.quotasEnabled }}
+    }
+
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-system-migration
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    "helm.sh/hook": post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  template:
+    metadata:
+      name: {{ .Release.Name }}-system-migraton
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        release: {{ .Release.Name }}
+        {{ .Values.global.snappyflowProjectLabel}}: {{ .Values.global.snappyflowProjectName }}
+        {{ .Values.global.snappyflowAppLabel }}: {{ .Values.global.snappyflowAppName }}
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: main
+        image: snappyflowml/datapath-system-migration:12
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+          - name: {{ .Release.Name }}-system-migration-config
+            mountPath: "/etc/conf"
+            readOnly: true
+      volumes:
+        - name: {{ .Release.Name }}-system-migration-config
+          configMap:
+            name: {{ .Release.Name }}-system-migration-config

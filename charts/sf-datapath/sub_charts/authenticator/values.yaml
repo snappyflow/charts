@@ -18,7 +18,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/authenticator
-  tag: '10'
+  tag: '2-0-89'
 nameOverride: ''
 nodeSelector: {}
 serverPort: :5006

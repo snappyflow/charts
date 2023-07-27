@@ -1,7 +1,6 @@
 affinity: {}
 appParams:
   competingConsumers: 2
-  computeBucketBoundariesUsingPresto: false
   eventQueueHandlerMonitorIntervalInSec: 2
   maxBufferedEvents: 60000
   numBacktrackDaysToDetect: 5
@@ -30,7 +29,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/dataset-raw-controller
-  tag: '2-0-86'
+  tag: '2-0-89'
 nameOverride: ''
 nodeSelector: {}
 podAnnotations:

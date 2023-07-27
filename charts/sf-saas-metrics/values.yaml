@@ -391,6 +391,17 @@ prometheus-adapter:
           pod:
             resource: pod
       seriesQuery: '{__name__="num_executing_tasks"}'
+    - metricsQuery: <<.Series>>{pod=~".*python3-apm-celery-sftrace.*"}
+      name:
+        as: sftrace_queue_count
+        matches: ""
+      resources:
+        overrides:
+          namespace:
+            resource: namespace
+          pod:
+            resource: pod
+      seriesQuery: '{__name__="sftrace_queue_count"}'
     - metricsQuery: <<.Series>>{pod=~".*dataset-raw-controller.*"}
       name:
         as: event_queue_handler_occupancy_percent
