@@ -17,6 +17,10 @@ dependencies:
   repository: file://charts/orc-event-webhook
   version: 0.1.0
   condition: global.secrets.minio.enable
+- name: orc-event-retry-job
+  repository: file://charts/orc-event-retry-job
+  version: 0.1.0
+  condition: global.secrets.minio.enable
 description: A Helm chart for Kubernetes
 name: sf-archival
 version: 2.0.89

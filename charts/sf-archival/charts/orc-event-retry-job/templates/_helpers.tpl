@@ -50,14 +50,3 @@ Selector labels
 app.kubernetes.io/name: {{ include "orc-event-retry-job.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "orc-event-retry-job.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "orc-event-retry-job.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
