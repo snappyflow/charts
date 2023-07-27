@@ -3,6 +3,7 @@ global:
   sfprojectname: snappyflow-app
   sfappname_key: snappyflow/appname
   sfprojectname_key: snappyflow/projectname
+  sfdatapath_appname: sf-data-path
   nginx_geo_info_collection: true
   nginx_ua_parsing: true
   enable_sftrace: false
