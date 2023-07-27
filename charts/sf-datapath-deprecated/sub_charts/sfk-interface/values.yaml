@@ -1,0 +1,45 @@
+affinity: {}
+autoscaling:
+  enabled: false
+  maxReplicas: 100
+  minReplicas: 1
+  targetCPUUtilizationPercentage: 80
+containerResources:
+  interface:
+    limits:
+      cpu: 100m
+      memory: 100Mi
+    requests:
+      cpu: 10m
+      memory: 50Mi
+db:
+  max_idle_connections: 1
+  max_open_connections: 2
+external:
+  enabled: false
+  externalTrafficPolicy: Cluster
+  type: NodePort
+fullnameOverride: ''
+image:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/sfk-interface
+  tag: '30'
+nameOverride: ''
+nodeSelector: {}
+podAnnotations: {}
+podSecurityContext: {}
+prometheus:
+  auth: snappyflow
+  url: http://pod-autoscaling-prometheus-server.default
+replicaCount: 1
+schedules:
+  quotas: '*/30 * * * *'
+  sink: '*/15 * * * *'
+securityContext: {}
+service:
+  port: 8080
+serviceAccount:
+  annotations: {}
+  create: false
+  name: ''
+tolerations: []
