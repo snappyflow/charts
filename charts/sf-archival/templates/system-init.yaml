@@ -28,8 +28,10 @@ spec:
       restartPolicy: Never
       containers:
       - name: main
-        image: snappyflowml/archival-system-init:1
-        imagePullPolicy: Always
+        image:
+          repository: {{ .Values.hooks.systemInit.image.repository }}
+          pullPolicy: Always
+          tag: {{ .Values.hooks.systemInit.image.tag }}
         envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
