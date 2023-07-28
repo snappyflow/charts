@@ -60,10 +60,8 @@ spec:
 {{- end}}
       containers:
       - name: main
-        image:
-          repository: {{ .Values.hooks.systemMigration.image.repository }}
-          pullPolicy: Always
-          tag: {{ .Values.hooks.systemMigration.image.tag }}
+        image: "{{ .Values.hooks.systemMigration.image.repository }}:{{ .Values.hooks.systemMigration.image.tag }}"
+        imagePullPolicy: Always
         volumeMounts:
           - name: {{ .Release.Name }}-system-migration-config
             mountPath: "/etc/conf"
