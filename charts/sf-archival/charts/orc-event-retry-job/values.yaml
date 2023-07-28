@@ -15,7 +15,7 @@ replicaCount: 1
 image:
   repository: snappyflowml/orc-event-retry-job
   pullPolicy: IfNotPresent
-  tag: "1"
+  tag: 'master-2-0-98'
 
 imagePullSecrets: []
 nameOverride: ""
