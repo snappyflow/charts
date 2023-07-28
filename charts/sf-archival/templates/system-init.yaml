@@ -28,10 +28,8 @@ spec:
       restartPolicy: Never
       containers:
       - name: main
-        image:
-          repository: {{ .Values.hooks.systemInit.image.repository }}
-          pullPolicy: Always
-          tag: {{ .Values.hooks.systemInit.image.tag }}
+        image: "{{ .Values.hooks.systemInit.image.repository }}:{{ .Values.hooks.systemInit.image.tag }}"
+        imagePullPolicy: Always
         envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-cloud-env
