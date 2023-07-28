@@ -219,12 +219,12 @@ hooks:
     image:
       repository: snappyflowml/archival-system-migration
       pullPolicy: IfNotPresent
-      tag: "1"
+      tag: 'master-2-0-100'
   systemInit:
     image:
       repository: snappyflowml/archival-system-init
       pullPolicy: IfNotPresent
-      tag: "1"
+      tag: 'master-2-0-100'
 
 # use these values if you want to override the db values for hive and hadoop chart
 # hive-and-hadoop:

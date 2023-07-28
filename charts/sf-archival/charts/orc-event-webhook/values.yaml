@@ -11,7 +11,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/orc-event-webhook
-  tag: '0.1.0'
+  tag: 'master-2-0-100'
 nameOverride: ''
 nodeSelector: {}
 schedulerName: sf-scheduler
