@@ -13,10 +13,9 @@ retryBucket: 15
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: snappyflowml/orc-event-retry-job
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "1"
 
 imagePullSecrets: []
 nameOverride: ""

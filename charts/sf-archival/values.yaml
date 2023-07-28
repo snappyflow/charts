@@ -210,12 +210,21 @@ dataset-raw-controller:
     kafkaConsumeTimeout: 2
 
 redis:
-  image:
-    repository: redis
-    pullPolicy: IfNotPresent
-    tag: "6.0"
+  archivalEnabled: true
   persistence:
     size: 2Gi
+
+hooks:
+  systemMigration:
+    image:
+      repository: snappyflowml/archival-system-migration
+      pullPolicy: IfNotPresent
+      tag: "1"
+  systemInit:
+    image:
+      repository: snappyflowml/archival-system-init
+      pullPolicy: IfNotPresent
+      tag: "1"
 
 # use these values if you want to override the db values for hive and hadoop chart
 # hive-and-hadoop:
