@@ -60,8 +60,10 @@ spec:
 {{- end}}
       containers:
       - name: main
-        image: snappyflowml/archival-system-migration:2
-        imagePullPolicy: Always
+        image:
+          repository: {{ .Values.hooks.systemMigration.image.repository }}
+          pullPolicy: Always
+          tag: {{ .Values.hooks.systemMigration.image.tag }}
         volumeMounts:
           - name: {{ .Release.Name }}-system-migration-config
             mountPath: "/etc/conf"
