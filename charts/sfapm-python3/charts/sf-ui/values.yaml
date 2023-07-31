@@ -10,6 +10,6 @@ sfapmui:
   image:
     brand: ""
     repository: snappyflowml/sfapm-ui
-    tag: 'master-3-1-447'
+    tag: 'master-3-1-448'
     pullPolicy: IfNotPresent
 
