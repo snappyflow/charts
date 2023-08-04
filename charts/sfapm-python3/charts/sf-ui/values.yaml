@@ -11,5 +11,8 @@ sfapmui:
     brand: ""
     repository: snappyflowml/sfapm-ui
     tag: 'master-3-1-449'
+    tag_esds: ''
+    tag_goals101: ''
+    tag_visa: ''
     pullPolicy: IfNotPresent
 
