@@ -10,7 +10,7 @@ sfapmui:
   image:
     repository: snappyflowml/sfapm-ui
     tag: '3-1-458'
-    tag_esds: ''
+    tag_esds: '3-1-458'
     tag_goals101: ''
     tag_visa: ''
     pullPolicy: IfNotPresent
