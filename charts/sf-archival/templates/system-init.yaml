@@ -30,7 +30,15 @@ spec:
       - name: main
         image: "{{ .Values.hooks.systemInit.image.repository }}:{{ .Values.hooks.systemInit.image.tag }}"
         imagePullPolicy: Always
-        envFrom:
-          - configMapRef:
-              name: {{ .Release.Name }}-cloud-env
+        env:
+          - name: CLOUD_NAME
+            value: MINIO
+          - name: MINIO_ENDPOINT
+            value: {{ .Values.global.secrets.minio.MINIO_ENDPOINT }}
+          - name: AWS_ACCESS_KEY_ID
+            value: {{ .Values.global.secrets.minio.AWS_ACCESS_KEY_ID }}
+          - name: AWS_SECRET_ACCESS_KEY
+            value: {{ .Values.global.secrets.minio.AWS_SECRET_ACCESS_KEY }}
+          - name: AWS_REGION
+            value: {{ .Values.global.secrets.minio.AWS_DEFAULT_REGION }}
 {{- end }}

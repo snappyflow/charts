@@ -29,7 +29,7 @@ data:
       "competingConsumers": {{ .Values.appParams.competingConsumers}}
     }
 
-    ---
+---
 
 {{- if .Values.global.secrets.minio.enable }}
 kind: ConfigMap

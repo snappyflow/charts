@@ -179,7 +179,7 @@ global:
   securityContext: {}
 
   sfapmui:
-
+    brand_name: ""
     autoscaling:
       enabled: true
       minReplicas: 1
