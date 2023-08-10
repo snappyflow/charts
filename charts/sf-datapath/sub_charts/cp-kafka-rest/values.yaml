@@ -64,6 +64,5 @@ prometheus:
     enabled: true
     imagePullPolicy: IfNotPresent
     port: 5556
-replicaCount: 1
 servicePort: 8082
 tolerations: {}

@@ -70,7 +70,6 @@ prometheus:
     imagePullPolicy: IfNotPresent
     port: 5556
     resources: {}
-replicaCount: 1
 resources: {}
 servicePort: 8083
 terminationGracePeriodSeconds: 200
