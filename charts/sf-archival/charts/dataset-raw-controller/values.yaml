@@ -4,9 +4,9 @@
 
 affinity: {}
 appParams:
-  competingConsumers: 2
+  competingConsumers: 10
   eventQueueHandlerMonitorIntervalInSec: 2
-  maxBufferedEvents: 60000
+  maxBufferedEvents: 5000
   numBacktrackDaysToDetect: 5
   numORCInSegment: 4
   orcInventoryBatchFetchSize: 20000
@@ -22,9 +22,9 @@ autoscaling:
 containerResources:
   limits:
     cpu: 250m
-    memory: 512Mi
+    memory: 786Mi
   requests:
-    cpu: 50m
+    cpu: 100m
     memory: 512Mi
 db:
   max_idle_connections: 1
