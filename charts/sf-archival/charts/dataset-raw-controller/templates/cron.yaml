@@ -29,7 +29,7 @@ spec:
             command: ['sh', '-c', "until nslookup {{ include "dataset-raw-controller.ingest-controller.fullname" . }}; do echo waiting for {{ include "dataset-controller.fullname" . }}; sleep 5; done"]
           containers:
           - name: main
-            image: snappyflowml/drc-process-raw-data-job:4
+            image: snappyflowml/drc-process-raw-data-job:5
             imagePullPolicy: IfNotPresent
             command: ["/bin/sh","-c", "/app/drc-process-raw-data-job -dataset-raw-controller-url http://{{ include "dataset-raw-controller.fullname" . }} -parallelism-factor 1"]
           restartPolicy: Never
