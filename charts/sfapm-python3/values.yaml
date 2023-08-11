@@ -3,6 +3,7 @@ global:
   sfprojectname: snappyflow-app
   sfappname_key: snappyflow/appname
   sfprojectname_key: snappyflow/projectname
+  sfdatapath_appname: sf-data-path
   nginx_geo_info_collection: true
   nginx_ua_parsing: true
   enable_sftrace: false
@@ -26,7 +27,6 @@ global:
       dbPort: ""
       dbUser: ""
       dbPassword: ""
-    replicaCount: 2
     autoscaling:
       enabled: true
       minReplicas: 2
@@ -66,7 +66,6 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 3
       command: celery -A vizbuilder worker -l $LOG_LEVEL -Q alert -c
         $MAXIMUM_RUNNING_TASKS $CELERY_OPTS & celery -A vizbuilder flower
         --address=localhost --port=5566
@@ -95,7 +94,6 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 1
       command: celery -A vizbuilder worker -l $LOG_LEVEL -Q logops -c10 $CELERY_OPTS
     signature:
       resources:
@@ -105,7 +103,6 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 1
       command: celery -A vizbuilder worker -l $LOG_LEVEL -Q signature -c10 $CELERY_OPTS
     provisiontemplate:
       resources:
@@ -115,7 +112,6 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 1
       command: celery -A vizbuilder worker -l $LOG_LEVEL -Q provisiontemplate -c1
         $CELERY_OPTS
 
@@ -183,7 +179,7 @@ global:
   securityContext: {}
 
   sfapmui:
-    replicaCount: 1
+    brand_name: ""
 
     autoscaling:
       enabled: true
@@ -230,7 +226,6 @@ global:
       port: 8090
 
   commands:
-    replicaCount: 2
     autoscaling:
       enabled: true
       minReplicas: 2
@@ -273,11 +268,9 @@ global:
         requests:
           cpu: 100m
           memory: 100Mi
-      replicaCount: 1
       command: "celery -A command_server worker -l $LOG_LEVEL -Q default -c10 $CELERY_OPTS"
 
   sfapm:
-    replicaCount: 2
     cloud: ""
     ingress:
       enabled: false
@@ -361,7 +354,6 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 1
       command: celery -A snappyflow worker -l $LOG_LEVEL -Q default -c10 $CELERY_OPTS
     notify:
       resources:
@@ -371,7 +363,6 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 1
       command: celery -A snappyflow worker -l $LOG_LEVEL -Q notify -c20 $CELERY_OPTS
     periodic:
       resources:
@@ -381,7 +372,6 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 3
       autoscaling:
         enabled: true
         minReplicas: 3
@@ -397,7 +387,6 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 1
       command: celery -A snappyflow worker -l $LOG_LEVEL -Q provision -c1 $CELERY_OPTS
     sftrace:
       clusterRoleName: sftrace-metric-collector-role
@@ -417,11 +406,9 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 1
       command: "celery -A snappyflow worker -l $LOG_LEVEL -Q sftrace -c10 $CELERY_OPTS"
 
   esmanager:
-    replicaCount: 2
     autoscaling:
       enabled: true
       minReplicas: 2
@@ -474,7 +461,6 @@ global:
         requests:
           cpu: 100m
           memory: 100Mi
-      replicaCount: 2
       command: celery -A elasticsearch_manager worker -l $LOG_LEVEL -Q
         es_mng_default  $CELERY_OPTS
 
@@ -520,7 +506,6 @@ global:
     tls: false
 
   sftrace:
-    replicaCount: 2
 
     terminationGracePeriodSeconds: 30
 
