@@ -33,8 +33,8 @@ spec:
       {{- end }}
       {{- if or (and .Values.global.secrets.aws.enable .Values.global.secrets.aws.use_iam_role) .Values.global.secrets.gcs.enable }}
       serviceAccountName: {{ .Release.Name }}-service-account
-      terminationGracePeriodSeconds: 180
       {{- end}}
+      terminationGracePeriodSeconds: 180
       initContainers:
         - name: db-ready
           image: "bitnami/postgresql:11.5.0-debian-9-r34"
