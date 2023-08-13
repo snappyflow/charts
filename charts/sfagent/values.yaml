@@ -18,6 +18,7 @@ imageCredentials:
 config:
   project_name: kubernetes
   app_name: kube-cluster
+
   # Unique cluster name to add in documents as _tag_cloudName.
   # This is used to create account in APM, this need not be same as actual Kubernets cluster name.
   # Allowed max 32 char, Alphanumeric(a-zA-Z0-9) with dash(-) and underscore(_).
@@ -47,6 +48,8 @@ config:
 
   # Enable/Disable both cluster metrics and cluster log collection
   cluster_monitoring: true
+
+  monitor_all_pods: false
 
   # AppView flag to control the data being sent to application project
   app_view: true
