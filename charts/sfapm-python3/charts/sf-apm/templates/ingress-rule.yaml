@@ -11,6 +11,10 @@ metadata:
           deny all;
           return 403;
         }
+      location ~* "^/latest" {
+        deny all;
+        return 403;
+      }
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
