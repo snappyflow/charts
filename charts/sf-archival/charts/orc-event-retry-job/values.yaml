@@ -16,7 +16,7 @@ image:
   repository: snappyflowml/orc-event-retry-job
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 'master-2-0-105'
+  tag: 'master-2-0-107'
 
 imagePullSecrets: []
 nameOverride: ""
