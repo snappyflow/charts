@@ -10,7 +10,6 @@ metadata:
     {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
     {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
 spec:
-  replicas: {{ .Values.global.sftrace.replicaCount }}
   selector:
     matchLabels:
       {{- include "sfapm.selectorLabels" . | nindent 6 }}
