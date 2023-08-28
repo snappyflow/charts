@@ -3,7 +3,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/raw-query-exec-controller
-  tag: '2-0-95'
+  tag: '2-0-96'
 imagePullSecrets: []
 maxGBToProcessDuringHistogramQuery: 1
 maxGBToProcessDuringLogQuery: 1
