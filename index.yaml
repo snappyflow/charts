@@ -3325,6 +3325,15 @@ entries:
   sf-archival:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2023-08-28T10:48:10.782904828Z"
+    description: A Helm chart for Kubernetes
+    digest: 6e2c49db405d013d1128207a9649d5b853de413632c99df5664f794f7fd6e44f
+    name: sf-archival
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-archival-2.0.97/sf-archival-2.0.97.tgz
+    version: 2.0.97
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2023-08-28T09:01:05.235508557Z"
     description: A Helm chart for Kubernetes
     digest: 5135ca4e625cf30b66ebe87e686a3cfd62c05a01640bd96f01faf248e46953bb
