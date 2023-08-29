@@ -116,6 +116,7 @@ data:
     GCP_REGION: "{{ .Values.global.cloud.gcs.region }}"
     GCP_ZONE: "{{ .Values.global.cloud.gcs.zone }}"
     {{- end }}
+    BRANDING_NAME: "{{ .Values.global.sfapm.BRANDING_NAME }}"
     {{- if .Values.global.sfapm.quotasEnabled }}
     QUOTAS_ENABLED: "True"
     {{- else }}

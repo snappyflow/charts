@@ -279,6 +279,9 @@ global:
     OAUTH_CLIENT_SECRET: ""
     OAUTH_TOKEN_SERVER: ""
     OAUTH_AUTH_URL: ""
+
+    # branding name is used for the test email communication
+    BRANDING_NAME: ""
     cloud: ""
     ingress:
       enabled: false
