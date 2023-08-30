@@ -16,16 +16,16 @@ replicaCount: 1
 imagePullSecrets: []
 
 image:
-  repository: amansingh2708/presto
+  repository: snappyflowml/presto
   pullPolicy: Always
-  tag: test
+  tag: latest
 
 # Helm values for sfpresto-worker-prometheus-exporter container
 sfprestoWorkerPrometheusExporter:
   image:
-    repository: amansingh2708/presto-metric
-    tag: test
-    pullPolicy: IfNotPresent
+    repository: snappyflowml/sfpresto-worker-prometheus-exporter
+    tag: latest
+    pullPolicy: Always
   resources:
       limits:
         cpu: 100m
