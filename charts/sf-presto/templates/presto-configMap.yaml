@@ -14,7 +14,7 @@ data:
     hive.time-zone = UTC
     hive.metastore-timeout = 60s
     hive.max-partitions-per-writers = 1000
-    {{- if .Values.aws.enabled }}   
+    {{- if .Values.aws.enabled }}
     hive.s3select-pushdown.enabled = true
     hive.s3.use-instance-credentials = true
     {{- else if .Values.azure.enabled }}
