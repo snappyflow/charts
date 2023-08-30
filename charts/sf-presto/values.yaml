@@ -17,7 +17,7 @@ imagePullSecrets: []
 
 image:
   repository: amansingh2708/presto
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: test
 
 # Helm values for sfpresto-worker-prometheus-exporter container

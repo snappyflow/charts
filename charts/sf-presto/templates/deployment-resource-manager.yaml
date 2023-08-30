@@ -36,7 +36,7 @@ spec:
       schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
       {{- end }}
       containers:
-        - name: sfpresto-coordinator
+        - name: sfpresto-resource-manager
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
@@ -47,7 +47,7 @@ spec:
               value: "{{ $value }}"
           {{- end }}
           command: ["/bin/bash", "-c"]
-          args: ["./coordinator-init.sh;"]
+          args: ["./presto-init.sh;"]
           resources:
             {{- toYaml .Values.resourcemanager.resources | nindent 12 }}
           volumeMounts:

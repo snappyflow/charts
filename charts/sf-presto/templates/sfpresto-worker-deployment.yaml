@@ -45,7 +45,7 @@ spec:
               value: "{{ $value }}"
           {{- end }}
           command: ["/bin/bash", "-c"]
-          args: ["./coordinator-init.sh;"]
+          args: ["./presto-init.sh;"]
           resources:
             {{- toYaml .Values.worker.resources | nindent 12 }}
           volumeMounts:
