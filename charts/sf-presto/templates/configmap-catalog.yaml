@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "sf-presto.fullname" . }}-configmap
+  name: {{ include "sf-presto.fullname" . }}-catalog
   labels:
     app: {{ include "sf-presto.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
@@ -9,7 +9,7 @@ metadata:
 data:
   hive.properties: |+ 
     connector.name = hive-hadoop2
-    hive.metastore.uri = thrift://NODE_IP:NODE_PORT
+    hive.metastore.uri = thrift://{{ .Values.hive.service }}:{{ .Values.hive.port }}
     hive.non-managed-table-writes-enabled = true
     hive.time-zone = UTC
     hive.metastore-timeout = 60s
