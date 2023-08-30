@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sfapm.fullname" . }}-sftrace
+  labels:
+    {{- include "sfapm.labels" . | nindent 4 }}
+    app: sftrace
+    role: sftrace-server
+    snappyflow/component: snappyflow-apm
+    {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfdatapath_appname }}
+    {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "sfapm.selectorLabels" . | nindent 6 }}
+      app: sftrace
+      role: sftrace-server
+  template:
+    metadata:
+    {{- with .Values.global.sftrace.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        helm.sh/chart: {{ include "sfapm.chart" . }}
+        {{- include "sfapm.selectorLabels" . | nindent 8 }}
+        app: sftrace
+        role: sftrace-server
+        snappyflow/component: snappyflow-apm
+        {{ default "snappyflow/appname" .Values.global.sfappname_key }}: {{ default .Release.Name .Values.global.sfappname }}
+        {{ default "snappyflow/projectname" .Values.global.sfprojectname_key }}: {{ default .Release.Name .Values.global.sfprojectname }}
+    spec:
+      {{- if .Values.global.sfScheduler.enabled }}
+      schedulerName: {{ .Values.global.sfScheduler.schedulerName }}
+      {{- end }}
+      {{- if .Values.global.sfNodeManager.enabled }}
+      priorityClassName: {{ .Values.global.sfNodeManager.priorityClassName }}
+      {{- end }}
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "sfapm.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      terminationGracePeriodSeconds: {{ .Values.global.sftrace.terminationGracePeriodSeconds }}
+      volumes:
+        - name: sftrace-server-config
+          configMap:
+            name: {{ include "sfapm.fullname" . }}-sftrace
+            defaultMode: 0600
+      containers:
+      - name: sftrace-server
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+          - name: http
+            containerPort: 8200
+            protocol: TCP
+        livenessProbe:
+          initialDelaySeconds: 30
+          failureThreshold: 3
+          periodSeconds: 30
+          timeoutSeconds: 5
+          exec:
+            command:
+            - sh
+            - probe.sh
+        readinessProbe:
+          initialDelaySeconds: 30
+          failureThreshold: 3
+          periodSeconds: 10
+          timeoutSeconds: 5
+          httpGet:
+            path: /
+            port: http
+        resources:
+          {{- toYaml .Values.global.sftrace.resources | nindent 12 }}
+        volumeMounts:
+          - name: sftrace-server-config
+            mountPath: /usr/share/apm-server/apm-server.yml
+            subPath: apm-server.yml
+            readOnly: true
+      - name: sftrace-server-prometheus-exporter
+        command: [/go/metrics]
+        image: "snappyflowml/sftrace-server-prometheus-exporter:latest" 
+        imagePullPolicy: Always
+        env:
+        - name: Metrics_Interval
+          value: "{{ .Values.global.sftrace.sftraceServerPrometheusExporter.metricsInterval }}"
+        resources:
+          {{- toYaml .Values.global.sftrace.sftraceServerPrometheusExporter.resources | nindent 12 }}

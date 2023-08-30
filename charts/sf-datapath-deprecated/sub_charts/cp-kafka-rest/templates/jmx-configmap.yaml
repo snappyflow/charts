@@ -1,0 +1,148 @@
+{{- if and .Values.prometheus.jmx.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "cp-kafka-rest.fullname" . }}-jmx-configmap
+  labels:
+    app: {{ template "cp-kafka-rest.name" . }}
+    chart: {{ template "cp-kafka-rest.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  jmx-kafka-rest-prometheus.yml: |+
+    startDelaySeconds: 120
+    jmxUrl: service:jmx:rmi:///jndi/rmi://localhost:{{ .Values.jmx.port }}/jmxrmi
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+    ssl: false
+    whitelistObjectNames:
+    - "java.lang:*"
+    - "java.nio:*"
+    - "org.eclipse.jetty.util.thread:*"
+    - "kafka.rest:type=jersey-metrics,*"
+    - "kafka.rest:type=jetty-metrics,*"
+    - "kafka.rest:type=producer-metrics,*"
+    - "kafka.rest:type=producer-node-metrics,*"
+    - "kafka.rest:type=producer-topic-metrics,*"
+    - "kafka.rest:type=consumer-metrics,*"
+    - "kafka.rest:type=consumer-fetch-manager-metrics,*"
+    - "kafka.rest:type=consumer-node-metrics,*"
+    - "kafka.rest:type=consumer-coordinator-metrics,*"
+    rules:
+    - pattern: "kafka.rest<type=producer-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_producer_client_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.rest<type=producer-node-metrics, client-id=(.+), node-id=node-(\\d)><>(.+)\\:"
+      cache: true
+      name: kafka_producer_client_node_$3
+      labels:
+        clientID: "$1"
+        nodeID: "$2"
+        clientID_nodeID: "$1-$2"
+    - pattern: "kafka.rest<type=producer-topic-metrics, client-id=(.+), topic=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_producer_client_topic_$3
+      labels:
+        clientID: "$1"
+        topic: "$2"
+        clientID_topic: "$1-$2"
+    - pattern: "kafka.rest<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+), partition=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_topic_partn_$4
+      labels:
+        clientID: "$1"
+        topic: "$2"
+        partition: "$3"
+        clientID_topic_partition: "$1-$2-$3"
+    - pattern: "kafka.rest<type=consumer-fetch-manager-metrics, client-id=(.+), topic=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_topic_$3
+      labels:
+        clientID: "$1"
+        topic: "$2"
+        clientID_topic: "$1-$2"
+    - pattern: "kafka.rest<type=consumer-fetch-manager-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.rest<type=consumer-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.rest<type=consumer-node-metrics, client-id=(.+), node-id=node-(\\d)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_node_$3
+      labels:
+        clientID: "$1"
+        nodeID: "$2"
+        clientID_nodeID: "$1-$2"
+    - pattern: "kafka.rest<type=consumer-coordinator-metrics, client-id=(.+)><>(.+)\\:"
+      cache: true
+      name: kafka_consumer_client_coord_$2
+      labels:
+        clientID: "$1"
+    - pattern: "kafka.rest<type=jersey-metrics><>(.+?)\\.(.+)\\+v2\\.([^\\.]+)\\:"
+      cache: true
+      name: kafka_rest_api_$3
+      labels:
+        apiVersion: "v2"
+        apiGroup: "$1"
+        api: "$2"
+        apiGroup_api: "$1-$2"
+    - pattern: "kafka.rest<type=jersey-metrics><>v3\\.([^\\.]+)\\.(.+?)\\.([^\\.]+)\\:"
+      cache: true
+      name: kafka_rest_api_$3
+      labels:
+        apiVersion: "v3"
+        apiGroup: "$1"
+        api: "$2"
+        apiGroup_api: "$1-$2"
+    - pattern: "kafka.rest<type=jersey-metrics, http_status_code=(.+)><>(.+?)\\.(.+)\\+v2\\.([^\\.]+)\\:"
+      cache: true
+      name: kafka_rest_api_$4
+      labels:
+        apiVersion: "v2"
+        apiGroup: "$2"
+        api: "$3"
+        status-code: "$1"
+        apiGroup_api: "$2-$3"
+    - pattern: "kafka.rest<type=jersey-metrics, http_status_code=(.+)><>v3\\.([^\\.]+)\\.(.+?)\\.([^\\.]+)\\:"
+      cache: true
+      name: kafka_rest_api_$4
+      labels:
+        apiVersion: "v3"
+        apiGroup: "$2"
+        api: "$3"
+        status-code: "$1"
+        apiGroup_api: "$2-$3"
+    - pattern: kafka.rest<type=jersey-metrics>
+      cache: true
+    - pattern: kafka.rest<type=jetty-metrics>
+      cache: true
+    - pattern: org.eclipse.jetty.util.thread<type=(.+), id=(.+)><>([^:]+)
+      cache: true
+      name: kafka_rest_jetty_$1_$3
+      labels:
+        id: "$2"
+    - pattern: java.lang<type=(.+), name=(.+)><(.+)>(\w+)
+      name: java_lang_$1_$4_$3_$2
+      cache: true
+    - pattern: java.lang<name=(.+), type=(.+)><(.+)>(\w+)
+      name: java_lang_$2_$4_$3_$1
+      cache: true
+    - pattern: java.lang<type=(.+), name=(.+)><>(\w+)
+      name: java_lang_$1_$3_$2
+      cache: true
+    - pattern: java.lang<name=(.+), type=(.+)><>(\w+)
+      name: java_lang_$2_$3_$1
+      cache: true
+    - pattern: java.lang<type=(.*)>
+      cache: true
+    - pattern: java.nio<type=(.+), name=(.+)><>(\w+)
+      name: java_nio_$1_$3_$2
+      cache: true
+{{- end }}

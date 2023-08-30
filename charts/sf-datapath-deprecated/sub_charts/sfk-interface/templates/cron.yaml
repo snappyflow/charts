@@ -1,0 +1,75 @@
+{{- if not .Values.global.development }}
+{{- if .Values.global.quotasEnabled }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-quota-util-stats
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "sfk-interface.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: {{ .Values.schedules.quotas | quote }}
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  startingDeadlineSeconds: 200
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+        spec:
+          containers:
+          - name: main
+            image: snappyflowml/sfk-quota-stats:5
+            imagePullPolicy: IfNotPresent
+            volumeMounts:
+              - name: {{ template "sfk-interface.fullname" . }}-config
+                mountPath: "/etc/conf"
+          restartPolicy: Never
+          volumes:
+            - name: {{ template "sfk-interface.fullname" . }}-config
+              configMap:
+                name: {{ template "sfk-interface.fullname" . }}-config
+{{- end }}
+
+---
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-sinks-monitor
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "sfk-interface.labels" . | indent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  schedule: {{ .Values.schedules.sink | quote }}
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  startingDeadlineSeconds: 200
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            release: {{ .Release.Name }}
+        spec:
+          containers:
+          - name: main
+            image: snappyflowml/sink-monitor-consumer-groups:7
+            imagePullPolicy: IfNotPresent
+            command: ["bash"]
+            args: ["-c", "python app.py connect-es"]
+            volumeMounts:
+              - name: {{ template "sfk-interface.fullname" . }}-config
+                mountPath: "/etc/config"
+          restartPolicy: Never
+          volumes:
+            - name: {{ template "sfk-interface.fullname" . }}-config
+              configMap:
+                name: {{ template "sfk-interface.fullname" . }}-config
+{{- end }}

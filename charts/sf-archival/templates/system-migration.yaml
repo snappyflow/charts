@@ -60,7 +60,7 @@ spec:
 {{- end}}
       containers:
       - name: main
-        image: snappyflowml/archival-system-migration:dev-test
+        image: "{{ .Values.hooks.systemMigration.image.repository }}:{{ .Values.hooks.systemMigration.image.tag }}"
         imagePullPolicy: Always
         volumeMounts:
           - name: {{ .Release.Name }}-system-migration-config

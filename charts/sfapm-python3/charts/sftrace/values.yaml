@@ -1,0 +1,12 @@
+enableDebug: false
+archiverEnabled: true
+nameOverride: sfapm-python3
+fullnameOverride: ""
+
+image:
+  pullPolicy: IfNotPresent
+  repository: snappyflowml/sftrace-server
+  tag: '0-1-23'
+
+podSecurityContext:
+  {}

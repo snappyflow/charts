@@ -91,6 +91,13 @@ hive:
   # HiveMetaStore Service port
   port: "9083"
 
+minio:
+  enabled: false
+  AWS_ACCESS_KEY_ID: XXXX
+  AWS_SECRET_ACCESS_KEY: XXXX
+  AWS_DEFAULT_REGION: default
+  MINIO_ENDPOINT: XXXX
+
 env:
   # How frequently sfpresto-worker-prometheus-exporter fetch metrics
   Metrics_Interval: 3

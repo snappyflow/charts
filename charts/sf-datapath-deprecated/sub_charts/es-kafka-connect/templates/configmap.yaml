@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "es-kafka-connect.fullname" . }}-kafka-log
+  labels:
+    app: {{ template "es-kafka-connect.name" . }}
+    chart: {{ template "es-kafka-connect.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  connect-log4j.properties: |+
+    log4j.rootLogger=INFO, console
+    log4j.logger.org.maplelabs.smt=INFO, console
+    log4j.additivity.org.maplelabs.smt=false
+    log4j.appender.console=org.apache.log4j.ConsoleAppender
+    log4j.appender.console.Target=System.out
+    log4j.appender.console.immediateFlush=true
+    log4j.appender.console.encoding=UTF-8
+    log4j.appender.console.layout=org.apache.log4j.PatternLayout
+    log4j.appender.console.layout.conversionPattern=[%d] %p %m (%c)%n
+    log4j.appender.console.Threshold=DEBUG
+    log4j.logger.org.apache.zookeeper=ERROR
+    log4j.logger.org.I0Itec.zkclient=ERROR
+    log4j.logger.org.reflections=ERROR
+    log4j.logger.org.eclipse.jetty=ERROR
+    log4j.logger.kafka=ERROR
+    log4j.logger.org.apache.kafka.clients.admin.AdminClientConfig=ERROR

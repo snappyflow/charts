@@ -46,3 +46,4 @@ spec:
         type: AverageValue
         averageValue: {{ .Values.autoscaling.worker.targetRunningDrivers }}
 {{- end }}
+

@@ -1,0 +1,29 @@
+{{- if .Values.external.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "sfk-interface.fullname" . }}-external
+  {{- if .Values.external.annotations }}
+  annotations:
+  {{- range $key, $value := .Values.external.annotations }}
+    {{ $key }}: "{{ $value }}"
+  {{- end }}
+  {{- end }}
+spec:
+  type: {{ .Values.external.type }}
+  externalTrafficPolicy: {{ .Values.external.externalTrafficPolicy }}
+  {{- if .Values.external.loadBalancerSourceRanges }}
+  loadBalancerSourceRanges:
+  {{- range $cidr := .Values.external.loadBalancerSourceRanges }}
+    - {{ $cidr }}
+  {{- end }}
+  {{- end }}
+  ports:
+    - name: sfk-interface-external
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
+
+  selector:
+    app: {{ template "sfk-interface.fullname" . }}
+    release: {{ .Release.Name }}
+{{- end -}}

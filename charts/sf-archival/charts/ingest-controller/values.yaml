@@ -1,4 +1,5 @@
 affinity: {}
+archivalKafkaConnectURL: http://sf-datapath-archival-kafka-connect:8083
 containerResources:
   ingestcontroller:
     limits:
@@ -10,31 +11,30 @@ containerResources:
 dataset-controller:
   service:
     servicePort: 5001
+db:
+  max_idle_connections: 1
+  max_open_connections: 3
 fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/ingest-controller
-  tag: '18'
+  tag: 'master-2-0-108'
 log-archival:
   service:
     servicePort: 5003
+minioEndpoint: sf-datapath-minio:9000
 nameOverride: ''
 nodeSelector: {}
+scehmeRegURL: http://sf-datapath-cp-schema-registry:8081
 schedulerName: sf-scheduler
 schedules:
   sink: '*/5 * * * *'
 serverPort: :5000
 service:
   servicePort: 5000
+signatureAndKafkaAPIsURL: http://sf-datapath-signatures-and-kafka-apis
 spark-manager:
   jobserver:
     service:
       servicePort: 5002
 tolerations: []
-signatureAndKafkaAPIsURL: http://sf-datapath-signatures-and-kafka-apis
-scehmeRegURL: http://sf-datapath-cp-schema-registry:8081
-archivalKafkaConnectURL: http://sf-datapath-archival-kafka-connect:8083
-minioEndpoint: "sf-datapath-minio:9000"
-db:
-  max_open_connections: 3
-  max_idle_connections: 1

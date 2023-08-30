@@ -10,11 +10,14 @@ containerResources:
 dataset-controller:
   service:
     servicePort: 5001
+db:
+  max_idle_connections: 0
+  max_open_connections: 1
 fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/compaction-controller
-  tag: '16'
+  tag: 'master-2-0-108'
 ingest-controller:
   service:
     servicePort: 5000
@@ -46,6 +49,3 @@ spark-manager:
     service:
       servicePort: 5002
 tolerations: []
-db:
-  max_open_connections: 1
-  max_idle_connections: 0

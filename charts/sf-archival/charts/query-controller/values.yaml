@@ -3,7 +3,7 @@ cleanIntervalInHour: 1
 cleanup:
   pullPolicy: IfNotPresent
   repository: snappyflowml/query-cleanup
-  tag: '11'
+  tag: 'master-2-0-108'
 containerResources:
   querycleanup:
     limits:
@@ -26,21 +26,27 @@ containerResources:
     requests:
       cpu: 50m
       memory: 512Mi
-db:
-  querycontroller:
-      max_open_connections: 1
-      max_idle_connections: 0
-  queryexecutioncontroller:
-      max_open_connections: 2
-      max_idle_connections: 1
-
 dataset-controller:
   service:
     servicePort: 5001
+db:
+  querycontroller:
+    max_idle_connections: 0
+    max_open_connections: 1
+  queryexecutioncontroller:
+    max_idle_connections: 1
+    max_open_connections: 2
+parallelQuery:
+  queryController:
+    queryParallelismFactor: 5
+    steppedParallelism: false
+  queryExecutionController:
+    maxAllowedQueriesPerJob: 5
+    maxQueriesPerCluster: 15
 executionControler:
   pullPolicy: IfNotPresent
   repository: snappyflowml/query-execution-controller
-  tag: '28'
+  tag: 'master-2-0-108'
 external:
   enabled: false
   externalTrafficPolicy: Cluster
@@ -49,7 +55,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/query-controller
-  tag: '16'
+  tag: 'master-2-0-108'
 ingest-controller:
   service:
     servicePort: 5000

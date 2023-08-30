@@ -78,7 +78,7 @@ spec:
 {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "snappyflowml/minio-gcs:debug"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if .Values.s3gateway.enabled }}
           command:
