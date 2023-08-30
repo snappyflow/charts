@@ -59,7 +59,7 @@ coordinator:
   podmem: 8192
 
 worker:
-  replicaCount: 1
+  replicaCount: 2
   resources:
     limits:
       cpu: "1"
@@ -110,13 +110,13 @@ autoscaling:
   scaleUpPeriod: 30
   scaleDownPeriod: 60
   worker:
-    minReplicas: 1
-    maxReplicas: 1
+    minReplicas: 2
+    maxReplicas: 5
     targetQueuedQueries: 5
     targetRunningDrivers: 50
   coordinator:
     minReplicas: 1
-    maxReplicas: 1
+    maxReplicas: 2
     targetAverageUtilization: 80
 
 terminationGracePeriodSeconds: 30
