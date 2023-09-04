@@ -8,5 +8,11 @@ image:
   repository: snappyflowml/sftrace-server
   tag: '0-1-23'
 
+sftrace-server-prometheus-exporter:
+  image:
+    repository: snappyflowml/sftrace-server-prometheus-exporter
+    tag: 'latest'
+    pullPolicy: Always
+
 podSecurityContext:
   {}
