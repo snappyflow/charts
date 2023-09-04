@@ -8,7 +8,7 @@ image:
   repository: snappyflowml/sftrace-server
   tag: '0-1-23'
 
-sftrace-server-prometheus-exporter:
+sftrace_server_prometheus_exporter:
   image:
     repository: snappyflowml/sftrace-server-prometheus-exporter
     tag: 'latest'
