@@ -17,7 +17,7 @@ global:
 image:
   repository: snappyflowml/sf-kubescheduler
   pullPolicy: Always
-  tag: latest
+  tag: 'development-1-0-25'
 
 serviceAccount:
   name: sf-scheduler
