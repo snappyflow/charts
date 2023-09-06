@@ -12,7 +12,7 @@ sfapm:
 sfapm_celery_metrics_collector:
   image:
     repository: snappyflowml/sftrace-celery-metrics-collector
-    tag: 'python3-4-0-445'
+    tag: 'latest'
     pullPolicy: IfNotPresent
 sfapmaffinity:
   podAntiAffinity:
