@@ -22,7 +22,7 @@ image:
   repository: snappyflowml/sf-nodemanager
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 'development-1-0-25'
+  tag: 'development-1-0-26'
 
 imagePullSecrets: []
 nameOverride: ""
