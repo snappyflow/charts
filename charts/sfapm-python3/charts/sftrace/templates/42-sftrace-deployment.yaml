@@ -83,8 +83,8 @@ spec:
             readOnly: true
       - name: sftrace-server-prometheus-exporter
         command: [/go/metrics]
-        image: "snappyflowml/sftrace-server-prometheus-exporter:latest" 
-        imagePullPolicy: Always
+        image: "{{ .Values.sftrace_server_prometheus_exporter.image.repository }}:{{ .Values.sftrace_server_prometheus_exporter.image.tag }}"
+        imagePullPolicy: {{ .Values.sftrace_server_prometheus_exporter.image.pullPolicy }}
         env:
         - name: Metrics_Interval
           value: "{{ .Values.global.sftrace.sftraceServerPrometheusExporter.metricsInterval }}"

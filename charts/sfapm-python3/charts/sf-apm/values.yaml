@@ -9,6 +9,11 @@ sfapm:
     repository: snappyflowml/sfapm-server
     tag: '4-0-447'
     pullPolicy: IfNotPresent
+sfapm_celery_metrics_collector:
+  image:
+    repository: snappyflowml/sftrace-celery-metrics-collector
+    tag: 'latest'
+    pullPolicy: IfNotPresent
 sfapmaffinity:
   podAntiAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
