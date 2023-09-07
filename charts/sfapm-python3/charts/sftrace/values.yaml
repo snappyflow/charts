@@ -6,12 +6,12 @@ fullnameOverride: ""
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/sftrace-server
-  tag: '0-1-23'
+  tag: '0-1-24'
 
 sftrace_server_prometheus_exporter:
   image:
     repository: snappyflowml/sftrace-server-prometheus-exporter
-    tag: 'latest'
+    tag: '0-1-24'
     pullPolicy: Always
 
 podSecurityContext:
