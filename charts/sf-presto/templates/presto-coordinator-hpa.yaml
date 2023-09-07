@@ -2,7 +2,7 @@
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "sf-presto.fullname" . }}-worker
+  name: {{ include "sf-presto.fullname" . }}-coordinator
   labels:
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     app.kubernetes.io/name: {{ .Chart.Name }}
@@ -14,7 +14,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "sf-presto.fullname" . }}-worker
+    name: {{ include "sf-presto.fullname" . }}-coordinator
   behavior:
     scaleDown:
       stabilizationWindowSeconds: 30
@@ -28,22 +28,13 @@ spec:
       - type: Pods
         periodSeconds: {{ .Values.autoscaling.scaleUpPeriod }}
         value: 1
-  minReplicas: {{ .Values.autoscaling.worker.minReplicas }}
-  maxReplicas: {{ .Values.autoscaling.worker.maxReplicas }}
+  minReplicas: {{ .Values.autoscaling.coordinator.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.coordinator.maxReplicas }}
   metrics:
-  - type: Pods
-    pods:
-      metric:
-        name: presto_queued_queries
+  - type: Resource
+    resource:
+      name: memory
       target:
-        type: AverageValue
-        averageValue: {{ .Values.autoscaling.worker.targetQueuedQueries }}
-  - type: Pods
-    pods:
-      metric:
-        name: presto_running_drivers
-      target:
-        type: AverageValue
-        averageValue: {{ .Values.autoscaling.worker.targetRunningDrivers }}
+        type: Utilization
+        averageUtilization: {{ .Values.autoscaling.coordinator.targetAverageUtilization }}
 {{- end }}
-

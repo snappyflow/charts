@@ -26,14 +26,32 @@ sfprestoWorkerPrometheusExporter:
     repository: snappyflowml/sfpresto-worker-prometheus-exporter
     tag: latest
     pullPolicy: Always
-
   resources:
+      limits:
+        cpu: 100m
+        memory: 200Mi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+
+resourcemanager:
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 4Gi
     requests:
-      cpu: 100m
-      memory: 200Mi
+      cpu: 1000m
+      memory: 4Gi
+  # Provide Value same as Pod memory in Mi
+  podmem: 4096
 
 coordinator:
+  replicaCount: 1
   resources:
+    limits:
+      cpu: 1000m
+      memory: 8Gi
     requests:
       cpu: 1000m
       memory: 8Gi
@@ -41,9 +59,10 @@ coordinator:
   podmem: 8192
 
 worker:
+  replicaCount: 2
   resources:
     limits:
-      cpu: "2"
+      cpu: "1"
       memory: 4Gi
     requests:
       cpu: "1"
@@ -56,6 +75,21 @@ aws:
 
 azure:
   enabled: false
+  account: ""
+  accesKey: ""
+
+minio:
+  enabled: false
+  AWS_ACCESS_KEY_ID: XXXX
+  AWS_SECRET_ACCESS_KEY: XXXX
+  AWS_DEFAULT_REGION: default
+  MINIO_ENDPOINT: XXXX
+
+hive:
+  # HiveMetaStore service
+  service: "archival-hive-metastore.kafka"
+  # HiveMetaStore Service port
+  port: "9083"
 
 minio:
   enabled: false
@@ -65,21 +99,13 @@ minio:
   MINIO_ENDPOINT: XXXX
 
 env:
-  # Required onlu for azure
-  STORAGE_ACCOUNT_NAME: ""
-  # Required only for azure
-  STORAGE_ACCOUNT_ACCESS_KEY: ""
   # How frequently sfpresto-worker-prometheus-exporter fetch metrics
   Metrics_Interval: 3
-  # HiveMetaStore service
-  HIVE_METASTORE_SERVICE: "archival-hive-metastore.kafka"
-  # HiveMetaStore Service port
-  HIVE_METASTORE_PORT: "9083"
   #Presto worker Graceful Shutdown Period
-  Grace_Period_Seconds: 180
+  Grace_Period_Seconds: 1
 
 service:
-  servicePort: 8080
+  port: 8080
 
 podAnnotations:
   prometheus.io/path: /metrics
@@ -88,14 +114,17 @@ podAnnotations:
 
 autoscaling:
   enabled: true
-  minReplicas: 3
-  maxReplicas: 5
-  targetQueuedQueries: 5
-  targetRunningDrivers: 50
-  targetMemoryUtilizationPercentage: 90
-  memoryMetricEnabled: false
   scaleUpPeriod: 30
   scaleDownPeriod: 60
+  worker:
+    minReplicas: 2
+    maxReplicas: 5
+    targetQueuedQueries: 5
+    targetRunningDrivers: 50
+  coordinator:
+    minReplicas: 1
+    maxReplicas: 2
+    targetAverageUtilization: 80
 
 terminationGracePeriodSeconds: 30
 
