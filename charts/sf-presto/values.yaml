@@ -18,13 +18,13 @@ imagePullSecrets: []
 image:
   repository: snappyflowml/presto
   pullPolicy: Always
-  tag: latest
+  tag: 'development-1-0-26'
 
 # Helm values for sfpresto-worker-prometheus-exporter container
 sfprestoWorkerPrometheusExporter:
   image:
     repository: snappyflowml/sfpresto-worker-prometheus-exporter
-    tag: latest
+    tag: 'development-1-0-26'
     pullPolicy: Always
   resources:
       limits:
