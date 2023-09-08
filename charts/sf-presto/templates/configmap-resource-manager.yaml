@@ -1,4 +1,4 @@
-{{- $result := mulf (mulf .Values.resourcemanager.podmem 0.8) 1024 }}
+{{- $result := mulf (mulf .Values.resourcemanager.podmem 0.8) 1 }}
 {{- $resultInt := int $result }}
 apiVersion: v1
 kind: ConfigMap
