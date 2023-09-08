@@ -55,6 +55,17 @@ spec:
             - '-c'
             - "until nslookup {{ include "hadoop.datanode.service" . }}; do echo waiting for datanode; sleep 2; done"
       containers:
+        {{- if .Values.global.sidecarLogger.enabled }}
+        - name: metastore-logger
+          image:  "busybox:latest"
+          imagePullPolicy: {{ .Values.global.sidecarLogger.image.pullPolicy | quote }}
+          args: [/bin/sh, -c, 'tail -q -n+1 -F /tmp/root/hive.log']
+          resources:
+            {{- toYaml .Values.global.sidecarLogger.resources | nindent 12 }}
+          volumeMounts:
+          - name: metastorelog
+            mountPath: /tmp/root/
+        {{- end }}
         - name: metastore
           image: "{{ .Values.image.hiveMetastore.repository }}:{{ .Values.image.hiveMetastore.tag }}"
           imagePullPolicy: {{ .Values.image.hiveMetastore.pullPolicy }}
@@ -86,6 +97,9 @@ spec:
             timeoutSeconds: 10
             successThreshold: 1
             failureThreshold: 3
+          volumeMounts:
+          - mountPath: /tmp/root/
+            name: metastorelog
 {{- if not .Values.global.development }}
           resources: {{- toYaml .Values.containerResources.hiveMetastore | nindent 12 }}
 {{- end }}
@@ -101,3 +115,6 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: metastorelog
+          emptyDir: {}

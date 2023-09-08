@@ -51,6 +51,18 @@ global:
   imagePullSecrets:
   - name: xxxx
 
+  sidecarLogger:
+    enabled: true
+    image:
+      pullPolicy: Always
+    resources:
+      requests:
+        cpu: 10m
+        memory: 10Mi
+      limits:
+        cpu: 50m
+        memory: 50Mi
+
 image:
   namenode:
     repository: snappyflowml/hadoop-2.10.1
