@@ -26,7 +26,6 @@ global:
       dbPort: ""
       dbUser: ""
       dbPassword: ""
-    replicaCount: 2
     autoscaling:
       enabled: true
       minReplicas: 2
@@ -66,7 +65,6 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 3
       command: celery -A vizbuilder worker -l $LOG_LEVEL -Q alert -c
         $MAXIMUM_RUNNING_TASKS $CELERY_OPTS & celery -A vizbuilder flower
         --address=localhost --port=5566
@@ -95,7 +93,6 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 1
       command: celery -A vizbuilder worker -l $LOG_LEVEL -Q logops -c10 $CELERY_OPTS
     signature:
       resources:
@@ -105,7 +102,6 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 1
       command: celery -A vizbuilder worker -l $LOG_LEVEL -Q signature -c10 $CELERY_OPTS
     provisiontemplate:
       resources:
@@ -115,7 +111,6 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 1
       command: celery -A vizbuilder worker -l $LOG_LEVEL -Q provisiontemplate -c1
         $CELERY_OPTS
 
@@ -189,7 +184,6 @@ global:
 
   sfapmui:
     brand_name: ""
-    replicaCount: 1
 
     autoscaling:
       enabled: true
@@ -236,7 +230,6 @@ global:
       port: 8090
 
   commands:
-    replicaCount: 2
     autoscaling:
       enabled: true
       minReplicas: 2
@@ -279,7 +272,6 @@ global:
         requests:
           cpu: 100m
           memory: 100Mi
-      replicaCount: 1
       command: "celery -A command_server worker -l $LOG_LEVEL -Q default -c10 $CELERY_OPTS"
 
   sfapm:
@@ -287,7 +279,9 @@ global:
     OAUTH_CLIENT_SECRET: ""
     OAUTH_TOKEN_SERVER: ""
     OAUTH_AUTH_URL: ""
-    replicaCount: 2
+
+    # branding name is used for the test email communication
+    BRANDING_NAME: ""
     cloud: ""
     ingress:
       enabled: false
@@ -371,7 +365,6 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 1
       command: celery -A snappyflow worker -l $LOG_LEVEL -Q default -c10 $CELERY_OPTS
     notify:
       resources:
@@ -381,7 +374,6 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 1
       command: celery -A snappyflow worker -l $LOG_LEVEL -Q notify -c20 $CELERY_OPTS
     periodic:
       resources:
@@ -391,7 +383,6 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 3
       autoscaling:
         enabled: true
         minReplicas: 3
@@ -407,7 +398,6 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 1
       command: celery -A snappyflow worker -l $LOG_LEVEL -Q provision -c1 $CELERY_OPTS
     sftrace:
       clusterRoleName: sftrace-metric-collector-role
@@ -427,11 +417,9 @@ global:
         requests:
           cpu: 10m
           memory: 100Mi
-      replicaCount: 1
       command: "celery -A snappyflow worker -l $LOG_LEVEL -Q sftrace -c10 $CELERY_OPTS"
 
   esmanager:
-    replicaCount: 2
     autoscaling:
       enabled: true
       minReplicas: 2
@@ -484,7 +472,6 @@ global:
         requests:
           cpu: 100m
           memory: 100Mi
-      replicaCount: 2
       command: celery -A elasticsearch_manager worker -l $LOG_LEVEL -Q
         es_mng_default  $CELERY_OPTS
 
@@ -530,7 +517,6 @@ global:
     tls: false
 
   sftrace:
-    replicaCount: 2
 
     terminationGracePeriodSeconds: 30
 

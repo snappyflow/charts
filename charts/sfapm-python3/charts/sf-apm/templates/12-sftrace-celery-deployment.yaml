@@ -135,7 +135,7 @@ spec:
             {{- end }}
         - name: sfapm-celery-metrics-collector
           command: [/go/metrics]
-          image: snappyflowml/sftrace-celery-metrics-collector:latest
+          image: "{{ .Values.sfapm_celery_metrics_collector.image.repository }}:{{ .Values.sfapm_celery_metrics_collector.image.tag }}"
           env:
             - name: DEPLOYMENT_NAME
               value: {{ include "sfapm.fullname" . }}-apm-celery-sftrace
