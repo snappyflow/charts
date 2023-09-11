@@ -1294,6 +1294,16 @@ entries:
   hive-and-hadoop:
   - apiVersion: v2
     appVersion: 2.3.8-and-2.10.0
+    created: "2023-09-11T10:21:34.386529812Z"
+    description: A Helm chart for Kubernetes
+    digest: c000f8ad30263ac6d1f935ec16d8d94c2df64599866189631fcfc15fe031bf3c
+    name: hive-and-hadoop
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/hive-and-hadoop-0.1.13/hive-and-hadoop-0.1.13.tgz
+    version: 0.1.13
+  - apiVersion: v2
+    appVersion: 2.3.8-and-2.10.0
     created: "2023-08-04T05:57:25.913867297Z"
     description: A Helm chart for Kubernetes
     digest: 6c64d9ad0a921ab8c4dcf0a281e65448464a31dbf02f3ba0bd2aa2f0b938dcea
