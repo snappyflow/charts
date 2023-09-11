@@ -1,7 +1,7 @@
 dependencies:
 - name: hive-and-hadoop
   repository: https://snappyflow.github.io/helm-charts
-  version: 0.1.12
+  version: 0.1.13
 - name: spark-history-server
   repository: https://snappyflow.github.io/helm-charts
   version: 1.4.7
@@ -14,5 +14,5 @@ dependencies:
 - name: orc-event-retry-job
   repository: file://charts/orc-event-retry-job
   version: 0.1.0
-digest: sha256:95ad57db4e6c2afcb6b7fe3ee79ce81349cf4a2af9b03d05035d5b3ac9d7813d
-generated: "2023-08-04T11:30:06.0853364+05:30"
+digest: sha256:08694073f23ebb0e598d49a2a6f395a4080d581b3454016173930b6751dbd685
+generated: "2023-09-11T15:54:28.8577479+05:30"
