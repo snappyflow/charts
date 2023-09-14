@@ -60,7 +60,8 @@ data:
     # Refer https://aws.amazon.com/blogs/big-data/top-9-performance-tuning-tips-for-prestodb-on-amazon-emr/ & https://techjogging.com/memory-setup-prestodb-cluster.html
     query.max-queued-queries=5000
     query.max-history=1000
-    query.max-concurrent-queries=10
+    query.max-concurrent-queries=40
+    query.client.timeout=60m
     query.execution-policy=phased
     task.concurrency=4
     task.max-worker-threads=16
