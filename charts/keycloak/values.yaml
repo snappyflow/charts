@@ -13,7 +13,7 @@ image:
   repository: jboss/keycloak
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "11.0.2"
+  tag: "16.1.1"
 
 imagePullSecrets: []
 nameOverride: ""
