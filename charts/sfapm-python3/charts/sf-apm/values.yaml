@@ -7,12 +7,12 @@ podSecurityContext: {}
 sfapm:
   image:
     repository: snappyflowml/sfapm-server
-    tag: 'python3-4-0-446'
+    tag: 'python3-4-0-448'
     pullPolicy: IfNotPresent
 sfapm_celery_metrics_collector:
   image:
     repository: snappyflowml/sftrace-celery-metrics-collector
-    tag: 'python3-4-0-446'
+    tag: 'python3-4-0-448'
     pullPolicy: IfNotPresent
 sfapmaffinity:
   podAntiAffinity:
