@@ -486,6 +486,7 @@ global:
     clientkey: ""
     publickey: ""
     supportemail: ""
+    sales_team_email: ""
     websiteurl: ""
     defaultprofile: demo-profile
 
