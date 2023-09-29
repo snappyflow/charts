@@ -52,6 +52,7 @@ data:
     KEYCLOAK_CLIENTKEY: "{{ .Values.global.keycloak.clientkey }}"
     KEYCLOAK_PUBLICKEY: "{{ .Values.global.keycloak.publickey }}"
     SUPPORT_EMAIL: "{{ .Values.global.keycloak.supportemail }}"
+    SALES_TEAM_MAIL: "{{ .Values.global.keycloak.sales_team_email }}"
     WEBSITE_URL: "{{ .Values.global.keycloak.websiteurl }}"
     DEFAULT_PROFILE: "{{ .Values.global.keycloak.defaultprofile }}"
     {{- else }}
