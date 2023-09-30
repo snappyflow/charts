@@ -497,6 +497,7 @@ global:
     clientkey: ""
     publickey: ""
     supportemail: ""
+    sales_team_mail: ""
     websiteurl: ""
     defaultprofile: demo-profile
 
