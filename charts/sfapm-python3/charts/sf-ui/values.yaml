@@ -9,7 +9,7 @@ podSecurityContext:
 sfapmui:
   image:
     repository: snappyflowml/sfapm-ui
-    tag: '3-1-467'
+    tag: '3-1-468'
     tag_esds: '3-1-462esds'
     tag_goals101: ''
     tag_visa: ''
