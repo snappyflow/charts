@@ -24,5 +24,6 @@ data:
       "maxRunning": {{ .Values.maxSimultaneousRun }},
       "maxAttempts": {{ .Values.maxAttempts }},
       "pendingStateTolerationHours": {{ .Values.maxPendingHours }},
-      "runningStateTolerationHours": {{ .Values.maxRunningHours }}
+      "runningStateTolerationHours": {{ .Values.maxRunningHours }},
+      "compactedStateTolerationHours": {{ .Values.maxCompactedHours }}
     }

@@ -92,6 +92,7 @@ dataset-controller:
 compaction-controller:
   maxRunningHours: 3 # Max hours a compaction job is allowed to run for
   maxPendingHours: 1 # Max hours a compaction job is allowed to stay in pending state for
+  maxCompactedHours: 1 # Max hours a compaction job is allowed to stay in compacted state for
   maxSimultaneousRun: 1 # Max number of compaction jobs that can run parallely
   maxAttempts: 2 # Max number of times a compaction job will be executed in case of failures etc.
   schedules:

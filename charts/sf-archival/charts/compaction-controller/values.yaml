@@ -31,6 +31,7 @@ log-archival:
 maxAttempts: 2
 maxPendingHours: 1
 maxRunningHours: 3
+maxCompactedHours: 1
 maxSimultaneousRun: 1
 nameOverride: ''
 nodeSelector: {}
