@@ -1,4 +1,4 @@
-{{- if .Values.global.secrets.minio.enable }}
+{{- if and (.Values.global.secrets.minio.enable) (.Values.hooks.systemInit.enable) }}
 apiVersion: batch/v1
 kind: Job
 metadata:
