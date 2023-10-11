@@ -217,11 +217,13 @@ redis:
 
 hooks:
   systemMigration:
+    enable: false
     image:
       repository: snappyflowml/archival-system-migration
       pullPolicy: IfNotPresent
       tag: 'master-2-0-110'
   systemInit:
+    enable: false
     image:
       repository: snappyflowml/archival-system-init
       pullPolicy: IfNotPresent
