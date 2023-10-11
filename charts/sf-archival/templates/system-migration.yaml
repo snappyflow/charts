@@ -1,3 +1,4 @@
+{{- if .Values.hooks.systemMigration.enable }}
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -27,9 +28,9 @@ data:
       "rawPartitionColumnNames": {{ .Values.global.hivepartitioncolumns.rawPartitionColumnNames }},
       "datasetRawControllerURL": "http://{{ template "ingest-controller.dataset-raw-controller.fullname" . }}"
     }
-
+{{- end }}
 ---
-
+{{- if .Values.hooks.systemMigration.enable }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -73,3 +74,4 @@ spec:
         - name: {{ .Release.Name }}-system-migration-config
           configMap:
             name: {{ .Release.Name }}-system-migration-config
+{{- end }}
