@@ -64,8 +64,8 @@ fi
   argocdserver=$(kubectl get svc argocd-server -n argocd | awk NR==2'{print $4}')
 
   ###Create file to store upgrade log
-  touch /home/ec2-user/upgrade.log
-  chmod 777 /home/ec2-user/upgrade.log
+  sudo touch /home/ec2-user/upgrade.log
+  sudo chmod 777 /home/ec2-user/upgrade.log
 
   ###ArgoCD login via CLI
   /usr/bin/expect <(cat << EOF
