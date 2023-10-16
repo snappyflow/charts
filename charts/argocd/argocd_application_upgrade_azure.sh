@@ -66,36 +66,17 @@ fi
   ###command to get ArgoCD server LoadBalancer IP
   argocdserver=$(kubectl get svc argocd-server -n argocd | awk NR==2'{print $4}')
 
-
-
   ###ArgoCD login via CLI
-  /usr/bin/expect <(cat << EOF
-spawn argocd login $argocdserver
-expect "WARNING:*"
-send "y\r"
-expect "Username:"
-send "admin\r"
-expect "Password:"
-send "admin@123\r"
-expect "*successfully"
-interact
-EOF
-) >> upgrade.log
+  argocd login $argocdserver --username admin --password admin@123 --insecure
 
 ### Upgrade All application if argument is All
 if [[ $# -eq 1 && "$1" == "All" ]]
 then
-        echo -e "\nUpgrading below applications: "
-	echo -e "\n${app_list[@]}"
-	echo $(date -u) " Upgrade started" >> upgrade.log
-	/usr/bin/expect <(cat << EOF
-spawn argocd app sync $app_list1 --timeout 4800 --prune
-expect "*successfully synced*"
-sleep 10
-interact
-EOF
-) >> upgrade.log
-
+    echo -e "\nUpgrading below applications: "
+	 echo -e "\n${app_list[@]}"
+	 echo $(date -u) " Upgrade started" >> upgrade.log
+	 argocd app sync $app_list1 --timeout 4800 --prune --retry-limit 3 >> upgrade.log
+    sleep 10
 
 ### Upgrade specific Application provided as arguments
 elif [[ $# -ne 0 && "$1" != "All" ]]
@@ -104,13 +85,8 @@ then
     then
        echo -e "\nUpgrading Application(s) - $@ "
        echo $(date -u) " Upgrade started" >> upgrade.log
-       /usr/bin/expect <(cat << EOF
-spawn argocd app sync $* --timeout 4800 --prune
-expect "*successfully synced*"
-sleep 10
-interact
-EOF
-) >> upgrade.log
+       argocd app sync $* --timeout 4800 --prune --retry-limit 3 >> upgrade.log
+       sleep 10
     
     fi
 fi
