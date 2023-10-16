@@ -50,12 +50,15 @@ then
        exit 1
     fi
 fi
+  ###Create file to store upgrade log
+  sudo touch upgrade.log
+  sudo chmod 777 upgrade.log
 
   ###Update ArgoCD service with LoadBalancer
   argocd_service=$(kubectl get svc argocd-server -n argocd | awk NR==2'{print $2}')
   if [ "$argocd_service" != "LoadBalancer" ]
   then 
-     kubectl patch svc argocd-server -n argocd -p '{"spec":{"type":"LoadBalancer"}}'  >> /home/ec2-user/upgrade.log
+     kubectl patch svc argocd-server -n argocd -p '{"spec":{"type":"LoadBalancer"}}'  >> upgrade.log
      echo "Waiting for LoadBalancer to get initialized"
      sleep 120
   fi
@@ -63,9 +66,7 @@ fi
   ###command to get ArgoCD server LoadBalancer IP
   argocdserver=$(kubectl get svc argocd-server -n argocd | awk NR==2'{print $4}')
 
-  ###Create file to store upgrade log
-  sudo touch /home/ec2-user/upgrade.log
-  sudo chmod 777 /home/ec2-user/upgrade.log
+
 
   ###ArgoCD login via CLI
   /usr/bin/expect <(cat << EOF
@@ -79,21 +80,21 @@ send "admin@123\r"
 expect "*successfully"
 interact
 EOF
-) >> /home/ec2-user/upgrade.log
+) >> upgrade.log
 
 ### Upgrade All application if argument is All
 if [[ $# -eq 1 && "$1" == "All" ]]
 then
         echo -e "\nUpgrading below applications: "
 	echo -e "\n${app_list[@]}"
-	echo $(date -u) " Upgrade started" >> /home/ec2-user/upgrade.log
+	echo $(date -u) " Upgrade started" >> upgrade.log
 	/usr/bin/expect <(cat << EOF
 spawn argocd app sync $app_list1 --timeout 4800 --prune
 expect "*successfully synced*"
 sleep 10
 interact
 EOF
-) >> /home/ec2-user/upgrade.log
+) >> upgrade.log
 
 
 ### Upgrade specific Application provided as arguments
@@ -102,14 +103,14 @@ then
     if [ $count -eq $# ]
     then
        echo -e "\nUpgrading Application(s) - $@ "
-       echo $(date -u) " Upgrade started" >> /home/ec2-user/upgrade.log
+       echo $(date -u) " Upgrade started" >> upgrade.log
        /usr/bin/expect <(cat << EOF
 spawn argocd app sync $* --timeout 4800 --prune
 expect "*successfully synced*"
 sleep 10
 interact
 EOF
-) >> /home/ec2-user/upgrade.log
+) >> upgrade.log
     
     fi
 fi
@@ -148,13 +149,13 @@ fi
 ### Providing user regarding upgrade status
 if [[ $synced_app -eq $total_app && $healthy_app -eq $total_app ]]
 then
-   echo $(date -u) " Upgrade completed successfully." >> /home/ec2-user/upgrade.log
+   echo $(date -u) " Upgrade completed successfully." >> upgrade.log
    echo -e "\n$(date -u) Upgrade completed successfully."
 else
-   echo $(date -u) " Upgrade failed." >> /home/ec2-user/upgrade.log
+   echo $(date -u) " Upgrade failed." >> upgrade.log
    echo -e "\n$(date -u) Upgrade failed. Application is not synced or in healthy state."
    echo "To check status of application use command: kubectl get app -n argocd"
 fi
 
   #Update ArgoCD service with NodePort
-  kubectl patch svc argocd-server -n argocd -p '{"spec":{"type":"NodePort"}}'  >> /home/ec2-user/upgrade.log
+  kubectl patch svc argocd-server -n argocd -p '{"spec":{"type":"NodePort"}}'  >> upgrade.log
