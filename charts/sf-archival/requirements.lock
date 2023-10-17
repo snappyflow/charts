@@ -1,9 +1,0 @@
-dependencies:
-- name: hive-and-hadoop
-  repository: https://snappyflow.github.io/helm-charts
-  version: 0.1.8
-- name: spark-history-server
-  repository: https://snappyflow.github.io/helm-charts
-  version: 1.4.7
-digest: sha256:a63b52c7e986ee28cbdb5e8fd8e97643bafb74bc45ce95f5f13e5222bfbc9383
-generated: "2023-04-18T00:13:18.606088284+05:30"
