@@ -14,6 +14,16 @@ entries:
   argocd:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2023-10-17T07:35:46.436511812Z"
+    description: A Helm chart for Kubernetes
+    digest: e5cde477f8141dd58af1658a13f01de0ded5de5cead507ba3a15b330e3250407
+    name: argocd
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/argocd-0.1.14/argocd-0.1.14.tgz
+    version: 0.1.14
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-10-16T09:01:50.075540532Z"
     description: A Helm chart for Kubernetes
     digest: 30def6049e57d12c36cd19018a96ef090ba440a3c26ec3eebda6f293fd3c8d6b
@@ -3378,6 +3388,36 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sample-petclinic-1.1.2/sample-petclinic-1.1.2.tgz
     version: 1.1.2
   sf-archival:
+  - apiVersion: v2
+    appVersion: "1.0"
+    created: "2023-10-17T07:35:46.576985234Z"
+    dependencies:
+    - condition: global.hive.internal.enabled
+      name: hive-and-hadoop
+      repository: https://snappyflow.github.io/helm-charts
+      version: 0.1.13
+    - condition: spark-history-server.enabled
+      name: spark-history-server
+      repository: https://snappyflow.github.io/helm-charts
+      version: 1.4.7
+    - condition: global.secrets.minio.enable
+      name: redis
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.2.16
+    - condition: global.secrets.minio.enable
+      name: orc-event-webhook
+      repository: file://charts/orc-event-webhook
+      version: 0.1.0
+    - condition: global.secrets.minio.enable
+      name: orc-event-retry-job
+      repository: file://charts/orc-event-retry-job
+      version: 0.1.0
+    description: A Helm chart for Kubernetes
+    digest: 068ecbcf55270883b440444ba817853490931583b25a5ca23e75ed391d0668bc
+    name: sf-archival
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-archival-2.0.107/sf-archival-2.0.107.tgz
+    version: 2.0.107
   - apiVersion: v1
     appVersion: "1.0"
     created: "2023-10-11T10:54:39.212286609Z"
