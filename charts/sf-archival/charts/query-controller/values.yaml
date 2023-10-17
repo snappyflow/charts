@@ -36,6 +36,13 @@ db:
   queryexecutioncontroller:
     max_idle_connections: 1
     max_open_connections: 2
+parallelQuery:
+  queryController:
+    queryParallelismFactor: 5
+    steppedParallelism: false
+  queryExecutionController:
+    maxAllowedQueriesPerJob: 5
+    maxQueriesPerCluster: 15
 executionControler:
   pullPolicy: IfNotPresent
   repository: snappyflowml/query-execution-controller

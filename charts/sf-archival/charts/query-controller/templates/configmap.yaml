@@ -26,7 +26,9 @@ data:
       "jobTypes": ["LogQuery", "Histogram"],
       "logArchivalURL": "http://{{ template "query-controller.log-archival.fullname" . }}",
       "serverPort": "{{ .Values.serverPort }}",
-      "maxGBToProcessDuringSplitQuery": {{ .Values.maxGBToProcessDuringSplitQuery }}
+      "maxGBToProcessDuringSplitQuery": {{ .Values.maxGBToProcessDuringSplitQuery }},
+      "queryParallelismFactor": {{ .Values.parallelQuery.queryController.queryParallelismFactor }},
+      "steppedParallelism": {{ .Values.parallelQuery.queryController.steppedParallelism }}
     }
 
 ---
@@ -56,7 +58,9 @@ data:
       "logArchivalURL": "http://{{ template "query-controller.log-archival.fullname" . }}",
       "interval": {{ .Values.monitorInterval }},
       "intervalUnit": {{ .Values.monitorIntervalUnit | quote }},
-      "internal_hive": {{ .Values.global.hive.internal.enabled }}
+      "internal_hive": {{ .Values.global.hive.internal.enabled }},
+      "maxAllowedQueriesPerJob": {{ .Values.parallelQuery.queryExecutionController.maxAllowedQueriesPerJob }},
+      "maxQueriesPerCluster": {{ .Values.parallelQuery.queryExecutionController.maxQueriesPerCluster }}
     }
 
 ---
