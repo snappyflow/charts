@@ -75,7 +75,7 @@ then
     echo -e "\nUpgrading below applications: "
 	 echo -e "\n${app_list[@]}"
 	 echo $(date -u) " Upgrade started" >> upgrade.log
-	 argocd app sync $app_list1 --timeout 4800 --prune --retry-limit 3 >> upgrade.log
+	 argocd app sync $app_list1 --timeout 4800 --prune --retry-limit 3 --grpc-web >> upgrade.log
     sleep 10
 
 ### Upgrade specific Application provided as arguments
@@ -85,7 +85,7 @@ then
     then
        echo -e "\nUpgrading Application(s) - $@ "
        echo $(date -u) " Upgrade started" >> upgrade.log
-       argocd app sync $* --timeout 4800 --prune --retry-limit 3 >> upgrade.log
+       argocd app sync $* --timeout 4800 --prune --retry-limit 3 --grpc-web >> upgrade.log
        sleep 10
     
     fi
