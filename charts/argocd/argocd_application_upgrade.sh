@@ -2,10 +2,36 @@
 export PATH=/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/aws/bin:/home/ec2-user/.local/bin:/home/ec2-user/bin
 set -e
 
+function enable_LB {
+  argocd_service=$(kubectl get svc argocd-server -n argocd | awk NR==2'{print $2}')
+  if [ "$argocd_service" != "LoadBalancer" ]
+  then 
+     kubectl patch svc argocd-server -n argocd -p '{"spec":{"type":"LoadBalancer"}}'  >> upgrade.log
+     echo "Waiting for LoadBalancer to get initialized"
+     sleep 120
+  fi
+}
+
+function argocd_login {
+  /usr/bin/expect <(cat << EOF
+spawn argocd login $argocdserver
+expect "WARNING:*"
+send "y\r"
+expect "Username:"
+send "admin\r"
+expect "Password:"
+send "admin@123\r"
+expect "*successfully"
+interact
+EOF
+) >> upgrade.log
+
+}
+
   ### Validating added application in ArgoCD and fetching application list
   app_list=$(kubectl get app -n argocd | awk NR!=1'{print $1}')
   for app in $app_list; do
-        app_list1+="$app "
+     app_list1+="$app "
   done
   
   if [ "$app_list" == "" ]
@@ -13,6 +39,7 @@ set -e
      echo "No Application found in ArgoCD."
      exit 1
   fi
+ 
 
   ### help command for usage
   if [[ "$1" == "-h" || "$1" == "--help" ]]; then
@@ -20,8 +47,93 @@ set -e
   echo -e "       `basename $0` All - To upgrade all application"
   echo -e "       `basename $0` application_name - To upgrade single application" 
   echo -e "       `basename $0` application_name_1 application_name_2 ...etc. - To upgrade multiple applications" 
+  echo -e "       `basename $0` -rollback application_name - To rollback application to previous version"
   exit 1
   fi
+
+###ArgoCD application rollback feature
+if [[ "$1" == "-rollback" && $# -eq 2 ]]
+then
+   while test "$1" == "-rollback"; do
+           case "$1" in
+                -rollback)
+                    shift
+                    rollback_app=$1
+                    shift
+                    ;;
+           esac
+
+   done
+   if [ "$rollback_app" == "" ]
+   then
+     echo -e "\\033[0;31mRollback argument is missing !!!!!!\\033[0m"
+     echo -e "      Eg: `basename $0` -rollback apm "
+     exit 1
+   fi
+   count=0
+   app_list=$(kubectl get app -n argocd | awk NR!=1'{print $1}')
+   for app in $app_list; do
+	   if [ "$app" == "$rollback_app" ]
+	   then
+              count=$((count+1))
+	   fi
+    done
+    if [ $count -ne 1 ]
+    then
+       echo -e "The provided application name is not found in ArgoCD application list."
+       echo "Find Application name list using command: kubectl get app -n argocd | awk '{print \$1}' "
+       exit 1
+    fi
+
+ enable_LB 
+ argocdserver=$(kubectl get svc argocd-server -n argocd | awk NR==2'{print $4}')
+ 
+ argocd_login
+
+ revision_count=$(argocd app history $rollback_app | awk NR!=1'{ print $7; }'| wc -l)
+ if [ $revision_count -eq 1 ] 
+ then
+   echo -e $(date -u) "Application doesn't have previous revision to rollback as it's new application $rollback_app" >> upgrade.log
+   echo -e "Application doesn't have previous revision to rollback as it's new application $rollback_app"
+   exit 1
+ fi
+
+ previous_revision=$(argocd app history $rollback_app | awk 'END { print $7; }')
+ echo -e $(date -u) "Application $rollback_app Rollback started" >> upgrade.log
+ echo -e "Application $rollback_app Rollback started"
+ argocd app rollback $rollback_app >> upgrade.log
+    
+ healthy_app=$(kubectl get app $rollback_app -n argocd | grep Healthy | wc -l)
+ total_app=$(expr $(kubectl get app $rollback_app -n argocd | wc -l) - 1)
+
+  if [[ $healthy_app -ne $total_app ]]
+  then
+     sleep 300
+  fi
+
+ healthy_app=$(kubectl get app $rollback_app -n argocd | grep Healthy | wc -l)
+ total_app=$(expr $(kubectl get app $rollback_app -n argocd | wc -l) - 1)
+
+ current_revision=$(argocd app history $rollback_app | awk 'END { print $7; }')
+ if [[ "$previous_revision" != "$current_revision" && $healthy_app -eq $total_app ]]
+ then
+   echo -e $(date -u) "Application $rollback_app successfully rollback to previous revision - $previous_revision" >> upgrade.log
+   echo -e "Application $rollback_app successfully rollback to previous revision - $previous_revision"
+ else
+   echo -e $(date -u) "Application $rollback_app Rollback to same revision - $previous_revision" >> upgrade.log
+   echo -e "Application $rollback_app Rollback to same revision - $previous_revision"
+ fi
+
+ kubectl patch svc argocd-server -n argocd -p '{"spec":{"type":"NodePort"}}'  >> upgrade.log
+ exit 0
+
+elif [[ "$1" == "-rollback" && $# -eq 1 ]]
+then
+   echo -e "\\033[0;31mRollback argument is missing !!!!!!\\033[0m"
+   echo -e "      Eg: `basename $0` -rollback apm"
+   exit 1
+
+fi
 
 ### Checking Arguments and application is present or not
 if [ $# -eq 0 ]
@@ -49,38 +161,21 @@ then
        echo "Find Application name list using command: kubectl get app -n argocd | awk '{print \$1}' "
        exit 1
     fi
+
 fi
   ###Create file to store upgrade log
   sudo touch upgrade.log
   sudo chmod 777 upgrade.log
 
   ###Update ArgoCD service with LoadBalancer
-  argocd_service=$(kubectl get svc argocd-server -n argocd | awk NR==2'{print $2}')
-  if [ "$argocd_service" != "LoadBalancer" ]
-  then 
-     kubectl patch svc argocd-server -n argocd -p '{"spec":{"type":"LoadBalancer"}}'  >> upgrade.log
-     echo "Waiting for LoadBalancer to get initialized"
-     sleep 120
-  fi
+  enable_LB
 
   ###command to get ArgoCD server LoadBalancer IP
   argocdserver=$(kubectl get svc argocd-server -n argocd | awk NR==2'{print $4}')
 
 
-
   ###ArgoCD login via CLI
-  /usr/bin/expect <(cat << EOF
-spawn argocd login $argocdserver
-expect "WARNING:*"
-send "y\r"
-expect "Username:"
-send "admin\r"
-expect "Password:"
-send "admin@123\r"
-expect "*successfully"
-interact
-EOF
-) >> upgrade.log
+  argocd_login
 
 ### Upgrade All application if argument is All
 if [[ $# -eq 1 && "$1" == "All" ]]
@@ -150,10 +245,10 @@ fi
 if [[ $synced_app -eq $total_app && $healthy_app -eq $total_app ]]
 then
    echo $(date -u) " Upgrade completed successfully." >> upgrade.log
-   echo -e "\n$(date -u) Upgrade completed successfully."
+   echo -e "\nUpgrade completed successfully."
 else
    echo $(date -u) " Upgrade failed." >> upgrade.log
-   echo -e "\n$(date -u) Upgrade failed. Application is not synced or in healthy state."
+   echo -e "\nUpgrade failed. Application is not synced or in healthy state."
    echo "To check status of application use command: kubectl get app -n argocd"
 fi
 
