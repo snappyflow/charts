@@ -413,3 +413,15 @@ prometheus-adapter:
           pod:
             resource: pod
       seriesQuery: '{__name__="event_queue_handler_occupancy_percent"}'
+    - metricsQuery: avg_over_time(<<.Series>>{pod=~".*kafka-rest.*"}[3m])
+      resources:
+        overrides:
+          namespace:
+            resource: namespace
+          pod:
+            resource: pod
+      name:
+        matches: ""
+        as: "kafka_rest_active_connections"
+      seriesQuery: '{__name__="kafka_rest_jetty_metrics_connections_active"}'
+      
