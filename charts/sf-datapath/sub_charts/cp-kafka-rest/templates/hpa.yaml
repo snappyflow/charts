@@ -16,6 +16,10 @@ spec:
     pods:
       metricName: kafka_rest_heap_utilization_pcnt
       targetAverageValue: 85
+  - type: Pods
+    pods:
+      metricName: kafka_rest_active_connections
+      targetAverageValue: 1800
   - type: Resource
     resource:
       name: cpu
