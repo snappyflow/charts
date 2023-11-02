@@ -60,7 +60,8 @@ data:
       "intervalUnit": {{ .Values.monitorIntervalUnit | quote }},
       "internal_hive": {{ .Values.global.hive.internal.enabled }},
       "maxAllowedQueriesPerJob": {{ .Values.parallelQuery.queryExecutionController.maxAllowedQueriesPerJob }},
-      "maxQueriesPerCluster": {{ .Values.parallelQuery.queryExecutionController.maxQueriesPerCluster }}
+      "maxQueriesPerCluster": {{ .Values.parallelQuery.queryExecutionController.maxQueriesPerCluster }},
+      "queryControllerURL": "http://{{ template "query-controller.fullname" . }}"
     }
 
 ---
