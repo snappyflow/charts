@@ -29,7 +29,7 @@ fullnameOverride: ''
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/dataset-raw-controller
-  tag: '2-0-110'
+  tag: '2-0-111'
 nameOverride: ''
 nodeSelector: {}
 podAnnotations:
@@ -51,7 +51,7 @@ orcEventController:
   image:
     pullPolicy: IfNotPresent
     repository: snappyflowml/orc-event-controller
-    tag: '2-0-110'
+    tag: '2-0-111'
   containerResources:
     limits:
       cpu: 250m
