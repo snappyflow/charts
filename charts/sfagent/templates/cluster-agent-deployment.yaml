@@ -24,7 +24,13 @@ spec:
     spec:
       containers:
       - name: cluster-agent
-        image: "{{ .Values.cluster_agent.image.repository }}:{{ .Values.cluster_agent.image.tag }}"
+        image: {{ if eq .Values.architecture "amd64" }}
+                     "{{ .Values.cluster_agent.image.amd64.repository }}:{{ .Values.cluster_agent.image.tag }}"
+                   {{ else if eq .Values.architecture "arm64" }}
+                     "{{ .Values.cluster_agent.image.arm64.repository }}:{{ .Values.cluster_agent.image.tag }}"
+                   {{ else }}
+                     "{{ .Values.cluster_agent.image.amd64.repository }}:{{ .Values.cluster_agent.image.tag }}"
+                   {{ end }}
         imagePullPolicy: {{ .Values.cluster_agent.image.pullPolicy }}
         command: ["/bin/sh","-c"]
         args: ["/app/kube-cluster"]
@@ -50,3 +56,4 @@ spec:
       nodeSelector:
 {{ toYaml .Values.cluster_agent.nodeSelector | indent 8 }}
 {{- end }}
+

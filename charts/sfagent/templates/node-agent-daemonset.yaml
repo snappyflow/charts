@@ -31,7 +31,13 @@ spec:
       hostPID: true
       containers:
       - name: node-agent
-        image: "{{ .Values.node_agent.image.repository }}:{{ .Values.node_agent.image.tag }}"
+        image: {{ if eq .Values.architecture "amd64" }}
+                     "{{ .Values.node_agent.image.amd64.repository }}:{{ .Values.node_agent.image.tag }}"
+                   {{ else if eq .Values.architecture "arm64" }}
+                     "{{ .Values.node_agent.image.arm64.repository }}:{{ .Values.node_agent.image.tag }}"
+                   {{ else }}
+                     "{{ .Values.node_agent.image.amd64.repository }}:{{ .Values.node_agent.image.tag }}"
+                   {{ end }}
         imagePullPolicy: {{ .Values.node_agent.image.pullPolicy }}
         command: ["/bin/sh","-c"]
         args: ["/app/kube-node -nodename $NODE_NAME -remote-socket-service-ip $SOCKET_SERVICE -basic-parsing {{ .Values.node_agent.basic_parsing }} -kubelet-for-metadata {{ .Values.node_agent.kubelet_for_metadata }} -mem-buf-limit-mb {{ .Values.node_agent.mem_buf_limit_mb }} -fluent-chunk-retry-limit {{ .Values.node_agent.fluent_chunk_retry_limit }} -debug={{ .Values.node_agent.debug }}"]
@@ -112,3 +118,4 @@ spec:
         - name: config
           configMap:
             name: {{ template "sf-apm-agents.fullname" . }}
+
