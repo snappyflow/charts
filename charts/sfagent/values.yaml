@@ -89,7 +89,10 @@ config:
 #  container for fluent-bit logs
 node_agent:
   image:
-    repository: snappyflowml/kube-node
+    amd64:
+      repository: snappyflowml/kube-node
+    arm64:
+      repository: snappyflowml/kube-node-arm
     tag: latest
     pullPolicy: Always
   resources:
@@ -186,13 +189,19 @@ forwardmetric:
       maxReplicas: 3
       targetCPUUtilizationPercentage: 80
 
+architecture: "amd64"
+
 # cluster level plugin Pod
 #   Container with cloud heartbeat + cluster document
 #   Container for kube events
 #   Container for application inventory
 cluster_agent:
   image:
-    repository: snappyflowml/kube-cluster
+    amd64:
+      repository: snappyflowml/kube-cluster
+      #tag: latest
+    arm64:
+      repository: snappyflowml/kube-cluster-arm
     tag: latest
     pullPolicy: Always
   # if enabled
@@ -212,5 +221,6 @@ cluster_agent:
   ## Ref: https://kubernetes.io/docs/user-guide/node-selection/
   ##
   nodeSelector: {}
+
 
 
