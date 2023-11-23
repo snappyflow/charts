@@ -61,3 +61,14 @@ Create the name of the service account to use
 {{- default "default" .Values.global.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+To get api version for HPA
+*/}}
+{{- define "autoscaling.apiVersion" -}}
+   {{- if and (.Capabilities.APIVersions.Has "autoscaling/v2") (semverCompare ">=1.21.0" (.Capabilities.KubeVersion.Version)) -}}
+      {{- print "autoscaling/v2" -}}
+   {{- else -}}
+     {{- print "autoscaling/v2beta2" -}}
+   {{- end -}}
+{{- end -}}
