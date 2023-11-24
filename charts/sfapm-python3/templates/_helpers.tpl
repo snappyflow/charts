@@ -66,7 +66,7 @@ Create the name of the service account to use
 To get api version for HPA
 */}}
 {{- define "autoscaling.apiVersion" -}}
-   {{- if and (.Capabilities.APIVersions.Has "autoscaling/v2") (semverCompare ">=1.21.0" (.Capabilities.KubeVersion.Version)) -}}
+   {{- if .Capabilities.APIVersions.Has "autoscaling/v2" -}}
       {{- print "autoscaling/v2" -}}
    {{- else -}}
      {{- print "autoscaling/v2beta2" -}}
