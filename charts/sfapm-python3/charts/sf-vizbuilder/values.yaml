@@ -9,7 +9,7 @@ disable_server_side_cursors: false
 vizbuilder:
   image:
     repository: snappyflowml/sfapm-vizbuilder
-    tag: 'python3-4-0-240'
+    tag: 'python3-4-0-242'
     pullPolicy: IfNotPresent
 
 vizbuilder_celery:
@@ -17,5 +17,5 @@ vizbuilder_celery:
     celeryAlertPrometheusExporter:
       image:
         repository: snappyflowml/celery-alert-prometheus-exporter
-        tag: 'python3-4-0-240'
+        tag: 'python3-4-0-242'
         pullPolicy: Always
