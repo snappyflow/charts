@@ -1,5 +1,5 @@
 {{- if not .Values.global.development }}
-apiVersion: batch/v1beta1
+apiVersion: {{ include "batch.apiVersion" . }}
 kind: CronJob
 metadata:
   name: {{ .Release.Name }}-process-raw-data
@@ -36,7 +36,7 @@ spec:
 
 ---
 
-apiVersion: batch/v1beta1
+apiVersion: {{ include "batch.apiVersion" . }}
 kind: CronJob
 metadata:
   name: {{ .Release.Name }}-delete-raw-data-post-compaction
