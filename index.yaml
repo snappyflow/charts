@@ -1602,6 +1602,15 @@ entries:
   kafka-cluster:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2023-12-01T10:48:32.916113686Z"
+    description: A Helm chart for kafka and zookeeper
+    digest: a338d6e41089de65c676b9166a719b3ed26eccd637ac934fb1bc08d0c2302e59
+    name: kafka-cluster
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/kafka-cluster-0.6.37/kafka-cluster-0.6.37.tgz
+    version: 0.6.37
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2023-04-17T18:27:33.366892554Z"
     description: A Helm chart for kafka and zookeeper
     digest: ce6ed4ad70c98985210e0e8aa0cd5a7b085c9f6314049532b8fcad03bd2c6fba
@@ -8544,6 +8553,16 @@ entries:
     - https://github.com/snappyflow/helm-charts/releases/download/sf-node-manager-0.1.1/sf-node-manager-0.1.1.tgz
     version: 0.1.1
   sf-presto:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2023-12-01T10:48:33.098914578Z"
+    description: A Helm chart for Kubernetes
+    digest: 9e2344356d2fa8d93cc1358594675455a926ad93a9ffe87141afe8ff067aefce
+    name: sf-presto
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-presto-1.0.28/sf-presto-1.0.28.tgz
+    version: 1.0.28
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2023-09-11T06:54:31.690786822Z"
