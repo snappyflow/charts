@@ -1,5 +1,5 @@
 {{- if .Values.autoscaling.enabled }}
-apiVersion: autoscaling/v2beta1
+apiVersion: {{ include "autoscaling.apiVersion" . }}
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "minio.fullname" . }}
@@ -15,9 +15,13 @@ spec:
   - type: Resource
     resource:
       name: cpu
-      targetAverageValue: 180m
+      target:
+        type: AverageValue
+        averageValue: 180m
   - type: Resource
     resource:
       name: memory
-      targetAverageValue: 230Mi
+      target:
+        type: AverageValue
+        averageValue: 230Mi
 {{- end }}

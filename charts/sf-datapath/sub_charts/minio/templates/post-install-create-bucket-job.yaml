@@ -1,5 +1,5 @@
 {{- if or .Values.defaultBucket.enabled .Values.buckets }}
-apiVersion: batch/v1
+apiVersion: {{ include "batch.apiVersion" . }}
 kind: Job
 metadata:
   name: {{ template "minio.fullname" . }}-make-bucket-job
