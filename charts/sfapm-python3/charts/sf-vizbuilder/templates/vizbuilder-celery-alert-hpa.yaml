@@ -1,5 +1,5 @@
 {{- if .Values.global.vizbuilder_celery.alert.autoscaling.enabled -}}
-apiVersion: autoscaling/v2beta2
+apiVersion: {{ include "autoscaling.apiVersion" . }}
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "sfapm.fullname" . }}-vizbuilder-celery-alert

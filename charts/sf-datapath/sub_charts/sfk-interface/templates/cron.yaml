@@ -1,6 +1,6 @@
 {{- if not .Values.global.development }}
 {{- if .Values.global.quotasEnabled }}
-apiVersion: batch/v1beta1
+apiVersion: {{ include "batch.apiVersion" . }}
 kind: CronJob
 metadata:
   name: {{ .Release.Name }}-quota-util-stats
@@ -37,7 +37,7 @@ spec:
 
 ---
 
-apiVersion: batch/v1beta1
+apiVersion: {{ include "batch.apiVersion" . }}
 kind: CronJob
 metadata:
   name: {{ .Release.Name }}-sinks-monitor
