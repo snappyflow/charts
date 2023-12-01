@@ -27,7 +27,7 @@ data:
 
 ---
 
-apiVersion: batch/v1
+apiVersion: {{ include "batch.apiVersion" . }}
 kind: Job
 metadata:
   name: {{ .Release.Name }}-system-migration

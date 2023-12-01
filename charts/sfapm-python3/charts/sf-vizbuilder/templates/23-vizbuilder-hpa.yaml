@@ -1,5 +1,5 @@
 {{- if .Values.global.vizbuilder.autoscaling.enabled }}
-apiVersion: autoscaling/v2beta1
+apiVersion: {{ include "autoscaling.apiVersion" . }}
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "sfapm.fullname" . }}-vizbuilder
@@ -17,12 +17,16 @@ spec:
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: {{ .Values.global.vizbuilder.autoscaling.targetMemoryUtilizationPercentage }}
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.global.vizbuilder.autoscaling.targetMemoryUtilizationPercentage }}
   {{- end }}
   {{- if .Values.global.vizbuilder.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: {{ .Values.global.vizbuilder.autoscaling.targetCPUUtilizationPercentage }}
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.global.vizbuilder.autoscaling.targetCPUUtilizationPercentage }}
   {{- end }}
 {{- end }}
