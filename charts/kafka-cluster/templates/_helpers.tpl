@@ -37,5 +37,5 @@ To get api version for policy
 {{- define "policy.apiVersion" -}}
    {{- if .Capabilities.APIVersions.Has "policy/v1" -}}
       {{- print "policy/v1" -}}
-   {{- else -}}
+   {{- end -}}
 {{- end -}}
