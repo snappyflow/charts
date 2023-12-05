@@ -11,6 +11,7 @@ export PATH=/opt/microsoft/powershell/7:~/.local/bin:~/bin:~/.dotnet/tools:/usr/
   sudo rm argocd-linux-amd64
 
   ###command to get ArgoCD server LoadBalancer IP
+  sleep 150
   argocdserver=$(kubectl get svc argocd-server -n argocd | awk NR==2'{print $4}')
   
   ###command to get ArgoCD initial password
