@@ -8,15 +8,15 @@ data:
     kind: KubeSchedulerConfiguration
     profiles:
     - schedulerName: sf-scheduler
-    plugins:
-      score:
-        disabled:
-        - name: '*'
-        enabled:
-        - name: NodeAffinity
-        - name: TaintToleration
-        - name: NodeResourcesBalancedAllocation
-        - name: InterPodAffinity
-        - name: PodTopologySpread
+      plugins:
+        score:
+          disabled:
+          - name: '*'
+          enabled:
+          - name: NodeAffinity
+          - name: TaintToleration
+          - name: NodeResourcesBalancedAllocation
+          - name: InterPodAffinity
+          - name: PodTopologySpread
     leaderElection:
       leaderElect: false
