@@ -19,9 +19,6 @@ image:
   pullPolicy: Always
   tag: '1-0-26'
 
-imagev2:
-  tag: 'test'
-
 serviceAccount:
   name: sf-scheduler
 

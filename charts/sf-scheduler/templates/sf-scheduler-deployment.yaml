@@ -30,7 +30,7 @@ spec:
       - command:
         - /usr/local/bin/kube-scheduler
         - --config=/etc/kubernetes/sf-scheduler/sf-scheduler-config.yaml
-        image: "{{ .Values.image.repository }}:{{ include "schedulerimage.apiVersion" . }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
           httpGet:
@@ -56,4 +56,5 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: {{ include "sf-scheduler.fullname" . }}-{{ include "schedulerconfigmap.apiVersion" . }}
+            name: {{ include "sf-scheduler.fullname" . }}-configmap
+ 
