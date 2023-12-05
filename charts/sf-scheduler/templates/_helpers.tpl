@@ -65,7 +65,7 @@ Create the name of the service account to use
 To select configmap for scheduler based on api version
 */}}
 {{- define "schedulerconfigmap.apiVersion" -}}
-   {{- if .Capabilities.APIVersions.Has "kubescheduler.config.k8s.io/v1beta1" -}}
+   {{- if le .Capabilities.KubeVersion.Minor "22+" -}}
       {{- print "configmap" -}}
    {{- else -}}
      {{- print "configmapv2" -}}
@@ -76,7 +76,7 @@ To select configmap for scheduler based on api version
 To select scheduler image based on api version
 */}}
 {{- define "schedulerimage.apiVersion" -}}
-   {{- if .Capabilities.APIVersions.Has "kubescheduler.config.k8s.io/v1beta1" -}}
+   {{- if le .Capabilities.KubeVersion.Minor "22+" -}}
       {{- .Values.image.tag -}}
    {{- else -}}
      {{- .Values.imagev2.tag -}}
