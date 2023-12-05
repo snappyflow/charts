@@ -70,8 +70,8 @@ data:
     shutdown.grace-period={{ .Values.env.Grace_Period_Seconds }}s
 
     # Cluster level config depends on worker size
-    query.max-memory-per-node={{ mulf .Values.worker.podmem 0.32 }}MB
-    query.max-total-memory-per-node={{ mulf .Values.worker.podmem 0.384 }}MB
+    query.max-memory-per-node={{ mulf .Values.worker.podmem 0.35 }}MB
+    query.max-total-memory-per-node={{ mulf .Values.worker.podmem 0.40 }}MB
     query.max-memory={{ mulf .Values.worker.podmem 0.32 .Values.autoscaling.worker.maxReplicas }}MB
     query.max-total-memory={{ mulf .Values.worker.podmem 0.384 .Values.autoscaling.worker.maxReplicas }}MB
     memory.heap-headroom-per-node={{ mulf .Values.worker.podmem 0.16 }}MB
