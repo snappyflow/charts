@@ -60,3 +60,25 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+To select configmap for scheduler based on api version
+*/}}
+{{- define "schedulerconfigmap.apiVersion" -}}
+   {{- if le .Capabilities.KubeVersion.Minor "22+" -}}
+      {{- print "configmap" -}}
+   {{- else -}}
+     {{- print "configmapv2" -}}
+   {{- end -}}
+{{- end -}}
+
+{{/*
+To select scheduler image based on api version
+*/}}
+{{- define "schedulerimage.apiVersion" -}}
+   {{- if le .Capabilities.KubeVersion.Minor "22+" -}}
+      {{- .Values.image.tag -}}
+   {{- else -}}
+     {{- .Values.imagev2.tag -}}
+   {{- end -}}
+{{- end -}}
