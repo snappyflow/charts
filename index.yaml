@@ -8921,6 +8921,16 @@ entries:
   sf-scheduler:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2023-12-06T11:03:52.30824627Z"
+    description: A Helm chart for Kubernetes
+    digest: d89a0890431cdef17b806896288c16b8a8f66d4c67f5c60e0b50f3d750b8e5d2
+    name: sf-scheduler
+    type: application
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-scheduler-1.0.27/sf-scheduler-1.0.27.tgz
+    version: 1.0.27
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-09-11T06:55:57.300557285Z"
     description: A Helm chart for Kubernetes
     digest: ba41666f74ef57b7a5c34ad9c5ce32428cf81cb67c3a057d5927cffbe7bd53be
