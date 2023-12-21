@@ -49,7 +49,7 @@ To get api version for HPA
 */}}
 {{- define "autoscaling.apiVersion" -}}
    {{- if .Capabilities.APIVersions.Has "autoscaling/v2" -}}
-      {{- print "autoscaling/v2beta2" -}}
+      {{- print "autoscaling/v2" -}}
    {{- else -}}
      {{- print "autoscaling/v2beta2" -}}
    {{- end -}}
