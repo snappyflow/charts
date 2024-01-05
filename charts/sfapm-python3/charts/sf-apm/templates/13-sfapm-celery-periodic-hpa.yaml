@@ -17,12 +17,16 @@ spec:
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: {{ .Values.global.sfapm_celery.periodic.autoscaling.targetMemoryUtilizationPercentage }}
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.global.sfapm_celery.periodic.autoscaling.targetMemoryUtilizationPercentage }}
   {{- end }}
   {{- if .Values.global.sfapm_celery.periodic.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: {{ .Values.global.sfapm_celery.periodic.autoscaling.targetCPUUtilizationPercentage }}
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.global.sfapm_celery.periodic.autoscaling.targetCPUUtilizationPercentage }}
   {{- end }}
 {{- end }}
