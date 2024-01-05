@@ -61,3 +61,20 @@ Create the name of the service account to use
 {{- default "default" .Values.global.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+
+{{/*
+To get api version for HPA
+*/}}
+{{- define "autoscaling.apiVersion" -}}
+   {{- if .Capabilities.APIVersions.Has "autoscaling/v2" -}}
+      {{- print "autoscaling/v2beta2" -}}
+   {{- else -}}
+     {{- print "autoscaling/v2beta2" -}}
+   {{- end -}}
+<<<<<<< HEAD
+{{- end -}}
+
+=======
+{{- end -}}
+>>>>>>> parent of ed56d223 (Update _helpers.tpl)

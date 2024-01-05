@@ -43,3 +43,23 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
+
+{{/*
+To get api version for HPA
+*/}}
+{{- define "autoscaling.apiVersion" -}}
+   {{- if .Capabilities.APIVersions.Has "autoscaling/v2" -}}
+      {{- print "autoscaling/v2beta2" -}}
+   {{- else -}}
+     {{- print "autoscaling/v2beta2" -}}
+   {{- end -}}
+{{- end -}}
+
+{{/*
+To get api version for cronJob
+*/}}
+{{- define "batch.apiVersion" -}}
+   {{- if .Capabilities.APIVersions.Has "batch/v1" -}}
+      {{- print "batch/v1" -}}
+   {{- end -}}
+{{- end -}}

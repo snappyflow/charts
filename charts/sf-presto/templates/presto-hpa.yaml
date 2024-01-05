@@ -1,5 +1,5 @@
 {{- if .Values.autoscaling.enabled -}}
-apiVersion: autoscaling/v2beta2
+apiVersion: {{ include "autoscaling.apiVersion" . }}
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "sf-presto.fullname" . }}-worker

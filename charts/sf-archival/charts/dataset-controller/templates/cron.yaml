@@ -1,5 +1,5 @@
 {{- if not .Values.global.development }}
-apiVersion: batch/v1beta1
+apiVersion: {{ include "batch.apiVersion" . }}
 kind: CronJob
 metadata:
   name: {{ .Release.Name }}-expire-partitions
@@ -37,7 +37,7 @@ spec:
 ---
 
 {{- if index .Values "billing-service" "enabled" }}
-apiVersion: batch/v1beta1
+apiVersion: {{ include "batch.apiVersion" . }}
 kind: CronJob
 metadata:
   name: {{ .Release.Name }}-apm-billing
@@ -75,7 +75,7 @@ spec:
 
 ---
 
-apiVersion: batch/v1beta1
+apiVersion: {{ include "batch.apiVersion" . }}
 kind: CronJob
 metadata:
   name: {{ .Release.Name }}-analyze-segments
@@ -112,7 +112,7 @@ spec:
 
 ---
 
-apiVersion: batch/v1beta1
+apiVersion: {{ include "batch.apiVersion" . }}
 kind: CronJob
 metadata:
   name: {{ .Release.Name }}-mark-compaction-complete-partitions
