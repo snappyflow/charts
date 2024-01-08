@@ -30,3 +30,32 @@ Create chart name and version as used by the chart label.
 {{- define "cp-helm-charts.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+To get api version for HPA
+*/}}
+{{- define "autoscaling.apiVersion" -}}
+   {{- if .Capabilities.APIVersions.Has "autoscaling/v2" -}}
+      {{- print "autoscaling/v2" -}}
+   {{- else -}}
+     {{- print "autoscaling/v2beta2" -}}
+   {{- end -}}
+{{- end -}}
+
+{{/*
+To get api version for cronJob
+*/}}
+{{- define "batch.apiVersion" -}}
+   {{- if .Capabilities.APIVersions.Has "batch/v1" -}}
+      {{- print "batch/v1" -}}
+   {{- end -}}
+{{- end -}}
+
+{{/*
+To get api version for Policy
+*/}}
+{{- define "policy.apiVersion" -}}
+   {{- if .Capabilities.APIVersions.Has "policy/v1" -}}
+      {{- print "policy/v1" -}}
+   {{- end -}}
+{{- end -}}
