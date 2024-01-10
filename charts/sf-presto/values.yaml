@@ -8,8 +8,8 @@ global:
   snappyflowProjectLabel: snappyflow/projectname
   snappyflowAppLabel: snappyflow/appname
 
-  snappyflowProjectName: "snappyflow-app"
-  snappyflowAppName: "sf-presto"
+  snappyflowProjectName: "apmmanager-opensearch-azure"
+  snappyflowAppName: "archival"
     
 replicaCount: 1
 

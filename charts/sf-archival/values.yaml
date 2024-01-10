@@ -67,7 +67,7 @@ global:
   snappyflowProjectLabel: snappyflow/projectname
   snappyflowAppLabel: snappyflow/appname
 
-  snappyflowProjectName: "snappyflow-app"
+  snappyflowProjectName: "apmmanager-opensearch-azure"
   snappyflowAppName: "archival"
 
   imagePullSecrets:
