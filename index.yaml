@@ -5224,6 +5224,42 @@ entries:
   sf-datapath:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2024-01-25T06:49:45.173930844Z"
+    dependencies:
+    - name: cp-schema-registry
+      repository: file://./sub_charts/cp-schema-registry
+      version: 0.1.1
+    - name: cp-kafka-rest
+      repository: file://./sub_charts/cp-kafka-rest
+      version: 0.1.2
+    - condition: global.archival.enabled
+      name: archival-kafka-connect
+      repository: file://./sub_charts/archival-kafka-connect
+      version: 0.1.0
+    - name: es-kafka-connect
+      repository: file://./sub_charts/es-kafka-connect
+      version: 0.1.2
+    - name: authenticator
+      repository: file://./sub_charts/authenticator
+      version: 0.1.1
+    - name: sfk-interface
+      repository: file://./sub_charts/sfk-interface
+      version: 0.1.1
+    - name: signatures-and-kafka-apis
+      repository: file://./sub_charts/signatures-and-kafka-apis
+      version: 0.1.1
+    - condition: global.secrets.gcs.enable
+      name: minio
+      repository: file://./sub_charts/minio
+      version: 8.0.11
+    description: A Helm chart for Confluent Open Source
+    digest: 17b5b31ed8c8ef2f8f976ad13bb3e68756a416d8e44f77c1afee94908203779b
+    name: sf-datapath
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-datapath-2.0.101/sf-datapath-2.0.101.tgz
+    version: 2.0.101
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2024-01-08T07:15:56.454025362Z"
     dependencies:
     - name: cp-schema-registry
