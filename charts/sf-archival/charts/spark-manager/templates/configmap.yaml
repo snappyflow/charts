@@ -107,7 +107,7 @@ data:
               "--conf",
               "spark.kubernetes.executor.label.release={{ .Release.Name }}",
               "--conf",
-              "spark.kubernetes.container.image={{ .Values.orc-compaction.image.repository }}:{{  .Values.orc-compaction.image.tag }}",
+              "spark.kubernetes.container.image={{ .Values.orcCompaction.image.repository }}:{{ .Values.orcCompaction.image.tag }}",
               "--conf",
 {{- with (index .Values.global.imagePullSecrets 0) }}
               "spark.kubernetes.container.image.pullSecrets={{ .name }}",
@@ -202,7 +202,7 @@ data:
             },
             "task_subnet": "{{ .Values.infrastructure.EcsFargate.taskSubnet }}",
             "task_security_group": "{{ .Values.infrastructure.EcsFargate.taskSecurityGroup }}",
-            "task_image": "{{ .Values.orc-compaction.image.repository }}:{{  .Values.orc-compaction.image.tag }}",
+            "task_image": "{{ .Values.orcCompaction.image.repository }}:{{ .Values.orcCompaction.image.tag }}",
             "compaction_secret_arn": "{{ .Values.infrastructure.EcsFargate.compactionSecretArn }}"
           }
         }
