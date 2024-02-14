@@ -99,6 +99,13 @@ spec:
           - name: memory-util-logs
             mountPath: /memory-util-logs
         {{- end }}
+        - name: busybox-container 
+          image: busybox 
+          command: ["/bin/sh", "-c"] 
+          args: ["tail -n+1 -f /var/log/kafka/kafka_connect.log"] 
+          volumeMounts: 
+          - name: varlog 
+            mountPath: /var/log/kafka
         - name: connector
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
@@ -185,6 +192,8 @@ spec:
         configMap:
           name: {{ template "es-kafka-connect.fullname" . }}-kafka-log
       - name: memory-util-logs
+        emptyDir: {}
+      - name: varlog
         emptyDir: {}
       {{- if .Values.nodeSelector }}
       nodeSelector:
