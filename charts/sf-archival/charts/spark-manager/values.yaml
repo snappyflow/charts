@@ -4,7 +4,7 @@ cbsparkevent:
     pullPolicy: IfNotPresent
     repository: snappyflowml/cb-spark-event
     tag: '2-0-117'
-orc-compaction: 
+orcCompaction: 
   image:
     repository: snappyflowml/spark-compact-orc
     tag: '2'
