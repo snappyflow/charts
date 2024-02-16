@@ -4,7 +4,10 @@ cbsparkevent:
     pullPolicy: IfNotPresent
     repository: snappyflowml/cb-spark-event
     tag: 'master-2-0-114'
-compactionImage: snappyflowml/spark-compact-orc:4
+orcCompaction: 
+  image:
+    repository: snappyflowml/spark-compact-orc
+    tag: 'master-2-0-117'
 fullnameOverride: ''
 jobserver:
   containerResources:
@@ -20,7 +23,7 @@ jobserver:
   image:
     pullPolicy: IfNotPresent
     repository: snappyflowml/job-server
-    tag: 'master-2-0-114'
+    tag: 'master-2-0-117'
   serverPort: 5002
   service:
     servicePort: 5002
@@ -37,7 +40,7 @@ monitor:
   image:
     pullPolicy: IfNotPresent
     repository: snappyflowml/monitor
-    tag: 'master-2-0-114'
+    tag: 'master-2-0-117'
 nameOverride: ''
 nodeSelector: {}
 schedulerName: sf-scheduler

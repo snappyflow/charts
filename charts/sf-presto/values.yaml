@@ -76,7 +76,7 @@ aws:
 azure:
   enabled: false
   account: ""
-  accesKey: ""
+  accessKey: ""
 
 minio:
   enabled: false

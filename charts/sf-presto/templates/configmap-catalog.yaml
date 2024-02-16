@@ -19,7 +19,7 @@ data:
     hive.s3.use-instance-credentials = true
     {{- else if .Values.azure.enabled }}
     # HDFS
-    hive.config.resources=/home/presto-server-0.277/etc/azure-site.xml
+    hive.config.resources=/home/presto-server-0.282/etc/azure-site.xml
     # Permissions
     hive.allow-drop-table=true
     {{- else if .Values.minio.enabled }}
