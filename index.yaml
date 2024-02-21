@@ -3419,6 +3419,36 @@ entries:
   sf-archival:
   - apiVersion: v2
     appVersion: "1.0"
+    created: "2024-02-21T10:33:35.492094329Z"
+    dependencies:
+    - condition: global.hive.internal.enabled
+      name: hive-and-hadoop
+      repository: https://snappyflow.github.io/helm-charts
+      version: 0.1.13
+    - condition: spark-history-server.enabled
+      name: spark-history-server
+      repository: https://snappyflow.github.io/helm-charts
+      version: 1.4.7
+    - condition: global.secrets.minio.enable
+      name: redis
+      repository: https://snappyflow.github.io/helm-charts/
+      version: 0.2.16
+    - condition: global.secrets.minio.enable
+      name: orc-event-webhook
+      repository: file://charts/orc-event-webhook
+      version: 0.1.0
+    - condition: global.secrets.minio.enable
+      name: orc-event-retry-job
+      repository: file://charts/orc-event-retry-job
+      version: 0.1.0
+    description: A Helm chart for Kubernetes
+    digest: 3c2ceab1c5c4a3a59ddc9d87c0930a333d2bd21cf426605ca981a22ff4dc4d7d
+    name: sf-archival
+    urls:
+    - https://github.com/snappyflow/helm-charts/releases/download/sf-archival-2.0.123/sf-archival-2.0.123.tgz
+    version: 2.0.123
+  - apiVersion: v2
+    appVersion: "1.0"
     created: "2024-01-04T10:48:50.521634663Z"
     dependencies:
     - condition: global.hive.internal.enabled
