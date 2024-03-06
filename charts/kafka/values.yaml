@@ -17,7 +17,7 @@ imageTag: "latest"
 # sfprojectname: spring --> snappyflow/projectname: kafka-project
 global:
   sfappname: kafka
-  sfprojectname: snappyflow-app
+  sfprojectname: apmmanager-opensearch-azure
   sfappname_key: snappyflow/appname
   sfprojectname_key: snappyflow/projectname
   key: ""
