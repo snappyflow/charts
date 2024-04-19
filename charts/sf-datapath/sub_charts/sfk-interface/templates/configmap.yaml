@@ -46,6 +46,7 @@ data:
             "read.timeout.ms": "30000",
             "flush.timeout.ms": "150000",
             "batch.size": "5000",
+            "max.buffered.byte_size": "10485760",
             "max.in.flight.requests": "1",
             "linger.ms": "1000",
             "schema.ignore": "true",
