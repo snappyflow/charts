@@ -45,7 +45,7 @@ heapOptions: -Xms250M -Xmx1300M
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/arch-kafka-connect
-  tag: 'master-2-0-174'
+  tag: 'master-2-0-176'
 inByteRate: 1736111
 jmx:
   port: 5555
