@@ -6,7 +6,7 @@ dependencies:
   version: 0.1.2
   repository: file://./sub_charts/cp-kafka-rest
 - name: archival-kafka-connect
-  version: 0.1.0
+  version: 0.1.1
   repository: file://./sub_charts/archival-kafka-connect
   condition: global.archival.enabled
 - name: es-kafka-connect
