@@ -4,13 +4,13 @@ dependencies:
   version: 0.1.1
 - name: cp-kafka-rest
   repository: file://./sub_charts/cp-kafka-rest
-  version: 0.1.2
+  version: 0.1.3
 - name: archival-kafka-connect
   repository: file://./sub_charts/archival-kafka-connect
-  version: 0.1.1
+  version: 0.1.2
 - name: es-kafka-connect
   repository: file://./sub_charts/es-kafka-connect
-  version: 0.1.3
+  version: 0.1.4
 - name: authenticator
   repository: file://./sub_charts/authenticator
   version: 0.1.1
@@ -23,5 +23,5 @@ dependencies:
 - name: minio
   repository: file://./sub_charts/minio
   version: 8.0.11
-digest: sha256:c547916941c84368140ec67062435980b5c1d9cbb03671eeabf76447d8714c41
-generated: "2024-04-30T10:18:28.0263102+05:30"
+digest: sha256:b5d9ee6e95a0c26094060227f0303e34131aac6b282ae8f503e8442a44ccc47c
+generated: "2024-05-23T10:57:54.1648535+05:30"
