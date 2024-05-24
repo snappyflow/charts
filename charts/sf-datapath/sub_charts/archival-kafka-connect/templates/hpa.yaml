@@ -15,9 +15,9 @@ spec:
   - type: Resource
     resource:
       name: cpu
-      targetaverageValue: "850m"
+      targetAverageValue: "850m"
   - type: External
     external:
-      metricname: kafka_bytesinpersec_oneminuterate_for_log_and_metric
-      targetaverageValue: {{ mul .Values.autoscaling.ingestRateGBPerDayPerPod 11575 }}
+      metricName: kafka_bytesinpersec_oneminuterate_for_log_and_metric
+      targetAverageValue: {{ mul .Values.autoscaling.ingestRateGBPerDayPerPod 11575 }}
 {{- end }}

@@ -14,10 +14,10 @@ spec:
   metrics:
   - type: Pods
     pods:
-      metricname: kafka_rest_heap_utilization_pcnt
-      targetaverageValue: 85
+      metricName: kafka_rest_heap_utilization_pcnt
+      targetAverageValue: 85
   - type: Resource
     resource:
       name: cpu
-      targetaverageValue: 450m
+      targetAverageValue: 450m
 {{- end }}
