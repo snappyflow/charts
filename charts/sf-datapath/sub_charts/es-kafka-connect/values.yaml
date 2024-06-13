@@ -53,7 +53,7 @@ heapOptions: -Xms450M -Xmx1800M
 image:
   pullPolicy: IfNotPresent
   repository: snappyflowml/apm-kafka-connect
-  tag: '2-0-106'
+  tag: '2-0-107'
 inByteRate: 1736111
 jmx:
   port: 5555
